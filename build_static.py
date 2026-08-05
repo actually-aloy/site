@@ -32,7 +32,19 @@ def main():
 
     (OUT / "index.html").write_text(site.render_html(), encoding="utf-8")
     (OUT / "404.html").write_text(site.render_404(), encoding="utf-8")
-    (OUT / "robots.txt").write_text("User-agent: *\nAllow: /\n", encoding="utf-8")
+    (OUT / "robots.txt").write_text(
+        f"User-agent: *\nAllow: /\nSitemap: {site.SITE_URL}/sitemap.xml\n", encoding="utf-8"
+    )
+    (OUT / "sitemap.xml").write_text(
+        f"""<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>{site.SITE_URL}/</loc>
+  </url>
+</urlset>
+""",
+        encoding="utf-8",
+    )
 
     favicon = ROOT / "favicon.svg"
     if favicon.is_file():

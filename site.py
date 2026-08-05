@@ -8,7 +8,7 @@ PORT = 8000
 SITE_NAME = "Aloy"
 BIO = "Gamer. Vibe coding. Cat lover."
 DESCRIPTION = "Aloy's corner of the internet — links, an OC, and whatever else."
-SITE_URL = "https://actually-aloy.example"  # replace with your real domain when you deploy
+SITE_URL = "https://actually-aloy.github.io/site"
 
 VIBES = [
     "chaotic good, low sleep",
@@ -90,7 +90,9 @@ class PersonalSiteHandler(SimpleHTTPRequestHandler):
         # scripts, no framing by other sites, no MIME sniffing.
         self.send_header(
             "Content-Security-Policy",
-            "default-src 'self'; style-src 'self' 'unsafe-inline'; "
+            "default-src 'self'; "
+            "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; "
+            "font-src https://fonts.gstatic.com; "
             "img-src 'self' data:; script-src 'self' 'unsafe-inline'; "
             "base-uri 'none'; frame-ancestors 'none'",
         )
@@ -98,7 +100,7 @@ class PersonalSiteHandler(SimpleHTTPRequestHandler):
         self.send_header("Referrer-Policy", "no-referrer")
 
     def serve_robots(self):
-        body = b"User-agent: *\nAllow: /\n"
+        body = f"User-agent: *\nAllow: /\nSitemap: {SITE_URL}/sitemap.xml\n".encode("utf-8")
         self.send_response(200)
         self.send_header("Content-Type", "text/plain; charset=utf-8")
         self.send_header("Content-Length", str(len(body)))
@@ -168,6 +170,9 @@ def render_html():
   <meta name="twitter:description" content="{escape_html(DESCRIPTION)}">
   <meta name="twitter:image" content="{escape_html(oc_url)}">
   <link rel="icon" href="favicon.svg?v=2" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <style>
     :root {{
       --bg: #141018;
@@ -195,6 +200,18 @@ def render_html():
         radial-gradient(circle at 88% 16%, rgba(255, 209, 231, 0.08), transparent 28%),
         radial-gradient(circle at 50% 92%, rgba(91, 206, 250, 0.08), transparent 34%),
         var(--bg);
+      animation: page-fade-in 0.4s ease-out;
+    }}
+
+    @keyframes page-fade-in {{
+      from {{ opacity: 0; }}
+      to {{ opacity: 1; }}
+    }}
+
+    @media (prefers-reduced-motion: reduce) {{
+      body {{
+        animation: none;
+      }}
     }}
 
     a {{
@@ -514,6 +531,9 @@ def render_404():
   <title>404 — {escape_html(SITE_NAME)}</title>
   <meta name="robots" content="noindex">
   <link rel="icon" href="favicon.svg?v=2" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@800&display=swap" rel="stylesheet">
   <style>
     body {{
       margin: 0;
@@ -522,6 +542,18 @@ def render_404():
       place-items: center;
       background: #141018;
       font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      animation: page-fade-in 0.4s ease-out;
+    }}
+
+    @keyframes page-fade-in {{
+      from {{ opacity: 0; }}
+      to {{ opacity: 1; }}
+    }}
+
+    @media (prefers-reduced-motion: reduce) {{
+      body {{
+        animation: none;
+      }}
     }}
 
     h1 {{
