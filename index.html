@@ -290,6 +290,129 @@
       letter-spacing: -0.04em;
     }
 
+    .apps-section {
+      margin-top: 22px;
+    }
+
+    .apps-head {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 12px;
+      margin: 0 4px 14px;
+    }
+
+    .apps-head h2 {
+      margin: 0;
+      font-size: 26px;
+      letter-spacing: -0.03em;
+    }
+
+    .apps-head span {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .apps-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 14px;
+    }
+
+    .app-card {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      padding: 20px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: linear-gradient(145deg, rgba(255, 244, 249, 0.09), rgba(255, 244, 249, 0.04));
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      backdrop-filter: blur(18px);
+      transition: transform 180ms ease, border-color 180ms ease;
+    }
+
+    .app-card:hover {
+      transform: translateY(-3px);
+      border-color: rgba(255, 209, 231, 0.4);
+    }
+
+    .app-top {
+      display: flex;
+      align-items: center;
+      gap: 13px;
+    }
+
+    .app-icon {
+      width: 46px;
+      height: 46px;
+      flex: 0 0 auto;
+      display: grid;
+      place-items: center;
+      border-radius: 15px;
+      font-size: 17px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: #141018;
+      background: linear-gradient(135deg, var(--blue), var(--pink-soft));
+      box-shadow: 0 14px 30px rgba(91, 206, 250, 0.16);
+    }
+
+    .app-name {
+      font-size: 17px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    .app-tag {
+      margin-top: 2px;
+      color: var(--muted);
+      font-size: 12.5px;
+    }
+
+    .app-links {
+      display: flex;
+      gap: 8px;
+      margin-top: auto;
+    }
+
+    .app-link {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 10px 8px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: rgba(255, 244, 249, 0.06);
+      color: var(--text);
+      font-size: 13px;
+      font-weight: 600;
+      transition: background 180ms ease, border-color 180ms ease;
+    }
+
+    .app-link:hover {
+      background: rgba(255, 244, 249, 0.12);
+      border-color: rgba(255, 209, 231, 0.4);
+    }
+
+    .app-link.primary {
+      color: #141018;
+      border-color: transparent;
+      background: linear-gradient(135deg, var(--pink), var(--pink-soft));
+    }
+
+    .app-link.primary:hover {
+      filter: brightness(1.05);
+    }
+
+    .app-link svg {
+      width: 15px;
+      height: 15px;
+      flex: 0 0 auto;
+    }
+
     @media (max-width: 900px) {
       .hero {
         grid-template-columns: 1fr;
@@ -381,8 +504,67 @@
         <img class="oc-image" src="oc.png" alt="OC image">
       </aside>
     </section>
+
+    <section class="apps-section">
+      <div class="apps-head">
+        <h2>Apps</h2>
+        <span>built by me, for me, shared anyway</span>
+      </div>
+      <div class="apps-grid" id="apps-grid"></div>
+    </section>
   </main>
   <script>
+    const APPS = [
+      {
+        name: "QuestLog",
+        tag: "task & quest tracker",
+        github: "https://github.com/actually-aloy/questlog",
+        download: "https://github.com/actually-aloy/questlog/releases/download/Release/Questlog.v11.rar"
+      },
+      {
+        name: "Aloy's Multitool",
+        tag: "windows system utility",
+        github: "https://github.com/actually-aloy/aloys-multitool",
+        download: "https://github.com/actually-aloy/aloys-multitool/releases/download/release/AMT.v2.4.rar"
+      },
+      {
+        name: "Rastnevis",
+        tag: "persian desktop app",
+        github: "https://github.com/actually-aloy/rastnevis",
+        download: "https://github.com/actually-aloy/rastnevis/releases/download/release/Rastnevis.v3.4.rar"
+      },
+      {
+        name: "Aloy's YouTube Downloader",
+        tag: "youtube downloader",
+        github: "https://github.com/actually-aloy/aloys-youtube-downloader",
+        download: "https://github.com/actually-aloy/aloys-youtube-downloader/releases/download/release/Aloys.YouTube.Downloader.v3.rar"
+      }
+    ];
+
+    const ghIcon = '<svg viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8"/></svg>';
+    const dlIcon = '<svg viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M.5 9.9a.5.5 0 0 1 .5.5v2.1a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.1a.5.5 0 0 1 1 0v2.1a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.1a.5.5 0 0 1 .5-.5"/><path d="M7.5 10.29V1.5a.5.5 0 0 1 1 0v8.79l2.15-2.15a.5.5 0 0 1 .7.71l-3 3a.5.5 0 0 1-.7 0l-3-3a.5.5 0 1 1 .7-.71z"/></svg>';
+
+    const appsGrid = document.getElementById('apps-grid');
+    APPS.forEach(app => {
+      const initials = app.name.replace(/[^A-Za-z0-9 ]/g, '').split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase();
+      const card = document.createElement('div');
+      card.className = 'app-card';
+      card.innerHTML = `
+        <div class="app-top">
+          <div class="app-icon">${initials}</div>
+          <div>
+            <div class="app-name">${app.name}</div>
+            <div class="app-tag">${app.tag}</div>
+          </div>
+        </div>
+        <div class="app-links">
+          <a class="app-link" href="${app.github}" target="_blank" rel="noopener noreferrer">${ghIcon}GitHub</a>
+          <a class="app-link primary" href="${app.download}">${dlIcon}Download</a>
+        </div>
+      `;
+      appsGrid.appendChild(card);
+    });
+
     const VIBES = ["chaotic good, low sleep", "grinding a new server plugin", "reverse-engineering something I shouldn't", "cat is supervising", "definitely should be asleep", "deep in a crackme", "100% caffeine by volume", "vibe coding until it breaks"];
     document.getElementById('vibe-text').textContent =
       VIBES[Math.floor(Math.random() * VIBES.length)];
