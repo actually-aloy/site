@@ -48,6 +48,9 @@
         radial-gradient(circle at 50% 92%, rgba(91, 206, 250, 0.08), transparent 34%),
         var(--bg);
       animation: page-fade-in 0.4s ease-out;
+      user-select: none;
+      -webkit-user-select: none;
+      -moz-user-select: none;
     }
 
     @keyframes page-fade-in {
@@ -125,7 +128,22 @@
     }
 
     .gradient-text {
-      color: var(--pink-soft);
+      background: linear-gradient(90deg, var(--pink), var(--blue), var(--pink-soft), var(--pink));
+      background-size: 300% 100%;
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      animation: enchant 5s linear infinite;
+    }
+
+    @keyframes enchant {
+      to { background-position: -300% 0; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .gradient-text {
+        animation: none;
+      }
     }
 
     .bio {
