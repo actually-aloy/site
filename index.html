@@ -98,6 +98,30 @@
       flex-direction: row-reverse;
     }
 
+    html[dir="rtl"] .discord-top {
+      flex-direction: row-reverse;
+      text-align: right;
+    }
+
+    html[dir="rtl"] .discord-status {
+      flex-direction: row-reverse;
+    }
+
+    html[dir="rtl"] .discord-card-head,
+    html[dir="rtl"] .discord-member-row,
+    html[dir="rtl"] .discord-channel-label {
+      flex-direction: row-reverse;
+    }
+
+    html[dir="rtl"] .discord-status-badge {
+      right: auto;
+      left: -2px;
+    }
+
+    html[dir="rtl"] .discord-more-row {
+      text-align: right;
+    }
+
     a {
       color: inherit;
       text-decoration: none;
@@ -433,6 +457,274 @@
       margin-top: 22px;
     }
 
+    .discord-panel {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(280px, 340px);
+      gap: 26px;
+      align-items: center;
+      margin-top: 22px;
+      padding: 28px;
+      border: 1px solid var(--line);
+      border-radius: calc(var(--radius) + 10px);
+      background: linear-gradient(145deg, rgba(255, 244, 249, 0.105), rgba(255, 244, 249, 0.045));
+      box-shadow: 0 28px 90px rgba(0, 0, 0, 0.36);
+      backdrop-filter: blur(22px);
+    }
+
+    .discord-intro {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 14px;
+      min-width: 0;
+    }
+
+    .discord-cta {
+      margin: 0;
+      max-width: 440px;
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.7;
+    }
+
+    .discord-join {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 24px;
+      border: none;
+      border-radius: 14px;
+      background: linear-gradient(135deg, var(--pink), var(--pink-soft));
+      color: #141018;
+      font-family: inherit;
+      font-size: 14px;
+      font-weight: 700;
+      transition: filter 180ms ease, transform 180ms ease;
+    }
+
+    .discord-join:hover {
+      filter: brightness(1.05);
+      transform: translateY(-2px);
+    }
+
+    .discord-join svg {
+      width: 16px;
+      height: 16px;
+      flex: 0 0 auto;
+    }
+
+    .discord-top {
+      display: flex;
+      align-items: center;
+      gap: 13px;
+    }
+
+    .discord-icon {
+      width: 46px;
+      height: 46px;
+      flex: 0 0 auto;
+      display: grid;
+      place-items: center;
+      border-radius: 15px;
+      color: #141018;
+      background: linear-gradient(135deg, #8b93ff, var(--pink-soft));
+      box-shadow: 0 14px 30px rgba(88, 101, 242, 0.28);
+    }
+
+    .discord-icon svg {
+      width: 22px;
+      height: 22px;
+    }
+
+    .discord-top h2 {
+      margin: 0;
+      font-size: 26px;
+      letter-spacing: -0.03em;
+    }
+
+    .discord-top span {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .discord-live-card {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      max-width: 340px;
+      margin-inline-start: auto;
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: linear-gradient(160deg, rgba(88, 101, 242, 0.14), rgba(255, 244, 249, 0.05));
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    }
+
+    .discord-card-head {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 10px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .discord-server-name {
+      min-width: 0;
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .discord-status {
+      display: flex;
+      align-items: center;
+      flex: 0 0 auto;
+      gap: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--muted);
+    }
+
+    .discord-dot {
+      width: 8px;
+      height: 8px;
+      flex: 0 0 auto;
+      border-radius: 50%;
+      background: #3ba55d;
+      box-shadow: 0 0 0 0 rgba(59, 165, 93, 0.6);
+      animation: discord-pulse 2.2s ease-out infinite;
+    }
+
+    .discord-live-card.is-loading .discord-dot,
+    .discord-live-card.is-fallback .discord-dot {
+      background: var(--muted);
+      animation: none;
+    }
+
+    @keyframes discord-pulse {
+      0% { box-shadow: 0 0 0 0 rgba(59, 165, 93, 0.55); }
+      70% { box-shadow: 0 0 0 7px rgba(59, 165, 93, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(59, 165, 93, 0); }
+    }
+
+    .discord-roster {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      margin-top: 12px;
+      max-height: 280px;
+      overflow-y: auto;
+    }
+
+    .discord-roster::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .discord-roster::-webkit-scrollbar-thumb {
+      background: rgba(255, 244, 249, 0.15);
+      border-radius: 999px;
+    }
+
+    .discord-roster::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .discord-channel-label {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin: 10px 0 4px;
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .discord-channel-label:first-child {
+      margin-top: 0;
+    }
+
+    .discord-channel-label svg {
+      width: 12px;
+      height: 12px;
+      flex: 0 0 auto;
+    }
+
+    .discord-member-row {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      padding: 4px 2px;
+      border-radius: 8px;
+      transition: background 140ms ease;
+    }
+
+    .discord-member-row:hover {
+      background: rgba(255, 244, 249, 0.06);
+    }
+
+    .discord-member-avatar {
+      position: relative;
+      width: 24px;
+      height: 24px;
+      flex: 0 0 auto;
+    }
+
+    .discord-member-avatar img {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      object-fit: cover;
+      display: block;
+      background: rgba(255, 244, 249, 0.08);
+    }
+
+    .discord-status-badge {
+      position: absolute;
+      right: -2px;
+      bottom: -2px;
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      border: 2px solid #221b29;
+    }
+
+    .discord-member-name {
+      min-width: 0;
+      font-size: 13px;
+      color: var(--text);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .discord-more-row {
+      padding: 6px 2px 2px;
+      color: var(--muted);
+      font-size: 12.5px;
+    }
+
+    .discord-skeleton-row {
+      height: 22px;
+      margin: 3px 0;
+      border-radius: 8px;
+      background: rgba(255, 244, 249, 0.07);
+    }
+
+    .discord-live-card.is-loading .discord-skeleton-row {
+      animation: discord-shimmer 1.4s ease-in-out infinite;
+    }
+
+    @keyframes discord-shimmer {
+      0%, 100% { opacity: 0.5; }
+      50% { opacity: 1; }
+    }
+
     .apps-head {
       display: flex;
       align-items: baseline;
@@ -562,6 +854,20 @@
       .oc-placeholder {
         min-height: 380px;
       }
+
+      .discord-panel {
+        grid-template-columns: 1fr;
+      }
+
+      .discord-intro {
+        align-items: stretch;
+        text-align: start;
+      }
+
+      .discord-live-card {
+        max-width: 100%;
+        margin-inline-start: 0;
+      }
     }
 
     @media (max-width: 560px) {
@@ -572,6 +878,11 @@
 
       .hero {
         padding: 16px;
+        border-radius: 28px;
+      }
+
+      .discord-panel {
+        padding: 18px;
         border-radius: 28px;
       }
 
@@ -651,6 +962,39 @@
         <span id="apps-subtitle">built by me, for me, shared anyway</span>
       </div>
       <div class="apps-grid" id="apps-grid"></div>
+    </section>
+
+    <section class="discord-panel">
+      <div class="discord-intro">
+        <div class="discord-top">
+          <div class="discord-icon" aria-hidden="true">
+            <svg viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M13.545 2.907a13.2 13.2 0 0 0-3.257-1.011.05.05 0 0 0-.052.025c-.141.25-.297.577-.406.833a12.2 12.2 0 0 0-3.658 0 8 8 0 0 0-.412-.833.05.05 0 0 0-.052-.025c-1.125.194-2.22.534-3.257 1.011a.04.04 0 0 0-.021.018C.356 6.024-.213 9.047.066 12.032q.003.022.021.037a13.3 13.3 0 0 0 3.995 2.02.05.05 0 0 0 .056-.019q.463-.63.818-1.329a.05.05 0 0 0-.01-.059l-.018-.011a9 9 0 0 1-1.248-.595.05.05 0 0 1-.02-.066l.015-.019q.127-.095.248-.195a.05.05 0 0 1 .051-.007c2.619 1.196 5.454 1.196 8.041 0a.05.05 0 0 1 .053.007q.121.1.248.195a.05.05 0 0 1-.004.085 8 8 0 0 1-1.249.594.05.05 0 0 0-.03.03.05.05 0 0 0 .003.041c.24.465.515.909.817 1.329a.05.05 0 0 0 .056.019 13.2 13.2 0 0 0 4.001-2.02.05.05 0 0 0 .021-.037c.334-3.451-.559-6.449-2.366-9.106a.03.03 0 0 0-.02-.019m-8.198 7.307c-.789 0-1.438-.724-1.438-1.612s.637-1.613 1.438-1.613c.807 0 1.45.73 1.438 1.613 0 .888-.637 1.612-1.438 1.612m5.316 0c-.788 0-1.438-.724-1.438-1.612s.637-1.613 1.438-1.613c.807 0 1.451.73 1.438 1.613 0 .888-.631 1.612-1.438 1.612"/></svg>
+          </div>
+          <div>
+            <h2 id="discord-title">Discord</h2>
+            <span id="discord-subtitle">come say hi</span>
+          </div>
+        </div>
+        <p class="discord-cta" id="discord-cta-text">Come hang out, chat, and vibe with everyone.</p>
+        <a class="discord-join" id="discord-join-link" href="https://discord.gg/JqrBUYEM8n" target="_blank" rel="noopener noreferrer">
+          <svg viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M13.545 2.907a13.2 13.2 0 0 0-3.257-1.011.05.05 0 0 0-.052.025c-.141.25-.297.577-.406.833a12.2 12.2 0 0 0-3.658 0 8 8 0 0 0-.412-.833.05.05 0 0 0-.052-.025c-1.125.194-2.22.534-3.257 1.011a.04.04 0 0 0-.021.018C.356 6.024-.213 9.047.066 12.032q.003.022.021.037a13.3 13.3 0 0 0 3.995 2.02.05.05 0 0 0 .056-.019q.463-.63.818-1.329a.05.05 0 0 0-.01-.059l-.018-.011a9 9 0 0 1-1.248-.595.05.05 0 0 1-.02-.066l.015-.019q.127-.095.248-.195a.05.05 0 0 1 .051-.007c2.619 1.196 5.454 1.196 8.041 0a.05.05 0 0 1 .053.007q.121.1.248.195a.05.05 0 0 1-.004.085 8 8 0 0 1-1.249.594.05.05 0 0 0-.03.03.05.05 0 0 0 .003.041c.24.465.515.909.817 1.329a.05.05 0 0 0 .056.019 13.2 13.2 0 0 0 4.001-2.02.05.05 0 0 0 .021-.037c.334-3.451-.559-6.449-2.366-9.106a.03.03 0 0 0-.02-.019m-8.198 7.307c-.789 0-1.438-.724-1.438-1.612s.637-1.613 1.438-1.613c.807 0 1.45.73 1.438 1.613 0 .888-.637 1.612-1.438 1.612m5.316 0c-.788 0-1.438-.724-1.438-1.612s.637-1.613 1.438-1.613c.807 0 1.451.73 1.438 1.613 0 .888-.631 1.612-1.438 1.612"/></svg>
+          <span id="discord-join-label">Join the server</span>
+        </a>
+      </div>
+      <div class="discord-live-card is-loading" id="discord-live-card">
+        <div class="discord-card-head">
+          <span class="discord-server-name" id="discord-server-name">Discord</span>
+          <span class="discord-status">
+            <span class="discord-dot" id="discord-dot"></span>
+            <span id="discord-status-text">…</span>
+          </span>
+        </div>
+        <div class="discord-roster" id="discord-roster">
+          <div class="discord-skeleton-row"></div>
+          <div class="discord-skeleton-row"></div>
+          <div class="discord-skeleton-row"></div>
+        </div>
+      </div>
     </section>
   </main>
 
@@ -749,6 +1093,14 @@
         navLabel: 'Links',
         appsTitle: 'Apps',
         appsSubtitle: 'built by me, for me, shared anyway',
+        discordTitle: 'Discord',
+        discordSubtitle: 'come say hi',
+        discordCta: 'Come hang out, chat, and vibe with everyone.',
+        discordJoin: 'Join the server',
+        discordOnlineWord: 'online',
+        discordOnlineSection: 'Online',
+        discordMoreOnline: 'more online',
+        discordFallback: 'Come see who\'s around.',
         flagLabel: 'Trans flag — click to learn what it means',
         modalTitle: 'What does trans mean?',
         modalBody: [
@@ -765,6 +1117,14 @@
         navLabel: 'لینک‌ها',
         appsTitle: 'اپلیکیشن‌ها',
         appsSubtitle: 'زدم واسه خودم، ولی گفتم بدمشون به همه',
+        discordTitle: 'دیسکورد',
+        discordSubtitle: 'بیا یه سر بزن',
+        discordCta: 'بیا با بقیه گپ بزنیم و یکم وقت بگذرونیم.',
+        discordJoin: 'عضو سرور شو',
+        discordOnlineWord: 'نفر آنلاین',
+        discordOnlineSection: 'آنلاین',
+        discordMoreOnline: 'نفر دیگه آنلاینن',
+        discordFallback: 'بیا ببین کیا هستن.',
         flagLabel: 'پرچم ترنس — برای فهمیدن معنیش کلیک کن',
         modalTitle: 'ترنس یعنی چی؟',
         modalBody: [
@@ -796,6 +1156,11 @@
       document.getElementById('socials-nav').setAttribute('aria-label', t.navLabel);
       document.getElementById('apps-title').textContent = t.appsTitle;
       document.getElementById('apps-subtitle').textContent = t.appsSubtitle;
+      document.getElementById('discord-title').textContent = t.discordTitle;
+      document.getElementById('discord-subtitle').textContent = t.discordSubtitle;
+      document.getElementById('discord-cta-text').textContent = t.discordCta;
+      document.getElementById('discord-join-label').textContent = t.discordJoin;
+      renderDiscordStatus(lang);
       flagBtn.setAttribute('aria-label', t.flagLabel);
       modalTitle.textContent = t.modalTitle;
       modalBody.innerHTML = t.modalBody.map(p => `<p>${p}</p>`).join('');
@@ -825,6 +1190,128 @@
       if (e.key === 'Escape' && modal.classList.contains('open')) closeModal();
     });
 
+    const DISCORD_GUILD_ID = '1431198412677582951';
+    const DISCORD_MAX_ROWS = 30;
+    const DISCORD_STATUS_COLORS = { online: '#3ba55d', idle: '#faa61a', dnd: '#ed4245', invisible: '#80848e', offline: '#80848e' };
+    const discordVoiceIcon = '<svg viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M9 4a.5.5 0 0 0-.812-.39L5.825 5.5H3.5A.5.5 0 0 0 3 6v4a.5.5 0 0 0 .5.5h2.325l2.363 1.89A.5.5 0 0 0 9 12zm3.025 4a4.5 4.5 0 0 1-1.318 3.182.5.5 0 1 1-.707-.707A3.5 3.5 0 0 0 11 8a3.5 3.5 0 0 0-1-2.475.5.5 0 0 1 .707-.707A4.5 4.5 0 0 1 12.025 8"/></svg>';
+    let discordState = 'loading'; // 'loading' | 'ok' | 'error'
+    let discordData = null;
+
+    function toPersianDigits(n) {
+      const map = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
+      return String(n).replace(/[0-9]/g, d => map[d]);
+    }
+
+    function escapeHtml(str) {
+      return String(str).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+    }
+
+    function discordMemberRowHtml(m) {
+      const color = DISCORD_STATUS_COLORS[m.status] || DISCORD_STATUS_COLORS.offline;
+      const name = escapeHtml(m.username || '');
+      const avatar = m.avatar_url || 'https://cdn.discordapp.com/embed/avatars/0.png';
+      return `<div class="discord-member-row" title="${name}">
+        <span class="discord-member-avatar">
+          <img src="${avatar}" alt="" loading="lazy">
+          <span class="discord-status-badge" style="background:${color}"></span>
+        </span>
+        <span class="discord-member-name">${name}</span>
+      </div>`;
+    }
+
+    function renderDiscordStatus(lang) {
+      const t = I18N[lang];
+      const card = document.getElementById('discord-live-card');
+      const text = document.getElementById('discord-status-text');
+      const nameEl = document.getElementById('discord-server-name');
+      const roster = document.getElementById('discord-roster');
+
+      card.classList.toggle('is-loading', discordState === 'loading');
+      card.classList.toggle('is-fallback', discordState === 'error');
+
+      if (discordState === 'loading') {
+        text.textContent = '…';
+        return;
+      }
+
+      if (discordState === 'error') {
+        text.textContent = t.discordFallback;
+        roster.innerHTML = '';
+        return;
+      }
+
+      nameEl.textContent = discordData.name || 'Discord';
+      const count = discordData.presence_count || 0;
+      text.textContent = `${lang === 'fa' ? toPersianDigits(count) : count} ${t.discordOnlineWord}`;
+
+      const members = discordData.members || [];
+      const channels = discordData.channels || [];
+      const channelNameById = {};
+      channels.forEach(c => { channelNameById[c.id] = c.name; });
+
+      const inVoice = members.filter(m => m.channel_id);
+      const notInVoice = members.filter(m => !m.channel_id);
+      const voiceGroups = {};
+      const voiceOrder = [];
+      inVoice.forEach(m => {
+        if (!voiceGroups[m.channel_id]) {
+          voiceGroups[m.channel_id] = [];
+          voiceOrder.push(m.channel_id);
+        }
+        voiceGroups[m.channel_id].push(m);
+      });
+
+      let rowsUsed = 0;
+      let html = '';
+
+      voiceOrder.forEach(chId => {
+        if (rowsUsed >= DISCORD_MAX_ROWS) return;
+        const chName = escapeHtml(channelNameById[chId] || '');
+        html += `<div class="discord-channel-label">${discordVoiceIcon}<span>${chName}</span></div>`;
+        voiceGroups[chId].forEach(m => {
+          if (rowsUsed >= DISCORD_MAX_ROWS) return;
+          html += discordMemberRowHtml(m);
+          rowsUsed++;
+        });
+      });
+
+      if (notInVoice.length && rowsUsed < DISCORD_MAX_ROWS) {
+        if (voiceOrder.length) {
+          html += `<div class="discord-channel-label"><span>${escapeHtml(t.discordOnlineSection)}</span></div>`;
+        }
+        notInVoice.forEach(m => {
+          if (rowsUsed >= DISCORD_MAX_ROWS) return;
+          html += discordMemberRowHtml(m);
+          rowsUsed++;
+        });
+      }
+
+      const remaining = members.length - rowsUsed;
+      if (remaining > 0) {
+        const n = lang === 'fa' ? toPersianDigits(remaining) : remaining;
+        html += `<div class="discord-more-row">+${n} ${t.discordMoreOnline}</div>`;
+      }
+
+      roster.innerHTML = html;
+
+      if (discordData.instant_invite) {
+        document.getElementById('discord-join-link').href = discordData.instant_invite;
+      }
+    }
+
+    async function loadDiscordWidget() {
+      try {
+        const res = await fetch(`https://discord.com/api/guilds/${DISCORD_GUILD_ID}/widget.json`);
+        if (!res.ok) throw new Error('widget unavailable');
+        discordData = await res.json();
+        discordState = 'ok';
+      } catch (err) {
+        discordState = 'error';
+      }
+      renderDiscordStatus(currentLang);
+    }
+
+    loadDiscordWidget();
     applyLanguage(currentLang);
   </script>
 </body>
