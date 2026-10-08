@@ -89,7 +89,8 @@
       text-align: right;
     }
 
-    html[dir="rtl"] .discord-top {
+    html[dir="rtl"] .discord-top,
+    html[dir="rtl"] .freelance-top {
       text-align: right;
     }
 
@@ -435,6 +436,185 @@
 
     .apps-section {
       margin-top: 22px;
+    }
+
+    .freelance-panel {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(280px, 340px);
+      gap: 26px;
+      align-items: center;
+      margin-top: 22px;
+      padding: 28px;
+      border: 1px solid var(--line);
+      border-radius: calc(var(--radius) + 10px);
+      background: linear-gradient(145deg, rgba(255, 244, 249, 0.105), rgba(255, 244, 249, 0.045));
+      box-shadow: 0 28px 90px rgba(0, 0, 0, 0.36);
+      backdrop-filter: blur(22px);
+    }
+
+    .freelance-intro {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 14px;
+      min-width: 0;
+    }
+
+    .freelance-top {
+      display: flex;
+      align-items: center;
+      gap: 13px;
+    }
+
+    .freelance-icon {
+      width: 46px;
+      height: 46px;
+      flex: 0 0 auto;
+      display: grid;
+      place-items: center;
+      border-radius: 15px;
+      color: #141018;
+      background: linear-gradient(135deg, var(--pink), var(--blue));
+      box-shadow: 0 14px 30px rgba(255, 122, 182, 0.24);
+    }
+
+    .freelance-icon svg {
+      width: 22px;
+      height: 22px;
+    }
+
+    .freelance-top h2 {
+      margin: 0;
+      font-size: 26px;
+      letter-spacing: -0.03em;
+    }
+
+    .freelance-top span {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .freelance-cta {
+      margin: 0;
+      max-width: 440px;
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.7;
+    }
+
+    .freelance-go {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 24px;
+      border: none;
+      border-radius: 14px;
+      background: linear-gradient(135deg, var(--pink), var(--pink-soft));
+      color: #141018;
+      font-family: inherit;
+      font-size: 14px;
+      font-weight: 700;
+      transition: filter 180ms ease, transform 180ms ease;
+    }
+
+    .freelance-go:hover {
+      filter: brightness(1.05);
+      transform: translateY(-2px);
+    }
+
+    .freelance-go svg {
+      width: 16px;
+      height: 16px;
+      flex: 0 0 auto;
+    }
+
+    html[dir="rtl"] .freelance-go svg {
+      transform: scaleX(-1);
+    }
+
+    .freelance-card {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      width: 100%;
+      max-width: 340px;
+      margin-inline-start: auto;
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: linear-gradient(160deg, rgba(255, 122, 182, 0.12), rgba(91, 206, 250, 0.07));
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    }
+
+    .freelance-status {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .freelance-dot {
+      width: 8px;
+      height: 8px;
+      flex: 0 0 auto;
+      border-radius: 50%;
+      background: #3ba55d;
+      box-shadow: 0 0 0 0 rgba(59, 165, 93, 0.6);
+      animation: discord-pulse 2.2s ease-out infinite;
+    }
+
+    .freelance-dot.is-busy {
+      background: var(--muted);
+      animation: none;
+    }
+
+    .freelance-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .freelance-chip {
+      padding: 6px 12px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(255, 244, 249, 0.06);
+      color: var(--text);
+      font-size: 12.5px;
+      font-weight: 600;
+    }
+
+    .freelance-chip.main {
+      border-color: transparent;
+      background: linear-gradient(135deg, var(--pink), var(--pink-soft));
+      color: #141018;
+    }
+
+    .freelance-meta {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+      color: var(--muted);
+      font-size: 12.5px;
+    }
+
+    .freelance-meta-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .freelance-meta-row::before {
+      content: "";
+      width: 6px;
+      height: 6px;
+      flex: 0 0 auto;
+      border-radius: 50%;
+      background: var(--pink);
     }
 
     .discord-panel {
@@ -835,18 +1015,25 @@
         min-height: 380px;
       }
 
-      .discord-panel {
+      .discord-panel,
+      .freelance-panel {
         grid-template-columns: 1fr;
       }
 
-      .discord-intro {
+      .discord-intro,
+      .freelance-intro {
         align-items: stretch;
         text-align: start;
       }
 
-      .discord-live-card {
+      .discord-live-card,
+      .freelance-card {
         max-width: 100%;
         margin-inline-start: 0;
+      }
+
+      .freelance-go {
+        justify-content: center;
       }
     }
 
@@ -861,7 +1048,8 @@
         border-radius: 28px;
       }
 
-      .discord-panel {
+      .discord-panel,
+      .freelance-panel {
         padding: 18px;
         border-radius: 28px;
       }
@@ -944,6 +1132,33 @@
       <div class="apps-grid" id="apps-grid"></div>
     </section>
 
+    <section class="freelance-panel">
+      <div class="freelance-intro">
+        <div class="freelance-top">
+          <div class="freelance-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M5 8l4 4-4 4"/><path d="M12 17h7"/></svg>
+          </div>
+          <div>
+            <h2 id="freelance-title">Freelance</h2>
+            <span id="freelance-subtitle">code for hire</span>
+          </div>
+        </div>
+        <p class="freelance-cta" id="freelance-cta-text">Need a website, bot or tool? I take on coding projects.</p>
+        <a class="freelance-go" href="freelance/index.html">
+          <span id="freelance-go-label">Work with me</span>
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8h10"/><path d="M9 4l4 4-4 4"/></svg>
+        </a>
+      </div>
+      <div class="freelance-card">
+        <div class="freelance-status">
+          <span class="freelance-dot" id="freelance-dot"></span>
+          <span id="freelance-status-text">…</span>
+        </div>
+        <div class="freelance-chips" id="freelance-chips"></div>
+        <div class="freelance-meta" id="freelance-meta"></div>
+      </div>
+    </section>
+
     <section class="discord-panel">
       <div class="discord-intro">
         <div class="discord-top">
@@ -990,6 +1205,7 @@
     </div>
   </div>
 
+  <script src="freelance/config.js"></script>
   <script>
     const APPS = [
       {
@@ -1073,6 +1289,14 @@
         navLabel: 'Links',
         appsTitle: 'Apps',
         appsSubtitle: 'built by me, for me, shared anyway',
+        freelanceTitle: 'Freelance',
+        freelanceSubtitle: 'code for hire',
+        freelanceCta: 'Need a website, bot or tool? I take on coding projects, quotes on Telegram or Discord, paid in USDT.',
+        freelanceGo: 'Work with me',
+        freelanceOpen: 'Open for new projects',
+        freelanceBusy: 'Booked right now',
+        freelanceChips: ['Websites', 'Bots', 'Apps', 'Scripts'],
+        freelanceMeta: ['Payment in USDT', '50% upfront'],
         discordTitle: 'Discord',
         discordSubtitle: 'come say hi',
         discordCta: 'Come hang out, chat, and vibe with everyone.',
@@ -1097,6 +1321,14 @@
         navLabel: 'لینک‌ها',
         appsTitle: 'اپلیکیشن‌ها',
         appsSubtitle: 'زدم واسه خودم، ولی گفتم بدمشون به همه',
+        freelanceTitle: 'فریلنس',
+        freelanceSubtitle: 'کدنویسی سفارشی',
+        freelanceCta: 'وب‌سایت، بات یا ابزار لازم داری؟ پروژه‌ی کدنویسی می‌گیرم؛ قیمت‌گذاری تو تلگرام یا دیسکورد، پرداخت با USDT.',
+        freelanceGo: 'سفارش پروژه',
+        freelanceOpen: 'آماده‌ی پروژه‌ی جدید',
+        freelanceBusy: 'فعلاً ظرفیت ندارم',
+        freelanceChips: ['وب‌سایت', 'بات', 'اپ', 'اسکریپت'],
+        freelanceMeta: ['پرداخت با USDT', '۵۰ درصد پیش‌پرداخت'],
         discordTitle: 'دیسکورد',
         discordSubtitle: 'بیا یه سر بزن',
         discordCta: 'بیا با بقیه گپ بزنیم و یکم وقت بگذرونیم.',
@@ -1125,6 +1357,21 @@
 
     let currentLang = localStorage.getItem('lang') === 'en' ? 'en' : 'fa';
 
+    function renderFreelance(t) {
+      const busy = !!(window.FREELANCE && window.FREELANCE.status === 'busy');
+      document.getElementById('freelance-title').textContent = t.freelanceTitle;
+      document.getElementById('freelance-subtitle').textContent = t.freelanceSubtitle;
+      // keep Latin words (USDT…) from scrambling neighbouring text in Persian
+      const bidi = x => currentLang === 'fa' ? x.replace(/[A-Za-z][A-Za-z0-9._@\/-]*/g, w => `<bdi>${w}</bdi>`) : x;
+      document.getElementById('freelance-cta-text').innerHTML = bidi(t.freelanceCta);
+      document.getElementById('freelance-go-label').textContent = t.freelanceGo;
+      document.getElementById('freelance-status-text').textContent = busy ? t.freelanceBusy : t.freelanceOpen;
+      document.getElementById('freelance-dot').classList.toggle('is-busy', busy);
+      document.getElementById('freelance-chips').innerHTML = t.freelanceChips
+        .map((c, i) => `<span class="freelance-chip${i === 0 ? ' main' : ''}">${c}</span>`).join('');
+      document.getElementById('freelance-meta').innerHTML = t.freelanceMeta.map(r => `<div class="freelance-meta-row"><span>${bidi(r)}</span></div>`).join('');
+    }
+
     function applyLanguage(lang) {
       currentLang = lang;
       localStorage.setItem('lang', lang);
@@ -1136,6 +1383,7 @@
       document.getElementById('socials-nav').setAttribute('aria-label', t.navLabel);
       document.getElementById('apps-title').textContent = t.appsTitle;
       document.getElementById('apps-subtitle').textContent = t.appsSubtitle;
+      renderFreelance(t);
       document.getElementById('discord-title').textContent = t.discordTitle;
       document.getElementById('discord-subtitle').textContent = t.discordSubtitle;
       document.getElementById('discord-cta-text').textContent = t.discordCta;
