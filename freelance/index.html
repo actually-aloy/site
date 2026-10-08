@@ -75,7 +75,6 @@
       scroll-margin-top: 18px;
     }
 
-    /* Inputs must stay selectable/typeable even though the body blocks selection (Safari). */
     input, textarea, select {
       user-select: text;
       -webkit-user-select: text;
@@ -333,7 +332,7 @@
       gap: 14px;
     }
 
-    /* 5-item rows: let the last card fill the gap instead of sitting alone */
+    /* 5-item rows */
     @media (min-width: 760px) {
       .grid.fill > :last-child:nth-child(3n + 2) {
         grid-column: span 2;
@@ -1311,7 +1310,6 @@
     const $ = id => document.getElementById(id);
     const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
     const PERSIAN_DIGITS = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
-    // In Persian text, wrap Latin words (USDT, TRC20, English…) in <bdi> so they can't scramble neighbouring digits/punctuation.
     const LATIN_RE = /[A-Za-z][A-Za-z0-9._@\/-]*/g;
     const tx = s => {
       if (currentLang !== 'fa') return esc(s);
