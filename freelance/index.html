@@ -1,0 +1,1691 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#141018">
+  <title>Freelance — Aloy</title>
+  <meta name="description" content="Aloy — freelance developer. Websites first, plus bots, apps and scripts. Quotes on Telegram or Discord, paid in USDT.">
+  <link rel="canonical" href="https://actually-aloy.github.io/site/freelance/">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Freelance — Aloy">
+  <meta property="og:description" content="Websites first, plus bots, apps and scripts. Quotes on Telegram or Discord, paid in USDT.">
+  <meta property="og:url" content="https://actually-aloy.github.io/site/freelance/">
+  <meta property="og:image" content="https://actually-aloy.github.io/site/oc.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Freelance — Aloy">
+  <meta name="twitter:description" content="Websites first, plus bots, apps and scripts. Quotes on Telegram or Discord, paid in USDT.">
+  <meta name="twitter:image" content="https://actually-aloy.github.io/site/oc.png">
+  <link rel="icon" href="../favicon.svg?v=2" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #141018;
+      --text: #fff7fb;
+      --muted: #cdb8c7;
+      --line: rgba(255, 239, 247, 0.16);
+      --pink: #ff7ab6;
+      --pink-soft: #ffd1e7;
+      --blue: #5bcefa;
+      --surface: rgba(255, 244, 249, 0.07);
+      --radius: 28px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 16% 12%, rgba(255, 122, 182, 0.15), transparent 30%),
+        radial-gradient(circle at 88% 16%, rgba(255, 209, 231, 0.08), transparent 28%),
+        radial-gradient(circle at 50% 92%, rgba(91, 206, 250, 0.08), transparent 34%),
+        var(--bg);
+      animation: page-fade-in 0.4s ease-out;
+      user-select: none;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+    }
+
+    @keyframes page-fade-in {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      body { animation: none; }
+    }
+
+    html[lang="fa"] body {
+      font-family: Vazirmatn, Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      html { scroll-behavior: smooth; }
+    }
+
+    section.block {
+      scroll-margin-top: 18px;
+    }
+
+    /* Inputs must stay selectable/typeable even though the body blocks selection (Safari). */
+    input, textarea, select {
+      user-select: text;
+      -webkit-user-select: text;
+      -moz-user-select: text;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    h1, h2, h3, p {
+      margin: 0;
+    }
+
+    .page {
+      width: min(1080px, calc(100% - 36px));
+      margin: 0 auto;
+      padding: 38px 0 56px;
+    }
+
+    .glass {
+      border: 1px solid var(--line);
+      border-radius: calc(var(--radius) + 10px);
+      background: linear-gradient(145deg, rgba(255, 244, 249, 0.105), rgba(255, 244, 249, 0.045));
+      box-shadow: 0 28px 90px rgba(0, 0, 0, 0.36);
+      backdrop-filter: blur(22px);
+    }
+
+    /* ---------- hero ---------- */
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(280px, 380px);
+      gap: 26px;
+      padding: 28px;
+      align-items: center;
+    }
+
+    .intro {
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+      min-width: 0;
+    }
+
+    .topline {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .pill-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 14px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(255, 244, 249, 0.06);
+      color: var(--text);
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 180ms ease, border-color 180ms ease;
+    }
+
+    .pill-btn:hover {
+      background: rgba(255, 244, 249, 0.12);
+      border-color: rgba(255, 209, 231, 0.4);
+    }
+
+    .pill-btn svg {
+      width: 14px;
+      height: 14px;
+    }
+
+    html[dir="rtl"] .pill-btn svg {
+      transform: scaleX(-1);
+    }
+
+    .lang-toggle {
+      margin-inline-start: auto;
+    }
+
+    h1 {
+      font-size: clamp(52px, 10vw, 104px);
+      line-height: 1.15;
+      letter-spacing: -0.04em;
+    }
+
+    .gradient-text {
+      background: linear-gradient(90deg, var(--pink), var(--blue), var(--pink-soft), var(--pink));
+      background-size: 300% 100%;
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      animation: enchant 5s linear infinite;
+    }
+
+    @keyframes enchant {
+      to { background-position: -300% 0; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .gradient-text { animation: none; }
+    }
+
+    .pitch {
+      max-width: 560px;
+      color: var(--muted);
+      font-size: 18px;
+      line-height: 1.75;
+    }
+
+    .status {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      width: fit-content;
+      padding: 7px 14px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(255, 244, 249, 0.06);
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .dot {
+      width: 8px;
+      height: 8px;
+      flex: 0 0 auto;
+      border-radius: 50%;
+      background: #3ba55d;
+      box-shadow: 0 0 0 0 rgba(59, 165, 93, 0.6);
+      animation: pulse 2.2s ease-out infinite;
+    }
+
+    .dot.is-busy {
+      background: var(--muted);
+      animation: none;
+    }
+
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(59, 165, 93, 0.55); }
+      70% { box-shadow: 0 0 0 7px rgba(59, 165, 93, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(59, 165, 93, 0); }
+    }
+
+    .cta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 12px 22px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: rgba(255, 244, 249, 0.06);
+      color: var(--text);
+      font-family: inherit;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: filter 180ms ease, transform 180ms ease, background 180ms ease, border-color 180ms ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      background: rgba(255, 244, 249, 0.12);
+      border-color: rgba(255, 209, 231, 0.4);
+    }
+
+    .btn.primary {
+      border-color: transparent;
+      background: linear-gradient(135deg, var(--pink), var(--pink-soft));
+      color: #141018;
+    }
+
+    .btn.primary:hover {
+      filter: brightness(1.05);
+    }
+
+    .btn svg {
+      width: 16px;
+      height: 16px;
+      flex: 0 0 auto;
+    }
+
+    /* snapshot card */
+    .snapshot {
+      display: flex;
+      flex-direction: column;
+      padding: 20px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: linear-gradient(160deg, rgba(255, 122, 182, 0.12), rgba(91, 206, 250, 0.07));
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    }
+
+    .snap-row {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 13px 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .snap-row:first-child { padding-top: 0; }
+    .snap-row:last-child { padding-bottom: 0; border-bottom: none; }
+
+    .snap-label {
+      color: var(--muted);
+      font-size: 12.5px;
+    }
+
+    .snap-value {
+      font-size: 14.5px;
+      font-weight: 700;
+      text-align: end;
+    }
+
+    /* ---------- sections ---------- */
+    section.block {
+      margin-top: 34px;
+    }
+
+    .head {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 12px;
+      margin: 0 4px 14px;
+    }
+
+    .head h2 {
+      font-size: 26px;
+      letter-spacing: -0.03em;
+    }
+
+    .head span {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 14px;
+    }
+
+    /* 5-item rows: let the last card fill the gap instead of sitting alone */
+    @media (min-width: 760px) {
+      .grid.fill > :last-child:nth-child(3n + 2) {
+        grid-column: span 2;
+      }
+    }
+
+    .card {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      padding: 20px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: linear-gradient(145deg, rgba(255, 244, 249, 0.09), rgba(255, 244, 249, 0.04));
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      backdrop-filter: blur(18px);
+      transition: transform 180ms ease, border-color 180ms ease;
+    }
+
+    .card:hover {
+      transform: translateY(-3px);
+      border-color: rgba(255, 209, 231, 0.4);
+    }
+
+    .card.wide {
+      grid-column: 1 / -1;
+    }
+
+    .card-top {
+      display: flex;
+      align-items: center;
+      gap: 13px;
+    }
+
+    .icon {
+      width: 46px;
+      height: 46px;
+      flex: 0 0 auto;
+      display: grid;
+      place-items: center;
+      border-radius: 15px;
+      font-size: 17px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: #141018;
+      background: linear-gradient(135deg, var(--blue), var(--pink-soft));
+      box-shadow: 0 14px 30px rgba(91, 206, 250, 0.16);
+    }
+
+    .icon.pink {
+      background: linear-gradient(135deg, var(--pink), var(--pink-soft));
+      box-shadow: 0 14px 30px rgba(255, 122, 182, 0.18);
+    }
+
+    .icon svg {
+      width: 24px;
+      height: 24px;
+    }
+
+    .card-name {
+      font-size: 17px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    .card-tag {
+      margin-top: 2px;
+      color: var(--muted);
+      font-size: 12.5px;
+    }
+
+    .card-desc {
+      color: var(--muted);
+      font-size: 14.5px;
+      line-height: 1.75;
+    }
+
+    .card.wide .card-desc {
+      max-width: 680px;
+      font-size: 15.5px;
+    }
+
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .chip {
+      padding: 6px 12px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(255, 244, 249, 0.06);
+      color: var(--text);
+      font-size: 12.5px;
+      font-weight: 600;
+    }
+
+    .links {
+      display: flex;
+      gap: 8px;
+      margin-top: auto;
+    }
+
+    .link {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 10px 8px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: rgba(255, 244, 249, 0.06);
+      color: var(--text);
+      font-size: 13px;
+      font-weight: 600;
+      transition: background 180ms ease, border-color 180ms ease;
+    }
+
+    .link:hover {
+      background: rgba(255, 244, 249, 0.12);
+      border-color: rgba(255, 209, 231, 0.4);
+    }
+
+    .link.primary {
+      color: #141018;
+      border-color: transparent;
+      background: linear-gradient(135deg, var(--pink), var(--pink-soft));
+    }
+
+    .link.primary:hover {
+      filter: brightness(1.05);
+    }
+
+    .link svg {
+      width: 15px;
+      height: 15px;
+      flex: 0 0 auto;
+    }
+
+    /* steps */
+    .step-num {
+      width: 34px;
+      height: 34px;
+      flex: 0 0 auto;
+      display: grid;
+      place-items: center;
+      border-radius: 12px;
+      font-size: 15px;
+      font-weight: 800;
+      color: #141018;
+      background: linear-gradient(135deg, var(--pink), var(--pink-soft));
+    }
+
+    /* ---------- brief builder ---------- */
+    .brief {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: 22px;
+      padding: 24px;
+    }
+
+    .form {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .field-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .field label,
+    .field .lbl {
+      color: var(--muted);
+      font-size: 12.5px;
+      font-weight: 600;
+    }
+
+    .field input,
+    .field select,
+    .field textarea,
+    .preview {
+      width: 100%;
+      padding: 11px 13px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: rgba(255, 244, 249, 0.06);
+      color: var(--text);
+      font-family: inherit;
+      font-size: 14px;
+      line-height: 1.6;
+      color-scheme: dark;
+      transition: border-color 180ms ease, background 180ms ease;
+    }
+
+    .field input::placeholder,
+    .field textarea::placeholder {
+      color: rgba(205, 184, 199, 0.55);
+    }
+
+    .field input:focus,
+    .field select:focus,
+    .field textarea:focus,
+    .preview:focus {
+      outline: none;
+      border-color: rgba(255, 209, 231, 0.55);
+      background: rgba(255, 244, 249, 0.1);
+    }
+
+    .field select option {
+      background: #1b1520;
+      color: var(--text);
+    }
+
+    .field textarea {
+      min-height: 120px;
+      resize: vertical;
+    }
+
+    .preview-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      min-width: 0;
+    }
+
+    .preview {
+      flex: 1;
+      min-height: 220px;
+      resize: none;
+      white-space: pre-wrap;
+      font-size: 13.5px;
+    }
+
+    .brief-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .brief-actions .btn {
+      flex: 1 1 auto;
+      padding: 11px 14px;
+      font-size: 13px;
+    }
+
+    .copied {
+      min-height: 18px;
+      color: var(--pink-soft);
+      font-size: 13px;
+      opacity: 0;
+      transition: opacity 180ms ease;
+    }
+
+    .copied.show {
+      opacity: 1;
+    }
+
+    /* ---------- FAQ (animated accordion) ---------- */
+    .faq {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .faq-item {
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      background: rgba(255, 244, 249, 0.05);
+      transition: border-color 240ms ease, background 240ms ease, transform 240ms ease;
+    }
+
+    .faq-item:hover {
+      border-color: rgba(255, 209, 231, 0.26);
+    }
+
+    .faq-item.open {
+      border-color: rgba(255, 209, 231, 0.34);
+      background: rgba(255, 244, 249, 0.08);
+    }
+
+    .faq-q {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 16px 20px;
+      border: none;
+      border-radius: 20px;
+      background: none;
+      color: var(--text);
+      font-family: inherit;
+      font-size: 15px;
+      font-weight: 700;
+      text-align: start;
+      cursor: pointer;
+    }
+
+    .faq-q:focus-visible {
+      outline: 2px solid var(--pink-soft);
+      outline-offset: -2px;
+    }
+
+    .faq-icon {
+      position: relative;
+      width: 14px;
+      height: 14px;
+      flex: 0 0 auto;
+      transition: transform 340ms cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+
+    .faq-icon::before,
+    .faq-icon::after {
+      content: "";
+      position: absolute;
+      inset-inline: 0;
+      top: 50%;
+      height: 2px;
+      margin-top: -1px;
+      border-radius: 2px;
+      background: var(--pink);
+      transition: transform 340ms cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+
+    .faq-icon::after {
+      transform: rotate(90deg);
+    }
+
+    .faq-item.open .faq-icon {
+      transform: rotate(180deg);
+    }
+
+    .faq-item.open .faq-icon::after {
+      transform: rotate(0deg);
+    }
+
+    .faq-panel {
+      display: grid;
+      grid-template-rows: 0fr;
+      opacity: 0;
+      visibility: hidden;
+      transition: grid-template-rows 360ms cubic-bezier(0.2, 0.8, 0.2, 1), opacity 240ms ease, visibility 0s linear 360ms;
+    }
+
+    .faq-item.open .faq-panel {
+      grid-template-rows: 1fr;
+      opacity: 1;
+      visibility: visible;
+      transition: grid-template-rows 360ms cubic-bezier(0.2, 0.8, 0.2, 1), opacity 300ms ease 60ms, visibility 0s;
+    }
+
+    .faq-inner {
+      min-height: 0;
+      overflow: hidden;
+    }
+
+    .faq .answer {
+      padding: 0 20px 18px;
+      color: var(--muted);
+      font-size: 14.5px;
+      line-height: 1.8;
+    }
+
+    /* ---------- custom dropdown ---------- */
+    .dd {
+      position: relative;
+    }
+
+    .dd.open {
+      z-index: 30;
+    }
+
+    .dd-btn {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 11px 13px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: rgba(255, 244, 249, 0.06);
+      color: var(--text);
+      font-family: inherit;
+      font-size: 14px;
+      line-height: 1.6;
+      text-align: start;
+      cursor: pointer;
+      transition: border-color 180ms ease, background 180ms ease;
+    }
+
+    .dd-btn:hover {
+      background: rgba(255, 244, 249, 0.1);
+      border-color: rgba(255, 209, 231, 0.34);
+    }
+
+    .dd-btn:focus-visible,
+    .dd.open .dd-btn {
+      outline: none;
+      border-color: rgba(255, 209, 231, 0.55);
+      background: rgba(255, 244, 249, 0.1);
+    }
+
+    .dd-btn svg {
+      width: 16px;
+      height: 16px;
+      flex: 0 0 auto;
+      color: var(--pink-soft);
+      transition: transform 240ms cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+
+    .dd.open .dd-btn svg {
+      transform: rotate(180deg);
+    }
+
+    .dd-menu {
+      position: absolute;
+      inset-inline: 0;
+      top: calc(100% + 8px);
+      z-index: 31;
+      margin: 0;
+      padding: 6px;
+      list-style: none;
+      max-height: 268px;
+      overflow-y: auto;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: linear-gradient(150deg, rgba(42, 33, 49, 0.98), rgba(24, 18, 29, 0.98));
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.5);
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transform: translateY(-6px) scale(0.98);
+      transform-origin: top center;
+      outline: none;
+      transition: opacity 160ms ease, transform 220ms cubic-bezier(0.2, 0.8, 0.2, 1), visibility 0s linear 220ms;
+    }
+
+    .dd.up .dd-menu {
+      top: auto;
+      bottom: calc(100% + 8px);
+      transform: translateY(6px) scale(0.98);
+      transform-origin: bottom center;
+    }
+
+    .dd.open .dd-menu {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+      transform: none;
+      transition-delay: 0s;
+    }
+
+    .dd-menu::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .dd-menu::-webkit-scrollbar-thumb {
+      background: rgba(255, 244, 249, 0.15);
+      border-radius: 999px;
+    }
+
+    .dd-opt {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 10px 12px;
+      border-radius: 12px;
+      color: var(--muted);
+      font-size: 14px;
+      cursor: pointer;
+      transition: background 120ms ease, color 120ms ease;
+    }
+
+    .dd-opt svg {
+      width: 16px;
+      height: 16px;
+      flex: 0 0 auto;
+      color: var(--pink);
+      opacity: 0;
+      transform: scale(0.6);
+      transition: opacity 160ms ease, transform 220ms cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+
+    .dd-opt.active {
+      background: rgba(255, 244, 249, 0.1);
+      color: var(--text);
+    }
+
+    .dd-opt[aria-selected="true"] {
+      color: var(--text);
+      font-weight: 700;
+    }
+
+    .dd-opt[aria-selected="true"] svg {
+      opacity: 1;
+      transform: none;
+    }
+
+    /* ---------- contacts ---------- */
+    .ltr {
+      display: inline-block;
+      direction: ltr;
+      unicode-bidi: isolate;
+    }
+
+    .card-note {
+      padding-top: 12px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 12.5px;
+      line-height: 1.8;
+    }
+
+    .link svg.arrow {
+      width: 14px;
+      height: 14px;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .faq-item,
+      .faq-icon,
+      .faq-icon::before,
+      .faq-icon::after,
+      .faq-panel,
+      .dd-btn svg,
+      .dd-menu,
+      .dd-opt svg {
+        transition: none !important;
+      }
+    }
+
+    /* ---------- footer ---------- */
+    .footer {
+      display: flex;
+      justify-content: center;
+      margin-top: 40px;
+    }
+
+    .home-link {
+      color: var(--muted);
+      font-size: 15px;
+      letter-spacing: -0.01em;
+      border-bottom: 1px solid rgba(255, 239, 247, 0.24);
+      padding-bottom: 2px;
+      transition: color 180ms ease, border-color 180ms ease;
+    }
+
+    .home-link:hover {
+      color: var(--text);
+      border-color: rgba(255, 209, 231, 0.5);
+    }
+
+    @media (max-width: 900px) {
+      .hero,
+      .brief {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .page {
+        width: min(100% - 22px, 1080px);
+        padding-top: 18px;
+      }
+
+      .hero,
+      .brief {
+        padding: 16px;
+        border-radius: 28px;
+      }
+
+      .intro { gap: 18px; }
+
+      .field-row {
+        grid-template-columns: 1fr;
+      }
+
+      .head {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 2px;
+      }
+
+      .btn { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+
+    <!-- HERO -->
+    <section class="hero glass">
+      <div class="intro">
+        <div class="topline">
+          <a class="pill-btn" href="../index.html" id="back-link">
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 3 5 8l5 5"/></svg>
+            <span id="back-text">back</span>
+          </a>
+          <button type="button" class="pill-btn lang-toggle" id="lang-toggle" aria-label="Switch language">EN / فا</button>
+        </div>
+        <h1><span class="gradient-text" id="hero-title">Freelance</span></h1>
+        <p class="pitch" id="hero-pitch"></p>
+        <p class="status"><span class="dot" id="status-dot"></span><span id="status-text"></span></p>
+        <div class="cta-row">
+          <a class="btn primary" href="https://t.me/actually_aloy" target="_blank" rel="noopener noreferrer">
+            <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8.287 5.906q-1.168.486-4.666 2.01-.567.225-.595.442c-.03.243.275.339.69.47l.175.055c.408.133.958.288 1.243.294q.39.01.868-.32 3.269-2.206 3.374-2.23c.05-.012.12-.026.166.016s.042.12.037.141c-.03.129-1.227 1.241-1.846 1.817-.193.18-.33.307-.358.336a8 8 0 0 1-.188.186c-.38.366-.664.64.015 1.088.327.216.589.393.85.571.284.194.568.387.936.629q.14.092.27.187c.331.236.63.448.997.414.214-.02.435-.22.547-.82.265-1.417.786-4.486.906-5.751a1.4 1.4 0 0 0-.013-.315.34.34 0 0 0-.114-.217.53.53 0 0 0-.31-.093c-.3.005-.763.166-2.984 1.09"/></svg>
+            <span id="cta-telegram"></span>
+          </a>
+          <a class="btn" href="https://discord.gg/JqrBUYEM8n" target="_blank" rel="noopener noreferrer">
+            <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M13.545 2.907a13.2 13.2 0 0 0-3.257-1.011.05.05 0 0 0-.052.025c-.141.25-.297.577-.406.833a12.2 12.2 0 0 0-3.658 0 8 8 0 0 0-.412-.833.05.05 0 0 0-.052-.025c-1.125.194-2.22.534-3.257 1.011a.04.04 0 0 0-.021.018C.356 6.024-.213 9.047.066 12.032q.003.022.021.037a13.3 13.3 0 0 0 3.995 2.02.05.05 0 0 0 .056-.019q.463-.63.818-1.329a.05.05 0 0 0-.01-.059l-.018-.011a9 9 0 0 1-1.248-.595.05.05 0 0 1-.02-.066l.015-.019q.127-.095.248-.195a.05.05 0 0 1 .051-.007c2.619 1.196 5.454 1.196 8.041 0a.05.05 0 0 1 .053.007q.121.1.248.195a.05.05 0 0 1-.004.085 8 8 0 0 1-1.249.594.05.05 0 0 0-.03.03.05.05 0 0 0 .003.041c.24.465.515.909.817 1.329a.05.05 0 0 0 .056.019 13.2 13.2 0 0 0 4.001-2.02.05.05 0 0 0 .021-.037c.334-3.451-.559-6.449-2.366-9.106a.03.03 0 0 0-.02-.019m-8.198 7.307c-.789 0-1.438-.724-1.438-1.612s.637-1.613 1.438-1.613c.807 0 1.45.73 1.438 1.613 0 .888-.637 1.612-1.438 1.612m5.316 0c-.788 0-1.438-.724-1.438-1.612s.637-1.613 1.438-1.613c.807 0 1.451.73 1.438 1.613 0 .888-.631 1.612-1.438 1.612"/></svg>
+            <span id="cta-discord"></span>
+          </a>
+        </div>
+      </div>
+      <aside class="snapshot" id="snapshot" aria-label="Quick facts"></aside>
+    </section>
+
+    <!-- SERVICES -->
+    <section class="block">
+      <div class="head">
+        <h2 id="services-title"></h2>
+        <span id="services-sub"></span>
+      </div>
+      <div class="grid" id="services-grid"></div>
+    </section>
+
+    <!-- PROCESS -->
+    <section class="block">
+      <div class="head">
+        <h2 id="process-title"></h2>
+        <span id="process-sub"></span>
+      </div>
+      <div class="grid fill" id="process-grid"></div>
+    </section>
+
+    <!-- TERMS -->
+    <section class="block">
+      <div class="head">
+        <h2 id="terms-title"></h2>
+        <span id="terms-sub"></span>
+      </div>
+      <div class="grid fill" id="terms-grid"></div>
+    </section>
+
+    <!-- PORTFOLIO -->
+    <section class="block">
+      <div class="head">
+        <h2 id="work-title"></h2>
+        <span id="work-sub"></span>
+      </div>
+      <div class="grid" id="work-grid"></div>
+    </section>
+
+    <!-- BRIEF BUILDER -->
+    <section class="block" id="brief">
+      <div class="head">
+        <h2 id="brief-title"></h2>
+        <span id="brief-sub"></span>
+      </div>
+      <div class="brief glass">
+        <form class="form" id="brief-form" onsubmit="return false">
+          <div class="field">
+            <span class="lbl" id="l-type"></span>
+            <div class="dd" id="dd-type">
+              <button type="button" class="dd-btn" aria-haspopup="listbox" aria-expanded="false" aria-labelledby="l-type dd-type-val">
+                <span class="dd-val" id="dd-type-val"></span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+              </button>
+              <ul class="dd-menu" role="listbox" tabindex="-1" aria-labelledby="l-type"></ul>
+            </div>
+          </div>
+          <div class="field-row">
+            <div class="field">
+              <label for="f-budget" id="l-budget"></label>
+              <input id="f-budget" type="text" inputmode="decimal" autocomplete="off" dir="ltr">
+            </div>
+            <div class="field">
+              <span class="lbl" id="l-timeline"></span>
+              <div class="dd" id="dd-timeline">
+                <button type="button" class="dd-btn" aria-haspopup="listbox" aria-expanded="false" aria-labelledby="l-timeline dd-timeline-val">
+                  <span class="dd-val" id="dd-timeline-val"></span>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+                </button>
+                <ul class="dd-menu" role="listbox" tabindex="-1" aria-labelledby="l-timeline"></ul>
+              </div>
+            </div>
+          </div>
+          <div class="field">
+            <label for="f-details" id="l-details"></label>
+            <textarea id="f-details"></textarea>
+          </div>
+        </form>
+        <div class="preview-wrap">
+          <div class="field" style="flex:1">
+            <label for="f-preview" id="l-preview"></label>
+            <textarea class="preview" id="f-preview" readonly></textarea>
+          </div>
+          <div class="brief-actions">
+            <button type="button" class="btn" id="btn-copy"></button>
+            <a class="btn primary" id="btn-tg" href="https://t.me/actually_aloy" target="_blank" rel="noopener noreferrer"></a>
+            <a class="btn" id="btn-dc" href="https://discord.gg/JqrBUYEM8n" target="_blank" rel="noopener noreferrer"></a>
+          </div>
+          <div class="copied" id="copied" role="status" aria-live="polite"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="block">
+      <div class="head">
+        <h2 id="faq-title"></h2>
+        <span id="faq-sub"></span>
+      </div>
+      <div class="faq" id="faq-list"></div>
+    </section>
+
+    <!-- OFFICIAL CONTACTS -->
+    <section class="block" id="contact">
+      <div class="head">
+        <h2 id="contact-title"></h2>
+        <span id="contact-sub"></span>
+      </div>
+      <div class="grid" id="contact-grid"></div>
+    </section>
+
+    <div class="footer">
+      <a class="home-link" href="../index.html" id="footer-home"></a>
+    </div>
+  </main>
+
+  <script src="config.js"></script>
+  <script>
+    /* ---------------- icons ---------------- */
+    const svgWrap = inner => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${inner}</svg>`;
+    const ICONS = {
+      web: svgWrap('<circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3a14 14 0 0 1 0 18a14 14 0 0 1 0-18z"/>'),
+      bot: svgWrap('<rect x="4" y="8" width="16" height="11" rx="3"/><path d="M12 8V4"/><circle cx="9" cy="13.5" r="1"/><circle cx="15" cy="13.5" r="1"/>'),
+      app: svgWrap('<rect x="3" y="4" width="18" height="16" rx="3"/><path d="M3 9h18"/>'),
+      script: svgWrap('<path d="M5 8l4 4-4 4"/><path d="M12 17h7"/>'),
+      home: svgWrap('<path d="M4 11l8-7 8 7"/><path d="M6 10v9h12v-9"/>')
+    };
+    const CHECK = svgWrap('<path d="M5 12.5l4.5 4.5L19 7.5"/>');
+    const ARROW_DOWN = '<svg class="arrow" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 3v10"/><path d="M4 9l4 4 4-4"/></svg>';
+    const tgIcon = '<svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8.287 5.906q-1.168.486-4.666 2.01-.567.225-.595.442c-.03.243.275.339.69.47l.175.055c.408.133.958.288 1.243.294q.39.01.868-.32 3.269-2.206 3.374-2.23c.05-.012.12-.026.166.016s.042.12.037.141c-.03.129-1.227 1.241-1.846 1.817-.193.18-.33.307-.358.336a8 8 0 0 1-.188.186c-.38.366-.664.64.015 1.088.327.216.589.393.85.571.284.194.568.387.936.629q.14.092.27.187c.331.236.63.448.997.414.214-.02.435-.22.547-.82.265-1.417.786-4.486.906-5.751a1.4 1.4 0 0 0-.013-.315.34.34 0 0 0-.114-.217.53.53 0 0 0-.31-.093c-.3.005-.763.166-2.984 1.09"/></svg>';
+    const dcIcon = '<svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M13.545 2.907a13.2 13.2 0 0 0-3.257-1.011.05.05 0 0 0-.052.025c-.141.25-.297.577-.406.833a12.2 12.2 0 0 0-3.658 0 8 8 0 0 0-.412-.833.05.05 0 0 0-.052-.025c-1.125.194-2.22.534-3.257 1.011a.04.04 0 0 0-.021.018C.356 6.024-.213 9.047.066 12.032q.003.022.021.037a13.3 13.3 0 0 0 3.995 2.02.05.05 0 0 0 .056-.019q.463-.63.818-1.329a.05.05 0 0 0-.01-.059l-.018-.011a9 9 0 0 1-1.248-.595.05.05 0 0 1-.02-.066l.015-.019q.127-.095.248-.195a.05.05 0 0 1 .051-.007c2.619 1.196 5.454 1.196 8.041 0a.05.05 0 0 1 .053.007q.121.1.248.195a.05.05 0 0 1-.004.085 8 8 0 0 1-1.249.594.05.05 0 0 0-.03.03.05.05 0 0 0 .003.041c.24.465.515.909.817 1.329a.05.05 0 0 0 .056.019 13.2 13.2 0 0 0 4.001-2.02.05.05 0 0 0 .021-.037c.334-3.451-.559-6.449-2.366-9.106a.03.03 0 0 0-.02-.019m-8.198 7.307c-.789 0-1.438-.724-1.438-1.612s.637-1.613 1.438-1.613c.807 0 1.45.73 1.438 1.613 0 .888-.637 1.612-1.438 1.612m5.316 0c-.788 0-1.438-.724-1.438-1.612s.637-1.613 1.438-1.613c.807 0 1.451.73 1.438 1.613 0 .888-.631 1.612-1.438 1.612"/></svg>';
+    const ghIcon = '<svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8"/></svg>';
+    const dlIcon = '<svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M.5 9.9a.5.5 0 0 1 .5.5v2.1a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.1a.5.5 0 0 1 1 0v2.1a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.1a.5.5 0 0 1 .5-.5"/><path d="M7.5 10.29V1.5a.5.5 0 0 1 1 0v8.79l2.15-2.15a.5.5 0 0 1 .7.71l-3 3a.5.5 0 0 1-.7 0l-3-3a.5.5 0 1 1 .7-.71z"/></svg>';
+
+    /* ---------------- portfolio data (same apps as the main page) ---------------- */
+    const APPS = [
+      { name: "QuestLog", tag: "daily habit tracker", tagFa: "ردیاب عادت‌های روزانه",
+        github: "https://github.com/actually-aloy/questlog",
+        download: "https://github.com/actually-aloy/questlog/releases/download/v13/Questlog.v13.rar" },
+      { name: "Aloy's Multitool", tag: "windows system utility", tagFa: "ابزار سیستمی ویندوز",
+        github: "https://github.com/actually-aloy/aloys-multitool",
+        download: "https://github.com/actually-aloy/aloys-multitool/releases/download/v2.5/AMT.v2.5.rar" },
+      { name: "MC Portal", tag: "opens your minecraft server port", tagFa: "باز کردن پورت سرور ماینکرفت",
+        github: "https://github.com/actually-aloy/mc-portal",
+        download: "https://github.com/actually-aloy/mc-portal/releases/download/v1.2/MC.Portal.v1.2.rar" },
+      { name: "Rastnevis", tag: "finglish → persian + speech-to-text", tagFa: "فینگلیش ← فارسی + تبدیل گفتار به نوشتار",
+        github: "https://github.com/actually-aloy/rastnevis",
+        download: "https://github.com/actually-aloy/rastnevis/releases/download/v3.6/Rastnevis.v3.6.rar" },
+      { name: "Aloy's YouTube Downloader", tag: "youtube downloader", tagFa: "دانلودکننده یوتیوب",
+        github: "https://github.com/actually-aloy/aloys-youtube-downloader",
+        download: "https://github.com/actually-aloy/aloys-youtube-downloader/releases/download/v3/Aloys.YouTube.Downloader.v3.rar" }
+    ];
+
+    /* ---------------- contacts (official) ---------------- */
+    const TELEGRAM_URL = 'https://t.me/actually_aloy';
+    const DISCORD_INVITE = 'https://discord.gg/JqrBUYEM8n';
+    const DISCORD_ID = 'mehraban2';
+
+    /* ---------------- copy ---------------- */
+    const T = {
+      en: {
+        dir: 'ltr',
+        back: 'back',
+        heroTitle: 'Freelance',
+        pitch: "I build websites, and the occasional bot, app or script. Tell me what you need, get a clear quote, pay in USDT, and receive something that works.",
+        statusOpen: 'Open for new projects',
+        statusBusy: 'Booked right now — message me to ask about openings',
+        ctaTelegram: 'Message on Telegram',
+        ctaDiscord: 'Join the Discord',
+        snapshot: [
+          ['Focus', 'Websites'],
+          ['Also', 'Bots · Apps · Scripts'],
+          ['Payment', 'USDT · 50% upfront'],
+          ['Contact', 'Telegram · Discord'],
+          ['Languages', 'فارسی · English']
+        ],
+        servicesTitle: 'What I build',
+        servicesSub: 'websites first, the rest when it fits',
+        services: [
+          { key: 'web', wide: true, name: 'Websites', tag: 'my main focus',
+            desc: 'Landing pages, portfolios, and personal or small-business sites. Clean, fast, mobile-first, with proper Persian and right-to-left support when you need it.',
+            chips: ['Landing pages', 'Portfolios', 'Business sites', 'Persian & RTL', 'Responsive'] },
+          { key: 'bot', name: 'Bots', tag: 'Discord & Telegram',
+            desc: 'Moderation, utilities and custom commands, built around how your server or channel actually works.' },
+          { key: 'app', name: 'Apps', tag: 'Windows desktop tools',
+            desc: 'Small, focused desktop utilities, like the ones in the portfolio below.' },
+          { key: 'script', name: 'Scripts', tag: 'automation & utilities',
+            desc: 'Small scripts that automate repetitive work, like file handling and format conversions.' }
+        ],
+        processTitle: 'How it works',
+        processSub: 'five steps, no surprises',
+        steps: [
+          ['Say hi', 'Message me on Telegram or Discord. The brief builder helps you write the request.', { href: '#brief', label: 'Go to the brief builder' }],
+          ['Scope & quote', 'We settle what is included, the timeline, and a fixed price in USDT.'],
+          ['50% deposit', 'I send the wallet address and network privately in chat. Work starts once the deposit arrives.'],
+          ['Build & preview', 'You see progress and a working preview, and can ask for adjustments within the agreed scope.'],
+          ['Delivery', 'You pay the remaining 50%, then receive the final files, source and handoff notes.']
+        ],
+        termsTitle: 'Terms',
+        termsSub: 'short and clear',
+        terms: [
+          ['Payment', 'USDT only. 50% upfront, 50% on delivery. The network and wallet address are shared privately in chat for each project.'],
+          ['Ownership', 'Once fully paid, the project and its code are yours.'],
+          ['Revisions', 'Small adjustments within the agreed scope are included. New features get their own quote.'],
+          ['Stay safe', "I only ask for payment through my official contacts. If anyone else asks, it isn't me.", { href: '#contact', label: 'Official contacts' }],
+          ["What I won't build", 'Malware, cheats, credential stealing, phishing or spam tools, or anything meant to harm or deceive people.']
+        ],
+        workTitle: 'Proof of work',
+        workSub: "things I've already shipped",
+        siteName: 'This website',
+        siteTag: "you're looking at it",
+        siteLink: 'Open home page',
+        ghLabel: 'GitHub',
+        dlLabel: 'Download',
+        briefTitle: 'Brief builder',
+        briefSub: 'write your request in 30 seconds',
+        lType: 'Project type',
+        types: ['Website', 'Bot', 'Desktop app', 'Script', 'Something else'],
+        lBudget: 'Budget in USDT (optional)',
+        phBudget: 'e.g. 100',
+        lTimeline: 'Timeline',
+        timelines: ['Flexible', 'Within 1 week', '1–2 weeks', '2–4 weeks', 'As soon as possible'],
+        lDetails: 'What do you need?',
+        phDetails: 'Describe the project: pages or features, and links to examples you like…',
+        lPreview: 'Your message',
+        btnCopy: 'Copy message',
+        btnTg: 'Copy & open Telegram',
+        btnDc: 'Copy & open Discord',
+        copied: 'Copied — paste it in the chat.',
+        copyFail: 'Select the message above and copy it manually.',
+        msg: {
+          greeting: "Hi Aloy! I'd like a quote for a project.",
+          type: 'Type', budget: 'Budget', timeline: 'Timeline', details: 'Details'
+        },
+        faqTitle: 'FAQ',
+        faqSub: 'the usual questions',
+        faq: [
+          ['How long does a project take?', 'Simple sites usually take a few days, bigger ones a couple of weeks. You get a concrete timeline in the quote.'],
+          ['Why USDT, and which network?', 'USDT keeps payments simple and borderless. The network (for example TRC20 or BEP20) is agreed in chat before you send anything.'],
+          ['Which languages do you work in?', 'Persian and English, both for chatting and for the sites themselves.'],
+          ['What happens after delivery?', 'Bugs in what I delivered are fixed for free. Bigger changes or new features are a new quote.']
+        ],
+        contactTitle: 'Official contacts',
+        contactSub: "the only places I'll ask for payment",
+        contactTgDesc: 'The fastest way to reach me and get a quote.',
+        contactTgBtn: 'Message on Telegram',
+        contactDcDesc: 'You can also contact me on Discord.',
+        contactDcBtn: 'Join the server',
+        contactDcNote: 'Discord ID: ',
+        contactDcNote2: ' · please join the server first instead of sending a friend request.',
+        footerHome: 'back to home'
+      },
+      fa: {
+        dir: 'rtl',
+        back: 'بازگشت',
+        heroTitle: 'فریلنس',
+        pitch: 'سایت می‌سازم، و گاهی بات، اپ و اسکریپت. بگو چی می‌خوای، یه قیمت شفاف می‌گیری، با USDT پرداخت می‌کنی و یه چیز سالم تحویل می‌گیری.',
+        statusOpen: 'آماده‌ی پروژه‌ی جدید',
+        statusBusy: 'فعلاً ظرفیت ندارم — پیام بده، شاید جا شد',
+        ctaTelegram: 'پیام در تلگرام',
+        ctaDiscord: 'ورود به دیسکورد',
+        snapshot: [
+          ['تمرکز', 'وب‌سایت'],
+          ['همچنین', 'بات · اپ · اسکریپت'],
+          ['پرداخت', 'USDT · ۵۰ درصد پیش‌پرداخت'],
+          ['ارتباط', 'تلگرام · دیسکورد'],
+          ['زبان', 'فارسی · English']
+        ],
+        servicesTitle: 'چی می‌سازم',
+        servicesSub: 'اول وب‌سایت، بقیه هر وقت جور بود',
+        services: [
+          { key: 'web', wide: true, name: 'وب‌سایت', tag: 'تمرکز اصلی من',
+            desc: 'لندینگ، پورتفولیو و سایت‌های شخصی یا کسب‌وکار کوچک. تمیز، سریع، موبایل‌محور و با پشتیبانی درست از فارسی و راست‌به‌چپ.',
+            chips: ['لندینگ پیج', 'پورتفولیو', 'سایت کسب‌وکار', 'فارسی و RTL', 'ریسپانسیو'] },
+          { key: 'bot', name: 'بات', tag: 'دیسکورد و تلگرام',
+            desc: 'بات برای مدیریت، ابزارهای کاربردی و فرمان‌های سفارشی، مطابق با نیاز واقعی سرور یا کانال شما.' },
+          { key: 'app', name: 'اپ', tag: 'ابزار دسکتاپ ویندوز',
+            desc: 'ابزارهای کوچک و هدفمند ویندوزی، شبیه همونایی که پایین‌تر تو نمونه‌کارهام می‌بینی.' },
+          { key: 'script', name: 'اسکریپت', tag: 'اتوماسیون و ابزار',
+            desc: 'اسکریپت‌های کوچیکی که کارهای تکراری رو خودکار می‌کنن، مثل پردازش فایل و تبدیل فرمت.' }
+        ],
+        processTitle: 'روند کار',
+        processSub: 'پنج مرحله، بدون غافلگیری',
+        steps: [
+          ['سلام بده', 'تو تلگرام یا دیسکورد بهم پیام بده. سازنده‌ی بریف پایین کمکت می‌کنه درخواستت رو بنویسی.', { href: '#brief', label: 'رفتن به سازنده‌ی بریف' }],
+          ['محدوده و قیمت', 'چیزهایی که شامل پروژه‌ست، زمان تحویل و یه قیمت ثابت به USDT رو با هم نهایی می‌کنیم.'],
+          ['پیش‌پرداخت ۵۰ درصد', 'آدرس کیف پول و شبکه رو خصوصی تو چت می‌فرستم. بعد از رسیدن پیش‌پرداخت کار شروع میشه.'],
+          ['ساخت و پیش‌نمایش', 'پیشرفت و یه پیش‌نمایش کارکردی می‌بینی و می‌تونی تو چارچوب توافق‌شده تغییرات بخوای.'],
+          ['تحویل', '۵۰ درصد باقی‌مونده رو پرداخت می‌کنی، بعد فایل‌های نهایی، سورس و توضیحات تحویل رو می‌گیری.']
+        ],
+        termsTitle: 'شرایط',
+        termsSub: 'کوتاه و روشن',
+        terms: [
+          ['پرداخت', 'فقط USDT. ۵۰ درصد پیش‌پرداخت، ۵۰ درصد هنگام تحویل. شبکه و آدرس کیف پول برای هر پروژه خصوصی تو چت داده میشه.'],
+          ['مالکیت', 'بعد از پرداخت کامل، پروژه و کدش مال توئه.'],
+          ['تغییرات', 'اصلاحات کوچیک در چارچوب توافق‌شده شامل پروژه‌ست. قابلیت جدید، قیمت جدا داره.'],
+          ['امنیت', 'فقط از طریق راه‌های ارتباطی همین صفحه ازت پول می‌خوام. اگه کس دیگه‌ای خواست، من نیستم.', { href: '#contact', label: 'راه‌های ارتباطی' }],
+          ['چی نمی‌سازم', 'بدافزار، چیت، سرقت اطلاعات ورود، فیشینگ، ابزار اسپم، یا هر چیزی که برای آسیب زدن یا فریب آدم‌ها باشه.']
+        ],
+        workTitle: 'نمونه‌کارها',
+        workSub: 'چیزایی که قبلاً ساختم و منتشر کردم',
+        siteName: 'همین وب‌سایت',
+        siteTag: 'همین که داری می‌بینی',
+        siteLink: 'صفحه‌ی اصلی',
+        ghLabel: 'گیت‌هاب',
+        dlLabel: 'دانلود',
+        briefTitle: 'سازنده‌ی بریف',
+        briefSub: 'درخواستت رو تو ۳۰ ثانیه بنویس',
+        lType: 'نوع پروژه',
+        types: ['وب‌سایت', 'بات', 'اپ دسکتاپ', 'اسکریپت', 'چیز دیگه'],
+        lBudget: 'بودجه به USDT (اختیاری)',
+        phBudget: 'مثلاً 100',
+        lTimeline: 'زمان‌بندی',
+        timelines: ['منعطف', 'تا یک هفته', '۱ تا ۲ هفته', '۲ تا ۴ هفته', 'هرچه سریع‌تر'],
+        lDetails: 'چی نیاز داری؟',
+        phDetails: 'پروژه رو توضیح بده: صفحه‌ها یا قابلیت‌ها، و لینک نمونه‌هایی که دوست داری…',
+        lPreview: 'پیام تو',
+        btnCopy: 'کپی پیام',
+        btnTg: 'کپی و باز کردن تلگرام',
+        btnDc: 'کپی و باز کردن دیسکورد',
+        copied: 'کپی شد — تو چت پیست کن.',
+        copyFail: 'پیام بالا رو انتخاب کن و خودت کپی کن.',
+        msg: {
+          greeting: 'سلام آلوی! برای یه پروژه قیمت می‌خوام.',
+          type: 'نوع', budget: 'بودجه', timeline: 'زمان‌بندی', details: 'توضیحات'
+        },
+        faqTitle: 'سؤالات متداول',
+        faqSub: 'چیزایی که معمولاً می‌پرسن',
+        faq: [
+          ['یه پروژه چقدر طول می‌کشه؟', 'سایت‌های ساده معمولاً چند روز، پروژه‌های بزرگ‌تر یکی دو هفته. تو قیمت‌گذاری یه زمان مشخص بهت میدم.'],
+          ['چرا USDT و کدوم شبکه؟', 'USDT پرداخت رو ساده و بدون مرز می‌کنه. شبکه (مثلاً TRC20 یا BEP20) قبل از ارسال تو چت هماهنگ میشه.'],
+          ['به چه زبان‌هایی کار می‌کنی؟', 'فارسی و انگلیسی، هم برای چت و هم خود سایت‌ها.'],
+          ['بعد از تحویل چی؟', 'باگ‌های کار تحویل‌داده‌شده رایگان رفع میشه. تغییرات بزرگ یا قابلیت جدید، قیمت جدا داره.']
+        ],
+        contactTitle: 'راه‌های ارتباطی',
+        contactSub: 'فقط از همین راه‌ها ازت پول می‌خوام',
+        contactTgDesc: 'سریع‌ترین راه برای پیام دادن و گرفتن قیمت.',
+        contactTgBtn: 'پیام در تلگرام',
+        contactDcDesc: 'تو دیسکورد هم می‌تونی بهم پیام بدی.',
+        contactDcBtn: 'عضو سرور شو',
+        contactDcNote: 'آیدی دیسکورد: ',
+        contactDcNote2: ' · لطفاً به‌جای درخواست دوستی، اول عضو سرور شو.',
+        footerHome: 'بازگشت به صفحه‌ی اصلی'
+      }
+    };
+
+    /* ---------------- helpers ---------------- */
+    const $ = id => document.getElementById(id);
+    const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+    const PERSIAN_DIGITS = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
+    // In Persian text, wrap Latin words (USDT, TRC20, English…) in <bdi> so they can't scramble neighbouring digits/punctuation.
+    const LATIN_RE = /[A-Za-z][A-Za-z0-9._@\/-]*/g;
+    const tx = s => {
+      if (currentLang !== 'fa') return esc(s);
+      let out = '', last = 0, m;
+      LATIN_RE.lastIndex = 0;
+      while ((m = LATIN_RE.exec(s))) {
+        out += esc(s.slice(last, m.index)) + '<bdi>' + esc(m[0]) + '</bdi>';
+        last = m.index + m[0].length;
+      }
+      return out + esc(s.slice(last));
+    };
+    const setTx = (id, s) => { $(id).innerHTML = tx(s); };
+    const faDigits = n => String(n).replace(/[0-9]/g, d => PERSIAN_DIGITS[d]);
+    const cardLink = l => l
+      ? `<div class="links"><a class="link" href="${l.href}">${tx(l.label)}${ARROW_DOWN}</a></div>`
+      : '';
+
+    let currentLang = localStorage.getItem('lang') === 'en' ? 'en' : 'fa';
+
+    /* ---------------- renderers ---------------- */
+    function renderSnapshot(t) {
+      $('snapshot').innerHTML = t.snapshot.map(([k, v]) =>
+        `<div class="snap-row"><span class="snap-label">${tx(k)}</span><span class="snap-value">${tx(v)}</span></div>`
+      ).join('');
+    }
+
+    function renderServices(t) {
+      $('services-grid').innerHTML = t.services.map(s => `
+        <div class="card${s.wide ? ' wide' : ''}">
+          <div class="card-top">
+            <div class="icon${s.wide ? ' pink' : ''}">${ICONS[s.key]}</div>
+            <div>
+              <div class="card-name">${tx(s.name)}</div>
+              <div class="card-tag">${tx(s.tag)}</div>
+            </div>
+          </div>
+          <p class="card-desc">${tx(s.desc)}</p>
+          ${s.chips ? `<div class="chips">${s.chips.map(c => `<span class="chip">${tx(c)}</span>`).join('')}</div>` : ''}
+        </div>`).join('');
+    }
+
+    function renderSteps(t, lang) {
+      $('process-grid').innerHTML = t.steps.map(([title, body, link], i) => `
+        <div class="card">
+          <div class="card-top">
+            <div class="step-num">${lang === 'fa' ? faDigits(i + 1) : i + 1}</div>
+            <div class="card-name">${tx(title)}</div>
+          </div>
+          <p class="card-desc">${tx(body)}</p>
+          ${cardLink(link)}
+        </div>`).join('');
+    }
+
+    function renderTerms(t) {
+      $('terms-grid').innerHTML = t.terms.map(([title, body, link]) => `
+        <div class="card">
+          <div class="card-name">${tx(title)}</div>
+          <p class="card-desc">${tx(body)}</p>
+          ${cardLink(link)}
+        </div>`).join('');
+    }
+
+    function renderWork(t, lang) {
+      const site = `
+        <div class="card">
+          <div class="card-top">
+            <div class="icon pink">${ICONS.home}</div>
+            <div>
+              <div class="card-name">${esc(t.siteName)}</div>
+              <div class="card-tag">${esc(t.siteTag)}</div>
+            </div>
+          </div>
+          <div class="links">
+            <a class="link primary" href="../index.html">${esc(t.siteLink)}</a>
+          </div>
+        </div>`;
+      const apps = APPS.map(app => {
+        const initials = app.name.replace(/[^A-Za-z0-9 ]/g, '').split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase();
+        const tag = lang === 'fa' ? app.tagFa : app.tag;
+        return `
+        <div class="card">
+          <div class="card-top">
+            <div class="icon">${initials}</div>
+            <div>
+              <div class="card-name">${esc(app.name)}</div>
+              <div class="card-tag">${esc(tag)}</div>
+            </div>
+          </div>
+          <div class="links">
+            <a class="link" href="${app.github}" target="_blank" rel="noopener noreferrer">${ghIcon}${esc(t.ghLabel)}</a>
+            <a class="link primary" href="${app.download}">${dlIcon}${esc(t.dlLabel)}</a>
+          </div>
+        </div>`;
+      }).join('');
+      $('work-grid').innerHTML = site + apps;
+    }
+
+    function renderContact(t) {
+      $('contact-grid').innerHTML = `
+        <div class="card">
+          <div class="card-top">
+            <div class="icon pink">${tgIcon}</div>
+            <div>
+              <div class="card-name">Telegram</div>
+              <div class="card-tag"><span class="ltr">@actually_aloy</span></div>
+            </div>
+          </div>
+          <p class="card-desc">${tx(t.contactTgDesc)}</p>
+          <div class="links">
+            <a class="link primary" href="${TELEGRAM_URL}" target="_blank" rel="noopener noreferrer">${tgIcon}${esc(t.contactTgBtn)}</a>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-top">
+            <div class="icon pink">${dcIcon}</div>
+            <div>
+              <div class="card-name">Discord</div>
+              <div class="card-tag"><span class="ltr">discord.gg/JqrBUYEM8n</span></div>
+            </div>
+          </div>
+          <p class="card-desc">${tx(t.contactDcDesc)}</p>
+          <p class="card-note">${tx(t.contactDcNote)}<span class="ltr">${esc(DISCORD_ID)}</span>${tx(t.contactDcNote2)}</p>
+          <div class="links">
+            <a class="link primary" href="${DISCORD_INVITE}" target="_blank" rel="noopener noreferrer">${dcIcon}${esc(t.contactDcBtn)}</a>
+          </div>
+        </div>`;
+    }
+
+    function renderFaq(t) {
+      $('faq-list').innerHTML = t.faq.map(([q, a], i) => `
+        <div class="faq-item">
+          <button type="button" class="faq-q" id="faq-q-${i}" aria-expanded="false" aria-controls="faq-a-${i}">
+            <span>${tx(q)}</span>
+            <span class="faq-icon" aria-hidden="true"></span>
+          </button>
+          <div class="faq-panel" id="faq-a-${i}" role="region" aria-labelledby="faq-q-${i}">
+            <div class="faq-inner"><div class="answer">${tx(a)}</div></div>
+          </div>
+        </div>`).join('');
+    }
+
+    $('faq-list').addEventListener('click', e => {
+      const btn = e.target.closest('.faq-q');
+      if (!btn) return;
+      const item = btn.parentElement;
+      const open = item.classList.toggle('open');
+      btn.setAttribute('aria-expanded', String(open));
+    });
+
+    /* ---------------- custom dropdown ---------------- */
+    function createDropdown(id, onChange) {
+      const root = $(id);
+      const btn = root.querySelector('.dd-btn');
+      const val = root.querySelector('.dd-val');
+      const menu = root.querySelector('.dd-menu');
+      const dd = { index: 0, options: [] };
+      let active = 0;
+
+      const isOpen = () => root.classList.contains('open');
+
+      function paint() {
+        menu.innerHTML = dd.options.map((o, i) =>
+          `<li role="option" id="${id}-o${i}" data-i="${i}" class="dd-opt" aria-selected="${i === dd.index}"><span>${esc(o)}</span>${CHECK}</li>`
+        ).join('');
+        val.textContent = dd.options[dd.index] || '';
+      }
+
+      function setActive(i) {
+        active = Math.max(0, Math.min(dd.options.length - 1, i));
+        menu.querySelectorAll('.dd-opt').forEach((el, k) => el.classList.toggle('active', k === active));
+        menu.setAttribute('aria-activedescendant', `${id}-o${active}`);
+        const el = menu.children[active];
+        if (el && el.scrollIntoView) el.scrollIntoView({ block: 'nearest' });
+      }
+
+      function open() {
+        if (isOpen()) return;
+        const r = btn.getBoundingClientRect();
+        const below = window.innerHeight - r.bottom;
+        const need = Math.min(menu.scrollHeight, 268) + 16;
+        root.classList.toggle('up', below < need && r.top > below);
+        root.classList.add('open');
+        btn.setAttribute('aria-expanded', 'true');
+        setActive(dd.index);
+        menu.focus({ preventScroll: true });
+      }
+
+      function close(refocus) {
+        if (!isOpen()) return;
+        root.classList.remove('open');
+        btn.setAttribute('aria-expanded', 'false');
+        if (refocus) btn.focus({ preventScroll: true });
+      }
+
+      function select(i) {
+        dd.index = i;
+        paint();
+        close(true);
+        if (onChange) onChange(i);
+      }
+
+      btn.addEventListener('mousedown', e => { if (isOpen()) e.preventDefault(); });
+      btn.addEventListener('click', () => { isOpen() ? close(true) : open(); });
+      btn.addEventListener('keydown', e => {
+        if (e.key === 'ArrowDown' || e.key === 'ArrowUp') { e.preventDefault(); open(); }
+      });
+
+      menu.addEventListener('mousedown', e => e.preventDefault());
+      menu.addEventListener('mouseover', e => {
+        const li = e.target.closest('.dd-opt');
+        if (li) setActive(+li.dataset.i);
+      });
+      menu.addEventListener('click', e => {
+        const li = e.target.closest('.dd-opt');
+        if (li) select(+li.dataset.i);
+      });
+      menu.addEventListener('keydown', e => {
+        switch (e.key) {
+          case 'ArrowDown': e.preventDefault(); setActive(active + 1); break;
+          case 'ArrowUp': e.preventDefault(); setActive(active - 1); break;
+          case 'Home': e.preventDefault(); setActive(0); break;
+          case 'End': e.preventDefault(); setActive(dd.options.length - 1); break;
+          case 'Enter':
+          case ' ': e.preventDefault(); select(active); break;
+          case 'Escape': e.preventDefault(); close(true); break;
+          case 'Tab': close(false); break;
+        }
+      });
+      menu.addEventListener('blur', e => { if (!root.contains(e.relatedTarget)) close(false); });
+      document.addEventListener('pointerdown', e => { if (!root.contains(e.target)) close(false); });
+
+      dd.setOptions = options => {
+        dd.options = options;
+        dd.index = Math.min(dd.index, options.length - 1);
+        paint();
+      };
+      return dd;
+    }
+
+    const ddType = createDropdown('dd-type', () => updatePreview());
+    const ddTimeline = createDropdown('dd-timeline', () => updatePreview());
+
+    /* ---------------- brief builder ---------------- */
+    function buildMessage() {
+      const t = T[currentLang];
+      const m = t.msg;
+      const type = t.types[ddType.index] || '';
+      const timeline = t.timelines[ddTimeline.index] || '';
+      const budget = $('f-budget').value.trim();
+      const details = $('f-details').value.trim();
+
+      const lines = [m.greeting, ''];
+      lines.push(`${m.type}: ${type}`);
+      if (budget) lines.push(`${m.budget}: ${budget} USDT`);
+      lines.push(`${m.timeline}: ${timeline}`);
+      if (details) {
+        lines.push('', `${m.details}:`, details);
+      }
+      return lines.join('\n');
+    }
+
+    function updatePreview() {
+      $('f-preview').value = buildMessage();
+    }
+
+    let copiedTimer = null;
+    function showCopied(ok) {
+      const el = $('copied');
+      el.textContent = ok ? T[currentLang].copied : T[currentLang].copyFail;
+      el.classList.add('show');
+      clearTimeout(copiedTimer);
+      copiedTimer = setTimeout(() => el.classList.remove('show'), 3200);
+    }
+
+    function copyMessage() {
+      const text = buildMessage();
+      try {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(text).then(() => showCopied(true), () => legacyCopy(text));
+          return;
+        }
+      } catch (e) { /* fall through */ }
+      legacyCopy(text);
+    }
+
+    function legacyCopy(text) {
+      const ta = $('f-preview');
+      ta.value = text;
+      ta.focus();
+      ta.select();
+      let ok = false;
+      try { ok = document.execCommand('copy'); } catch (e) { ok = false; }
+      showCopied(ok);
+    }
+
+    $('btn-copy').addEventListener('click', copyMessage);
+    // Anchors open the chat in a new tab as normal; we also copy the message in the same click.
+    $('btn-tg').addEventListener('click', copyMessage);
+    $('btn-dc').addEventListener('click', copyMessage);
+    ['f-budget', 'f-details'].forEach(id => {
+      $(id).addEventListener('input', updatePreview);
+    });
+
+    /* ---------------- language + status ---------------- */
+    function applyStatus(t) {
+      const busy = !!(window.FREELANCE && window.FREELANCE.status === 'busy');
+      $('status-dot').classList.toggle('is-busy', busy);
+      setTx('status-text', busy ? t.statusBusy : t.statusOpen);
+    }
+
+    function applyLanguage(lang) {
+      currentLang = lang;
+      localStorage.setItem('lang', lang);
+      const t = T[lang];
+      document.documentElement.lang = lang;
+      document.documentElement.dir = t.dir;
+
+      setTx('back-text', t.back);
+      setTx('hero-title', t.heroTitle);
+      setTx('hero-pitch', t.pitch);
+      setTx('cta-telegram', t.ctaTelegram);
+      setTx('cta-discord', t.ctaDiscord);
+      applyStatus(t);
+      renderSnapshot(t);
+
+      setTx('services-title', t.servicesTitle);
+      setTx('services-sub', t.servicesSub);
+      renderServices(t);
+
+      setTx('process-title', t.processTitle);
+      setTx('process-sub', t.processSub);
+      renderSteps(t, lang);
+
+      setTx('terms-title', t.termsTitle);
+      setTx('terms-sub', t.termsSub);
+      renderTerms(t);
+
+      setTx('work-title', t.workTitle);
+      setTx('work-sub', t.workSub);
+      renderWork(t, lang);
+
+      setTx('brief-title', t.briefTitle);
+      setTx('brief-sub', t.briefSub);
+      setTx('l-type', t.lType);
+      setTx('l-budget', t.lBudget);
+      setTx('l-timeline', t.lTimeline);
+      setTx('l-details', t.lDetails);
+      setTx('l-preview', t.lPreview);
+      $('f-budget').placeholder = t.phBudget;
+      $('f-details').placeholder = t.phDetails;
+      ddType.setOptions(t.types);
+      ddTimeline.setOptions(t.timelines);
+      setTx('btn-copy', t.btnCopy);
+      setTx('btn-tg', t.btnTg);
+      setTx('btn-dc', t.btnDc);
+      $('copied').classList.remove('show');
+      updatePreview();
+
+      setTx('faq-title', t.faqTitle);
+      setTx('faq-sub', t.faqSub);
+      renderFaq(t);
+
+      setTx('contact-title', t.contactTitle);
+      setTx('contact-sub', t.contactSub);
+      renderContact(t);
+
+      setTx('footer-home', t.footerHome);
+    }
+
+    $('lang-toggle').addEventListener('click', () => {
+      applyLanguage(currentLang === 'en' ? 'fa' : 'en');
+    });
+
+    applyLanguage(currentLang);
+  </script>
+</body>
+</html>
