@@ -90,7 +90,8 @@
     }
 
     html[dir="rtl"] .discord-top,
-    html[dir="rtl"] .freelance-top {
+    html[dir="rtl"] .freelance-top,
+    html[dir="rtl"] .arcade-top {
       text-align: right;
     }
 
@@ -617,6 +618,186 @@
       background: var(--pink);
     }
 
+    .arcade-panel {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(280px, 340px);
+      gap: 26px;
+      align-items: center;
+      margin-top: 22px;
+      padding: 28px;
+      border: 1px solid var(--line);
+      border-radius: calc(var(--radius) + 10px);
+      background: linear-gradient(145deg, rgba(255, 244, 249, 0.105), rgba(255, 244, 249, 0.045));
+      box-shadow: 0 28px 90px rgba(0, 0, 0, 0.36);
+      backdrop-filter: blur(22px);
+    }
+
+    .arcade-intro {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 14px;
+      min-width: 0;
+    }
+
+    .arcade-top {
+      display: flex;
+      align-items: center;
+      gap: 13px;
+    }
+
+    .arcade-icon {
+      width: 46px;
+      height: 46px;
+      flex: 0 0 auto;
+      display: grid;
+      place-items: center;
+      border-radius: 15px;
+      color: #141018;
+      background: linear-gradient(135deg, var(--blue), var(--pink));
+      box-shadow: 0 14px 30px rgba(91, 206, 250, 0.2);
+    }
+
+    .arcade-icon svg {
+      width: 24px;
+      height: 24px;
+    }
+
+    .arcade-top h2 {
+      margin: 0;
+      font-size: 26px;
+      letter-spacing: -0.03em;
+    }
+
+    .arcade-top span {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .arcade-cta {
+      margin: 0;
+      max-width: 440px;
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.7;
+    }
+
+    .arcade-go {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 24px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, var(--pink), var(--pink-soft));
+      color: #141018;
+      font-size: 14px;
+      font-weight: 700;
+      transition: filter 180ms ease, transform 180ms ease;
+    }
+
+    .arcade-go:hover {
+      filter: brightness(1.05);
+      transform: translateY(-2px);
+    }
+
+    .arcade-go svg {
+      width: 16px;
+      height: 16px;
+      flex: 0 0 auto;
+    }
+
+    html[dir="rtl"] .arcade-go svg {
+      transform: scaleX(-1);
+    }
+
+    .arcade-card {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      width: 100%;
+      max-width: 340px;
+      margin-inline-start: auto;
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: linear-gradient(160deg, rgba(255, 122, 182, 0.12), rgba(91, 206, 250, 0.07));
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    }
+
+    .arcade-status {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .arcade-dot {
+      width: 8px;
+      height: 8px;
+      flex: 0 0 auto;
+      border-radius: 50%;
+      background: var(--pink);
+    }
+
+    .arcade-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .arcade-tile {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+      padding: 12px;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: rgba(255, 244, 249, 0.06);
+      transition: transform 180ms ease, border-color 180ms ease, background 180ms ease;
+    }
+
+    .arcade-tile:hover {
+      transform: translateY(-2px);
+      border-color: rgba(255, 209, 231, 0.4);
+      background: rgba(255, 244, 249, 0.1);
+    }
+
+    .arcade-tile-icon {
+      width: 36px;
+      height: 36px;
+      flex: 0 0 auto;
+      display: grid;
+      place-items: center;
+      border-radius: 12px;
+      color: #141018;
+      background: linear-gradient(135deg, var(--pink), var(--blue));
+    }
+
+    .arcade-tile-icon svg {
+      width: 20px;
+      height: 20px;
+    }
+
+    .arcade-tile-name {
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .arcade-go:focus-visible,
+    .arcade-tile:focus-visible {
+      outline: 2px solid var(--pink-soft);
+      outline-offset: 3px;
+    }
+
     .discord-panel {
       display: grid;
       grid-template-columns: minmax(0, 1fr) minmax(280px, 340px);
@@ -1016,23 +1197,27 @@
       }
 
       .discord-panel,
-      .freelance-panel {
+      .freelance-panel,
+      .arcade-panel {
         grid-template-columns: 1fr;
       }
 
       .discord-intro,
-      .freelance-intro {
+      .freelance-intro,
+      .arcade-intro {
         align-items: stretch;
         text-align: start;
       }
 
       .discord-live-card,
-      .freelance-card {
+      .freelance-card,
+      .arcade-card {
         max-width: 100%;
         margin-inline-start: 0;
       }
 
-      .freelance-go {
+      .freelance-go,
+      .arcade-go {
         justify-content: center;
       }
     }
@@ -1049,7 +1234,8 @@
       }
 
       .discord-panel,
-      .freelance-panel {
+      .freelance-panel,
+      .arcade-panel {
         padding: 18px;
         border-radius: 28px;
       }
@@ -1144,7 +1330,7 @@
           </div>
         </div>
         <p class="freelance-cta" id="freelance-cta-text">Need a website, bot or tool? I take on coding projects.</p>
-        <a class="freelance-go" href="freelance/index.html">
+        <a class="freelance-go" href="freelance.html">
           <span id="freelance-go-label">Work with me</span>
           <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8h10"/><path d="M9 4l4 4-4 4"/></svg>
         </a>
@@ -1156,6 +1342,32 @@
         </div>
         <div class="freelance-chips" id="freelance-chips"></div>
         <div class="freelance-meta" id="freelance-meta"></div>
+      </div>
+    </section>
+
+    <section class="arcade-panel">
+      <div class="arcade-intro">
+        <div class="arcade-top">
+          <div class="arcade-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="7" width="19" height="11" rx="5"/><path d="M7.5 10.5v4"/><path d="M5.5 12.5h4"/><circle cx="16" cy="11.5" r="1"/><circle cx="18.5" cy="14" r="1"/></svg>
+          </div>
+          <div>
+            <h2 id="arcade-title">Aloy's Arcade</h2>
+            <span id="arcade-subtitle">tiny games</span>
+          </div>
+        </div>
+        <p class="arcade-cta" id="arcade-cta-text"></p>
+        <a class="arcade-go" href="arcade.html">
+          <span id="arcade-go-label">Play now</span>
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8h10"/><path d="M9 4l4 4-4 4"/></svg>
+        </a>
+      </div>
+      <div class="arcade-card">
+        <div class="arcade-status">
+          <span class="arcade-dot"></span>
+          <span id="arcade-status-text"></span>
+        </div>
+        <div class="arcade-grid" id="arcade-grid"></div>
       </div>
     </section>
 
@@ -1205,8 +1417,16 @@
     </div>
   </div>
 
-  <script src="freelance/config.js"></script>
+  <script src="freelance-config.js"></script>
   <script>
+    (function () {
+      var host = location.hostname;
+      var local = host === 'localhost' || host === '127.0.0.1' || /^[\d.]+$/.test(host) || host.charAt(0) === '[';
+      if (local || !/^https?:$/.test(location.protocol)) return;
+      var clean = location.pathname.replace(/\/index\.html$/, '/').replace(/\.html$/, '');
+      if (clean !== location.pathname) history.replaceState(null, '', clean + location.search + location.hash);
+    })();
+
     const APPS = [
       {
         name: "QuestLog",
@@ -1277,7 +1497,7 @@
 
     const VIBES = {
       en: ["chaotic good, low sleep", "grinding a new server plugin", "reverse-engineering something I shouldn't", "cat is supervising", "cockatiel is screaming about something", "bird is doing parkour on my monitor", "cat knocked something off the desk again", "taming a very dramatic bird", "pets are conspiring against my sleep schedule", "definitely should be asleep", "deep in a crackme", "100% caffeine by volume", "vibe coding until it breaks"],
-      fa: ["آشوبم ولی خوبم، خواب که به کل رفته", "دارم یه پلاگین جدید واسه سرور می‌زنم", "دارم یه چیزی رو ریورس می‌کنم که نباید", "گربه نشسته داره نظارتم می‌کنه", "کاکاتیلم داره سر یه چیزی جیغ می‌زنه", "پرنده داره رو مانیتورم پارکور می‌زنه", "گربه باز یه چیزیو از رو میز انداخت پایین", "دارم یه پرنده خیلی دراماتیک رو اهلی می‌کنم", "حیوونام دارن علیه خوابم نقشه می‌کشن", "قطعاً الان باید خواب باشم", "غرق یه کرک‌می‌ام", "١٠٠٪ کافئینم دیگه", "دارم ویب‌کد می‌زنم تا بترکه"]
+      fa: ["آشوبم ولی خوبم، خواب که به کل رفته", "دارم یه پلاگین جدید واسه سرور می‌زنم", "دارم یه چیزی رو ریورس می‌کنم که نباید", "گربه نشسته داره نظارتم می‌کنه", "کاکاتیلم داره سر یه چیزی جیغ می‌زنه", "پرنده داره رو مانیتورم پارکور می‌زنه", "گربه باز یه چیزیو از رو میز انداخت پایین", "دارم یه پرنده خیلی دراماتیک رو اهلی می‌کنم", "حیوونام دارن علیه خوابم نقشه می‌کشن", "قطعاً الان باید خواب باشم", "غرق یه کرک‌می‌ام", "١٠٠٪ کافئینم دیگه", "دارم وایب‌کد می‌زنم تا بترکه"]
     };
     const vibeIndex = Math.floor(Math.random() * VIBES.en.length);
 
@@ -1297,6 +1517,12 @@
         freelanceBusy: 'Booked right now',
         freelanceChips: ['Websites', 'Bots', 'Apps', 'Scripts'],
         freelanceMeta: ['Payment in USDT', '50% upfront'],
+        arcadeTitle: "Aloy's Arcade",
+        arcadeStatus: '4 games · free to play',
+        arcadeSubtitle: 'tiny games',
+        arcadeCta: 'Snake, Memory, 2048 and a reaction test. No installs, no accounts.',
+        arcadeGo: 'Play now',
+        arcadeGames: ['Snake', 'Memory', '2048', 'Reaction'],
         discordTitle: 'Discord',
         discordSubtitle: 'come say hi',
         discordCta: 'Come hang out, chat, and vibe with everyone.',
@@ -1316,8 +1542,8 @@
       },
       fa: {
         dir: 'rtl',
-        bio: 'گیمر. ویب‌کدینگ. عاشق گربه و پرنده.',
-        vibeLoading: 'در حال گرفتن ویب…',
+        bio: 'گیمر. وایب‌کدینگ. عاشق گربه و پرنده.',
+        vibeLoading: 'در حال گرفتن وایب…',
         navLabel: 'لینک‌ها',
         appsTitle: 'اپلیکیشن‌ها',
         appsSubtitle: 'زدم واسه خودم، ولی گفتم بدمشون به همه',
@@ -1329,6 +1555,12 @@
         freelanceBusy: 'فعلاً ظرفیت ندارم',
         freelanceChips: ['وب‌سایت', 'بات', 'اپ', 'اسکریپت'],
         freelanceMeta: ['پرداخت با USDT', '۵۰ درصد پیش‌پرداخت'],
+        arcadeTitle: 'آرکید آلوی',
+        arcadeStatus: '۴ بازی · رایگان',
+        arcadeSubtitle: 'بازی‌های کوچیک',
+        arcadeCta: 'مار، حافظه، ۲۰۴۸ و تست واکنش. بدون نصب، بدون اکانت.',
+        arcadeGo: 'بازی کن',
+        arcadeGames: ['مار', 'حافظه', '۲۰۴۸', 'واکنش'],
         discordTitle: 'دیسکورد',
         discordSubtitle: 'بیا یه سر بزن',
         discordCta: 'بیا با بقیه گپ بزنیم و یکم وقت بگذرونیم.',
@@ -1361,7 +1593,6 @@
       const busy = !!(window.FREELANCE && window.FREELANCE.status === 'busy');
       document.getElementById('freelance-title').textContent = t.freelanceTitle;
       document.getElementById('freelance-subtitle').textContent = t.freelanceSubtitle;
-      // keep Latin words (USDT…) from scrambling neighbouring text in Persian
       const bidi = x => currentLang === 'fa' ? x.replace(/[A-Za-z][A-Za-z0-9._@\/-]*/g, w => `<bdi>${w}</bdi>`) : x;
       document.getElementById('freelance-cta-text').innerHTML = bidi(t.freelanceCta);
       document.getElementById('freelance-go-label').textContent = t.freelanceGo;
@@ -1370,6 +1601,25 @@
       document.getElementById('freelance-chips').innerHTML = t.freelanceChips
         .map((c, i) => `<span class="freelance-chip${i === 0 ? ' main' : ''}">${c}</span>`).join('');
       document.getElementById('freelance-meta').innerHTML = t.freelanceMeta.map(r => `<div class="freelance-meta-row"><span>${bidi(r)}</span></div>`).join('');
+    }
+
+    const ARCADE_SLUGS = ['snake', 'memory', '2048', 'reaction'];
+    const ARCADE_ICONS = [
+      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 5H8.5a3.5 3.5 0 0 0 0 7h7a3.5 3.5 0 0 1 0 7H6"/><circle cx="18.5" cy="5" r="2.3" fill="currentColor" stroke="none"/></svg>',
+      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="3.5" width="7" height="7" rx="2" fill="currentColor"/><rect x="13.5" y="3.5" width="7" height="7" rx="2"/><rect x="3.5" y="13.5" width="7" height="7" rx="2"/><rect x="13.5" y="13.5" width="7" height="7" rx="2" fill="currentColor"/></svg>',
+      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><path d="M9.2 10a2.8 2.8 0 1 1 4.9 1.9L9 16.5h6"/></svg>',
+      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 3 5 13.5h6L10.5 21 19 10h-6z"/></svg>'
+    ];
+
+    function renderArcade(t) {
+      document.getElementById('arcade-title').textContent = t.arcadeTitle;
+      document.getElementById('arcade-subtitle').textContent = t.arcadeSubtitle;
+      document.getElementById('arcade-cta-text').textContent = t.arcadeCta;
+      document.getElementById('arcade-status-text').textContent = t.arcadeStatus;
+      document.getElementById('arcade-go-label').textContent = t.arcadeGo;
+      document.getElementById('arcade-grid').innerHTML = t.arcadeGames.map((name, i) =>
+        `<a class="arcade-tile" href="arcade.html#${ARCADE_SLUGS[i]}"><span class="arcade-tile-icon">${ARCADE_ICONS[i]}</span><span class="arcade-tile-name">${name}</span></a>`
+      ).join('');
     }
 
     function applyLanguage(lang) {
@@ -1384,6 +1634,7 @@
       document.getElementById('apps-title').textContent = t.appsTitle;
       document.getElementById('apps-subtitle').textContent = t.appsSubtitle;
       renderFreelance(t);
+      renderArcade(t);
       document.getElementById('discord-title').textContent = t.discordTitle;
       document.getElementById('discord-subtitle').textContent = t.discordSubtitle;
       document.getElementById('discord-cta-text').textContent = t.discordCta;

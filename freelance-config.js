@@ -1,0 +1,1 @@
+window.FREELANCE = { status: 'open' };
