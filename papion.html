@@ -1,0 +1,1674 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0f0d1f">
+  <title>پاپیون — دیسکورد بدون محدودیت</title>
+  <meta name="description" content="Papion: a free Windows app that opens up Discord, and more, without the hassle. It finds the fastest server by itself and keeps you connected.">
+  <link rel="canonical" href="https://actually-aloy.github.io/site/papion">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Papion — Discord without limits">
+  <meta property="og:description" content="A free Windows app that opens up Discord, and more, without the hassle. No limits. No cost. No hassle.">
+  <meta property="og:url" content="https://actually-aloy.github.io/site/papion">
+  <meta property="og:image" content="https://actually-aloy.github.io/site/papion-og.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Papion — Discord without limits">
+  <meta name="twitter:description" content="A free Windows app that opens up Discord, and more, without the hassle. No limits. No cost. No hassle.">
+  <meta name="twitter:image" content="https://actually-aloy.github.io/site/papion-og.jpg">
+  <link rel="icon" href="papion-logo-on.png" type="image/png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0f0d1f;
+      --text: #f7f5ff;
+      --muted: #bcb6d9;
+      --line: rgba(226, 220, 255, 0.16);
+      --violet: #7c5cfa;
+      --violet-mid: #9a82ff;
+      --violet-soft: #c9bcff;
+      --indigo: #7c83fd;
+      --teal: #4fd1c5;
+      --pink: #ff7ab6;
+      --ink: #14102a;
+      --radius: 28px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 14% 10%, rgba(124, 92, 250, 0.3), transparent 32%),
+        radial-gradient(circle at 90% 14%, rgba(201, 188, 255, 0.1), transparent 28%),
+        radial-gradient(circle at 52% 94%, rgba(79, 209, 197, 0.08), transparent 34%),
+        var(--bg);
+      animation: page-fade-in 0.4s ease-out;
+      user-select: none;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+    }
+
+    @keyframes page-fade-in {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    html[lang="fa"] body {
+      font-family: Vazirmatn, Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      html { scroll-behavior: smooth; }
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    h1, h2, h3, p {
+      margin: 0;
+    }
+
+    .page {
+      width: min(1080px, calc(100% - 36px));
+      margin: 0 auto;
+      padding: 38px 0 56px;
+    }
+
+    .glass {
+      border: 1px solid var(--line);
+      border-radius: calc(var(--radius) + 10px);
+      background: linear-gradient(145deg, rgba(244, 241, 255, 0.105), rgba(244, 241, 255, 0.045));
+      box-shadow: 0 28px 90px rgba(0, 0, 0, 0.4);
+      backdrop-filter: blur(22px);
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(300px, 400px);
+      gap: 30px;
+      padding: 28px;
+      align-items: center;
+    }
+
+    .intro {
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+      min-width: 0;
+    }
+
+    .topline {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .pill-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 14px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(244, 241, 255, 0.06);
+      color: var(--text);
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 180ms ease, border-color 180ms ease;
+    }
+
+    .pill-btn:hover {
+      background: rgba(244, 241, 255, 0.12);
+      border-color: rgba(201, 188, 255, 0.45);
+    }
+
+    .pill-btn svg {
+      width: 14px;
+      height: 14px;
+    }
+
+    html[dir="rtl"] .pill-btn svg {
+      transform: scaleX(-1);
+    }
+
+    .lang-toggle {
+      margin-inline-start: auto;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .brand img {
+      width: 64px;
+      height: 64px;
+      flex: 0 0 auto;
+      border-radius: 18px;
+      box-shadow: 0 16px 40px rgba(124, 92, 250, 0.45);
+      -webkit-user-drag: none;
+    }
+
+    h1 {
+      font-size: clamp(48px, 9vw, 92px);
+      line-height: 1.15;
+      letter-spacing: -0.04em;
+    }
+
+    .gradient-text {
+      background: linear-gradient(90deg, var(--violet-mid), var(--violet-soft), var(--pink), var(--violet-mid));
+      background-size: 300% 100%;
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      animation: enchant 6s linear infinite;
+    }
+
+    @keyframes enchant {
+      to { background-position: -300% 0; }
+    }
+
+    .pitch {
+      max-width: 560px;
+      color: var(--muted);
+      font-size: 18px;
+      line-height: 1.75;
+    }
+
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .tag {
+      padding: 6px 13px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(244, 241, 255, 0.06);
+      color: var(--text);
+      font-size: 12.5px;
+      font-weight: 600;
+    }
+
+    .tag.hot {
+      border-color: transparent;
+      background: linear-gradient(135deg, var(--violet-mid), var(--violet-soft));
+      color: var(--ink);
+    }
+
+    .cta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 12px 22px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: rgba(244, 241, 255, 0.06);
+      color: var(--text);
+      font-family: inherit;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: filter 180ms ease, transform 180ms ease, background 180ms ease, border-color 180ms ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      background: rgba(244, 241, 255, 0.12);
+      border-color: rgba(201, 188, 255, 0.45);
+    }
+
+    .btn.primary {
+      border-color: transparent;
+      background: linear-gradient(135deg, var(--violet-mid), var(--violet-soft));
+      color: var(--ink);
+    }
+
+    .btn.primary:hover {
+      filter: brightness(1.06);
+    }
+
+    .btn svg {
+      width: 16px;
+      height: 16px;
+      flex: 0 0 auto;
+    }
+
+    .btn:focus-visible,
+    .pill-btn:focus-visible,
+    .faq-q:focus-visible,
+    .m-btn:focus-visible {
+      outline: 2px solid var(--violet-soft);
+      outline-offset: 3px;
+    }
+
+    .dl-meta {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .dl-meta[hidden] {
+      display: none;
+    }
+
+    .stage {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+    }
+
+    .stage::before {
+      content: "";
+      position: absolute;
+      inset: 6% -6% 10%;
+      z-index: 0;
+      border-radius: 50%;
+      background: radial-gradient(closest-side, rgba(124, 92, 250, 0.5), rgba(124, 92, 250, 0));
+      filter: blur(24px);
+      pointer-events: none;
+    }
+
+    .mock {
+      --a-bg: #14161c;
+      --a-panel: #1b1e26;
+      --a-panel-alt: #20232d;
+      --a-border: #2a2e3a;
+      --a-text: #e7e9f0;
+      --a-muted: #8b90a3;
+      --a-accent: #4fd1c5;
+      --a-indigo: #7c83fd;
+      --a-danger: #e0555f;
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 400px;
+      overflow: hidden;
+      border: 1px solid var(--a-border);
+      border-radius: 14px;
+      background: var(--a-bg);
+      color: var(--a-text);
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(124, 92, 250, 0.18);
+    }
+
+    .m-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 32px;
+      background: var(--a-panel);
+      border-bottom: 1px solid var(--a-border);
+      direction: ltr;
+    }
+
+    .m-title-name {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      padding-left: 10px;
+      color: var(--a-muted);
+      font-size: 11.5px;
+      font-weight: 600;
+    }
+
+    .m-title-name img {
+      width: 20px;
+      height: 20px;
+      display: block;
+      transition: opacity 0.6s ease, filter 0.6s ease;
+      -webkit-user-drag: none;
+    }
+
+    .mock[data-state="off"] .m-title-name img {
+      opacity: 0.55;
+      filter: saturate(0.35);
+    }
+
+    .m-title-btns {
+      display: flex;
+      height: 100%;
+      color: var(--a-muted);
+    }
+
+    .m-title-btns span {
+      width: 40px;
+      display: grid;
+      place-items: center;
+    }
+
+    .m-title-btns svg {
+      width: 10px;
+      height: 10px;
+    }
+
+    .m-body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 428px;
+      padding: 30px 22px 22px;
+      text-align: center;
+    }
+
+    .signal {
+      position: relative;
+      isolation: isolate;
+      width: 104px;
+      height: 104px;
+      flex: none;
+      margin: 6px 0 18px;
+    }
+
+    .signal::before {
+      content: "";
+      position: absolute;
+      inset: -20px;
+      z-index: -1;
+      border-radius: 50%;
+      pointer-events: none;
+      background: radial-gradient(closest-side, rgba(124, 92, 250, 0.55), rgba(124, 92, 250, 0));
+      opacity: 0;
+      transform: scale(0.8);
+      transition: opacity 0.9s ease, transform 0.9s ease;
+    }
+
+    .signal img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      display: block;
+      transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+      -webkit-user-drag: none;
+    }
+
+    .signal .on-img {
+      opacity: 0;
+    }
+
+    .signal.on .on-img {
+      opacity: 1;
+    }
+
+    .signal.on::before {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    .signal.on {
+      animation: settle 0.7s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+
+    .signal.busy::before {
+      opacity: 0.5;
+      transform: scale(0.92);
+    }
+
+    .signal.busy .on-img {
+      animation: wake 1.8s ease-in-out infinite;
+    }
+
+    @keyframes wake {
+      0%, 100% { opacity: 0.08; }
+      50% { opacity: 0.85; }
+    }
+
+    @keyframes settle {
+      0% { transform: scale(0.94); }
+      55% { transform: scale(1.045); }
+      100% { transform: scale(1); }
+    }
+
+    @keyframes textin {
+      from { opacity: 0; transform: translateY(5px); }
+      to { opacity: 1; transform: none; }
+    }
+
+    .signal .ring {
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      border: 2px solid rgba(124, 92, 250, 0.6);
+      border-radius: 26%;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .signal.busy {
+      animation: breathe 2.6s ease-in-out infinite;
+    }
+
+    .signal.busy .ring {
+      animation: ripple 2.4s cubic-bezier(0.2, 0.6, 0.3, 1) infinite;
+      will-change: transform, opacity;
+    }
+
+    .signal.busy .ring.r2 {
+      animation-delay: 0.8s;
+    }
+
+    .signal.busy .ring.r3 {
+      animation-delay: 1.6s;
+    }
+
+    .signal.on .ring {
+      border-color: rgba(79, 209, 197, 0.75);
+    }
+
+    .signal.on .ring.r1 {
+      animation: burst 1.1s ease-out 1 both;
+    }
+
+    @keyframes breathe {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.045); }
+    }
+
+    @keyframes ripple {
+      0% { transform: scale(0.92); opacity: 0.5; }
+      100% { transform: scale(1.85); opacity: 0; }
+    }
+
+    @keyframes burst {
+      0% { transform: scale(0.95); opacity: 0.8; }
+      100% { transform: scale(1.7); opacity: 0; }
+    }
+
+    @keyframes sweep {
+      to { transform: translateX(100%); }
+    }
+
+    .m-status {
+      font-size: 22px;
+      font-weight: 700;
+      line-height: 1.3;
+    }
+
+    .m-sub {
+      max-width: 320px;
+      min-height: 44px;
+      margin-top: 6px;
+      color: var(--a-muted);
+      font-size: 13px;
+      line-height: 1.7;
+    }
+
+    .m-status.swap,
+    .m-sub.swap {
+      animation: textin 0.4s ease both;
+    }
+
+    .m-btn {
+      min-width: 220px;
+      height: 46px;
+      margin-top: 14px;
+      padding: 0 28px;
+      border: 1px solid transparent;
+      border-radius: 12px;
+      background: var(--a-accent);
+      color: #08201d;
+      font-family: inherit;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.35s, border-color 0.35s, color 0.35s;
+    }
+
+    .m-btn:hover {
+      filter: brightness(1.08);
+    }
+
+    .m-btn.secondary {
+      background: transparent;
+      border-color: #3a3f4e;
+      color: var(--a-text);
+    }
+
+    .m-btn.secondary:hover {
+      filter: none;
+      border-color: var(--a-danger);
+      color: #f28b93;
+    }
+
+    .m-btn.hint {
+      animation: ring 2.4s ease-out infinite;
+    }
+
+    .m-btn.busy {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .m-btn.busy::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background: linear-gradient(100deg, transparent 25%, rgba(124, 131, 253, 0.28) 50%, transparent 75%);
+      transform: translateX(-100%);
+      animation: sweep 1.7s ease-in-out infinite;
+    }
+
+    @keyframes ring {
+      0% { box-shadow: 0 0 0 0 rgba(79, 209, 197, 0.5); }
+      70% { box-shadow: 0 0 0 10px rgba(79, 209, 197, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(79, 209, 197, 0); }
+    }
+
+    .m-slot {
+      display: grid;
+      justify-items: center;
+      width: 100%;
+      max-width: 340px;
+      min-height: 84px;
+      margin-top: 22px;
+    }
+
+    .m-slot > * {
+      grid-area: 1 / 1;
+    }
+
+    .m-tagline {
+      align-self: start;
+      padding-top: 18px;
+      visibility: hidden;
+      color: var(--a-muted);
+      font-size: 13px;
+      line-height: 1.7;
+    }
+
+    .m-tagline.show {
+      visibility: visible;
+    }
+
+    .m-progress {
+      align-self: start;
+      width: 100%;
+      padding-top: 18px;
+      visibility: hidden;
+    }
+
+    .m-progress.show {
+      visibility: visible;
+    }
+
+    .m-bar {
+      height: 5px;
+      overflow: hidden;
+      border-radius: 3px;
+      background: var(--a-panel-alt);
+    }
+
+    .m-bar span {
+      position: relative;
+      overflow: hidden;
+      display: block;
+      height: 100%;
+      width: 0;
+      border-radius: 3px;
+      background: var(--a-indigo);
+      transition: width 0.3s ease;
+    }
+
+    .m-bar span::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+      transform: translateX(-100%);
+      animation: sweep 1.3s linear infinite;
+    }
+
+    .m-counts {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      margin-top: 9px;
+      color: var(--a-muted);
+      font-size: 12.5px;
+    }
+
+    .m-counts b {
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .m-counts .ok b {
+      color: var(--a-accent);
+    }
+
+    .m-counts .fail b {
+      color: var(--a-danger);
+    }
+
+    .m-stats {
+      display: flex;
+      width: 100%;
+      visibility: hidden;
+      border: 1px solid var(--a-border);
+      border-radius: 12px;
+      background: var(--a-panel);
+    }
+
+    .m-stats.show {
+      visibility: visible;
+    }
+
+    .m-cell {
+      flex: 1;
+      min-width: 0;
+      padding: 10px 6px;
+      text-align: center;
+    }
+
+    .m-cell + .m-cell {
+      border-inline-start: 1px solid var(--a-border);
+    }
+
+    .m-cell .v {
+      display: block;
+      height: 21px;
+      font-size: 15px;
+      font-weight: 600;
+      line-height: 21px;
+      white-space: nowrap;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .m-cell .u {
+      margin-inline-start: 3px;
+      color: var(--a-muted);
+      font-size: 10.5px;
+      font-weight: 500;
+    }
+
+    .m-cell .k {
+      display: block;
+      margin-top: 2px;
+      color: var(--a-muted);
+      font-size: 12px;
+    }
+
+    .mock-note {
+      position: relative;
+      z-index: 1;
+      color: var(--muted);
+      font-size: 12.5px;
+      text-align: center;
+    }
+
+    section.block {
+      margin-top: 38px;
+      scroll-margin-top: 18px;
+    }
+
+    .head {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 12px;
+      margin: 0 4px 14px;
+    }
+
+    .head h2 {
+      font-size: 26px;
+      letter-spacing: -0.03em;
+    }
+
+    .head span {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 14px;
+    }
+
+    .grid.three {
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    }
+
+    .grid.four {
+      grid-template-columns: repeat(auto-fit, minmax(235px, 1fr));
+    }
+
+    .card {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      padding: 20px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: linear-gradient(145deg, rgba(244, 241, 255, 0.09), rgba(244, 241, 255, 0.04));
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      backdrop-filter: blur(18px);
+      transition: transform 180ms ease, border-color 180ms ease;
+    }
+
+    .card:hover {
+      transform: translateY(-3px);
+      border-color: rgba(201, 188, 255, 0.42);
+    }
+
+    .card-top {
+      display: flex;
+      align-items: center;
+      gap: 13px;
+    }
+
+    .icon {
+      position: relative;
+      width: 46px;
+      height: 46px;
+      flex: 0 0 auto;
+      display: grid;
+      place-items: center;
+      border-radius: 15px;
+      color: var(--ink);
+      background: linear-gradient(135deg, var(--violet-mid), var(--violet-soft));
+      box-shadow: 0 14px 30px rgba(124, 92, 250, 0.3);
+    }
+
+    .icon.teal {
+      background: linear-gradient(135deg, var(--teal), var(--violet-soft));
+      box-shadow: 0 14px 30px rgba(79, 209, 197, 0.2);
+    }
+
+    .icon svg {
+      width: 22px;
+      height: 22px;
+    }
+
+    .step-num {
+      margin-inline-start: auto;
+      color: rgba(201, 188, 255, 0.28);
+      font-size: 38px;
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      line-height: 1;
+    }
+
+    .card-name {
+      font-size: 17px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    .card-desc {
+      color: var(--muted);
+      font-size: 14.5px;
+      line-height: 1.75;
+    }
+
+    .services {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      padding: 24px;
+    }
+
+    .services p {
+      max-width: 640px;
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.75;
+    }
+
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .chip {
+      padding: 7px 14px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(244, 241, 255, 0.06);
+      color: var(--text);
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .chip.main {
+      border-color: transparent;
+      background: linear-gradient(135deg, var(--violet-mid), var(--violet-soft));
+      color: var(--ink);
+    }
+
+    .faq {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .faq-item {
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      background: rgba(244, 241, 255, 0.05);
+      transition: border-color 240ms ease, background 240ms ease;
+    }
+
+    .faq-item:hover {
+      border-color: rgba(201, 188, 255, 0.28);
+    }
+
+    .faq-item.open {
+      border-color: rgba(201, 188, 255, 0.4);
+      background: rgba(244, 241, 255, 0.08);
+    }
+
+    .faq-q {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 16px 20px;
+      border: none;
+      border-radius: 20px;
+      background: none;
+      color: var(--text);
+      font-family: inherit;
+      font-size: 15px;
+      font-weight: 700;
+      text-align: start;
+      cursor: pointer;
+    }
+
+    .faq-q:focus-visible {
+      outline-offset: -2px;
+    }
+
+    .faq-icon {
+      position: relative;
+      width: 14px;
+      height: 14px;
+      flex: 0 0 auto;
+      transition: transform 340ms cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+
+    .faq-icon::before,
+    .faq-icon::after {
+      content: "";
+      position: absolute;
+      inset-inline: 0;
+      top: 50%;
+      height: 2px;
+      margin-top: -1px;
+      border-radius: 2px;
+      background: var(--violet-soft);
+      transition: transform 340ms cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+
+    .faq-icon::after {
+      transform: rotate(90deg);
+    }
+
+    .faq-item.open .faq-icon {
+      transform: rotate(180deg);
+    }
+
+    .faq-item.open .faq-icon::after {
+      transform: rotate(0deg);
+    }
+
+    .faq-panel {
+      display: grid;
+      grid-template-rows: 0fr;
+      opacity: 0;
+      visibility: hidden;
+      transition: grid-template-rows 360ms cubic-bezier(0.2, 0.8, 0.2, 1), opacity 240ms ease, visibility 0s linear 360ms;
+    }
+
+    .faq-item.open .faq-panel {
+      grid-template-rows: 1fr;
+      opacity: 1;
+      visibility: visible;
+      transition: grid-template-rows 360ms cubic-bezier(0.2, 0.8, 0.2, 1), opacity 300ms ease 60ms, visibility 0s;
+    }
+
+    .faq-inner {
+      min-height: 0;
+      overflow: hidden;
+    }
+
+    .faq .answer {
+      padding: 0 20px 18px;
+      color: var(--muted);
+      font-size: 14.5px;
+      line-height: 1.8;
+    }
+
+    .closing {
+      display: flex;
+      align-items: center;
+      gap: 22px;
+      padding: 28px;
+    }
+
+    .closing img {
+      width: 72px;
+      height: 72px;
+      flex: 0 0 auto;
+      border-radius: 20px;
+      box-shadow: 0 16px 40px rgba(124, 92, 250, 0.45);
+      -webkit-user-drag: none;
+    }
+
+    .closing-text {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      min-width: 0;
+    }
+
+    .closing h2 {
+      font-size: 26px;
+      letter-spacing: -0.03em;
+    }
+
+    .closing p {
+      max-width: 520px;
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.75;
+    }
+
+    .closing .cta-row {
+      margin-top: 8px;
+    }
+
+    .footer {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+      margin-top: 40px;
+      text-align: center;
+    }
+
+    .made {
+      color: var(--text);
+      font-size: 15px;
+      font-weight: 600;
+    }
+
+    .heart {
+      display: inline-block;
+      width: 15px;
+      height: 15px;
+      margin: 0 3px;
+      vertical-align: -2px;
+      color: var(--pink);
+      animation: beat 1.8s ease-in-out infinite;
+    }
+
+    @keyframes beat {
+      0%, 60%, 100% { transform: scale(1); }
+      20% { transform: scale(1.22); }
+      40% { transform: scale(1.06); }
+    }
+
+    .legal {
+      color: var(--muted);
+      font-size: 12.5px;
+      opacity: 0.8;
+    }
+
+    .home-link {
+      padding-bottom: 2px;
+      border-bottom: 1px solid rgba(226, 220, 255, 0.24);
+      color: var(--muted);
+      font-size: 15px;
+      letter-spacing: -0.01em;
+      transition: color 180ms ease, border-color 180ms ease;
+    }
+
+    .home-link:hover {
+      color: var(--text);
+      border-color: rgba(201, 188, 255, 0.55);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      body { animation: none; }
+      .gradient-text { animation: none; }
+      .signal.on { animation: none; }
+      .signal.busy .on-img { animation: none; opacity: 0.5; }
+      .signal.busy, .signal.busy .ring, .signal.on .ring.r1, .m-btn.busy::after, .m-bar span::after { animation: none !important; }
+      .signal .ring { display: none; }
+      .m-status.swap, .m-sub.swap { animation: none; }
+      .m-btn.hint { animation: none; }
+      .heart { animation: none; }
+      .m-bar span { transition: none; }
+      .faq-item, .faq-icon, .faq-icon::before, .faq-icon::after, .faq-panel, .card, .btn {
+        transition: none !important;
+      }
+    }
+
+    @media (max-width: 900px) {
+      .hero {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .page {
+        width: min(100% - 22px, 1080px);
+        padding-top: 18px;
+      }
+
+      .hero,
+      .closing {
+        padding: 16px;
+        border-radius: 28px;
+      }
+
+      .intro {
+        gap: 18px;
+      }
+
+      .head {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 2px;
+      }
+
+      .btn {
+        width: 100%;
+      }
+
+      .closing {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .services {
+        padding: 18px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+
+    <section class="hero glass">
+      <div class="intro">
+        <div class="topline">
+          <a class="pill-btn" href="index.html" id="back-link">
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 3 5 8l5 5"/></svg>
+            <span id="back-text"></span>
+          </a>
+          <button type="button" class="pill-btn lang-toggle" id="lang-toggle" aria-label="Switch language">EN / فا</button>
+        </div>
+        <div class="brand">
+          <img src="papion-logo-on.png" alt="" width="64" height="64" draggable="false">
+          <h1><span class="gradient-text" id="hero-title"></span></h1>
+        </div>
+        <p class="pitch" id="hero-pitch"></p>
+        <div class="tags" id="hero-tags"></div>
+        <div class="cta-row">
+          <a class="btn primary" data-dl href="https://github.com/actually-aloy/papion/releases/latest">
+            <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M.5 9.9a.5.5 0 0 1 .5.5v2.1a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.1a.5.5 0 0 1 1 0v2.1a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.1a.5.5 0 0 1 .5-.5"/><path d="M7.5 10.29V1.5a.5.5 0 0 1 1 0v8.79l2.15-2.15a.5.5 0 0 1 .7.71l-3 3a.5.5 0 0 1-.7 0l-3-3a.5.5 0 1 1 .7-.71z"/></svg>
+            <span data-dl-label></span>
+          </a>
+          <a class="btn" href="https://github.com/actually-aloy/papion" target="_blank" rel="noopener noreferrer">
+            <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8"/></svg>
+            <span id="cta-github"></span>
+          </a>
+        </div>
+        <p class="dl-meta" id="dl-meta" hidden></p>
+      </div>
+
+      <div class="stage">
+        <div class="mock" id="mock" data-state="off">
+          <div class="m-title" aria-hidden="true">
+            <div class="m-title-name"><img src="papion-logo-on.png" alt="" draggable="false"><span id="m-title-text"></span></div>
+            <div class="m-title-btns">
+              <span><svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1"><path d="M0 5h10"/></svg></span>
+              <span><svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1"><path d="M0 0l10 10M10 0 0 10"/></svg></span>
+            </div>
+          </div>
+          <div class="m-body">
+            <div class="signal" id="m-signal" aria-hidden="true">
+              <span class="ring r1"></span><span class="ring r2"></span><span class="ring r3"></span>
+              <img class="off-img" src="papion-logo-off.png" alt="" draggable="false">
+              <img class="on-img" src="papion-logo-on.png" alt="" draggable="false">
+            </div>
+            <div class="m-status" id="m-status" role="status" aria-live="polite"></div>
+            <div class="m-sub" id="m-sub"></div>
+            <button type="button" class="m-btn hint" id="m-btn"></button>
+            <div class="m-slot">
+              <div class="m-tagline show" id="m-tagline"></div>
+              <div class="m-progress" id="m-progress">
+                <div class="m-bar"><span id="m-bar-fill"></span></div>
+                <div class="m-counts">
+                  <span class="ok"><b id="m-ok">0</b> <span id="m-ok-label"></span></span>
+                  <span class="fail"><b id="m-fail">0</b> <span id="m-fail-label"></span></span>
+                  <span id="m-total"></span>
+                </div>
+              </div>
+              <div class="m-stats" id="m-stats">
+                <div class="m-cell"><span class="v" id="m-time"></span><span class="k" id="m-time-label"></span></div>
+                <div class="m-cell"><span class="v" id="m-down"></span><span class="k" id="m-down-label"></span></div>
+                <div class="m-cell"><span class="v" id="m-up"></span><span class="k" id="m-up-label"></span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p class="mock-note" id="mock-note"></p>
+      </div>
+    </section>
+
+    <section class="block" id="how">
+      <div class="head">
+        <h2 id="how-title"></h2>
+        <span id="how-sub"></span>
+      </div>
+      <div class="grid three" id="how-grid"></div>
+    </section>
+
+    <section class="block" id="features">
+      <div class="head">
+        <h2 id="feat-title"></h2>
+        <span id="feat-sub"></span>
+      </div>
+      <div class="grid four" id="feat-grid"></div>
+    </section>
+
+    <section class="block" id="services">
+      <div class="head">
+        <h2 id="svc-title"></h2>
+        <span id="svc-sub"></span>
+      </div>
+      <div class="services card" id="svc-card"></div>
+    </section>
+
+    <section class="block" id="faq">
+      <div class="head">
+        <h2 id="faq-title"></h2>
+        <span id="faq-sub"></span>
+      </div>
+      <div class="faq" id="faq-list"></div>
+    </section>
+
+    <section class="block">
+      <div class="closing glass">
+        <img src="papion-logo-on.png" alt="" width="72" height="72" draggable="false">
+        <div class="closing-text">
+          <h2 id="end-title"></h2>
+          <p id="end-text"></p>
+          <div class="cta-row">
+            <a class="btn primary" data-dl href="https://github.com/actually-aloy/papion/releases/latest">
+              <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M.5 9.9a.5.5 0 0 1 .5.5v2.1a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.1a.5.5 0 0 1 1 0v2.1a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.1a.5.5 0 0 1 .5-.5"/><path d="M7.5 10.29V1.5a.5.5 0 0 1 1 0v8.79l2.15-2.15a.5.5 0 0 1 .7.71l-3 3a.5.5 0 0 1-.7 0l-3-3a.5.5 0 1 1 .7-.71z"/></svg>
+              <span data-dl-label></span>
+            </a>
+            <a class="btn" href="https://discord.gg/JqrBUYEM8n" target="_blank" rel="noopener noreferrer">
+              <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M13.545 2.907a13.2 13.2 0 0 0-3.257-1.011.05.05 0 0 0-.052.025c-.141.25-.297.577-.406.833a12.2 12.2 0 0 0-3.658 0 8 8 0 0 0-.412-.833.05.05 0 0 0-.052-.025c-1.125.194-2.22.534-3.257 1.011a.04.04 0 0 0-.021.018C.356 6.024-.213 9.047.066 12.032q.003.022.021.037a13.3 13.3 0 0 0 3.995 2.02.05.05 0 0 0 .056-.019q.463-.63.818-1.329a.05.05 0 0 0-.01-.059l-.018-.011a9 9 0 0 1-1.248-.595.05.05 0 0 1-.02-.066l.015-.019q.127-.095.248-.195a.05.05 0 0 1 .051-.007c2.619 1.196 5.454 1.196 8.041 0a.05.05 0 0 1 .053.007q.121.1.248.195a.05.05 0 0 1-.004.085 8 8 0 0 1-1.249.594.05.05 0 0 0-.03.03.05.05 0 0 0 .003.041c.24.465.515.909.817 1.329a.05.05 0 0 0 .056.019 13.2 13.2 0 0 0 4.001-2.02.05.05 0 0 0 .021-.037c.334-3.451-.559-6.449-2.366-9.106a.03.03 0 0 0-.02-.019m-8.198 7.307c-.789 0-1.438-.724-1.438-1.612s.637-1.613 1.438-1.613c.807 0 1.45.73 1.438 1.613 0 .888-.637 1.612-1.438 1.612m5.316 0c-.788 0-1.438-.724-1.438-1.612s.637-1.613 1.438-1.613c.807 0 1.451.73 1.438 1.613 0 .888-.631 1.612-1.438 1.612"/></svg>
+              <span id="end-discord"></span>
+            </a>
+            <a class="btn" href="https://t.me/actually_aloy" target="_blank" rel="noopener noreferrer">
+              <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8.287 5.906q-1.168.486-4.666 2.01-.567.225-.595.442c-.03.243.275.339.69.47l.175.055c.408.133.958.288 1.243.294q.39.01.868-.32 3.269-2.206 3.374-2.23c.05-.012.12-.026.166.016s.042.12.037.141c-.03.129-1.227 1.241-1.846 1.817-.193.18-.33.307-.358.336a8 8 0 0 1-.188.186c-.38.366-.664.64.015 1.088.327.216.589.393.85.571.284.194.568.387.936.629q.14.092.27.187c.331.236.63.448.997.414.214-.02.435-.22.547-.82.265-1.417.786-4.486.906-5.751a1.4 1.4 0 0 0-.013-.315.34.34 0 0 0-.114-.217.53.53 0 0 0-.31-.093c-.3.005-.763.166-2.984 1.09"/></svg>
+              <span id="end-telegram"></span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="footer">
+      <a class="home-link" href="index.html" id="footer-home"></a>
+      <p class="made" id="made-by"></p>
+      <p class="legal" dir="ltr">© 2026 Aloy</p>
+    </div>
+  </main>
+
+  <script src="releases.js"></script>
+  <script>
+    (function () {
+      var host = location.hostname;
+      var local = host === 'localhost' || host === '127.0.0.1' || /^[\d.]+$/.test(host) || host.charAt(0) === '[';
+      if (local || !/^https?:$/.test(location.protocol)) return;
+      var clean = location.pathname.replace(/\/index\.html$/, '/').replace(/\.html$/, '');
+      if (clean !== location.pathname) history.replaceState(null, '', clean + location.search + location.hash);
+    })();
+
+    const REPO = 'actually-aloy/papion';
+
+    const SVG = {
+      download: '<path d="M12 4v11"/><path d="M7.5 10.5 12 15l4.5-4.5"/><path d="M5 19h14"/>',
+      power: '<path d="M12 3v8"/><path d="M6.3 7.3a8 8 0 1 0 11.4 0"/>',
+      chat: '<path d="M5 6.5A2.5 2.5 0 0 1 7.5 4h9A2.5 2.5 0 0 1 19 6.5v6a2.5 2.5 0 0 1-2.5 2.5H11l-4 3.5V15h-.5A2.5 2.5 0 0 1 5 12.5z"/>',
+      search: '<circle cx="11" cy="11" r="6.5"/><path d="m16 16 4 4"/>',
+      refresh: '<path d="M20 11a8 8 0 0 0-14.5-3.5L4 9"/><path d="M4 4v5h5"/><path d="M4 13a8 8 0 0 0 14.5 3.5L20 15"/><path d="M20 20v-5h-5"/>',
+      mic: '<rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 11.5a6.5 6.5 0 0 0 13 0"/><path d="M12 18v3"/>',
+      globe: '<circle cx="12" cy="12" r="8.5"/><path d="M3.5 12h17"/><path d="M12 3.5c2.5 2.5 3.5 5.5 3.5 8.5s-1 6-3.5 8.5c-2.5-2.5-3.5-5.5-3.5-8.5s1-6 3.5-8.5z"/>',
+      layers: '<path d="m12 4 8.5 4.5L12 13 3.5 8.5z"/><path d="m3.5 12.5 8.5 4.5 8.5-4.5"/>',
+      share: '<circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="6" r="2.5"/><circle cx="18" cy="18" r="2.5"/><path d="m8.2 10.8 7.6-3.6"/><path d="m8.2 13.2 7.6 3.6"/>',
+      terminal: '<path d="M5 8l4 4-4 4"/><path d="M12 17h7"/>',
+      bell: '<path d="M6 16.5V11a6 6 0 0 1 12 0v5.5l1.5 1.5h-15z"/><path d="M10 21h4"/>'
+    };
+
+    const svg = name => '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + SVG[name] + '</svg>';
+
+    const HEART = '<svg class="heart" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 21s-7.5-4.6-9.6-9.2C.9 8.4 2.7 5 6 5c2 0 3.4 1 4.4 2.5.5.7 1.2.7 1.7 0C13.1 6 14.5 5 16.5 5c3.3 0 5.1 3.4 3.6 6.8C19.5 16.4 12 21 12 21z"/></svg>';
+
+    const SERVICES = ['YouTube', 'Twitch', 'Instagram', 'Threads', 'X', 'WhatsApp', 'ChatGPT', 'Gemini', 'Reddit', 'Bluesky', 'Mega.nz', 'NotebookLM', 'Claude', 'Kryptex', 'Pinterest', 'Kimi', 'Epic Games', 'GTA5-Mods', 'hCaptcha', 'Java', 'Spotify', 'Giphy', 'Tenor', 'Microsoft', 'Telegram'];
+
+    const I18N = {
+      en: {
+        dir: 'ltr',
+        docTitle: 'Papion — Discord without limits',
+        back: 'home',
+        heroTitle: 'Papion',
+        pitch: 'Papion opens up Discord, and more, for free and without the hassle. It finds the fastest route by itself and keeps you connected.',
+        tags: ['Free', 'Windows', 'Easy install', 'No account'],
+        download: 'Download for Windows',
+        github: 'GitHub',
+        sizeUnit: 'MB',
+        mock: {
+          title: 'Papion',
+          off: 'Not connected', on: 'Connected', working: 'Connecting…',
+          subOff: 'Press Connect and Discord will use the fastest route.',
+          subOn: "You're all set. You can open Discord now.",
+          subWorking: 'Finding the best server. This takes a few seconds.',
+          connect: 'Connect', disconnect: 'Disconnect', cancel: 'Cancel',
+          tagline: 'No limits. No cost. No hassle.',
+          ok: 'working', fail: 'failed', total: (a, b) => a + ' of ' + b,
+          time: 'Time connected', down: 'Downloaded', up: 'Uploaded',
+          units: ['B', 'KB', 'MB', 'GB'],
+          note: 'Interactive preview. Nothing is actually connecting.'
+        },
+        howTitle: 'How it works',
+        howSub: 'three steps, about a minute',
+        how: [
+          ['download', 'Download and install', 'Grab the installer with the button above and run it. There is no account to make.'],
+          ['power', 'Let it connect', 'Papion connects by itself when it opens, so usually you do nothing. In a few seconds it tests servers and picks the best one.'],
+          ['chat', 'Open Discord', 'When the logo lights up, you are set. Closing the window does not quit Papion, it stays next to the Windows clock.']
+        ],
+        featTitle: 'What it does',
+        featSub: 'all of it runs by itself',
+        feat: [
+          ['search', 'Finds the best server for you', 'Papion tests a batch of servers at once, checks them with a real request to Discord and a quick speed test, then connects to the best one.'],
+          ['refresh', 'Stays connected', 'It keeps checking the connection. If a server dies it quietly switches to another one, and if your internet drops it waits and reconnects when it is back.'],
+          ['mic', 'Voice calls that work', 'TUN mode sends Discord voice through the tunnel too. It needs admin rights, so it is off by default. Turn it on if voice will not connect on your network.'],
+          ['globe', 'Everything except Iran', 'One switch sends all your traffic through the tunnel except sites hosted in Iran, so local sites stay fast and direct.'],
+          ['layers', 'More than Discord', 'YouTube, Telegram, Spotify, ChatGPT and more are one toggle away in Settings.'],
+          ['share', 'Share with other devices', 'Let your phone or console use this PC as its Discord proxy over your home network. Off until you turn it on.'],
+          ['terminal', 'Made for your scripts', 'A separate local proxy port, 127.0.0.1 only, so a Discord bot or any other app on your PC can use the same tunnel.'],
+          ['bell', 'Quiet and tidy', 'Lives in the tray, connects on launch, can start with Windows and updates in one click. Persian and English, with a one-minute tour on first launch.']
+        ],
+        svcTitle: 'More than Discord',
+        svcSub: 'switch them on in Settings',
+        svcText: 'Discord is always on. Everything else is one toggle in Settings.',
+        svcMain: 'Discord',
+        faqTitle: 'Questions',
+        faqSub: 'the usual ones',
+        faq: [
+          ['Is it really free?', 'Yes. There is nothing to pay and no account to make.'],
+          ['What does it run on?', 'Windows, for now.'],
+          ['How do I install it?', 'Papion comes with a regular Windows installer. Run it and follow the steps, that is all.'],
+          ['It says Connected, but Discord will not load.', 'Discord usually only reads your proxy settings when it starts. If it was already open when Papion connected, it can keep using your normal connection and never go through the tunnel. Close Discord completely (right-click its icon next to the Windows clock and choose Quit Discord, closing the window is not enough) and open it again. Still stuck? Press Disconnect and then Connect so Papion picks another server, and turn off any other VPN or proxy that is running at the same time.'],
+          ['Voice calls will not connect.', 'Turn on TUN mode: open Papion\'s Settings, switch on "TUN mode", press "Save settings", say Yes to the Windows admin prompt and connect again. Without TUN, voice calls connect directly instead of through the tunnel, and on some networks that does not work.'],
+          ['Why does it ask for admin rights?', 'Only for TUN mode, which routes Discord at the network level so voice goes through the tunnel too. Without TUN, Papion does not need admin rights.'],
+          ['Is it safe? What about my privacy?', 'Papion has no accounts and does not collect or send anything about you. It connects through free public servers published by other people, so treat it like any free proxy: Discord traffic is encrypted, but do not use it for anything sensitive.'],
+          ['Where do the servers come from?', 'From public subscription lists. Papion tests them and keeps the ones that work. You can add your own links in Settings (vmess, vless, trojan and ss lists work).'],
+          ['What is "Connected with Papion" on my Discord profile?', 'An optional status that shows only that you use Papion, and only while you are connected. It helps other people find out Papion exists, and you can turn it off in Settings.'],
+          ['How do updates work?', 'Papion tells you when a new version or a new core is out and updates with one click ("Update & restart"). The download button on this page always points to the newest release.'],
+          ['I closed the window and it vanished.', 'It did not quit. Papion keeps running next to the Windows clock. Click the small arrow there if you cannot see its icon, and right-click the icon and choose Quit to close it for real.']
+        ],
+        endTitle: 'Give it a try',
+        endText: 'Free, a quick install, and about a minute to set up. Stuck somewhere? Ask in the Discord server or on Telegram.',
+        endDiscord: 'Discord server',
+        endTelegram: 'Telegram',
+        footerHome: 'Back to the main page',
+        madeBy: 'This bow was tied with {heart} by Aloy'
+      },
+      fa: {
+        dir: 'rtl',
+        docTitle: 'پاپیون — دیسکورد بدون محدودیت',
+        back: 'خانه',
+        heroTitle: 'پاپیون',
+        pitch: 'پاپیون دیسکورد و چند تا چیز دیگه رو رایگان و بدون دردسر برات باز می‌کنه. خودش سریع‌ترین مسیر رو پیدا می‌کنه و اتصالت رو نگه می‌داره.',
+        tags: ['رایگان', 'ویندوز', 'نصب ساده', 'بدون اکانت'],
+        download: 'دانلود برای ویندوز',
+        github: 'گیت‌هاب',
+        sizeUnit: 'مگابایت',
+        mock: {
+          title: 'پاپیون',
+          off: 'وصل نیست', on: 'وصله', working: 'در حال اتصال…',
+          subOff: 'روی «اتصال» بزن تا دیسکورد از سریع‌ترین مسیر کار کنه.',
+          subOn: 'همه‌چیز آماده‌ست. می‌تونی دیسکورد رو باز کنی.',
+          subWorking: 'در حال پیدا کردن بهترین سرور. چند ثانیه صبر کن.',
+          connect: 'اتصال', disconnect: 'قطع اتصال', cancel: 'لغو',
+          tagline: 'بدون محدودیت، بدون هزینه، بدون دردسر',
+          ok: 'سالم', fail: 'ناموفق', total: (a, b) => a + ' از ' + b,
+          time: 'مدت اتصال', down: 'دریافت', up: 'ارسال',
+          units: ['بایت', 'کیلوبایت', 'مگابایت', 'گیگابایت'],
+          note: 'پیش‌نمایش تعاملی؛ چیزی واقعاً وصل نمی‌شه.'
+        },
+        howTitle: 'چطوری کار می‌کنه',
+        howSub: 'سه قدم، حدوداً یه دقیقه',
+        how: [
+          ['download', 'دانلود و نصب', 'نصب‌کننده رو از دکمه‌ی بالا دانلود کن و اجراش کن. اکانت هم لازم نیست.'],
+          ['power', 'بذار وصل شه', 'پاپیون موقع باز شدن خودش وصل می‌شه، پس معمولاً کاری لازم نیست. در چند ثانیه سرورها رو آزمایش می‌کنه و بهترین رو انتخاب می‌کنه.'],
+          ['chat', 'دیسکورد رو باز کن', 'وقتی لوگو روشن شد، همه‌چیز آماده‌ست. بستن پنجره پاپیون رو نمی‌بنده؛ کنار ساعت ویندوز می‌مونه.']
+        ],
+        featTitle: 'چی کار می‌کنه',
+        featSub: 'همه‌ش خودکاره',
+        feat: [
+          ['search', 'بهترین سرور رو خودش پیدا می‌کنه', 'پاپیون یه دسته سرور رو هم‌زمان آزمایش می‌کنه، با یه درخواست واقعی به دیسکورد و یه تست سرعت چکشون می‌کنه و به بهترینشون وصل می‌شه.'],
+          ['refresh', 'وصل می‌مونه', 'مرتب اتصال رو چک می‌کنه. اگه یه سرور بمیره بی‌سروصدا می‌ره سراغ یکی دیگه، و اگه اینترنتت قطع شه صبر می‌کنه و به‌محض برگشتنش دوباره وصل می‌شه.'],
+          ['mic', 'تماس صوتی که کار می‌کنه', 'حالت TUN صدای دیسکورد رو هم از تونل رد می‌کنه. دسترسی ادمین می‌خواد، برای همین پیش‌فرض خاموشه. اگه تماس صوتی تو شبکه‌ت وصل نشد، روشنش کن.'],
+          ['globe', 'همه‌چیز به‌جز ایران', 'با یه کلید، همه‌ی ترافیکت از تونل رد می‌شه جز سایت‌هایی که تو ایران هاست شدن؛ پس سایت‌های داخلی سریع و مستقیم می‌مونن.'],
+          ['layers', 'فقط دیسکورد نیست', 'یوتیوب، تلگرام، اسپاتیفای، ChatGPT و بقیه فقط با یه کلید تو تنظیمات فعال می‌شن.'],
+          ['share', 'اشتراک با بقیه‌ی دستگاه‌ها', 'بذار گوشی یا کنسولت از همین کامپیوتر به‌عنوان پراکسی دیسکورد استفاده کنه، اونم از طریق شبکه‌ی خونه. تا خودت روشنش نکنی خاموشه.'],
+          ['terminal', 'مخصوص اسکریپت‌های تو', 'یه پورت پراکسی جدا که فقط روی ۱۲۷.۰.۰.۱ باز می‌شه، تا یه ربات دیسکورد یا هر برنامه‌ی دیگه‌ی روی کامپیوترت از همین تونل استفاده کنه.'],
+          ['bell', 'ساکت و مرتب', 'تو سینی سیستم می‌مونه، موقع اجرا وصل می‌شه، می‌تونه با ویندوز بالا بیاد و با یه کلیک آپدیت می‌شه. فارسی و انگلیسی داره و بار اول یه تور یک‌دقیقه‌ای نشونت می‌ده.']
+        ],
+        svcTitle: 'فقط دیسکورد نیست',
+        svcSub: 'از تنظیمات روشنشون کن',
+        svcText: 'دیسکورد همیشه روشنه. بقیه فقط با یه کلید تو تنظیمات فعال می‌شن.',
+        svcMain: 'دیسکورد',
+        faqTitle: 'سؤال‌ها',
+        faqSub: 'همون‌هایی که همه می‌پرسن',
+        faq: [
+          ['واقعاً رایگانه؟', 'آره. نه چیزی باید بدی، نه اکانتی بسازی.'],
+          ['رو چی کار می‌کنه؟', 'فعلاً فقط ویندوز.'],
+          ['چطوری نصبش کنم؟', 'پاپیون نصب‌کننده‌ی معمولی ویندوز داره. اجراش کن و مرحله‌ها رو دنبال کن؛ همین.'],
+          ['می‌گه وصله ولی دیسکورد باز نمی‌شه.', 'دیسکورد معمولاً تنظیمات پراکسی رو فقط موقع باز شدن می‌خونه. اگه وقتی پاپیون وصل شد دیسکورد از قبل باز بوده، ممکنه همچنان از اتصال عادی خودت استفاده کنه و اصلاً از تونل رد نشه. دیسکورد رو کامل ببند (روی آیکونش کنار ساعت ویندوز راست‌کلیک کن و Quit Discord رو بزن؛ بستن پنجره کافی نیست) و دوباره بازش کن. هنوز درست نشد؟ روی «قطع اتصال» و بعد «اتصال» بزن تا پاپیون یه سرور دیگه انتخاب کنه، و اگه هم‌زمان VPN یا پراکسی دیگه‌ای روشنه خاموشش کن.'],
+          ['تماس صوتی وصل نمی‌شه.', 'حالت TUN رو روشن کن: تو تنظیمات پاپیون «حالت TUN» رو فعال کن، «ذخیره‌ی تنظیمات» رو بزن، تو پنجره‌ی دسترسی ادمین ویندوز «بله» (Yes) رو انتخاب کن و دوباره وصل شو. وقتی TUN خاموشه تماس صوتی مستقیم وصل می‌شه، نه از تونل، و تو بعضی شبکه‌ها این جواب نمی‌ده.'],
+          ['چرا دسترسی ادمین می‌خواد؟', 'فقط برای حالت TUN، که دیسکورد رو تو سطح شبکه مسیریابی می‌کنه تا تماس صوتی هم از تونل رد شه. بدون TUN، پاپیون به دسترسی ادمین نیازی نداره.'],
+          ['امنه؟ حریم خصوصی چی؟', 'پاپیون اکانت نداره و هیچی درباره‌ی تو جمع نمی‌کنه و نمی‌فرسته. از سرورهای عمومی رایگانی وصل می‌شه که بقیه منتشر کردن، پس مثل هر پراکسی رایگان باهاش رفتار کن: ترافیک دیسکورد رمزنگاری شده‌ست، ولی برای کارهای حساس ازش استفاده نکن.'],
+          ['سرورها از کجا میان؟', 'از لیست‌های اشتراک عمومی. پاپیون آزمایششون می‌کنه و سالم‌ها رو نگه می‌داره. می‌تونی لینک‌های خودت رو هم تو تنظیمات اضافه کنی (لیست‌های vmess، vless، trojan و ss کار می‌کنن).'],
+          ['«وصل با پاپیون» رو پروفایل دیسکوردم چیه؟', 'یه وضعیت اختیاریه که فقط نشون می‌ده از پاپیون استفاده می‌کنی، اونم فقط وقتی وصلی. کمک می‌کنه بقیه از وجود پاپیون باخبر شن و از تنظیمات می‌تونی خاموشش کنی.'],
+          ['آپدیت چطوریه؟', 'وقتی نسخه‌ی جدید یا هسته‌ی جدید بیاد پاپیون خبرت می‌کنه و با یه کلیک («آپدیت و راه‌اندازی مجدد») آپدیت می‌شه. دکمه‌ی دانلود همین صفحه هم همیشه به آخرین نسخه می‌ره.'],
+          ['پنجره رو بستم و ناپدید شد.', 'بسته نشده. پاپیون کنار ساعت ویندوز به کارش ادامه می‌ده. اگه آیکونش رو نمی‌بینی روی فلش کوچیک اون‌جا بزن، و برای خروج کامل روی آیکون راست‌کلیک کن و «خروج» رو بزن.']
+        ],
+        endTitle: 'یه امتحانش کن',
+        endText: 'رایگانه، نصبش ساده‌ست و راه‌اندازیش حدود یه دقیقه طول می‌کشه. جایی گیر کردی؟ تو سرور دیسکورد یا تلگرام بپرس.',
+        endDiscord: 'سرور دیسکورد',
+        endTelegram: 'تلگرام',
+        footerHome: 'بازگشت به صفحه‌ی اصلی',
+        madeBy: 'این پاپیون رو آلوی با {heart} گره زده'
+      }
+    };
+
+    const $ = id => document.getElementById(id);
+    const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+    const PERSIAN_DIGITS = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
+    const LATIN_RE = /[A-Za-z][A-Za-z0-9._@\/-]*(?:\u00a0[A-Za-z][A-Za-z0-9._@\/-]*)*/g;
+
+    let currentLang = localStorage.getItem('lang') === 'en' ? 'en' : 'fa';
+
+    const tx = s => {
+      if (currentLang !== 'fa') return esc(s);
+      let out = '', last = 0, m;
+      LATIN_RE.lastIndex = 0;
+      while ((m = LATIN_RE.exec(s))) {
+        out += esc(s.slice(last, m.index)) + '<bdi>' + esc(m[0]) + '</bdi>';
+        last = m.index + m[0].length;
+      }
+      return out + esc(s.slice(last));
+    };
+    const setTx = (id, s) => { $(id).innerHTML = tx(s); };
+    const fmt = n => currentLang === 'fa' ? String(n).replace(/[0-9]/g, d => PERSIAN_DIGITS[d]) : String(n);
+
+    const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const TOTAL = 20;
+    const OK_PATTERN = [0, 1, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 1, 0];
+    const mock = { state: 'off', tested: 0, ok: 0, fail: 0, secs: 0, down: 0, up: 0, timer: 0, shown: '' };
+
+    function bytes(n, units) {
+      let i = 0, v = n;
+      while (v >= 1024 && i < units.length - 1) { v /= 1024; i++; }
+      const num = i === 0 ? String(Math.floor(v)) : (v < 10 ? v.toFixed(1) : String(Math.round(v)));
+      return '<span>' + fmt(num.replace('.', currentLang === 'fa' ? '٫' : '.')) + '</span><span class="u">' + units[i] + '</span>';
+    }
+
+    function clock(s) {
+      const h = Math.floor(s / 3600), m = Math.floor(s / 60) % 60, x = s % 60;
+      const two = n => (n < 10 ? '0' : '') + n;
+      return fmt((h ? two(h) + ':' : '') + two(m) + ':' + two(x));
+    }
+
+    function swap(el) {
+      el.classList.remove('swap');
+      void el.offsetWidth;
+      el.classList.add('swap');
+    }
+
+    function paintMock() {
+      const t = I18N[currentLang].mock;
+      const st = mock.state;
+      $('mock').dataset.state = st;
+      $('m-signal').classList.toggle('on', st === 'on');
+      $('m-signal').classList.toggle('busy', st === 'working');
+      $('m-title-text').textContent = t.title;
+      $('m-status').textContent = st === 'on' ? t.on : st === 'working' ? t.working : t.off;
+      $('m-sub').textContent = st === 'on' ? t.subOn : st === 'working' ? t.subWorking : t.subOff;
+      if (mock.shown !== st) {
+        mock.shown = st;
+        swap($('m-status'));
+        swap($('m-sub'));
+      }
+      const btn = $('m-btn');
+      btn.textContent = st === 'on' ? t.disconnect : st === 'working' ? t.cancel : t.connect;
+      btn.classList.toggle('secondary', st !== 'off');
+      btn.classList.toggle('busy', st === 'working');
+      btn.classList.toggle('hint', st === 'off' && !reduceMotion);
+      $('m-tagline').textContent = t.tagline;
+      $('m-tagline').classList.toggle('show', st === 'off');
+      $('m-progress').classList.toggle('show', st === 'working');
+      $('m-stats').classList.toggle('show', st === 'on');
+      $('m-bar-fill').style.width = (mock.tested / TOTAL * 100) + '%';
+      $('m-ok').textContent = fmt(mock.ok);
+      $('m-fail').textContent = fmt(mock.fail);
+      $('m-ok-label').textContent = t.ok;
+      $('m-fail-label').textContent = t.fail;
+      $('m-total').textContent = t.total(fmt(mock.tested), fmt(TOTAL));
+      $('m-time').textContent = clock(mock.secs);
+      $('m-down').innerHTML = bytes(mock.down, t.units);
+      $('m-up').innerHTML = bytes(mock.up, t.units);
+      $('m-time-label').textContent = t.time;
+      $('m-down-label').textContent = t.down;
+      $('m-up-label').textContent = t.up;
+      $('mock-note').textContent = t.note;
+    }
+
+    function stopTimer() {
+      clearInterval(mock.timer);
+      mock.timer = 0;
+    }
+
+    function startOn() {
+      stopTimer();
+      mock.state = 'on';
+      mock.secs = 0;
+      mock.down = 0;
+      mock.up = 0;
+      mock.timer = setInterval(() => {
+        mock.secs++;
+        mock.down += 120000 + (mock.secs * 37311) % 300000;
+        mock.up += 14000 + (mock.secs * 7919) % 40000;
+        paintMock();
+      }, 1000);
+      paintMock();
+    }
+
+    function startWorking() {
+      stopTimer();
+      mock.state = 'working';
+      mock.tested = 0;
+      mock.ok = 0;
+      mock.fail = 0;
+      mock.timer = setInterval(() => {
+        mock.tested++;
+        if (OK_PATTERN[mock.tested - 1]) mock.ok++; else mock.fail++;
+        if (mock.tested >= TOTAL) { startOn(); return; }
+        paintMock();
+      }, reduceMotion ? 60 : 170);
+      paintMock();
+    }
+
+    function stopAll() {
+      stopTimer();
+      mock.state = 'off';
+      paintMock();
+    }
+
+    $('m-btn').addEventListener('click', () => {
+      if (mock.state === 'off') startWorking(); else stopAll();
+    });
+
+    let release = null;
+
+    function paintRelease() {
+      const t = I18N[currentLang];
+      document.querySelectorAll('a[data-dl]').forEach(a => {
+        a.href = release ? release.url : LatestRelease.page(REPO);
+      });
+      const meta = $('dl-meta');
+      if (!release) { meta.hidden = true; return; }
+      const parts = [];
+      if (release.tag) parts.push('<bdi dir="ltr">' + esc(release.tag) + '</bdi>');
+      if (release.size) parts.push(fmt((release.size / 1048576).toFixed(1).replace('.', currentLang === 'fa' ? '٫' : '.')) + ' ' + t.sizeUnit);
+      meta.innerHTML = parts.join(' · ');
+      meta.hidden = parts.length === 0;
+    }
+
+    function renderHow(t) {
+      $('how-grid').innerHTML = t.how.map(([icon, name, desc], i) => `
+        <div class="card">
+          <div class="card-top">
+            <div class="icon">${svg(icon)}</div>
+            <div class="card-name">${tx(name)}</div>
+            <span class="step-num" aria-hidden="true">${fmt(i + 1)}</span>
+          </div>
+          <p class="card-desc">${tx(desc)}</p>
+        </div>`).join('');
+    }
+
+    function renderFeatures(t) {
+      $('feat-grid').innerHTML = t.feat.map(([icon, name, desc], i) => `
+        <div class="card">
+          <div class="card-top">
+            <div class="icon${i % 2 ? ' teal' : ''}">${svg(icon)}</div>
+            <div class="card-name">${tx(name)}</div>
+          </div>
+          <p class="card-desc">${tx(desc)}</p>
+        </div>`).join('');
+    }
+
+    function renderServices(t) {
+      $('svc-card').innerHTML = `
+        <p>${tx(t.svcText)}</p>
+        <div class="chips">
+          <span class="chip main">${tx(t.svcMain)}</span>
+          ${SERVICES.map(s => `<span class="chip">${tx(s)}</span>`).join('')}
+        </div>
+      `;
+    }
+
+    function renderFaq(t) {
+      $('faq-list').innerHTML = t.faq.map(([q, a], i) => `
+        <div class="faq-item">
+          <button type="button" class="faq-q" id="faq-q-${i}" aria-expanded="false" aria-controls="faq-a-${i}">
+            <span>${tx(q)}</span>
+            <span class="faq-icon" aria-hidden="true"></span>
+          </button>
+          <div class="faq-panel" id="faq-a-${i}" role="region" aria-labelledby="faq-q-${i}">
+            <div class="faq-inner"><div class="answer">${tx(a)}</div></div>
+          </div>
+        </div>`).join('');
+    }
+
+    $('faq-list').addEventListener('click', e => {
+      const btn = e.target.closest('.faq-q');
+      if (!btn) return;
+      const item = btn.parentElement;
+      const open = item.classList.toggle('open');
+      btn.setAttribute('aria-expanded', String(open));
+    });
+
+    function applyLanguage(lang) {
+      currentLang = lang;
+      localStorage.setItem('lang', lang);
+      const t = I18N[lang];
+      document.documentElement.lang = lang;
+      document.documentElement.dir = t.dir;
+      document.title = t.docTitle;
+
+      setTx('back-text', t.back);
+      setTx('hero-title', t.heroTitle);
+      setTx('hero-pitch', t.pitch);
+      $('hero-tags').innerHTML = t.tags.map((x, i) => `<span class="tag${i === 0 ? ' hot' : ''}">${tx(x)}</span>`).join('');
+      document.querySelectorAll('[data-dl-label]').forEach(el => { el.textContent = t.download; });
+      setTx('cta-github', t.github);
+      paintRelease();
+      paintMock();
+
+      setTx('how-title', t.howTitle);
+      setTx('how-sub', t.howSub);
+      renderHow(t);
+
+      setTx('feat-title', t.featTitle);
+      setTx('feat-sub', t.featSub);
+      renderFeatures(t);
+
+      setTx('svc-title', t.svcTitle);
+      setTx('svc-sub', t.svcSub);
+      renderServices(t);
+
+      setTx('faq-title', t.faqTitle);
+      setTx('faq-sub', t.faqSub);
+      renderFaq(t);
+
+      setTx('end-title', t.endTitle);
+      setTx('end-text', t.endText);
+      setTx('end-discord', t.endDiscord);
+      setTx('end-telegram', t.endTelegram);
+      setTx('footer-home', t.footerHome);
+      $('made-by').innerHTML = t.madeBy.split('{heart}').map(tx).join(HEART);
+    }
+
+    $('lang-toggle').addEventListener('click', () => {
+      $('lang-toggle').blur();
+      applyLanguage(currentLang === 'en' ? 'fa' : 'en');
+    });
+
+    applyLanguage(currentLang);
+
+    LatestRelease.latest(REPO).then(d => {
+      release = d;
+      paintRelease();
+    });
+  </script>
+</body>
+</html>
