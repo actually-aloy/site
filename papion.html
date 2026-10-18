@@ -758,6 +758,22 @@
       grid-template-columns: repeat(auto-fit, minmax(235px, 1fr));
     }
 
+    .grid.cols3 {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    @media (max-width: 900px) {
+      .grid.cols3 {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 560px) {
+      .grid.cols3 {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
     .card {
       display: flex;
       flex-direction: column;
@@ -860,6 +876,169 @@
       border-color: transparent;
       background: linear-gradient(135deg, var(--violet-mid), var(--violet-soft));
       color: var(--ink);
+    }
+
+    .chip[hidden] {
+      display: none;
+    }
+
+    .chip.pop {
+      animation: chip-in 320ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+      animation-delay: var(--d, 0ms);
+    }
+
+    .chip mark {
+      background: none;
+      color: var(--violet-soft);
+      text-decoration: underline;
+      text-decoration-thickness: 2px;
+      text-underline-offset: 3px;
+    }
+
+    .chip.main mark {
+      color: var(--ink);
+    }
+
+    .svc-tools {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px 14px;
+    }
+
+    .svc-search {
+      position: relative;
+      flex: 1 1 280px;
+      max-width: 380px;
+    }
+
+    .svc-search > svg {
+      position: absolute;
+      top: 50%;
+      inset-inline-start: 15px;
+      width: 17px;
+      height: 17px;
+      transform: translateY(-50%);
+      color: var(--muted);
+      pointer-events: none;
+      transition: color 200ms ease;
+    }
+
+    .svc-search:focus-within > svg {
+      color: var(--violet-soft);
+    }
+
+    .svc-search input {
+      width: 100%;
+      height: 44px;
+      padding: 0 44px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(244, 241, 255, 0.07);
+      color: var(--text);
+      font-family: inherit;
+      font-size: 14.5px;
+      outline: none;
+      transition: border-color 200ms ease, box-shadow 200ms ease, background 200ms ease;
+    }
+
+    .svc-search input::placeholder {
+      color: var(--muted);
+      opacity: 0.8;
+    }
+
+    .svc-search input:focus {
+      border-color: var(--violet-mid);
+      background: rgba(244, 241, 255, 0.1);
+      box-shadow: 0 0 0 4px rgba(124, 92, 250, 0.2);
+    }
+
+    .svc-search input::-webkit-search-cancel-button,
+    .svc-search input::-webkit-search-decoration {
+      display: none;
+      -webkit-appearance: none;
+    }
+
+    .svc-clear {
+      position: absolute;
+      top: 50%;
+      inset-inline-end: 8px;
+      width: 28px;
+      height: 28px;
+      display: grid;
+      place-items: center;
+      padding: 0;
+      transform: translateY(-50%);
+      border: 0;
+      border-radius: 50%;
+      background: rgba(244, 241, 255, 0.1);
+      color: var(--text);
+      cursor: pointer;
+      transition: background 180ms ease;
+    }
+
+    .svc-clear[hidden] {
+      display: none;
+    }
+
+    .svc-clear:hover {
+      background: rgba(244, 241, 255, 0.2);
+    }
+
+    .svc-clear svg {
+      width: 13px;
+      height: 13px;
+    }
+
+    .svc-count {
+      color: var(--muted);
+      font-size: 13px;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .svc-count.tick {
+      animation: tick 240ms ease;
+    }
+
+    .svc-area {
+      position: relative;
+    }
+
+    .svc-empty {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      align-content: center;
+      justify-items: center;
+      gap: 6px;
+      padding: 8px;
+      text-align: center;
+      animation: chip-in 300ms ease both;
+    }
+
+    .svc-empty[hidden] {
+      display: none;
+    }
+
+    .svc-none {
+      font-size: 15px;
+      font-weight: 700;
+    }
+
+    .svc-none-hint {
+      color: var(--muted);
+      font-size: 13.5px;
+    }
+
+    @keyframes chip-in {
+      from { opacity: 0; transform: translateY(8px) scale(0.92); }
+      to { opacity: 1; transform: none; }
+    }
+
+    @keyframes tick {
+      from { opacity: 0; transform: translateY(-3px); }
+      to { opacity: 1; transform: none; }
     }
 
     .faq {
@@ -1065,6 +1244,8 @@
       .signal .ring { display: none; }
       .m-status.swap, .m-sub.swap { animation: none; }
       .m-btn.hint { animation: none; }
+      .chip.pop, .svc-count.tick, .svc-empty { animation: none; }
+      .svc-search input, .svc-search > svg, .svc-clear { transition: none; }
       .heart { animation: none; }
       .m-bar span { transition: none; }
       .faq-item, .faq-icon, .faq-icon::before, .faq-icon::after, .faq-panel, .card, .btn {
@@ -1199,7 +1380,7 @@
         <h2 id="feat-title"></h2>
         <span id="feat-sub"></span>
       </div>
-      <div class="grid four" id="feat-grid"></div>
+      <div class="grid cols3" id="feat-grid"></div>
     </section>
 
     <section class="block" id="services">
@@ -1272,14 +1453,16 @@
       layers: '<path d="m12 4 8.5 4.5L12 13 3.5 8.5z"/><path d="m3.5 12.5 8.5 4.5 8.5-4.5"/>',
       share: '<circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="6" r="2.5"/><circle cx="18" cy="18" r="2.5"/><path d="m8.2 10.8 7.6-3.6"/><path d="m8.2 13.2 7.6 3.6"/>',
       terminal: '<path d="M5 8l4 4-4 4"/><path d="M12 17h7"/>',
-      bell: '<path d="M6 16.5V11a6 6 0 0 1 12 0v5.5l1.5 1.5h-15z"/><path d="M10 21h4"/>'
+      close: '<path d="M6 6l12 12"/><path d="M18 6 6 18"/>',
+      bell: '<path d="M6 16.5V11a6 6 0 0 1 12 0v5.5l1.5 1.5h-15z"/><path d="M10 21h4"/>',
+      dns: '<rect x="3" y="4" width="18" height="6.5" rx="2"/><rect x="3" y="13.5" width="18" height="6.5" rx="2"/><path d="M7 7.25h.01"/><path d="M7 16.75h.01"/><path d="M11 7.25h6"/><path d="M11 16.75h6"/>'
     };
 
     const svg = name => '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + SVG[name] + '</svg>';
 
     const HEART = '<svg class="heart" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 21s-7.5-4.6-9.6-9.2C.9 8.4 2.7 5 6 5c2 0 3.4 1 4.4 2.5.5.7 1.2.7 1.7 0C13.1 6 14.5 5 16.5 5c3.3 0 5.1 3.4 3.6 6.8C19.5 16.4 12 21 12 21z"/></svg>';
 
-    const SERVICES = ['YouTube', 'Twitch', 'Instagram', 'Threads', 'X', 'WhatsApp', 'ChatGPT', 'Gemini', 'Reddit', 'Bluesky', 'Mega.nz', 'NotebookLM', 'Claude', 'Kryptex', 'Pinterest', 'Kimi', 'Epic Games', 'GTA5-Mods', 'hCaptcha', 'Java', 'Spotify', 'Giphy', 'Tenor', 'Microsoft', 'Telegram'];
+    const SERVICES = ['YouTube', 'Twitch', 'Instagram', 'Threads', 'X', 'WhatsApp', 'ChatGPT', 'Gemini', 'Reddit', 'Bluesky', 'Mega.nz', 'NotebookLM', 'Claude', 'Kryptex', 'Pinterest', 'DeviantArt', 'Kimi', 'LM Studio', 'Epic Games', 'GTA5-Mods', 'hCaptcha', 'Java', 'Spotify', 'Giphy', 'Tenor', 'Microsoft', 'Telegram'];
 
     const I18N = {
       en: {
@@ -1317,6 +1500,7 @@
         feat: [
           ['search', 'Finds the best server for you', 'Papion tests a batch of servers at once, checks them with a real request to Discord and a quick speed test, then connects to the best one.'],
           ['refresh', 'Stays connected', 'It keeps checking the connection. If a server dies it quietly switches to another one, and if your internet drops it waits and reconnects when it is back.'],
+          ['dns', 'Change the DNS', 'On top of the proxies, Papion lets you change the DNS too, for a stronger and steadier connection.'],
           ['mic', 'Voice calls that work', 'TUN mode sends Discord voice through the tunnel too. It needs admin rights, so it is off by default. Turn it on if voice will not connect on your network.'],
           ['globe', 'Everything except Iran', 'One switch sends all your traffic through the tunnel except sites hosted in Iran, so local sites stay fast and direct.'],
           ['layers', 'More than Discord', 'YouTube, Telegram, Spotify, ChatGPT and more are one toggle away in Settings.'],
@@ -1328,6 +1512,11 @@
         svcSub: 'switch them on in Settings',
         svcText: 'Discord is always on. Everything else is one toggle in Settings.',
         svcMain: 'Discord',
+        svcSearch: 'Search services…',
+        svcClear: 'Clear search',
+        svcCount: (n, total) => n === total ? total + ' services' : n + ' of ' + total,
+        svcNone: ['Nothing matches “', '”'],
+        svcNoneHint: 'Missing one you want? Ask in the Discord server or on Telegram.',
         faqTitle: 'Questions',
         faqSub: 'the usual ones',
         faq: [
@@ -1385,6 +1574,7 @@
         feat: [
           ['search', 'بهترین سرور رو خودش پیدا می‌کنه', 'پاپیون یه دسته سرور رو هم‌زمان آزمایش می‌کنه، با یه درخواست واقعی به دیسکورد و یه تست سرعت چکشون می‌کنه و به بهترینشون وصل می‌شه.'],
           ['refresh', 'وصل می‌مونه', 'مرتب اتصال رو چک می‌کنه. اگه یه سرور بمیره بی‌سروصدا می‌ره سراغ یکی دیگه، و اگه اینترنتت قطع شه صبر می‌کنه و به‌محض برگشتنش دوباره وصل می‌شه.'],
+          ['dns', 'تغییر DNS', 'علاوه بر پراکسی‌ها، می‌تونی DNS رو هم عوض کنی تا اتصالت قوی‌تر و پایدارتر شه.'],
           ['mic', 'تماس صوتی که کار می‌کنه', 'حالت TUN صدای دیسکورد رو هم از تونل رد می‌کنه. دسترسی ادمین می‌خواد، برای همین پیش‌فرض خاموشه. اگه تماس صوتی تو شبکه‌ت وصل نشد، روشنش کن.'],
           ['globe', 'همه‌چیز به‌جز ایران', 'با یه کلید، همه‌ی ترافیکت از تونل رد می‌شه جز سایت‌هایی که تو ایران هاست شدن؛ پس سایت‌های داخلی سریع و مستقیم می‌مونن.'],
           ['layers', 'فقط دیسکورد نیست', 'یوتیوب، تلگرام، اسپاتیفای، ChatGPT و بقیه فقط با یه کلید تو تنظیمات فعال می‌شن.'],
@@ -1396,6 +1586,11 @@
         svcSub: 'از تنظیمات روشنشون کن',
         svcText: 'دیسکورد همیشه روشنه. بقیه فقط با یه کلید تو تنظیمات فعال می‌شن.',
         svcMain: 'دیسکورد',
+        svcSearch: 'جستجوی سرویس‌ها…',
+        svcClear: 'پاک کردن جستجو',
+        svcCount: (n, total) => n === total ? total + ' سرویس' : n + ' از ' + total,
+        svcNone: ['چیزی با «', '» پیدا نشد'],
+        svcNoneHint: 'سرویسی که می‌خوای نیست؟ تو سرور دیسکورد یا تلگرام بگو.',
         faqTitle: 'سؤال‌ها',
         faqSub: 'همون‌هایی که همه می‌پرسن',
         faq: [
@@ -1423,7 +1618,7 @@
     const $ = id => document.getElementById(id);
     const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
     const PERSIAN_DIGITS = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
-    const LATIN_RE = /[A-Za-z][A-Za-z0-9._@\/-]*(?:\u00a0[A-Za-z][A-Za-z0-9._@\/-]*)*/g;
+    const LATIN_RE = /[A-Za-z][A-Za-z0-9._@\/-]*(?:[\u00a0 ][A-Za-z][A-Za-z0-9._@\/-]*)*/g;
 
     let currentLang = localStorage.getItem('lang') === 'en' ? 'en' : 'fa';
 
@@ -1586,14 +1781,138 @@
         </div>`).join('');
     }
 
+    const SVC_ALIASES = {
+      'YouTube': ['یوتیوب', 'yt'],
+      'Twitch': ['توییچ', 'تویچ'],
+      'Instagram': ['اینستاگرام', 'اینستا', 'ig'],
+      'Threads': ['تردز', 'ترد'],
+      'X': ['twitter', 'tweet', 'توییتر', 'ایکس'],
+      'WhatsApp': ['واتساپ', 'واتس اپ', 'wa'],
+      'ChatGPT': ['چت جی پی تی', 'چت', 'gpt', 'openai'],
+      'Gemini': ['جمینای', 'google', 'گوگل', 'bard'],
+      'Reddit': ['ردیت'],
+      'Bluesky': ['بلواسکای', 'bsky'],
+      'Mega.nz': ['مگا', 'mega'],
+      'NotebookLM': ['نوت بوک', 'notebook', 'google'],
+      'Claude': ['کلود', 'anthropic'],
+      'Kryptex': ['کریپتکس', 'miner'],
+      'Pinterest': ['پینترست'],
+      'DeviantArt': ['دویانت آرت', 'دیویانت', 'deviant'],
+      'Kimi': ['کیمی', 'moonshot'],
+      'LM Studio': ['ال ام استودیو', 'lmstudio'],
+      'Epic Games': ['اپیک گیمز', 'اپیک', 'epic'],
+      'GTA5-Mods': ['gta', 'جی تی ای', 'mods', 'مد'],
+      'hCaptcha': ['کپچا', 'captcha'],
+      'Java': ['جاوا'],
+      'Spotify': ['اسپاتیفای'],
+      'Giphy': ['گیفی', 'گیف', 'gif'],
+      'Tenor': ['تنور', 'gif', 'گیف'],
+      'Microsoft': ['مایکروسافت', 'ms'],
+      'Telegram': ['تلگرام', 'tg']
+    };
+
+    const norm = s => String(s).toLowerCase().replace(/ي/g, 'ی').replace(/ك/g, 'ک').replace(/[\u200c\u200d\u00a0\s._\-+]/g, '');
+
+    let svcEntries = [];
+    let svcSig = '';
+
+    function hl(label, raw) {
+      const r = raw.trim().toLowerCase();
+      const i = r ? label.toLowerCase().indexOf(r) : -1;
+      if (i < 0) return esc(label);
+      return esc(label.slice(0, i)) + '<mark>' + esc(label.slice(i, i + r.length)) + '</mark>' + esc(label.slice(i + r.length));
+    }
+
+    function filterServices(init) {
+      const t = I18N[currentLang];
+      const input = $('svc-q'), area = $('svc-area'), chipsEl = $('svc-chips');
+      const raw = input.value, q = norm(raw);
+      const chips = Array.prototype.slice.call(chipsEl.children);
+      area.style.minHeight = '';
+      if (q) {
+        chips.forEach(c => { c.hidden = false; });
+        area.style.minHeight = area.offsetHeight + 'px';
+      }
+      const visible = [];
+      chips.forEach((c, i) => {
+        const hit = !q || svcEntries[i].keys.some(k => k.indexOf(q) !== -1);
+        c.hidden = !hit;
+        if (hit) {
+          c.innerHTML = hl(svcEntries[i].label, raw);
+          visible.push(c);
+        }
+      });
+      $('svc-clear').hidden = !raw;
+      const empty = visible.length === 0;
+      $('svc-empty').hidden = !empty;
+      if (empty) {
+        const none = $('svc-none');
+        const shown = raw.trim().length > 24 ? raw.trim().slice(0, 24) + '…' : raw.trim();
+        const word = document.createElement('bdi');
+        word.textContent = shown;
+        none.textContent = '';
+        none.append(t.svcNone[0], word, t.svcNone[1]);
+        $('svc-none-hint').textContent = t.svcNoneHint;
+      }
+      const sig = visible.map(c => c.dataset.i).join(',');
+      const count = $('svc-count');
+      count.textContent = t.svcCount(fmt(visible.length), fmt(chips.length));
+      if (!init && sig !== svcSig && !reduceMotion) {
+        visible.forEach((c, k) => {
+          c.classList.remove('pop');
+          c.style.setProperty('--d', Math.min(k, 16) * 22 + 'ms');
+        });
+        void chipsEl.offsetWidth;
+        visible.forEach(c => c.classList.add('pop'));
+        count.classList.remove('tick');
+        void count.offsetWidth;
+        count.classList.add('tick');
+      }
+      svcSig = sig;
+    }
+
     function renderServices(t) {
+      const prev = $('svc-q') ? $('svc-q').value : '';
+      svcEntries = [{ label: t.svcMain, main: true, keys: ['discord', 'دیسکورد'].map(norm) }].concat(
+        SERVICES.map(s => ({ label: s, main: false, keys: [s].concat(SVC_ALIASES[s] || []).map(norm) }))
+      );
       $('svc-card').innerHTML = `
         <p>${tx(t.svcText)}</p>
-        <div class="chips">
-          <span class="chip main">${tx(t.svcMain)}</span>
-          ${SERVICES.map(s => `<span class="chip">${tx(s)}</span>`).join('')}
+        <div class="svc-tools" role="search">
+          <div class="svc-search">
+            ${svg('search')}
+            <input id="svc-q" type="search" placeholder="${esc(t.svcSearch)}" aria-label="${esc(t.svcSearch)}" autocomplete="off" autocapitalize="off" spellcheck="false" enterkeyhint="search">
+            <button type="button" class="svc-clear" id="svc-clear" aria-label="${esc(t.svcClear)}" hidden>${svg('close')}</button>
+          </div>
+          <span class="svc-count" id="svc-count" aria-live="polite"></span>
+        </div>
+        <div class="svc-area" id="svc-area">
+          <div class="chips" id="svc-chips">
+            ${svcEntries.map((e, i) => `<span class="chip${e.main ? ' main' : ''}"${e.main ? '' : ' dir="ltr"'} data-i="${i}">${esc(e.label)}</span>`).join('')}
+          </div>
+          <div class="svc-empty" id="svc-empty" hidden>
+            <div class="svc-none" id="svc-none"></div>
+            <div class="svc-none-hint" id="svc-none-hint"></div>
+          </div>
         </div>
       `;
+      const input = $('svc-q');
+      input.value = prev;
+      input.addEventListener('input', () => filterServices(false));
+      input.addEventListener('keydown', e => {
+        if (e.key === 'Escape' && input.value) {
+          e.preventDefault();
+          input.value = '';
+          filterServices(false);
+        }
+      });
+      $('svc-clear').addEventListener('click', () => {
+        input.value = '';
+        filterServices(false);
+        input.focus();
+      });
+      svcSig = '';
+      filterServices(true);
     }
 
     function renderFaq(t) {
