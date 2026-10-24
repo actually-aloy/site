@@ -7,7 +7,7 @@
   }
 
   function valid(repo, d) {
-    return !!(d && typeof d.url === 'string' && d.url.indexOf('https://github.com/' + repo + '/releases/download/') === 0);
+    return !!(d && typeof d.url === 'string' && d.url.toLowerCase().indexOf(('https://github.com/' + repo + '/releases/download/').toLowerCase()) === 0);
   }
 
   function pick(assets) {

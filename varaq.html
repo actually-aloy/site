@@ -1,0 +1,2107 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#14100c">
+  <title>ورق — یه PDF‌خوان آروم</title>
+  <meta name="description" content="Varaq: a quiet, free PDF reader for Windows. It opens fast, remembers where you stopped, and lets you highlight and take notes without getting in your way.">
+  <link rel="canonical" href="https://actually-aloy.github.io/site/varaq">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Varaq — a quiet PDF reader">
+  <meta property="og:description" content="A free, portable PDF reader for Windows. Highlights, notes, dark mode and your place remembered. No installer, no account.">
+  <meta property="og:url" content="https://actually-aloy.github.io/site/varaq">
+  <meta property="og:image" content="https://actually-aloy.github.io/site/varaq-og.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Varaq — a quiet PDF reader">
+  <meta name="twitter:description" content="A free, portable PDF reader for Windows. Highlights, notes, dark mode and your place remembered. No installer, no account.">
+  <meta name="twitter:image" content="https://actually-aloy.github.io/site/varaq-og.jpg">
+  <link rel="icon" href="varaq-logo.png" type="image/png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #14100c;
+      --text: #fbf6ee;
+      --muted: #cbbfae;
+      --line: rgba(255, 236, 214, 0.16);
+      --orange: #d1581f;
+      --orange-mid: #ee7a3e;
+      --orange-soft: #ffc18f;
+      --gold: #ffd23f;
+      --pink: #ff7ab6;
+      --ink: #1d1c1a;
+      --radius: 28px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 14% 10%, rgba(209, 88, 31, 0.3), transparent 32%),
+        radial-gradient(circle at 90% 14%, rgba(255, 193, 143, 0.1), transparent 28%),
+        radial-gradient(circle at 52% 94%, rgba(255, 210, 63, 0.07), transparent 34%),
+        var(--bg);
+      animation: page-fade-in 0.4s ease-out;
+      user-select: none;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+    }
+
+    @keyframes page-fade-in {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    html[lang="fa"] body {
+      font-family: Vazirmatn, Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      html { scroll-behavior: smooth; }
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    h1, h2, h3, p {
+      margin: 0;
+    }
+
+    [hidden] {
+      display: none !important;
+    }
+
+    .page {
+      width: min(1080px, calc(100% - 36px));
+      margin: 0 auto;
+      padding: 38px 0 56px;
+    }
+
+    .glass {
+      border: 1px solid var(--line);
+      border-radius: calc(var(--radius) + 10px);
+      background: linear-gradient(145deg, rgba(255, 244, 232, 0.105), rgba(255, 244, 232, 0.045));
+      box-shadow: 0 28px 90px rgba(0, 0, 0, 0.4);
+      backdrop-filter: blur(22px);
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(320px, 440px);
+      gap: 30px;
+      padding: 28px;
+      align-items: center;
+    }
+
+    .intro {
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+      min-width: 0;
+    }
+
+    .topline {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .pill-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 14px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(255, 244, 232, 0.06);
+      color: var(--text);
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 180ms ease, border-color 180ms ease;
+    }
+
+    .pill-btn:hover {
+      background: rgba(255, 244, 232, 0.12);
+      border-color: rgba(255, 193, 143, 0.45);
+    }
+
+    .pill-btn svg {
+      width: 14px;
+      height: 14px;
+    }
+
+    html[dir="rtl"] .pill-btn svg {
+      transform: scaleX(-1);
+    }
+
+    .lang-toggle {
+      margin-inline-start: auto;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .brand img {
+      width: 64px;
+      height: 64px;
+      flex: 0 0 auto;
+      border-radius: 18px;
+      box-shadow: 0 16px 40px rgba(209, 88, 31, 0.45);
+      -webkit-user-drag: none;
+    }
+
+    h1 {
+      font-size: clamp(48px, 9vw, 92px);
+      line-height: 1.15;
+      letter-spacing: -0.04em;
+    }
+
+    .gradient-text {
+      background: linear-gradient(90deg, var(--orange-mid), var(--orange-soft), var(--pink), var(--orange-mid));
+      background-size: 300% 100%;
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      animation: enchant 6s linear infinite;
+    }
+
+    @keyframes enchant {
+      to { background-position: -300% 0; }
+    }
+
+    .pitch {
+      max-width: 560px;
+      color: var(--muted);
+      font-size: 18px;
+      line-height: 1.75;
+    }
+
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .tag {
+      padding: 6px 13px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(255, 244, 232, 0.06);
+      color: var(--text);
+      font-size: 12.5px;
+      font-weight: 600;
+    }
+
+    .tag.hot {
+      border-color: transparent;
+      background: linear-gradient(135deg, var(--orange-mid), var(--orange-soft));
+      color: var(--ink);
+    }
+
+    .cta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 12px 22px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: rgba(255, 244, 232, 0.06);
+      color: var(--text);
+      font-family: inherit;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: filter 180ms ease, transform 180ms ease, background 180ms ease, border-color 180ms ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      background: rgba(255, 244, 232, 0.12);
+      border-color: rgba(255, 193, 143, 0.45);
+    }
+
+    .btn.primary {
+      border-color: transparent;
+      background: linear-gradient(135deg, var(--orange-mid), var(--orange-soft));
+      color: var(--ink);
+    }
+
+    .btn.primary:hover {
+      filter: brightness(1.06);
+    }
+
+    .btn svg {
+      width: 16px;
+      height: 16px;
+      flex: 0 0 auto;
+    }
+
+    .btn:focus-visible,
+    .pill-btn:focus-visible,
+    .faq-q:focus-visible {
+      outline: 2px solid var(--orange-soft);
+      outline-offset: 3px;
+    }
+
+    .dl-meta {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .stage {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+    }
+
+    .stage::before {
+      content: "";
+      position: absolute;
+      inset: 6% -6% 10%;
+      z-index: 0;
+      border-radius: 50%;
+      background: radial-gradient(closest-side, rgba(209, 88, 31, 0.5), rgba(209, 88, 31, 0));
+      filter: blur(24px);
+      pointer-events: none;
+    }
+
+    .mock {
+      --m-bg: #ecebe6;
+      --m-panel: #fbfaf7;
+      --m-panel2: #f3f2ed;
+      --m-ink: #1d1c1a;
+      --m-ink2: #5d5a53;
+      --m-ink3: #948f85;
+      --m-line: rgba(0, 0, 0, 0.1);
+      --m-page: #ffffff;
+      --m-pageink: #26241f;
+      --m-ar: 209, 88, 31;
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 440px;
+      overflow: hidden;
+      border: 1px solid var(--m-line);
+      border-radius: 14px;
+      background: var(--m-bg);
+      color: var(--m-ink);
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(209, 88, 31, 0.2);
+      transition: background 0.35s ease, color 0.35s ease;
+    }
+
+    .mock[data-theme="sepia"] {
+      --m-bg: #e4d8bf;
+      --m-panel: #f1e8d3;
+      --m-panel2: #eadfc6;
+      --m-ink: #3a3125;
+      --m-ink2: #6b5d47;
+      --m-ink3: #9a8a6e;
+      --m-line: rgba(58, 49, 37, 0.14);
+      --m-page: #f7f0de;
+      --m-pageink: #3a3125;
+    }
+
+    .mock[data-theme="dark"] {
+      --m-bg: #141418;
+      --m-panel: #1c1c21;
+      --m-panel2: #242429;
+      --m-ink: #ececf0;
+      --m-ink2: #a4a4ae;
+      --m-ink3: #6f6f7a;
+      --m-line: rgba(255, 255, 255, 0.1);
+      --m-page: #202024;
+      --m-pageink: #dcdce0;
+    }
+
+    .m-title {
+      display: flex;
+      align-items: center;
+      height: 32px;
+      background: var(--m-panel);
+      border-bottom: 1px solid var(--m-line);
+      direction: ltr;
+      transition: background 0.35s ease;
+    }
+
+    .m-title-name {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      padding-left: 10px;
+      min-width: 0;
+      color: var(--m-ink2);
+      font-size: 11.5px;
+      font-weight: 600;
+    }
+
+    .m-title-name img {
+      width: 18px;
+      height: 18px;
+      display: block;
+      -webkit-user-drag: none;
+    }
+
+    .m-title-name span {
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+
+    .m-title-name i {
+      font-style: normal;
+      font-weight: 500;
+      color: var(--m-ink3);
+    }
+
+    .m-title-btns {
+      display: flex;
+      height: 100%;
+      margin-left: auto;
+      color: var(--m-ink3);
+    }
+
+    .m-title-btns span {
+      width: 38px;
+      display: grid;
+      place-items: center;
+    }
+
+    .m-title-btns svg {
+      width: 10px;
+      height: 10px;
+    }
+
+    .m-tools {
+      display: flex;
+      align-items: center;
+      gap: 2px;
+      padding: 5px 8px;
+      background: var(--m-panel);
+      border-bottom: 1px solid var(--m-line);
+      direction: ltr;
+      transition: background 0.35s ease;
+    }
+
+    .m-ib {
+      width: 28px;
+      height: 28px;
+      flex: none;
+      display: grid;
+      place-items: center;
+      padding: 0;
+      border: 0;
+      border-radius: 8px;
+      background: none;
+      color: var(--m-ink2);
+      font-family: inherit;
+      cursor: pointer;
+      transition: background 0.2s ease, color 0.2s ease, opacity 0.2s ease;
+    }
+
+    .m-ib:hover:not(:disabled) {
+      background: rgba(127, 127, 127, 0.16);
+      color: var(--m-ink);
+    }
+
+    .m-ib:disabled {
+      opacity: 0.3;
+      cursor: default;
+    }
+
+    .m-ib.on {
+      color: rgb(var(--m-ar));
+    }
+
+    .m-ib svg {
+      width: 16px;
+      height: 16px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.7;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      transition: fill 0.25s ease;
+    }
+
+    #m-mark.on svg {
+      fill: rgba(var(--m-ar), 0.3);
+    }
+
+    .m-ib:focus-visible,
+    .m-sw:focus-visible,
+    .m-tab:focus-visible,
+    .m-thumb:focus-visible,
+    .m-hl-item:focus-visible,
+    .m-c:focus-visible,
+    .s:focus-visible {
+      outline: 2px solid rgb(var(--m-ar));
+      outline-offset: 1px;
+    }
+
+    .m-gap {
+      flex: 1;
+      min-width: 4px;
+    }
+
+    .m-val {
+      min-width: 36px;
+      color: var(--m-ink2);
+      font-size: 11.5px;
+      font-weight: 600;
+      text-align: center;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .m-swatches {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      margin-left: 6px;
+    }
+
+    .m-sw {
+      width: 15px;
+      height: 15px;
+      padding: 0;
+      border: 1.5px solid var(--m-line);
+      border-radius: 50%;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+
+    .m-sw:hover {
+      transform: scale(1.12);
+    }
+
+    .m-sw[data-t="light"] { background: #fbfaf7; }
+    .m-sw[data-t="sepia"] { background: #eadfc6; }
+    .m-sw[data-t="dark"] { background: #1c1c21; }
+
+    .m-sw.on {
+      outline: 2px solid rgb(var(--m-ar));
+      outline-offset: 1px;
+    }
+
+    .m-main {
+      position: relative;
+      display: flex;
+      height: 352px;
+      direction: ltr;
+    }
+
+    .m-side {
+      flex: none;
+      width: 140px;
+      overflow: hidden;
+      background: var(--m-panel);
+      border-right: 1px solid var(--m-line);
+      transition: width 0.32s cubic-bezier(0.2, 0.8, 0.2, 1), border-color 0.32s ease, background 0.35s ease;
+    }
+
+    .m-side.hide {
+      width: 0;
+      border-right-color: transparent;
+    }
+
+    .m-side-in {
+      width: 140px;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .m-tabs {
+      display: flex;
+      border-bottom: 1px solid var(--m-line);
+    }
+
+    .m-tab {
+      flex: 1;
+      min-width: 0;
+      padding: 8px 2px;
+      border: 0;
+      border-bottom: 2px solid transparent;
+      background: none;
+      color: var(--m-ink3);
+      font-family: inherit;
+      font-size: 10.5px;
+      font-weight: 700;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: color 0.2s ease, border-color 0.2s ease;
+    }
+
+    .m-tab.on {
+      color: var(--m-ink);
+      border-bottom-color: rgb(var(--m-ar));
+    }
+
+    .m-badge {
+      display: inline-block;
+      min-width: 14px;
+      margin-inline-start: 3px;
+      padding: 0 4px;
+      border-radius: 999px;
+      background: rgb(var(--m-ar));
+      color: #fff;
+      font-size: 9.5px;
+      line-height: 14px;
+      animation: badge-in 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+
+    @keyframes badge-in {
+      from { transform: scale(0.4); opacity: 0; }
+      to { transform: none; opacity: 1; }
+    }
+
+    .m-thumbs,
+    .m-hls {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 10px;
+      overflow-y: auto;
+    }
+
+    .m-thumb {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      padding: 0;
+      border: 0;
+      background: none;
+      color: var(--m-ink3);
+      font-family: inherit;
+      font-size: 10px;
+      cursor: pointer;
+    }
+
+    .m-th-pg {
+      width: 62px;
+      height: 80px;
+      border-radius: 3px;
+      background:
+        repeating-linear-gradient(var(--m-line) 0 2px, transparent 2px 7px) 8px 18px / calc(100% - 16px) calc(100% - 28px) no-repeat,
+        var(--m-page);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
+      outline: 2px solid transparent;
+      outline-offset: 2px;
+      transition: outline-color 0.2s ease, transform 0.2s ease;
+    }
+
+    .m-thumb:hover .m-th-pg {
+      transform: translateY(-1px);
+    }
+
+    .m-thumb.on .m-th-pg {
+      outline-color: rgb(var(--m-ar));
+    }
+
+    .m-thumb.on {
+      color: var(--m-ink);
+      font-weight: 700;
+    }
+
+    .m-hls {
+      align-items: stretch;
+      gap: 7px;
+      padding: 10px 8px;
+    }
+
+    .m-hl-item {
+      display: block;
+      width: 100%;
+      padding: 6px 7px;
+      border: 0;
+      border-inline-start: 3px solid rgb(var(--hc));
+      border-radius: 4px;
+      background: var(--m-panel2);
+      color: var(--m-ink2);
+      font-family: inherit;
+      font-size: 10.5px;
+      line-height: 1.5;
+      text-align: start;
+      cursor: pointer;
+      animation: hl-in 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+
+    .m-hl-item:hover {
+      color: var(--m-ink);
+    }
+
+    .m-hl-item span {
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    @keyframes hl-in {
+      from { opacity: 0; transform: translateX(-8px); }
+      to { opacity: 1; transform: none; }
+    }
+
+    .m-empty {
+      padding: 6px 2px;
+      color: var(--m-ink3);
+      font-size: 10.5px;
+      line-height: 1.7;
+      text-align: center;
+    }
+
+    .m-view {
+      position: relative;
+      flex: 1;
+      min-width: 0;
+      padding: 16px 14px 18px;
+      overflow-y: auto;
+      overflow-x: hidden;
+      background: var(--m-bg);
+      transition: background 0.35s ease;
+      scrollbar-width: thin;
+    }
+
+    .m-page {
+      --z: 1;
+      position: relative;
+      padding: 22px 22px 18px;
+      border-radius: 3px;
+      background: var(--m-page);
+      color: var(--m-pageink);
+      font-family: "Iowan Old Style", Palatino, "Palatino Linotype", "Book Antiqua", Georgia, serif;
+      font-size: calc(13.5px * var(--z));
+      line-height: 1.8;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+      transition: background 0.35s ease, color 0.35s ease, font-size 0.25s ease;
+    }
+
+    html[lang="fa"] .m-page {
+      font-family: Vazirmatn, Inter, ui-sans-serif, system-ui, sans-serif;
+      font-size: calc(12.5px * var(--z));
+      line-height: 2;
+    }
+
+    .m-page.swap {
+      animation: page-in 0.36s ease both;
+    }
+
+    @keyframes page-in {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: none; }
+    }
+
+    .m-page.bm::before {
+      content: "";
+      position: absolute;
+      top: -1px;
+      inset-inline-end: 18px;
+      width: 12px;
+      height: 22px;
+      background: rgb(var(--m-ar));
+      clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 76%, 0 100%);
+      animation: ribbon 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+
+    @keyframes ribbon {
+      from { transform: translateY(-100%); }
+      to { transform: none; }
+    }
+
+    .m-page h3 {
+      margin: 0 0 10px;
+      font-size: 1.25em;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      line-height: 1.4;
+    }
+
+    .m-page p {
+      margin: 0;
+    }
+
+    .m-pn {
+      margin-top: 14px;
+      color: var(--m-ink3);
+      font-family: Inter, system-ui, sans-serif;
+      font-size: 10px;
+      text-align: center;
+    }
+
+    .s {
+      cursor: pointer;
+      border-radius: 2px;
+      background-color: transparent;
+      background-image: linear-gradient(rgba(var(--hc), 0.45), rgba(var(--hc), 0.45));
+      background-repeat: no-repeat;
+      background-size: 0% 100%;
+      background-position: 0 0;
+      -webkit-box-decoration-break: clone;
+      box-decoration-break: clone;
+      transition: background-size 0.5s cubic-bezier(0.2, 0.8, 0.2, 1), background-color 0.2s ease;
+    }
+
+    html[dir="rtl"] .s {
+      background-position: 100% 0;
+    }
+
+    .s:hover {
+      background-color: rgba(127, 127, 127, 0.14);
+    }
+
+    .s.hl {
+      background-size: 100% 100%;
+    }
+
+    .s.sel {
+      outline: 1.5px solid rgba(var(--m-ar), 0.7);
+      outline-offset: 1px;
+    }
+
+    .s.nudge {
+      animation: nudge 2.2s ease-in-out 1.4s 3;
+    }
+
+    @keyframes nudge {
+      0%, 100% { background-color: rgba(var(--m-ar), 0); }
+      50% { background-color: rgba(var(--m-ar), 0.2); }
+    }
+
+    .m-pop {
+      position: absolute;
+      z-index: 5;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      padding: 7px 9px;
+      border: 1px solid var(--m-line);
+      border-radius: 12px;
+      background: var(--m-panel);
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.32);
+      opacity: 0;
+      transform: translateY(4px) scale(0.95);
+      pointer-events: none;
+      transition: opacity 0.18s ease, transform 0.18s ease;
+    }
+
+    .m-pop.open {
+      opacity: 1;
+      transform: none;
+      pointer-events: auto;
+    }
+
+    .m-c {
+      width: 20px;
+      height: 20px;
+      display: grid;
+      place-items: center;
+      padding: 0;
+      border: 0;
+      border-radius: 50%;
+      background: rgb(var(--c));
+      color: var(--m-ink2);
+      cursor: pointer;
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .m-c:hover {
+      transform: scale(1.14);
+    }
+
+    .m-c.on {
+      box-shadow: 0 0 0 2px var(--m-panel), 0 0 0 3.5px rgb(var(--c));
+    }
+
+    .m-c.x {
+      background: none;
+      border: 1.5px solid var(--m-ink3);
+    }
+
+    .m-c.x svg {
+      width: 10px;
+      height: 10px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+    }
+
+    .m-toast {
+      position: absolute;
+      left: 50%;
+      bottom: 12px;
+      z-index: 6;
+      padding: 6px 13px;
+      border-radius: 999px;
+      background: var(--m-ink);
+      color: var(--m-panel);
+      font-size: 11px;
+      font-weight: 600;
+      white-space: nowrap;
+      opacity: 0;
+      transform: translate(-50%, 8px);
+      pointer-events: none;
+      transition: opacity 0.22s ease, transform 0.22s ease;
+    }
+
+    .m-toast.show {
+      opacity: 1;
+      transform: translate(-50%, 0);
+    }
+
+    .mock-note {
+      position: relative;
+      z-index: 1;
+      max-width: 400px;
+      color: var(--muted);
+      font-size: 12.5px;
+      line-height: 1.7;
+      text-align: center;
+    }
+
+    section.block {
+      margin-top: 38px;
+      scroll-margin-top: 18px;
+    }
+
+    .head {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 12px;
+      margin: 0 4px 14px;
+    }
+
+    .head h2 {
+      font-size: 26px;
+      letter-spacing: -0.03em;
+    }
+
+    .head span {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 14px;
+    }
+
+    .grid.three {
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    }
+
+    .grid.cols3 {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    @media (max-width: 900px) {
+      .grid.cols3 {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 560px) {
+      .grid.cols3 {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    .card {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      padding: 20px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: linear-gradient(145deg, rgba(255, 244, 232, 0.09), rgba(255, 244, 232, 0.04));
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      backdrop-filter: blur(18px);
+      transition: transform 180ms ease, border-color 180ms ease;
+    }
+
+    .card:hover {
+      transform: translateY(-3px);
+      border-color: rgba(255, 193, 143, 0.42);
+    }
+
+    .card-top {
+      display: flex;
+      align-items: center;
+      gap: 13px;
+    }
+
+    .icon {
+      position: relative;
+      width: 46px;
+      height: 46px;
+      flex: 0 0 auto;
+      display: grid;
+      place-items: center;
+      border-radius: 15px;
+      color: var(--ink);
+      background: linear-gradient(135deg, var(--orange-mid), var(--orange-soft));
+      box-shadow: 0 14px 30px rgba(209, 88, 31, 0.3);
+    }
+
+    .icon.gold {
+      background: linear-gradient(135deg, var(--gold), var(--orange-soft));
+      box-shadow: 0 14px 30px rgba(255, 210, 63, 0.18);
+    }
+
+    .icon svg {
+      width: 22px;
+      height: 22px;
+    }
+
+    .step-num {
+      margin-inline-start: auto;
+      color: rgba(255, 193, 143, 0.28);
+      font-size: 38px;
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      line-height: 1;
+    }
+
+    .card-name {
+      font-size: 17px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    .card-desc {
+      color: var(--muted);
+      font-size: 14.5px;
+      line-height: 1.75;
+    }
+
+    .keys-card {
+      padding: 10px 22px;
+    }
+
+    .keys {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      column-gap: 36px;
+    }
+
+    .key-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .keys .key-row:nth-last-child(-n+2) {
+      border-bottom: 0;
+    }
+
+    .keys-k {
+      display: inline-flex;
+      flex: none;
+      gap: 4px;
+      direction: ltr;
+    }
+
+    kbd {
+      display: inline-block;
+      min-width: 26px;
+      padding: 3px 8px;
+      border: 1px solid var(--line);
+      border-bottom-width: 2px;
+      border-radius: 7px;
+      background: rgba(255, 244, 232, 0.07);
+      color: var(--text);
+      font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+      font-size: 12px;
+      font-weight: 600;
+      line-height: 1.3;
+      text-align: center;
+    }
+
+    @media (max-width: 700px) {
+      .keys {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .keys .key-row:nth-last-child(2) {
+        border-bottom: 1px solid var(--line);
+      }
+    }
+
+    .faq {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .faq-item {
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      background: rgba(255, 244, 232, 0.05);
+      transition: border-color 240ms ease, background 240ms ease;
+    }
+
+    .faq-item:hover {
+      border-color: rgba(255, 193, 143, 0.28);
+    }
+
+    .faq-item.open {
+      border-color: rgba(255, 193, 143, 0.4);
+      background: rgba(255, 244, 232, 0.08);
+    }
+
+    .faq-q {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 16px 20px;
+      border: none;
+      border-radius: 20px;
+      background: none;
+      color: var(--text);
+      font-family: inherit;
+      font-size: 15px;
+      font-weight: 700;
+      text-align: start;
+      cursor: pointer;
+    }
+
+    .faq-q:focus-visible {
+      outline-offset: -2px;
+    }
+
+    .faq-icon {
+      position: relative;
+      width: 14px;
+      height: 14px;
+      flex: 0 0 auto;
+      transition: transform 340ms cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+
+    .faq-icon::before,
+    .faq-icon::after {
+      content: "";
+      position: absolute;
+      inset-inline: 0;
+      top: 50%;
+      height: 2px;
+      margin-top: -1px;
+      border-radius: 2px;
+      background: var(--orange-soft);
+      transition: transform 340ms cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+
+    .faq-icon::after {
+      transform: rotate(90deg);
+    }
+
+    .faq-item.open .faq-icon {
+      transform: rotate(180deg);
+    }
+
+    .faq-item.open .faq-icon::after {
+      transform: rotate(0deg);
+    }
+
+    .faq-panel {
+      display: grid;
+      grid-template-rows: 0fr;
+      opacity: 0;
+      visibility: hidden;
+      transition: grid-template-rows 360ms cubic-bezier(0.2, 0.8, 0.2, 1), opacity 240ms ease, visibility 0s linear 360ms;
+    }
+
+    .faq-item.open .faq-panel {
+      grid-template-rows: 1fr;
+      opacity: 1;
+      visibility: visible;
+      transition: grid-template-rows 360ms cubic-bezier(0.2, 0.8, 0.2, 1), opacity 300ms ease 60ms, visibility 0s;
+    }
+
+    .faq-inner {
+      min-height: 0;
+      overflow: hidden;
+    }
+
+    .faq .answer {
+      padding: 0 20px 18px;
+      color: var(--muted);
+      font-size: 14.5px;
+      line-height: 1.8;
+    }
+
+    .closing {
+      display: flex;
+      align-items: center;
+      gap: 22px;
+      padding: 28px;
+    }
+
+    .closing img {
+      width: 72px;
+      height: 72px;
+      flex: 0 0 auto;
+      border-radius: 20px;
+      box-shadow: 0 16px 40px rgba(209, 88, 31, 0.45);
+      -webkit-user-drag: none;
+    }
+
+    .closing-text {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      min-width: 0;
+    }
+
+    .closing h2 {
+      font-size: 26px;
+      letter-spacing: -0.03em;
+    }
+
+    .closing p {
+      max-width: 520px;
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.75;
+    }
+
+    .closing .cta-row {
+      margin-top: 8px;
+    }
+
+    .footer {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+      margin-top: 40px;
+      text-align: center;
+    }
+
+    .made {
+      color: var(--text);
+      font-size: 15px;
+      font-weight: 600;
+    }
+
+    .heart {
+      display: inline-block;
+      width: 15px;
+      height: 15px;
+      margin: 0 3px;
+      vertical-align: -2px;
+      color: var(--pink);
+      animation: beat 1.8s ease-in-out infinite;
+    }
+
+    @keyframes beat {
+      0%, 60%, 100% { transform: scale(1); }
+      20% { transform: scale(1.22); }
+      40% { transform: scale(1.06); }
+    }
+
+    .legal {
+      color: var(--muted);
+      font-size: 12.5px;
+      opacity: 0.8;
+    }
+
+    .home-link {
+      padding-bottom: 2px;
+      border-bottom: 1px solid rgba(255, 236, 214, 0.24);
+      color: var(--muted);
+      font-size: 15px;
+      letter-spacing: -0.01em;
+      transition: color 180ms ease, border-color 180ms ease;
+    }
+
+    .home-link:hover {
+      color: var(--text);
+      border-color: rgba(255, 193, 143, 0.55);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      body { animation: none; }
+      .gradient-text { animation: none; }
+      .heart { animation: none; }
+      .s.nudge, .m-page.swap, .m-page.bm::before, .m-badge, .m-hl-item { animation: none; }
+      .s, .m-side, .m-toast, .m-pop, .m-page, .mock, .m-sw, .m-th-pg { transition: none; }
+      .faq-item, .faq-icon, .faq-icon::before, .faq-icon::after, .faq-panel, .card, .btn {
+        transition: none !important;
+      }
+    }
+
+    @media (max-width: 900px) {
+      .hero {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .page {
+        width: min(100% - 22px, 1080px);
+        padding-top: 18px;
+      }
+
+      .hero,
+      .closing {
+        padding: 16px;
+        border-radius: 28px;
+      }
+
+      .intro {
+        gap: 18px;
+      }
+
+      .head {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 2px;
+      }
+
+      .btn {
+        width: 100%;
+      }
+
+      .closing {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .keys-card {
+        padding: 6px 18px;
+      }
+
+      #m-side-btn,
+      .m-side {
+        display: none;
+      }
+
+      .m-val {
+        min-width: 30px;
+      }
+
+      .m-swatches {
+        margin-left: 2px;
+      }
+
+      .m-view {
+        padding: 12px 10px 14px;
+      }
+
+      .m-page {
+        padding: 18px 16px 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+
+    <section class="hero glass">
+      <div class="intro">
+        <div class="topline">
+          <a class="pill-btn" href="index.html" id="back-link">
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 3 5 8l5 5"/></svg>
+            <span id="back-text"></span>
+          </a>
+          <button type="button" class="pill-btn lang-toggle" id="lang-toggle" aria-label="Switch language">EN / فا</button>
+        </div>
+        <div class="brand">
+          <img src="varaq-logo.png" alt="" width="64" height="64" draggable="false">
+          <h1><span class="gradient-text" id="hero-title"></span></h1>
+        </div>
+        <p class="pitch" id="hero-pitch"></p>
+        <div class="tags" id="hero-tags"></div>
+        <div class="cta-row">
+          <a class="btn primary" data-dl href="https://github.com/actually-aloy/varaq/releases/latest">
+            <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M.5 9.9a.5.5 0 0 1 .5.5v2.1a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.1a.5.5 0 0 1 1 0v2.1a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.1a.5.5 0 0 1 .5-.5"/><path d="M7.5 10.29V1.5a.5.5 0 0 1 1 0v8.79l2.15-2.15a.5.5 0 0 1 .7.71l-3 3a.5.5 0 0 1-.7 0l-3-3a.5.5 0 1 1 .7-.71z"/></svg>
+            <span data-dl-label></span>
+          </a>
+          <a class="btn" href="https://github.com/actually-aloy/varaq" target="_blank" rel="noopener noreferrer">
+            <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8"/></svg>
+            <span id="cta-github"></span>
+          </a>
+        </div>
+        <p class="dl-meta" id="dl-meta" hidden></p>
+      </div>
+
+      <div class="stage">
+        <div class="mock" id="mock" data-theme="light">
+          <div class="m-title" aria-hidden="true">
+            <div class="m-title-name"><img src="varaq-logo.png" alt="" draggable="false"><span id="m-title-text"></span></div>
+            <div class="m-title-btns">
+              <span><svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1"><path d="M0 5h10"/></svg></span>
+              <span><svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1"><path d="M0 0l10 10M10 0 0 10"/></svg></span>
+            </div>
+          </div>
+          <div class="m-tools">
+            <button type="button" class="m-ib on" id="m-side-btn" aria-pressed="true"></button>
+            <button type="button" class="m-ib" id="m-prev"></button>
+            <span class="m-val" id="m-pages"></span>
+            <button type="button" class="m-ib" id="m-next"></button>
+            <span class="m-gap"></span>
+            <button type="button" class="m-ib" id="m-zout"></button>
+            <span class="m-val" id="m-zoom"></span>
+            <button type="button" class="m-ib" id="m-zin"></button>
+            <span class="m-gap"></span>
+            <button type="button" class="m-ib" id="m-mark" aria-pressed="false"></button>
+            <div class="m-swatches" id="m-swatches"></div>
+          </div>
+          <div class="m-main" id="m-main">
+            <div class="m-side" id="m-side">
+              <div class="m-side-in">
+                <div class="m-tabs">
+                  <button type="button" class="m-tab on" id="m-tab-pages"></button>
+                  <button type="button" class="m-tab" id="m-tab-hl"></button>
+                </div>
+                <div class="m-thumbs" id="m-thumbs"></div>
+                <div class="m-hls" id="m-hls" hidden></div>
+              </div>
+            </div>
+            <div class="m-view" id="m-view">
+              <div class="m-page" id="m-page"></div>
+            </div>
+            <div class="m-pop" id="m-pop" role="toolbar"></div>
+            <div class="m-toast" id="m-toast" role="status" aria-live="polite"></div>
+          </div>
+        </div>
+        <p class="mock-note" id="mock-note"></p>
+      </div>
+    </section>
+
+    <section class="block" id="how">
+      <div class="head">
+        <h2 id="how-title"></h2>
+        <span id="how-sub"></span>
+      </div>
+      <div class="grid three" id="how-grid"></div>
+    </section>
+
+    <section class="block" id="features">
+      <div class="head">
+        <h2 id="feat-title"></h2>
+        <span id="feat-sub"></span>
+      </div>
+      <div class="grid cols3" id="feat-grid"></div>
+    </section>
+
+    <section class="block" id="keys">
+      <div class="head">
+        <h2 id="keys-title"></h2>
+        <span id="keys-sub"></span>
+      </div>
+      <div class="card keys-card"><div class="keys" id="keys-list"></div></div>
+    </section>
+
+    <section class="block" id="faq">
+      <div class="head">
+        <h2 id="faq-title"></h2>
+        <span id="faq-sub"></span>
+      </div>
+      <div class="faq" id="faq-list"></div>
+    </section>
+
+    <section class="block">
+      <div class="closing glass">
+        <img src="varaq-logo.png" alt="" width="72" height="72" draggable="false">
+        <div class="closing-text">
+          <h2 id="end-title"></h2>
+          <p id="end-text"></p>
+          <div class="cta-row">
+            <a class="btn primary" data-dl href="https://github.com/actually-aloy/varaq/releases/latest">
+              <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M.5 9.9a.5.5 0 0 1 .5.5v2.1a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.1a.5.5 0 0 1 1 0v2.1a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.1a.5.5 0 0 1 .5-.5"/><path d="M7.5 10.29V1.5a.5.5 0 0 1 1 0v8.79l2.15-2.15a.5.5 0 0 1 .7.71l-3 3a.5.5 0 0 1-.7 0l-3-3a.5.5 0 1 1 .7-.71z"/></svg>
+              <span data-dl-label></span>
+            </a>
+            <a class="btn" href="https://discord.gg/JqrBUYEM8n" target="_blank" rel="noopener noreferrer">
+              <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M13.545 2.907a13.2 13.2 0 0 0-3.257-1.011.05.05 0 0 0-.052.025c-.141.25-.297.577-.406.833a12.2 12.2 0 0 0-3.658 0 8 8 0 0 0-.412-.833.05.05 0 0 0-.052-.025c-1.125.194-2.22.534-3.257 1.011a.04.04 0 0 0-.021.018C.356 6.024-.213 9.047.066 12.032q.003.022.021.037a13.3 13.3 0 0 0 3.995 2.02.05.05 0 0 0 .056-.019q.463-.63.818-1.329a.05.05 0 0 0-.01-.059l-.018-.011a9 9 0 0 1-1.248-.595.05.05 0 0 1-.02-.066l.015-.019q.127-.095.248-.195a.05.05 0 0 1 .051-.007c2.619 1.196 5.454 1.196 8.041 0a.05.05 0 0 1 .053.007q.121.1.248.195a.05.05 0 0 1-.004.085 8 8 0 0 1-1.249.594.05.05 0 0 0-.03.03.05.05 0 0 0 .003.041c.24.465.515.909.817 1.329a.05.05 0 0 0 .056.019 13.2 13.2 0 0 0 4.001-2.02.05.05 0 0 0 .021-.037c.334-3.451-.559-6.449-2.366-9.106a.03.03 0 0 0-.02-.019m-8.198 7.307c-.789 0-1.438-.724-1.438-1.612s.637-1.613 1.438-1.613c.807 0 1.45.73 1.438 1.613 0 .888-.637 1.612-1.438 1.612m5.316 0c-.788 0-1.438-.724-1.438-1.612s.637-1.613 1.438-1.613c.807 0 1.451.73 1.438 1.613 0 .888-.631 1.612-1.438 1.612"/></svg>
+              <span id="end-discord"></span>
+            </a>
+            <a class="btn" href="https://t.me/actually_aloy" target="_blank" rel="noopener noreferrer">
+              <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8.287 5.906q-1.168.486-4.666 2.01-.567.225-.595.442c-.03.243.275.339.69.47l.175.055c.408.133.958.288 1.243.294q.39.01.868-.32 3.269-2.206 3.374-2.23c.05-.012.12-.026.166.016s.042.12.037.141c-.03.129-1.227 1.241-1.846 1.817-.193.18-.33.307-.358.336a8 8 0 0 1-.188.186c-.38.366-.664.64.015 1.088.327.216.589.393.85.571.284.194.568.387.936.629q.14.092.27.187c.331.236.63.448.997.414.214-.02.435-.22.547-.82.265-1.417.786-4.486.906-5.751a1.4 1.4 0 0 0-.013-.315.34.34 0 0 0-.114-.217.53.53 0 0 0-.31-.093c-.3.005-.763.166-2.984 1.09"/></svg>
+              <span id="end-telegram"></span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="footer">
+      <a class="home-link" href="index.html" id="footer-home"></a>
+      <p class="made" id="made-by"></p>
+      <p class="legal" dir="ltr">© 2026 Aloy</p>
+    </div>
+  </main>
+
+  <script src="releases.js"></script>
+  <script>
+    (function () {
+      var host = location.hostname;
+      var local = host === 'localhost' || host === '127.0.0.1' || /^[\d.]+$/.test(host) || host.charAt(0) === '[';
+      if (local || !/^https?:$/.test(location.protocol)) return;
+      var clean = location.pathname.replace(/\/index\.html$/, '/').replace(/\.html$/, '');
+      if (clean !== location.pathname) history.replaceState(null, '', clean + location.search + location.hash);
+    })();
+
+    const REPO = 'actually-aloy/varaq';
+
+    const SVG = {
+      download: '<path d="M12 4v11"/><path d="M7.5 10.5 12 15l4.5-4.5"/><path d="M5 19h14"/>',
+      cursor: '<path d="M6 4l12 7-5.2 1.6L10.5 18z"/>',
+      file: '<path d="M6 3.5h8l4 4V20.5H6z"/><path d="M14 3.5v4h4"/><path d="M9 13h6"/><path d="M9 16.5h4"/>',
+      book: '<path d="M4 5.5C6.5 4 9.5 4 12 5.5c2.5-1.5 5.5-1.5 8 0V19c-2.5-1.5-5.5-1.5-8 0-2.5-1.5-5.5-1.5-8 0z"/><path d="M12 5.5V19"/>',
+      sun: '<circle cx="12" cy="12" r="4"/><path d="M12 3v2"/><path d="M12 19v2"/><path d="M3 12h2"/><path d="M19 12h2"/><path d="M5.6 5.6 7 7"/><path d="M17 17l1.4 1.4"/><path d="M5.6 18.4 7 17"/><path d="M17 7l1.4-1.4"/>',
+      pen: '<path d="m4 20 1-4L15.5 5.5a2.1 2.1 0 0 1 3 3L8 19z"/><path d="m14 7 3 3"/>',
+      marquee: '<path d="M4 8V5.5A1.5 1.5 0 0 1 5.5 4H8"/><path d="M16 4h2.5A1.5 1.5 0 0 1 20 5.5V8"/><path d="M20 16v2.5a1.5 1.5 0 0 1-1.5 1.5H16"/><path d="M8 20H5.5A1.5 1.5 0 0 1 4 18.5V16"/><path d="M9 12h6"/>',
+      save: '<path d="M6 3.5h8l4 4V20.5H6z"/><path d="M14 3.5v4h4"/><path d="m9 14 2.2 2.2L15 12"/>',
+      search: '<circle cx="11" cy="11" r="6.5"/><path d="m16 16 4 4"/>',
+      bookmark: '<path d="M7 4h10v16l-5-3.5L7 20z"/>',
+      command: '<rect x="3.5" y="5" width="17" height="14" rx="2.5"/><path d="m8 10 2.5 2L8 14"/><path d="M13 14h3.5"/>',
+      box: '<path d="M12 3.5 20 7.5v9L12 20.5 4 16.5v-9z"/><path d="m4 7.5 8 4 8-4"/><path d="M12 11.5v9"/>'
+    };
+
+    const svg = name => '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + SVG[name] + '</svg>';
+
+    const MSVG = {
+      side: '<rect x="3.5" y="4.5" width="17" height="15" rx="2.5"/><path d="M9.5 4.5v15"/>',
+      left: '<path d="m14.5 6-6 6 6 6"/>',
+      right: '<path d="m9.5 6 6 6-6 6"/>',
+      minus: '<path d="M6 12h12"/>',
+      plus: '<path d="M12 6v12"/><path d="M6 12h12"/>',
+      bookmark: '<path d="M7 4h10v16l-5-3.5L7 20z"/>'
+    };
+
+    const msvg = name => '<svg viewBox="0 0 24 24" aria-hidden="true">' + MSVG[name] + '</svg>';
+
+    const HEART = '<svg class="heart" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 21s-7.5-4.6-9.6-9.2C.9 8.4 2.7 5 6 5c2 0 3.4 1 4.4 2.5.5.7 1.2.7 1.7 0C13.1 6 14.5 5 16.5 5c3.3 0 5.1 3.4 3.6 6.8C19.5 16.4 12 21 12 21z"/></svg>';
+
+    const I18N = {
+      en: {
+        dir: 'ltr',
+        docTitle: 'Varaq — a quiet PDF reader',
+        back: 'home',
+        heroTitle: 'Varaq',
+        pitch: 'Varaq is a quiet PDF reader. It opens fast, remembers where you stopped, and lets you highlight and take notes without getting in your way.',
+        tags: ['Free', 'Windows', 'Portable', 'English + فارسی'],
+        download: 'Download for Windows',
+        github: 'GitHub',
+        sizeUnit: 'MB',
+        mock: {
+          file: 'On quiet reading.pdf',
+          sidebar: 'Toggle sidebar', prev: 'Previous page', next: 'Next page',
+          zoomOut: 'Zoom out', zoomIn: 'Zoom in', bookmark: 'Bookmark this page',
+          themes: { light: 'Light', sepia: 'Sepia', dark: 'Dark' },
+          colors: ['Yellow', 'Green', 'Blue', 'Pink'],
+          remove: 'Remove highlight',
+          tabPages: 'Pages', tabHl: 'Highlights',
+          pageN: n => 'Page ' + n,
+          empty: 'Click a sentence on the page to highlight it.',
+          toastMark: 'Bookmark added', toastUnmark: 'Bookmark removed', toastHl: 'Highlight added', toastRm: 'Highlight removed',
+          of: ' / ',
+          note: 'A small demo, not the real app. Click a sentence to highlight it.'
+        },
+        doc: [
+          {
+            title: 'On quiet reading',
+            s: [
+              'A good reader stays out of the way.',
+              'It opens fast, remembers where you stopped, and keeps the page in front of you.',
+              'Nothing blinks, nothing asks you to sign in, and nothing follows you around.',
+              'When a line deserves to be kept, you select it and it becomes a highlight.',
+              'Later, every highlight waits in one list, with your notes beside it.'
+            ]
+          },
+          {
+            title: 'Notes in the margin',
+            s: [
+              'Notes belong next to the words they are about.',
+              'Mark an area on a scanned page and write underneath it.',
+              'Save, and the marks travel inside the PDF itself, so other readers can see them too.',
+              'Press Ctrl+K whenever you forget where something lives.'
+            ]
+          }
+        ],
+        howTitle: 'How it works',
+        howSub: 'three steps, about a minute',
+        how: [
+          ['download', 'Download and unzip', 'Grab the zip with the button above and extract it anywhere. There is no installer and no account.'],
+          ['cursor', 'Double-click Varaq', 'The first time, it downloads its PDF engine once, so keep the internet on for a moment. After that it works offline.'],
+          ['file', 'Open a PDF', 'Drop a file on the window or press Ctrl+O. Next time, Varaq reopens it right where you left off.']
+        ],
+        featTitle: 'What it does',
+        featSub: 'calm by default',
+        feat: [
+          ['book', 'Calm reading', 'Continuous or two-page layout, fit to width or to the page, smooth zoom, rotate, and a focus mode that hides everything except the page.'],
+          ['sun', 'Light, sepia, dark', 'Three themes, or let it follow Windows. Dark mode can darken the pages too, and there are six accent colors to pick from.'],
+          ['pen', 'Highlights and notes', 'Four colors, each with an optional note. See them all in one list and export them to Markdown.'],
+          ['marquee', 'Marks that work on scans', 'Draw over an area instead of selecting text, so it works on scanned pages too. Drop a Markdown text box anywhere on the page.'],
+          ['save', 'Saves into the PDF', 'Ctrl+S writes your marks into the file as standard annotations, so other readers show them, and keeps a private copy so they stay editable in Varaq.'],
+          ['search', 'Find anything', 'Full-text search with a list of results you can jump through, and a match-case option. Press Ctrl+G to go straight to a page.'],
+          ['bookmark', 'Remembers your place', 'Reading position, zoom and bookmarks are kept for each PDF. Recent files are one click away, and you can add a whole folder of PDFs.'],
+          ['command', 'Command palette', 'Press Ctrl+K and type what you want to do. Followed a link inside a PDF? Alt+Left takes you back.'],
+          ['box', 'Private and portable', 'No account and no cloud. Your data lives in a Varaq_data folder beside the app, and nothing is written next to your PDFs unless you save into them.']
+        ],
+        keysTitle: 'Shortcuts',
+        keysSub: 'a few worth learning',
+        keys: [
+          [['Ctrl', 'O'], 'Open a PDF'],
+          [['Ctrl', 'F'], 'Find in the document'],
+          [['Ctrl', 'K'], 'Command palette'],
+          [['Ctrl', 'G'], 'Go to page'],
+          [['Ctrl', 'S'], 'Save into the PDF'],
+          [['Ctrl', 'Shift', 'S'], 'Save a copy'],
+          [['B'], 'Bookmark this page'],
+          [['F'], 'Focus mode'],
+          [['D'], 'Two-page layout'],
+          [['T'], 'Change the theme'],
+          [['F11'], 'Fullscreen'],
+          [['Alt', 'Left'], 'Back after a link']
+        ],
+        faqTitle: 'Questions',
+        faqSub: 'the usual ones',
+        faq: [
+          ['Is it really free?', 'Yes. There is nothing to pay, no account to make and no ads.'],
+          ['What does it run on?', 'Windows, for now. The download is a zip that you extract.'],
+          ['How do I install it?', 'There is nothing to install. Extract the zip, then double-click Varaq. Keep the folder somewhere you will not delete it by accident, like Documents.'],
+          ['Does it need the internet?', 'Only the first time, to download its PDF engine once. After that you can read offline. When you are online it also lets you know if a newer version is out.'],
+          ['Will it change my PDFs?', 'Not by itself. Your highlights and notes stay in Varaq until you press Ctrl+S, and only then are they written into the file. Use Ctrl+Shift+S to save a copy and leave the original alone.'],
+          ['Where is my data kept?', 'In a Varaq_data folder next to the app: your reading positions, bookmarks and private copies of your marks. If that folder cannot be written to, Varaq uses a .varaq folder in your user folder instead.'],
+          ['Will other PDF readers see my highlights?', 'Yes, after you save with Ctrl+S. They are stored as standard PDF annotations, which most readers can show.'],
+          ['Does it open password-protected PDFs?', 'Yes. Varaq asks for the password when you open one.'],
+          ['Can it be my default PDF app?', 'Yes. Open the More menu and choose "Make Varaq your default PDF app…". Windows will ask you to confirm in Settings, and if you move the app later you need to do it again.'],
+          ['Does it work in Persian?', 'Yes. The whole interface is available in English and Persian, with a full right-to-left layout.'],
+          ['How do updates work?', 'Varaq shows a small notice when a new version is out, with a link to GitHub. The download button on this page always points to the newest release. Extract it, and copy your Varaq_data folder next to the new one to keep your marks.']
+        ],
+        endTitle: 'Give it a read',
+        endText: 'Free, no installer, and ready in a minute. Stuck somewhere? Ask in the Discord server or on Telegram.',
+        endDiscord: 'Discord server',
+        endTelegram: 'Telegram',
+        footerHome: 'Back to the main page',
+        madeBy: 'This page was folded with {heart} by Aloy'
+      },
+      fa: {
+        dir: 'rtl',
+        docTitle: 'ورق — یه PDF‌خوان آروم',
+        back: 'خانه',
+        heroTitle: 'ورق',
+        pitch: 'ورق یه PDF‌خوان آرومه. زود باز می‌شه، یادش می‌مونه کجا موندی و بدون اینکه سر راهت باشه می‌ذاره هایلایت کنی و یادداشت بنویسی.',
+        tags: ['رایگان', 'ویندوز', 'قابل‌حمل', 'فارسی + English'],
+        download: 'دانلود برای ویندوز',
+        github: 'گیت‌هاب',
+        sizeUnit: 'مگابایت',
+        mock: {
+          file: 'خواندن آروم.pdf',
+          sidebar: 'باز و بسته کردن کناره', prev: 'صفحه‌ی قبل', next: 'صفحه‌ی بعد',
+          zoomOut: 'کوچک‌نمایی', zoomIn: 'بزرگ‌نمایی', bookmark: 'بوکمارک این صفحه',
+          themes: { light: 'روشن', sepia: 'سپیا', dark: 'تیره' },
+          colors: ['زرد', 'سبز', 'آبی', 'صورتی'],
+          remove: 'برداشتن هایلایت',
+          tabPages: 'صفحه‌ها', tabHl: 'هایلایت‌ها',
+          pageN: n => 'صفحه‌ی ' + n,
+          empty: 'روی یه جمله‌ی صفحه بزن تا هایلایتش کنی.',
+          toastMark: 'بوکمارک شد', toastUnmark: 'بوکمارک برداشته شد', toastHl: 'هایلایت اضافه شد', toastRm: 'هایلایت برداشته شد',
+          of: ' / ',
+          note: 'یه نمونه‌ی کوچیکه، نه خود برنامه. روی یه جمله بزن تا هایلایت بشه.'
+        },
+        doc: [
+          {
+            title: 'خواندنِ آروم',
+            s: [
+              'یه خواننده‌ی خوب سر راهت نمی‌ایسته.',
+              'زود باز می‌شه، یادش می‌مونه کجا موندی و صفحه رو جلوی چشمت نگه می‌داره.',
+              'چیزی چشمک نمی‌زنه، کسی ازت اکانت نمی‌خواد و هیچی دنبالت نمی‌آد.',
+              'وقتی خطی ارزش نگه داشتن داره، انتخابش می‌کنی و می‌شه هایلایت.',
+              'بعداً همه‌ی هایلایت‌ها تو یه فهرست منتظرتن، با یادداشتت کنارشون.'
+            ]
+          },
+          {
+            title: 'یادداشت کنار صفحه',
+            s: [
+              'یادداشت باید کنار همون کلمه‌هایی باشه که درباره‌شونه.',
+              'رو یه صفحه‌ی اسکن‌شده یه ناحیه رو علامت بزن و زیرش بنویس.',
+              'ذخیره که کنی، علامت‌ها تو خود PDF می‌رن و برنامه‌های دیگه هم می‌بینن‌شون.',
+              'هر وقت یادت رفت چیزی کجاست، Ctrl+K بزن.'
+            ]
+          }
+        ],
+        howTitle: 'چطوری کار می‌کنه',
+        howSub: 'سه قدم، حدود یه دقیقه',
+        how: [
+          ['download', 'دانلود و بازکردن زیپ', 'فایل زیپ رو با دکمه‌ی بالا بگیر و هرجا خواستی از حالت فشرده دربیار. نه نصب‌کننده‌ای هست، نه اکانتی.'],
+          ['cursor', 'دوبار کلیک روی ورق', 'بار اول موتور PDF رو یه بار دانلود می‌کنه، پس یه لحظه اینترنت لازمه. بعدش آفلاین هم کار می‌کنه.'],
+          ['file', 'یه PDF باز کن', 'یه فایل رو بنداز روی پنجره یا Ctrl+O بزن. دفعه‌ی بعد ورق دقیقاً از همون جایی که موندی بازش می‌کنه.']
+        ],
+        featTitle: 'چیکار می‌کنه',
+        featSub: 'به‌صورت پیش‌فرض آروم',
+        feat: [
+          ['book', 'خواندن آروم', 'صفحه‌ها پشت‌سرهم یا دوتایی، جا شدن در عرض یا کل صفحه، زوم نرم، چرخوندن و حالت تمرکز که همه‌چیز جز صفحه رو قایم می‌کنه.'],
+          ['sun', 'روشن، سپیا، تیره', 'سه تم، یا بذار از ویندوز پیروی کنه. حالت تیره می‌تونه خود صفحه‌ها رو هم تیره کنه و بین شش رنگ تاکیدی یکی رو انتخاب می‌کنی.'],
+          ['pen', 'هایلایت و یادداشت', 'چهار رنگ، هرکدوم با یه یادداشت دلخواه. همه‌شون رو تو یه فهرست ببین و به Markdown خروجی بگیر.'],
+          ['marquee', 'علامت‌هایی که رو اسکن هم کار می‌کنن', 'به‌جای انتخاب متن، یه ناحیه رو علامت بزن؛ پس رو صفحه‌های اسکن‌شده هم جواب می‌ده. هرجای صفحه یه جعبه‌ی متن Markdown بذار.'],
+          ['save', 'تو خود PDF ذخیره می‌شه', 'Ctrl+S علامت‌هات رو به‌شکل حاشیه‌نویسی استاندارد تو فایل می‌نویسه تا برنامه‌های دیگه هم نشونشون بدن، و یه نسخه‌ی خصوصی هم نگه می‌داره تا تو ورق قابل ویرایش بمونن.'],
+          ['search', 'هر چیزی رو پیدا کن', 'جستجوی کامل متن با فهرست نتیجه‌ها که می‌شه بینشون پرید، و گزینه‌ی حساس به حروف. با Ctrl+G مستقیم برو سر یه صفحه.'],
+          ['bookmark', 'جات رو یادش می‌مونه', 'جای مطالعه، زوم و بوکمارک‌ها برای هر PDF جدا یادش می‌مونه. فایل‌های اخیر یه کلیک اون‌ورترن و می‌تونی یه پوشه‌ی کامل PDF هم اضافه کنی.'],
+          ['command', 'پالت فرمان', 'Ctrl+K بزن و بنویس چی می‌خوای. یه لینک داخل PDF رو دنبال کردی؟ Alt+Left برت می‌گردونه.'],
+          ['box', 'خصوصی و قابل‌حمل', 'بدون اکانت و بدون ابر. داده‌هات تو یه پوشه‌ی Varaq_data کنار خود برنامه می‌مونه و کنار PDF‌هات چیزی نوشته نمی‌شه، مگر وقتی خودت تو خود فایل ذخیره کنی.']
+        ],
+        keysTitle: 'میان‌بُرها',
+        keysSub: 'چندتایی که ارزش یاد گرفتن دارن',
+        keys: [
+          [['Ctrl', 'O'], 'باز کردن PDF'],
+          [['Ctrl', 'F'], 'جستجو تو سند'],
+          [['Ctrl', 'K'], 'پالت فرمان'],
+          [['Ctrl', 'G'], 'رفتن به صفحه'],
+          [['Ctrl', 'S'], 'ذخیره تو خود PDF'],
+          [['Ctrl', 'Shift', 'S'], 'ذخیره‌ی یه کپی'],
+          [['B'], 'بوکمارک این صفحه'],
+          [['F'], 'حالت تمرکز'],
+          [['D'], 'چیدمان دوصفحه‌ای'],
+          [['T'], 'عوض کردن تم'],
+          [['F11'], 'تمام‌صفحه'],
+          [['Alt', 'Left'], 'برگشت بعد از لینک']
+        ],
+        faqTitle: 'سؤال‌ها',
+        faqSub: 'همون‌هایی که معمولاً می‌پرسن',
+        faq: [
+          ['واقعاً رایگانه؟', 'آره. چیزی نیست که بپردازی، اکانتی لازم نیست و تبلیغی هم تو کار نیست.'],
+          ['رو چی کار می‌کنه؟', 'فعلاً ویندوز. چیزی که دانلود می‌کنی یه فایل زیپه که ازش بیرون می‌آریش.'],
+          ['چطوری نصبش کنم؟', 'نصبی در کار نیست. زیپ رو باز کن و روی ورق دوبار کلیک کن. پوشه‌اش رو یه جایی بذار که اشتباهی پاکش نکنی، مثلاً Documents.'],
+          ['اینترنت می‌خواد؟', 'فقط بار اول، برای دانلود یه‌باره‌ی موتور PDF. بعدش می‌تونی آفلاین بخونی. وقتی آنلاینی هم بهت خبر می‌ده اگه نسخه‌ی جدیدتری اومده باشه.'],
+          ['PDFهام رو تغییر می‌ده؟', 'خودش نه. هایلایت‌ها و یادداشت‌هات تو خود ورق می‌مونن تا وقتی Ctrl+S بزنی، و فقط اون‌وقت تو فایل نوشته می‌شن. با Ctrl+Shift+S یه کپی ذخیره کن تا اصل فایل دست‌نخورده بمونه.'],
+          ['داده‌هام کجا نگه‌داری می‌شه؟', 'تو یه پوشه‌ی Varaq_data کنار برنامه: جای مطالعه، بوکمارک‌ها و نسخه‌ی خصوصی علامت‌هات. اگه نشه تو اون پوشه نوشت، ورق به‌جاش از یه پوشه‌ی varaq. تو پوشه‌ی کاربرت استفاده می‌کنه.'],
+          ['برنامه‌های PDF دیگه هایلایت‌هام رو می‌بینن؟', 'آره، بعد از اینکه با Ctrl+S ذخیره کنی. به‌شکل حاشیه‌نویسی استاندارد PDF ذخیره می‌شن که بیشتر برنامه‌ها می‌تونن نشونشون بدن.'],
+          ['PDFهای رمزدار رو باز می‌کنه؟', 'آره. وقتی بازش کنی ورق رمزش رو می‌پرسه.'],
+          ['می‌تونه برنامه‌ی پیش‌فرض PDF من باشه؟', 'آره. منوی «بیشتر» رو باز کن و «ورق رو برنامه‌ی پیش‌فرض PDF کن…» رو بزن. ویندوز تو تنظیمات ازت تأیید می‌گیره و اگه بعداً برنامه رو جابه‌جا کنی باید دوباره انجامش بدی.'],
+          ['فارسی هم کار می‌کنه؟', 'آره. کل محیط برنامه هم انگلیسی داره هم فارسی، با چیدمان کامل راست‌به‌چپ.'],
+          ['آپدیت‌ها چطوری‌ان؟', 'وقتی نسخه‌ی جدید بیاد ورق یه اعلان کوچیک با لینک گیت‌هاب نشون می‌ده. دکمه‌ی دانلود همین صفحه هم همیشه به آخرین نسخه می‌ره. بازش کن و پوشه‌ی Varaq_data خودت رو کنار نسخه‌ی جدید کپی کن تا علامت‌هات بمونن.']
+        ],
+        endTitle: 'یه نگاهی بهش بنداز',
+        endText: 'رایگانه، نصب نمی‌خواد و تو یه دقیقه آماده‌ست. جایی گیر کردی؟ تو سرور دیسکورد یا تلگرام بپرس.',
+        endDiscord: 'سرور دیسکورد',
+        endTelegram: 'تلگرام',
+        footerHome: 'بازگشت به صفحه‌ی اصلی',
+        madeBy: 'این ورق رو آلوی با {heart} تا زده'
+      }
+    };
+
+    const $ = id => document.getElementById(id);
+    const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+    const PERSIAN_DIGITS = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
+    const LATIN_RE = /[A-Za-z][A-Za-z0-9._@+\/-]*(?:[  ][A-Za-z][A-Za-z0-9._@+\/-]*)*/g;
+
+    let currentLang = localStorage.getItem('lang') === 'en' ? 'en' : 'fa';
+
+    const tx = s => {
+      if (currentLang !== 'fa') return esc(s);
+      let out = '', last = 0, m;
+      LATIN_RE.lastIndex = 0;
+      while ((m = LATIN_RE.exec(s))) {
+        out += esc(s.slice(last, m.index)) + '<bdi>' + esc(m[0]) + '</bdi>';
+        last = m.index + m[0].length;
+      }
+      return out + esc(s.slice(last));
+    };
+    const setTx = (id, s) => { $(id).innerHTML = tx(s); };
+    const fmt = n => currentLang === 'fa' ? String(n).replace(/[0-9]/g, d => PERSIAN_DIGITS[d]) : String(n);
+
+    const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    const HC = ['255,210,63', '92,214,128', '98,178,255', '255,130,178'];
+    const ZOOMS = [0.8, 1, 1.25];
+    const THEMES = ['light', 'sepia', 'dark'];
+    const mk = { page: 0, zoom: 1, side: true, tab: 'pages', theme: 'light', marks: {}, sel: null, nudge: true, toastTimer: 0 };
+    const hl = {};
+
+    function setLabel(id, text) {
+      const el = $(id);
+      el.setAttribute('aria-label', text);
+      el.title = text;
+    }
+
+    function toast(text) {
+      const el = $('m-toast');
+      el.textContent = text;
+      el.classList.add('show');
+      clearTimeout(mk.toastTimer);
+      mk.toastTimer = setTimeout(() => el.classList.remove('show'), 1600);
+    }
+
+    function closePop() {
+      $('m-pop').classList.remove('open');
+      document.querySelectorAll('#m-page .s.sel').forEach(s => s.classList.remove('sel'));
+      mk.sel = null;
+    }
+
+    function renderPage(animate) {
+      const t = I18N[currentLang];
+      const d = t.doc[mk.page];
+      const el = $('m-page');
+      el.style.setProperty('--z', ZOOMS[mk.zoom]);
+      el.classList.toggle('bm', !!mk.marks[mk.page]);
+      el.innerHTML = '<h3>' + tx(d.title) + '</h3><p>' + d.s.map((x, i) => {
+        const c = hl[mk.page + ':' + i];
+        const on = c !== undefined;
+        const cls = 's' + (on ? ' hl' : '') + (mk.nudge && i === 0 && !on ? ' nudge' : '');
+        return '<span class="' + cls + '" data-i="' + i + '" tabindex="0" role="button" aria-pressed="' + on + '" style="--hc:' + HC[on ? c : 0] + '">' + tx(x) + '</span>';
+      }).join(' ') + '</p><div class="m-pn" aria-hidden="true">' + fmt(mk.page + 1) + '</div>';
+      if (animate && !reduceMotion) {
+        el.classList.remove('swap');
+        void el.offsetWidth;
+        el.classList.add('swap');
+      }
+    }
+
+    function renderSide() {
+      const t = I18N[currentLang].mock;
+      const entries = Object.keys(hl).map(k => {
+        const [p, i] = k.split(':').map(Number);
+        return [p, i, hl[k]];
+      }).sort((a, b) => a[0] - b[0] || a[1] - b[1]);
+      $('m-tab-pages').textContent = t.tabPages;
+      $('m-tab-hl').innerHTML = tx(t.tabHl) + (entries.length ? '<span class="m-badge">' + fmt(entries.length) + '</span>' : '');
+      $('m-tab-pages').classList.toggle('on', mk.tab === 'pages');
+      $('m-tab-hl').classList.toggle('on', mk.tab === 'hl');
+      $('m-thumbs').hidden = mk.tab !== 'pages';
+      $('m-hls').hidden = mk.tab !== 'hl';
+      $('m-thumbs').innerHTML = [0, 1].map(i => '<button type="button" class="m-thumb' + (i === mk.page ? ' on' : '') + '" data-p="' + i + '" aria-label="' + esc(t.pageN(fmt(i + 1))) + '"><span class="m-th-pg"></span><span>' + fmt(i + 1) + '</span></button>').join('');
+      const doc = I18N[currentLang].doc;
+      $('m-hls').innerHTML = entries.length
+        ? entries.map(([p, i, c]) => '<button type="button" class="m-hl-item" data-p="' + p + '" data-i="' + i + '" style="--hc:' + HC[c] + '"><span>' + tx(doc[p].s[i]) + '</span></button>').join('')
+        : '<div class="m-empty">' + tx(t.empty) + '</div>';
+    }
+
+    function renderTools() {
+      const t = I18N[currentLang].mock;
+      $('m-side-btn').innerHTML = msvg('side');
+      $('m-prev').innerHTML = msvg('left');
+      $('m-next').innerHTML = msvg('right');
+      $('m-zout').innerHTML = msvg('minus');
+      $('m-zin').innerHTML = msvg('plus');
+      $('m-mark').innerHTML = msvg('bookmark');
+      setLabel('m-side-btn', t.sidebar);
+      setLabel('m-prev', t.prev);
+      setLabel('m-next', t.next);
+      setLabel('m-zout', t.zoomOut);
+      setLabel('m-zin', t.zoomIn);
+      setLabel('m-mark', t.bookmark);
+      $('m-pages').textContent = fmt(mk.page + 1) + t.of + fmt(2);
+      $('m-zoom').textContent = fmt(Math.round(ZOOMS[mk.zoom] * 100)) + (currentLang === 'fa' ? '٪' : '%');
+      $('m-prev').disabled = mk.page === 0;
+      $('m-next').disabled = mk.page === 1;
+      $('m-zout').disabled = mk.zoom === 0;
+      $('m-zin').disabled = mk.zoom === ZOOMS.length - 1;
+      $('m-side-btn').classList.toggle('on', mk.side);
+      $('m-side-btn').setAttribute('aria-pressed', String(mk.side));
+      $('m-side').classList.toggle('hide', !mk.side);
+      $('m-mark').classList.toggle('on', !!mk.marks[mk.page]);
+      $('m-mark').setAttribute('aria-pressed', String(!!mk.marks[mk.page]));
+      $('m-swatches').innerHTML = THEMES.map(k => '<button type="button" class="m-sw' + (k === mk.theme ? ' on' : '') + '" data-t="' + k + '" aria-pressed="' + (k === mk.theme) + '" aria-label="' + esc(t.themes[k]) + '" title="' + esc(t.themes[k]) + '"></button>').join('');
+      $('mock').dataset.theme = mk.theme;
+    }
+
+    function paintMock() {
+      const t = I18N[currentLang].mock;
+      $('m-title-text').innerHTML = 'Varaq <i>— <bdi dir="ltr">' + esc(t.file) + '</bdi></i>';
+      $('m-pop').setAttribute('aria-label', t.tabHl);
+      setTx('mock-note', t.note);
+      closePop();
+      renderTools();
+      renderPage(false);
+      renderSide();
+    }
+
+    function goPage(p, animate) {
+      if (p < 0 || p > 1) return;
+      const changed = p !== mk.page;
+      mk.page = p;
+      closePop();
+      renderTools();
+      renderPage(animate && changed);
+      renderSide();
+      if (changed) $('m-view').scrollTop = 0;
+    }
+
+    function endNudge() {
+      if (!mk.nudge) return;
+      mk.nudge = false;
+      document.querySelectorAll('#m-page .s.nudge').forEach(s => s.classList.remove('nudge'));
+    }
+
+    function openPop(sp) {
+      const t = I18N[currentLang].mock;
+      const i = Number(sp.dataset.i);
+      const key = mk.page + ':' + i;
+      document.querySelectorAll('#m-page .s.sel').forEach(s => s.classList.remove('sel'));
+      mk.sel = key;
+      sp.classList.add('sel');
+      const cur = hl[key];
+      const pop = $('m-pop');
+      pop.innerHTML = HC.map((c, ci) => '<button type="button" class="m-c' + (cur === ci ? ' on' : '') + '" data-c="' + ci + '" style="--c:' + c + '" aria-label="' + esc(t.colors[ci]) + '" title="' + esc(t.colors[ci]) + '"></button>').join('') +
+        (cur !== undefined ? '<button type="button" class="m-c x" data-c="x" aria-label="' + esc(t.remove) + '" title="' + esc(t.remove) + '"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2 2l8 8"/><path d="M10 2 2 10"/></svg></button>' : '');
+      const main = $('m-main').getBoundingClientRect();
+      const r = sp.getBoundingClientRect();
+      const w = pop.offsetWidth || 130;
+      const h = pop.offsetHeight || 36;
+      let left = r.left - main.left + r.width / 2 - w / 2;
+      left = Math.max(8, Math.min(main.width - w - 8, left));
+      let top = r.bottom - main.top + 8;
+      if (top + h > main.height - 6) top = Math.max(6, r.top - main.top - h - 8);
+      pop.style.left = left + 'px';
+      pop.style.top = top + 'px';
+      pop.classList.add('open');
+    }
+
+    function applyHl(c) {
+      if (!mk.sel) return;
+      const key = mk.sel;
+      const i = key.split(':')[1];
+      const t = I18N[currentLang].mock;
+      const sp = $('m-page').querySelector('.s[data-i="' + i + '"]');
+      if (c === null) {
+        delete hl[key];
+        if (sp) { sp.classList.remove('hl'); sp.setAttribute('aria-pressed', 'false'); }
+        toast(t.toastRm);
+      } else {
+        hl[key] = c;
+        if (sp) { sp.style.setProperty('--hc', HC[c]); sp.classList.add('hl'); sp.setAttribute('aria-pressed', 'true'); }
+        toast(t.toastHl);
+      }
+      closePop();
+      renderSide();
+    }
+
+    $('m-page').addEventListener('click', e => {
+      const sp = e.target.closest('.s');
+      if (!sp) { closePop(); return; }
+      endNudge();
+      if (mk.sel === mk.page + ':' + sp.dataset.i && $('m-pop').classList.contains('open')) { closePop(); return; }
+      openPop(sp);
+    });
+
+    $('m-page').addEventListener('keydown', e => {
+      const sp = e.target.closest('.s');
+      if (!sp || (e.key !== 'Enter' && e.key !== ' ')) return;
+      e.preventDefault();
+      endNudge();
+      openPop(sp);
+    });
+
+    $('m-pop').addEventListener('click', e => {
+      const b = e.target.closest('.m-c');
+      if (!b) return;
+      applyHl(b.dataset.c === 'x' ? null : Number(b.dataset.c));
+    });
+
+    document.addEventListener('click', e => {
+      if (!e.target.closest('#m-pop') && !e.target.closest('#m-page')) closePop();
+    });
+
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') closePop();
+    });
+
+    $('m-view').addEventListener('scroll', closePop, { passive: true });
+
+    $('m-prev').addEventListener('click', () => goPage(mk.page - 1, true));
+    $('m-next').addEventListener('click', () => goPage(mk.page + 1, true));
+
+    $('m-zout').addEventListener('click', () => { mk.zoom = Math.max(0, mk.zoom - 1); closePop(); renderTools(); renderPage(false); });
+    $('m-zin').addEventListener('click', () => { mk.zoom = Math.min(ZOOMS.length - 1, mk.zoom + 1); closePop(); renderTools(); renderPage(false); });
+
+    $('m-side-btn').addEventListener('click', () => { mk.side = !mk.side; closePop(); renderTools(); });
+
+    $('m-mark').addEventListener('click', () => {
+      const t = I18N[currentLang].mock;
+      mk.marks[mk.page] = !mk.marks[mk.page];
+      endNudge();
+      closePop();
+      renderTools();
+      $('m-page').classList.toggle('bm', !!mk.marks[mk.page]);
+      toast(mk.marks[mk.page] ? t.toastMark : t.toastUnmark);
+    });
+
+    $('m-swatches').addEventListener('click', e => {
+      const b = e.target.closest('.m-sw');
+      if (!b) return;
+      mk.theme = b.dataset.t;
+      closePop();
+      renderTools();
+    });
+
+    $('m-tab-pages').addEventListener('click', () => { mk.tab = 'pages'; renderSide(); });
+    $('m-tab-hl').addEventListener('click', () => { mk.tab = 'hl'; renderSide(); });
+
+    $('m-thumbs').addEventListener('click', e => {
+      const b = e.target.closest('.m-thumb');
+      if (b) goPage(Number(b.dataset.p), true);
+    });
+
+    $('m-hls').addEventListener('click', e => {
+      const b = e.target.closest('.m-hl-item');
+      if (!b) return;
+      const p = Number(b.dataset.p);
+      const i = b.dataset.i;
+      goPage(p, true);
+      const sp = $('m-page').querySelector('.s[data-i="' + i + '"]');
+      if (sp) sp.scrollIntoView({ block: 'center', behavior: reduceMotion ? 'auto' : 'smooth' });
+    });
+
+    let release = null;
+
+    function paintRelease() {
+      const t = I18N[currentLang];
+      document.querySelectorAll('a[data-dl]').forEach(a => {
+        a.href = release ? release.url : LatestRelease.page(REPO);
+      });
+      const meta = $('dl-meta');
+      if (!release) { meta.hidden = true; return; }
+      const parts = [];
+      if (release.tag) parts.push('<bdi dir="ltr">' + esc(release.tag) + '</bdi>');
+      if (release.size) parts.push(fmt((release.size / 1048576).toFixed(1).replace('.', currentLang === 'fa' ? '٫' : '.')) + ' ' + t.sizeUnit);
+      meta.innerHTML = parts.join(' · ');
+      meta.hidden = parts.length === 0;
+    }
+
+    function renderHow(t) {
+      $('how-grid').innerHTML = t.how.map(([icon, name, desc], i) => `
+        <div class="card">
+          <div class="card-top">
+            <div class="icon">${svg(icon)}</div>
+            <div class="card-name">${tx(name)}</div>
+            <span class="step-num" aria-hidden="true">${fmt(i + 1)}</span>
+          </div>
+          <p class="card-desc">${tx(desc)}</p>
+        </div>`).join('');
+    }
+
+    function renderFeatures(t) {
+      $('feat-grid').innerHTML = t.feat.map(([icon, name, desc], i) => `
+        <div class="card">
+          <div class="card-top">
+            <div class="icon${i % 2 ? ' gold' : ''}">${svg(icon)}</div>
+            <div class="card-name">${tx(name)}</div>
+          </div>
+          <p class="card-desc">${tx(desc)}</p>
+        </div>`).join('');
+    }
+
+    function renderKeys(t) {
+      $('keys-list').innerHTML = t.keys.map(([k, label]) => `
+        <div class="key-row">
+          <span>${tx(label)}</span>
+          <span class="keys-k">${k.map(x => '<kbd>' + esc(x) + '</kbd>').join('')}</span>
+        </div>`).join('');
+    }
+
+    function renderFaq(t) {
+      $('faq-list').innerHTML = t.faq.map(([q, a], i) => `
+        <div class="faq-item">
+          <button type="button" class="faq-q" id="faq-q-${i}" aria-expanded="false" aria-controls="faq-a-${i}">
+            <span>${tx(q)}</span>
+            <span class="faq-icon" aria-hidden="true"></span>
+          </button>
+          <div class="faq-panel" id="faq-a-${i}" role="region" aria-labelledby="faq-q-${i}">
+            <div class="faq-inner"><div class="answer">${tx(a)}</div></div>
+          </div>
+        </div>`).join('');
+    }
+
+    $('faq-list').addEventListener('click', e => {
+      const btn = e.target.closest('.faq-q');
+      if (!btn) return;
+      const item = btn.parentElement;
+      const open = item.classList.toggle('open');
+      btn.setAttribute('aria-expanded', String(open));
+    });
+
+    function applyLanguage(lang) {
+      currentLang = lang;
+      localStorage.setItem('lang', lang);
+      const t = I18N[lang];
+      document.documentElement.lang = lang;
+      document.documentElement.dir = t.dir;
+      document.title = t.docTitle;
+
+      setTx('back-text', t.back);
+      setTx('hero-title', t.heroTitle);
+      setTx('hero-pitch', t.pitch);
+      $('hero-tags').innerHTML = t.tags.map((x, i) => `<span class="tag${i === 0 ? ' hot' : ''}">${tx(x)}</span>`).join('');
+      document.querySelectorAll('[data-dl-label]').forEach(el => { el.textContent = t.download; });
+      setTx('cta-github', t.github);
+      paintRelease();
+      paintMock();
+
+      setTx('how-title', t.howTitle);
+      setTx('how-sub', t.howSub);
+      renderHow(t);
+
+      setTx('feat-title', t.featTitle);
+      setTx('feat-sub', t.featSub);
+      renderFeatures(t);
+
+      setTx('keys-title', t.keysTitle);
+      setTx('keys-sub', t.keysSub);
+      renderKeys(t);
+
+      setTx('faq-title', t.faqTitle);
+      setTx('faq-sub', t.faqSub);
+      renderFaq(t);
+
+      setTx('end-title', t.endTitle);
+      setTx('end-text', t.endText);
+      setTx('end-discord', t.endDiscord);
+      setTx('end-telegram', t.endTelegram);
+      setTx('footer-home', t.footerHome);
+      $('made-by').innerHTML = t.madeBy.split('{heart}').map(tx).join(HEART);
+    }
+
+    $('lang-toggle').addEventListener('click', () => {
+      $('lang-toggle').blur();
+      applyLanguage(currentLang === 'en' ? 'fa' : 'en');
+    });
+
+    applyLanguage(currentLang);
+
+    LatestRelease.latest(REPO).then(d => {
+      release = d;
+      paintRelease();
+    });
+  </script>
+</body>
+</html>
