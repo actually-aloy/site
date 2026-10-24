@@ -1,0 +1,1590 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#050208">
+  <title>MC Portal — باز کردن پورت سرور ماینکرفت با یه کلیک</title>
+  <meta name="description" content="MC Portal: open your Minecraft server port in one click and close it when you are done. Adds and removes the Windows Firewall rules for you. Windows, Minecraft Java Edition.">
+  <link rel="canonical" href="https://actually-aloy.github.io/site/mcportal">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="MC Portal — open your Minecraft server port in one click">
+  <meta property="og:description" content="Open and close your Minecraft server port with one click. Free for Windows.">
+  <meta property="og:url" content="https://actually-aloy.github.io/site/mcportal">
+  <meta property="og:image" content="https://actually-aloy.github.io/site/mcportal-og.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="MC Portal — open your Minecraft server port in one click">
+  <meta name="twitter:description" content="Open and close your Minecraft server port with one click. Free for Windows.">
+  <meta name="twitter:image" content="https://actually-aloy.github.io/site/mcportal-og.jpg">
+  <link rel="icon" href="mcportal-logo.png" type="image/png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #050208;
+      --text: #f3ecff;
+      --muted: #b3a6c9;
+      --line: rgba(255, 255, 255, 0.13);
+      --cyan: #c9a2ff;
+      --magenta: #9b3bff;
+      --pink: #ff7ab6;
+      --ink: #0a0414;
+      --radius: 28px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 14% 10%, rgba(155, 59, 255, 0.2), transparent 32%),
+        radial-gradient(circle at 90% 14%, rgba(155, 59, 255, 0.16), transparent 30%),
+        radial-gradient(circle at 52% 94%, rgba(90, 30, 170, 0.1), transparent 34%),
+        var(--bg);
+      animation: page-fade-in 0.4s ease-out;
+      user-select: none;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+    }
+
+    @keyframes page-fade-in {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    html[lang="fa"] body {
+      font-family: Vazirmatn, Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      html { scroll-behavior: smooth; }
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    h1, h2, h3, p {
+      margin: 0;
+    }
+
+    [hidden] {
+      display: none !important;
+    }
+
+    .page {
+      width: min(1080px, calc(100% - 36px));
+      margin: 0 auto;
+      padding: 38px 0 56px;
+    }
+
+    .glass {
+      border: 1px solid var(--line);
+      border-radius: calc(var(--radius) + 10px);
+      background: linear-gradient(145deg, rgba(255, 255, 255, 0.105), rgba(255, 255, 255, 0.045));
+      box-shadow: 0 28px 90px rgba(0, 0, 0, 0.4);
+      backdrop-filter: blur(22px);
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(320px, 400px);
+      gap: 30px;
+      padding: 28px;
+      align-items: center;
+    }
+
+    .intro {
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+      min-width: 0;
+    }
+
+    .topline {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .pill-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 14px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--text);
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 180ms ease, border-color 180ms ease;
+    }
+
+    .pill-btn:hover {
+      background: rgba(255, 255, 255, 0.12);
+      border-color: rgba(155, 59, 255, 0.45);
+    }
+
+    .pill-btn svg {
+      width: 14px;
+      height: 14px;
+    }
+
+    html[dir="rtl"] .pill-btn svg {
+      transform: scaleX(-1);
+    }
+
+    .lang-toggle {
+      margin-inline-start: auto;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .brand img {
+      width: 64px;
+      height: 64px;
+      flex: 0 0 auto;
+      border-radius: 18px;
+      box-shadow: 0 16px 40px rgba(155, 59, 255, 0.35);
+      -webkit-user-drag: none;
+    }
+
+    h1 {
+      font-size: clamp(38px, 6.4vw, 60px);
+      line-height: 1.15;
+      letter-spacing: -0.03em;
+    }
+
+    .gradient-text {
+      background: linear-gradient(90deg, #b57bff, #ecd9ff, #ff9ad0, #b57bff);
+      background-size: 300% 100%;
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      animation: enchant 6s linear infinite;
+    }
+
+    @keyframes enchant {
+      to { background-position: -300% 0; }
+    }
+
+    .pitch {
+      max-width: 560px;
+      color: var(--muted);
+      font-size: 18px;
+      line-height: 1.75;
+    }
+
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .tag {
+      padding: 6px 13px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--text);
+      font-size: 12.5px;
+      font-weight: 600;
+    }
+
+    .tag.hot {
+      border-color: transparent;
+      background: linear-gradient(135deg, #d9bcff, #a966ff);
+      color: var(--ink);
+    }
+
+    .cta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 12px 22px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--text);
+      font-family: inherit;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: filter 180ms ease, transform 180ms ease, background 180ms ease, border-color 180ms ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      background: rgba(255, 255, 255, 0.12);
+      border-color: rgba(155, 59, 255, 0.45);
+    }
+
+    .btn.primary {
+      border-color: transparent;
+      background: linear-gradient(135deg, #d9bcff, #a966ff);
+      color: var(--ink);
+    }
+
+    .btn.primary:hover {
+      filter: brightness(1.06);
+    }
+
+    .btn svg {
+      width: 16px;
+      height: 16px;
+      flex: 0 0 auto;
+    }
+
+    .btn:focus-visible,
+    .pill-btn:focus-visible,
+    .faq-q:focus-visible {
+      outline: 2px solid var(--cyan);
+      outline-offset: 3px;
+    }
+
+    .dl-meta {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .stage {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+    }
+
+    .stage::before {
+      content: "";
+      position: absolute;
+      inset: 6% -6% 10%;
+      z-index: 0;
+      border-radius: 50%;
+      background: radial-gradient(closest-side, rgba(155, 59, 255, 0.5), rgba(155, 59, 255, 0));
+      filter: blur(24px);
+      pointer-events: none;
+    }
+
+    @property --fill {
+      syntax: '<percentage>';
+      inherits: true;
+      initial-value: 0%;
+    }
+
+    .mock {
+      direction: ltr;
+      --p-bg: #050208;
+      --p-obsidian: #0a0414;
+      --p-line: #1c0d34;
+      --p-accent: #9b3bff;
+      --p-accent-soft: #6a1fc9;
+      --p-core: #ecd9ff;
+      --p-text: #d8cfe6;
+      --p-dim: #8a7aa3;
+      --p-card: rgba(20, 10, 34, 0.55);
+      --p-card-border: rgba(155, 59, 255, 0.2);
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 400px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      border: 1px solid rgba(155, 59, 255, 0.22);
+      border-radius: 14px;
+      background: radial-gradient(ellipse at 50% 30%, #150a24, var(--p-bg) 70%);
+      color: var(--p-text);
+      font-family: "Segoe UI", Inter, ui-sans-serif, system-ui, sans-serif;
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.65), 0 0 0 1px rgba(155, 59, 255, 0.12);
+    }
+
+
+    .p-bar {
+      width: 100%;
+      height: 38px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      padding: 0 8px 0 14px;
+      background: #0a0414;
+      direction: ltr;
+    }
+
+    .p-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #4a3a5c;
+      transition: all 0.6s ease;
+    }
+
+    .p-dot.on {
+      background: var(--p-accent);
+      box-shadow: 0 0 10px 2px rgba(155, 59, 255, 0.8);
+    }
+
+    .p-name {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: #b9a8d6;
+    }
+
+    .p-ver {
+      font-size: 9px;
+      letter-spacing: 1px;
+      color: #6a5d80;
+    }
+
+    .p-ctl {
+      display: flex;
+      margin-left: auto;
+      gap: 2px;
+      color: #a894c4;
+    }
+
+    .p-ctl span {
+      width: 30px;
+      height: 26px;
+      display: grid;
+      place-items: center;
+    }
+
+    .p-ctl svg {
+      width: 11px;
+      height: 11px;
+    }
+
+    .p-wrap {
+      width: 100%;
+      height: 262px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 14px 30px 4px;
+    }
+
+    .p-frame {
+      position: relative;
+      isolation: isolate;
+      width: 54%;
+      max-width: 210px;
+      height: 100%;
+      border-radius: 12px;
+      background:
+        linear-gradient(var(--p-obsidian), var(--p-obsidian)) padding-box,
+        repeating-linear-gradient(0deg, var(--p-line) 0 16px, var(--p-obsidian) 16px 18px),
+        repeating-linear-gradient(90deg, var(--p-line) 0 26px, var(--p-obsidian) 26px 28px);
+      box-shadow: inset 0 0 0 1px rgba(155, 59, 255, 0.08), 0 0 0 rgba(155, 59, 255, 0);
+      transition: box-shadow 1s ease;
+    }
+
+    .p-frame.on {
+      box-shadow: inset 0 0 0 1px rgba(200, 150, 255, 0.25), 0 0 55px 6px rgba(139, 50, 255, 0.35);
+    }
+
+    .p-frame::after {
+      content: "";
+      position: absolute;
+      inset: -14px;
+      z-index: -1;
+      border-radius: 26px;
+      background: rgba(139, 50, 255, 0.55);
+      filter: blur(34px);
+      opacity: 0;
+      transition: opacity 1.1s ease;
+      pointer-events: none;
+    }
+
+    .p-frame.on::after {
+      opacity: 0.7;
+      animation: p-breathe 3.6s ease-in-out 1.1s infinite;
+    }
+
+    @keyframes p-breathe {
+      0%, 100% { opacity: 0.7; }
+      50% { opacity: 0.32; }
+    }
+
+    .p-surface {
+      --fill: 0%;
+      position: absolute;
+      inset: 20px;
+      border-radius: 6px;
+      overflow: hidden;
+      background: radial-gradient(ellipse at 50% 60%, #0a0414, #030103 75%);
+      box-shadow: inset 0 0 18px rgba(0, 0, 0, 0.9);
+      transition: --fill 1.15s cubic-bezier(0.45, 0.05, 0.25, 1), box-shadow 1s ease;
+    }
+
+    .p-frame.on .p-surface {
+      --fill: 120%;
+      box-shadow: inset 0 0 26px rgba(210, 150, 255, 0.55), inset 0 0 3px rgba(240, 210, 255, 0.9);
+    }
+
+    .p-lit {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      background: linear-gradient(160deg, #6a1fc9, #2a0656 80%);
+      -webkit-mask-image: linear-gradient(to top, #000 calc(var(--fill) - 16%), transparent var(--fill));
+      mask-image: linear-gradient(to top, #000 calc(var(--fill) - 16%), transparent var(--fill));
+    }
+
+    .p-swirl {
+      position: absolute;
+      left: -50%;
+      top: -50%;
+      width: 200%;
+      height: 200%;
+      filter: blur(12px);
+      will-change: transform;
+      animation-play-state: paused;
+    }
+
+    .p-swirl.a {
+      background: conic-gradient(from 0deg, rgba(235, 190, 255, 0.75), transparent 22%, rgba(170, 90, 255, 0.6) 45%, transparent 68%, rgba(235, 190, 255, 0.75));
+      animation: p-spin 15s linear infinite;
+    }
+
+    .p-swirl.b {
+      background: conic-gradient(from 90deg, rgba(30, 4, 70, 0.7), transparent 30%, rgba(200, 140, 255, 0.45) 55%, transparent 80%, rgba(30, 4, 70, 0.7));
+      animation: p-spin 23s linear infinite reverse;
+      animation-play-state: paused;
+    }
+
+    .p-shimmer {
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(115deg, transparent 0 14px, rgba(255, 225, 255, 0.1) 14px 18px, transparent 18px 34px);
+      background-size: 200% 100%;
+      animation: p-shimmer 6s linear infinite;
+      animation-play-state: paused;
+    }
+
+    .p-frame.on .p-swirl,
+    .p-frame.on .p-shimmer {
+      animation-play-state: running;
+    }
+
+    @keyframes p-spin {
+      to { transform: rotate(360deg); }
+    }
+
+    @keyframes p-shimmer {
+      to { background-position: -100% 0; }
+    }
+
+    .p-edge {
+      position: absolute;
+      left: 0;
+      right: 0;
+      height: 16%;
+      bottom: calc(var(--fill) - 16%);
+      pointer-events: none;
+      background: linear-gradient(to top, rgba(255, 235, 255, 0), rgba(255, 235, 255, 0.85) 55%, rgba(255, 235, 255, 0));
+      filter: blur(2px);
+    }
+
+    .p-flash {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      pointer-events: none;
+      background: radial-gradient(ellipse at 50% 55%, rgba(255, 240, 255, 0.95), rgba(190, 110, 255, 0.4) 60%, transparent 85%);
+    }
+
+    .p-frame.on .p-flash {
+      animation: p-flash 1.5s ease-out;
+    }
+
+    @keyframes p-flash {
+      0%, 55% { opacity: 0; }
+      70% { opacity: 0.6; }
+      100% { opacity: 0; }
+    }
+
+    .p-particle {
+      position: absolute;
+      bottom: -8px;
+      width: var(--size, 3px);
+      height: var(--size, 3px);
+      border-radius: 50%;
+      background: #e6c4ff;
+      box-shadow: 0 0 6px 2px rgba(200, 140, 255, 0.9);
+      animation: p-rise linear forwards;
+    }
+
+    @keyframes p-rise {
+      0% { transform: translate(0, 0); opacity: 0; }
+      12% { opacity: 1; }
+      100% { transform: translate(var(--dx), var(--rise)); opacity: 0; }
+    }
+
+    .p-status {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+      margin-top: 8px;
+    }
+
+    .p-state {
+      font-size: 12px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--p-dim);
+    }
+
+
+    .p-state b {
+      color: var(--p-core);
+      font-weight: 600;
+    }
+
+    .p-ports {
+      font-size: 10px;
+      letter-spacing: 1px;
+      color: #7a6c90;
+      direction: ltr;
+    }
+
+    .p-main {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+      padding: 16px 22px 18px;
+    }
+
+    .p-btn {
+      padding: 12px 40px;
+      border: 1px solid var(--p-card-border);
+      border-radius: 30px;
+      background: linear-gradient(180deg, #2a1147, #190a2c);
+      color: var(--p-core);
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
+
+
+    .p-btn:hover {
+      border-color: rgba(200, 150, 255, 0.5);
+      transform: translateY(-1px);
+    }
+
+    .p-btn.on {
+      background: linear-gradient(180deg, var(--p-accent), var(--p-accent-soft));
+      box-shadow: 0 0 22px rgba(155, 59, 255, 0.55);
+      color: #fff;
+    }
+
+    .p-btn:focus-visible,
+    .p-set-head:focus-visible,
+    .p-switch input:focus-visible + .p-slider {
+      outline: 2px solid #c9a2ff;
+      outline-offset: 2px;
+    }
+
+    .p-set {
+      width: 100%;
+      overflow: hidden;
+      border: 1px solid var(--p-card-border);
+      border-radius: 12px;
+      background: var(--p-card);
+    }
+
+    .p-set-head {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 16px;
+      border: 0;
+      background: none;
+      color: var(--p-dim);
+      font-family: inherit;
+      cursor: pointer;
+    }
+
+    .p-set-head span {
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+
+    .p-chev {
+      width: 12px;
+      height: 8px;
+      transition: transform 0.25s ease;
+    }
+
+    .p-set.open .p-chev {
+      transform: rotate(180deg);
+    }
+
+    .p-set-body {
+      max-height: 0;
+      opacity: 0;
+      overflow: hidden;
+      padding: 0 16px;
+      transition: max-height 0.3s ease, opacity 0.25s ease;
+    }
+
+    .p-set.open .p-set-body {
+      max-height: 260px;
+      opacity: 1;
+      padding: 0 16px 10px;
+    }
+
+    .p-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 7px 0;
+    }
+
+    .p-row > span {
+      font-size: 12.5px;
+      color: var(--p-text);
+    }
+
+    .p-switch {
+      position: relative;
+      width: 36px;
+      height: 20px;
+      flex-shrink: 0;
+      direction: ltr;
+    }
+
+    .p-switch input {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      opacity: 0;
+      cursor: pointer;
+      z-index: 1;
+    }
+
+    .p-slider {
+      position: absolute;
+      inset: 0;
+      border-radius: 20px;
+      background: #2b1f3d;
+      transition: background 0.25s ease;
+    }
+
+    .p-slider::before {
+      content: "";
+      position: absolute;
+      left: 3px;
+      top: 3px;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: #cfc2e0;
+      transition: transform 0.25s ease, background 0.25s ease;
+    }
+
+    .p-switch input:checked + .p-slider {
+      background: var(--p-accent-soft);
+    }
+
+    .p-switch input:checked + .p-slider::before {
+      transform: translateX(16px);
+      background: #fff;
+    }
+
+    .mock-note {
+      position: relative;
+      z-index: 1;
+      max-width: 400px;
+      color: var(--muted);
+      font-size: 12.5px;
+      line-height: 1.7;
+      text-align: center;
+    }
+
+
+    section.block {
+      margin-top: 38px;
+      scroll-margin-top: 18px;
+    }
+
+    .head {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 12px;
+      margin: 0 4px 14px;
+    }
+
+    .head h2 {
+      font-size: 26px;
+      letter-spacing: -0.03em;
+    }
+
+    .head span {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 14px;
+    }
+
+    .grid.three {
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    }
+
+    .grid.cols3 {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    @media (max-width: 900px) {
+      .grid.cols3 {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 560px) {
+      .grid.cols3 {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    .card {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      padding: 20px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: linear-gradient(145deg, rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0.04));
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      backdrop-filter: blur(18px);
+      transition: transform 180ms ease, border-color 180ms ease;
+    }
+
+    .card:hover {
+      transform: translateY(-3px);
+      border-color: rgba(155, 59, 255, 0.42);
+    }
+
+    .card-top {
+      display: flex;
+      align-items: center;
+      gap: 13px;
+    }
+
+    .icon {
+      position: relative;
+      width: 46px;
+      height: 46px;
+      flex: 0 0 auto;
+      display: grid;
+      place-items: center;
+      border-radius: 15px;
+      color: var(--ink);
+      background: linear-gradient(135deg, #d9bcff, #a966ff);
+      box-shadow: 0 14px 30px rgba(155, 59, 255, 0.25);
+    }
+
+    .icon.alt {
+      background: linear-gradient(135deg, #ff9ad0, #c9a2ff);
+      box-shadow: 0 14px 30px rgba(255, 154, 208, 0.22);
+    }
+
+    .icon svg {
+      width: 22px;
+      height: 22px;
+    }
+
+    .step-num {
+      margin-inline-start: auto;
+      color: rgba(155, 59, 255, 0.28);
+      font-size: 38px;
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      line-height: 1;
+    }
+
+    .card-name {
+      font-size: 17px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    .card-desc {
+      color: var(--muted);
+      font-size: 14.5px;
+      line-height: 1.75;
+    }
+
+    .faq {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .faq-item {
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.05);
+      transition: border-color 240ms ease, background 240ms ease;
+    }
+
+    .faq-item:hover {
+      border-color: rgba(155, 59, 255, 0.28);
+    }
+
+    .faq-item.open {
+      border-color: rgba(155, 59, 255, 0.4);
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .faq-q {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 16px 20px;
+      border: none;
+      border-radius: 20px;
+      background: none;
+      color: var(--text);
+      font-family: inherit;
+      font-size: 15px;
+      font-weight: 700;
+      text-align: start;
+      cursor: pointer;
+    }
+
+    .faq-q:focus-visible {
+      outline-offset: -2px;
+    }
+
+    .faq-icon {
+      position: relative;
+      width: 14px;
+      height: 14px;
+      flex: 0 0 auto;
+      transition: transform 340ms cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+
+    .faq-icon::before,
+    .faq-icon::after {
+      content: "";
+      position: absolute;
+      inset-inline: 0;
+      top: 50%;
+      height: 2px;
+      margin-top: -1px;
+      border-radius: 2px;
+      background: var(--cyan);
+      transition: transform 340ms cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+
+    .faq-icon::after {
+      transform: rotate(90deg);
+    }
+
+    .faq-item.open .faq-icon {
+      transform: rotate(180deg);
+    }
+
+    .faq-item.open .faq-icon::after {
+      transform: rotate(0deg);
+    }
+
+    .faq-panel {
+      display: grid;
+      grid-template-rows: 0fr;
+      opacity: 0;
+      visibility: hidden;
+      transition: grid-template-rows 360ms cubic-bezier(0.2, 0.8, 0.2, 1), opacity 240ms ease, visibility 0s linear 360ms;
+    }
+
+    .faq-item.open .faq-panel {
+      grid-template-rows: 1fr;
+      opacity: 1;
+      visibility: visible;
+      transition: grid-template-rows 360ms cubic-bezier(0.2, 0.8, 0.2, 1), opacity 300ms ease 60ms, visibility 0s;
+    }
+
+    .faq-inner {
+      min-height: 0;
+      overflow: hidden;
+    }
+
+    .faq .answer {
+      padding: 0 20px 18px;
+      color: var(--muted);
+      font-size: 14.5px;
+      line-height: 1.8;
+    }
+
+    .closing {
+      display: flex;
+      align-items: center;
+      gap: 22px;
+      padding: 28px;
+    }
+
+    .closing img {
+      width: 72px;
+      height: 72px;
+      flex: 0 0 auto;
+      border-radius: 20px;
+      box-shadow: 0 16px 40px rgba(155, 59, 255, 0.35);
+      -webkit-user-drag: none;
+    }
+
+    .closing-text {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      min-width: 0;
+    }
+
+    .closing h2 {
+      font-size: 26px;
+      letter-spacing: -0.03em;
+    }
+
+    .closing p {
+      max-width: 520px;
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.75;
+    }
+
+    .closing .cta-row {
+      margin-top: 8px;
+    }
+
+    .footer {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+      margin-top: 40px;
+      text-align: center;
+    }
+
+    .made {
+      color: var(--text);
+      font-size: 15px;
+      font-weight: 600;
+    }
+
+    .heart {
+      display: inline-block;
+      width: 15px;
+      height: 15px;
+      margin: 0 3px;
+      vertical-align: -2px;
+      color: var(--pink);
+      animation: beat 1.8s ease-in-out infinite;
+    }
+
+    @keyframes beat {
+      0%, 60%, 100% { transform: scale(1); }
+      20% { transform: scale(1.22); }
+      40% { transform: scale(1.06); }
+    }
+
+    .legal {
+      color: var(--muted);
+      font-size: 12.5px;
+      opacity: 0.8;
+    }
+
+    .home-link {
+      padding-bottom: 2px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.24);
+      color: var(--muted);
+      font-size: 15px;
+      letter-spacing: -0.01em;
+      transition: color 180ms ease, border-color 180ms ease;
+    }
+
+    .home-link:hover {
+      color: var(--text);
+      border-color: rgba(155, 59, 255, 0.55);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      body { animation: none; }
+      .gradient-text { animation: none; }
+      .heart { animation: none; }
+      .p-swirl, .p-shimmer, .p-frame.on::after, .p-frame.on .p-flash { animation: none !important; }
+      .p-surface, .p-frame, .p-dot, .p-btn, .p-chev, .p-set-body, .p-slider, .p-slider::before { transition: none; }
+      .faq-item, .faq-icon, .faq-icon::before, .faq-icon::after, .faq-panel, .card, .btn {
+        transition: none !important;
+      }
+    }
+
+    @media (max-width: 900px) {
+      .hero {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .page {
+        width: min(100% - 22px, 1080px);
+        padding-top: 18px;
+      }
+
+      .hero,
+      .closing {
+        padding: 16px;
+        border-radius: 28px;
+      }
+
+      .intro {
+        gap: 18px;
+      }
+
+      .head {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 2px;
+      }
+
+      .btn {
+        width: 100%;
+      }
+
+      .closing {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .p-wrap {
+        height: 230px;
+      }
+
+      .p-main {
+        padding: 14px 16px 16px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+
+    <section class="hero glass">
+      <div class="intro">
+        <div class="topline">
+          <a class="pill-btn" href="index.html" id="back-link">
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 3 5 8l5 5"/></svg>
+            <span id="back-text"></span>
+          </a>
+          <button type="button" class="pill-btn lang-toggle" id="lang-toggle" aria-label="Switch language">EN / فا</button>
+        </div>
+        <div class="brand">
+          <img src="mcportal-logo.png" alt="" width="64" height="64" draggable="false">
+          <h1><span class="gradient-text" id="hero-title"></span></h1>
+        </div>
+        <p class="pitch" id="hero-pitch"></p>
+        <div class="tags" id="hero-tags"></div>
+        <div class="cta-row">
+          <a class="btn primary" data-dl href="https://github.com/actually-aloy/mc-portal/releases/latest">
+            <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M.5 9.9a.5.5 0 0 1 .5.5v2.1a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.1a.5.5 0 0 1 1 0v2.1a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.1a.5.5 0 0 1 .5-.5"/><path d="M7.5 10.29V1.5a.5.5 0 0 1 1 0v8.79l2.15-2.15a.5.5 0 0 1 .7.71l-3 3a.5.5 0 0 1-.7 0l-3-3a.5.5 0 1 1 .7-.71z"/></svg>
+            <span data-dl-label></span>
+          </a>
+          <a class="btn" href="https://github.com/actually-aloy/mc-portal" target="_blank" rel="noopener noreferrer">
+            <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8"/></svg>
+            <span id="cta-github"></span>
+          </a>
+        </div>
+        <p class="dl-meta" id="dl-meta" hidden></p>
+      </div>
+
+      <div class="stage">
+        <div class="mock" id="mock">
+          <div class="p-bar" aria-hidden="true">
+            <div class="p-dot" id="p-dot"></div>
+            <div class="p-name">MC Portal</div>
+            <div class="p-ver">v1.2</div>
+            <div class="p-ctl">
+              <span><svg viewBox="0 0 10 10"><rect x="0" y="4.5" width="10" height="1.2" fill="currentColor"/></svg></span>
+              <span><svg viewBox="0 0 10 10"><line x1="0" y1="0" x2="10" y2="10" stroke="currentColor" stroke-width="1.2"/><line x1="10" y1="0" x2="0" y2="10" stroke="currentColor" stroke-width="1.2"/></svg></span>
+            </div>
+          </div>
+          <div class="p-wrap">
+            <div class="p-frame" id="p-frame" aria-hidden="true">
+              <div class="p-surface" id="p-surface">
+                <div class="p-lit">
+                  <div class="p-swirl a"></div>
+                  <div class="p-swirl b"></div>
+                  <div class="p-shimmer"></div>
+                </div>
+                <div class="p-edge"></div>
+                <div class="p-flash"></div>
+              </div>
+            </div>
+          </div>
+          <div class="p-status">
+            <div class="p-state" role="status" aria-live="polite"><span id="p-state-label"></span> <b id="p-state-word"></b></div>
+            <div class="p-ports" id="p-ports"></div>
+          </div>
+          <div class="p-main">
+            <button type="button" class="p-btn" id="p-btn"></button>
+            <div class="p-set" id="p-set">
+              <button type="button" class="p-set-head" id="p-set-head" aria-expanded="false" aria-controls="p-set-body">
+                <span id="p-set-title"></span>
+                <svg class="p-chev" viewBox="0 0 12 8" aria-hidden="true"><path d="M1 1L6 6L11 1" stroke="currentColor" stroke-width="1.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </button>
+              <div class="p-set-body" id="p-set-body">
+                <div class="p-row"><span id="p-l-launch"></span><label class="p-switch"><input type="checkbox" id="p-s-launch" aria-labelledby="p-l-launch"><span class="p-slider"></span></label></div>
+                <div class="p-row"><span id="p-l-exit"></span><label class="p-switch"><input type="checkbox" id="p-s-exit" aria-labelledby="p-l-exit" checked><span class="p-slider"></span></label></div>
+                <div class="p-row"><span id="p-l-tray"></span><label class="p-switch"><input type="checkbox" id="p-s-tray" aria-labelledby="p-l-tray" checked><span class="p-slider"></span></label></div>
+                <div class="p-row"><span id="p-l-voice"></span><label class="p-switch"><input type="checkbox" id="p-s-voice" aria-labelledby="p-l-voice" checked><span class="p-slider"></span></label></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p class="mock-note" id="mock-note"></p>
+      </div>
+    </section>
+
+    <section class="block" id="how">
+      <div class="head">
+        <h2 id="how-title"></h2>
+        <span id="how-sub"></span>
+      </div>
+      <div class="grid three" id="how-grid"></div>
+    </section>
+
+    <section class="block" id="features">
+      <div class="head">
+        <h2 id="feat-title"></h2>
+        <span id="feat-sub"></span>
+      </div>
+      <div class="grid cols3" id="feat-grid"></div>
+    </section>
+
+    <section class="block" id="faq">
+      <div class="head">
+        <h2 id="faq-title"></h2>
+        <span id="faq-sub"></span>
+      </div>
+      <div class="faq" id="faq-list"></div>
+    </section>
+
+    <section class="block">
+      <div class="closing glass">
+        <img src="mcportal-logo.png" alt="" width="72" height="72" draggable="false">
+        <div class="closing-text">
+          <h2 id="end-title"></h2>
+          <p id="end-text"></p>
+          <div class="cta-row">
+            <a class="btn primary" data-dl href="https://github.com/actually-aloy/mc-portal/releases/latest">
+              <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M.5 9.9a.5.5 0 0 1 .5.5v2.1a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.1a.5.5 0 0 1 1 0v2.1a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.1a.5.5 0 0 1 .5-.5"/><path d="M7.5 10.29V1.5a.5.5 0 0 1 1 0v8.79l2.15-2.15a.5.5 0 0 1 .7.71l-3 3a.5.5 0 0 1-.7 0l-3-3a.5.5 0 1 1 .7-.71z"/></svg>
+              <span data-dl-label></span>
+            </a>
+            <a class="btn" href="https://discord.gg/JqrBUYEM8n" target="_blank" rel="noopener noreferrer">
+              <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M13.545 2.907a13.2 13.2 0 0 0-3.257-1.011.05.05 0 0 0-.052.025c-.141.25-.297.577-.406.833a12.2 12.2 0 0 0-3.658 0 8 8 0 0 0-.412-.833.05.05 0 0 0-.052-.025c-1.125.194-2.22.534-3.257 1.011a.04.04 0 0 0-.021.018C.356 6.024-.213 9.047.066 12.032q.003.022.021.037a13.3 13.3 0 0 0 3.995 2.02.05.05 0 0 0 .056-.019q.463-.63.818-1.329a.05.05 0 0 0-.01-.059l-.018-.011a9 9 0 0 1-1.248-.595.05.05 0 0 1-.02-.066l.015-.019q.127-.095.248-.195a.05.05 0 0 1 .051-.007c2.619 1.196 5.454 1.196 8.041 0a.05.05 0 0 1 .053.007q.121.1.248.195a.05.05 0 0 1-.004.085 8 8 0 0 1-1.249.594.05.05 0 0 0-.03.03.05.05 0 0 0 .003.041c.24.465.515.909.817 1.329a.05.05 0 0 0 .056.019 13.2 13.2 0 0 0 4.001-2.02.05.05 0 0 0 .021-.037c.334-3.451-.559-6.449-2.366-9.106a.03.03 0 0 0-.02-.019m-8.198 7.307c-.789 0-1.438-.724-1.438-1.612s.637-1.613 1.438-1.613c.807 0 1.45.73 1.438 1.613 0 .888-.637 1.612-1.438 1.612m5.316 0c-.788 0-1.438-.724-1.438-1.612s.637-1.613 1.438-1.613c.807 0 1.451.73 1.438 1.613 0 .888-.631 1.612-1.438 1.612"/></svg>
+              <span id="end-discord"></span>
+            </a>
+            <a class="btn" href="https://t.me/actually_aloy" target="_blank" rel="noopener noreferrer">
+              <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8.287 5.906q-1.168.486-4.666 2.01-.567.225-.595.442c-.03.243.275.339.69.47l.175.055c.408.133.958.288 1.243.294q.39.01.868-.32 3.269-2.206 3.374-2.23c.05-.012.12-.026.166.016s.042.12.037.141c-.03.129-1.227 1.241-1.846 1.817-.193.18-.33.307-.358.336a8 8 0 0 1-.188.186c-.38.366-.664.64.015 1.088.327.216.589.393.85.571.284.194.568.387.936.629q.14.092.27.187c.331.236.63.448.997.414.214-.02.435-.22.547-.82.265-1.417.786-4.486.906-5.751a1.4 1.4 0 0 0-.013-.315.34.34 0 0 0-.114-.217.53.53 0 0 0-.31-.093c-.3.005-.763.166-2.984 1.09"/></svg>
+              <span id="end-telegram"></span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="footer">
+      <a class="home-link" href="index.html" id="footer-home"></a>
+      <p class="made" id="made-by"></p>
+      <p class="legal" dir="ltr">© 2026 Aloy</p>
+    </div>
+  </main>
+
+  <script src="releases.js"></script>
+  <script>
+    (function () {
+      var host = location.hostname;
+      var local = host === 'localhost' || host === '127.0.0.1' || /^[\d.]+$/.test(host) || host.charAt(0) === '[';
+      if (local || !/^https?:$/.test(location.protocol)) return;
+      var clean = location.pathname.replace(/\/index\.html$/, '/').replace(/\.html$/, '');
+      if (clean !== location.pathname) history.replaceState(null, '', clean + location.search + location.hash);
+    })();
+
+    const REPO = 'actually-aloy/mc-portal';
+
+    const ICO = {
+      download: '<path d="M12 4v11"/><path d="M7.5 10.5 12 15l4.5-4.5"/><path d="M5 19h14"/>',
+      door: '<rect x="5" y="3" width="14" height="18" rx="2"/><rect x="9" y="7" width="6" height="10" rx="1"/>',
+      server: '<rect x="4" y="4" width="16" height="6" rx="2"/><rect x="4" y="14" width="16" height="6" rx="2"/><circle cx="8" cy="7" r="1" fill="currentColor" stroke="none"/><circle cx="8" cy="17" r="1" fill="currentColor" stroke="none"/>',
+      shield: '<path d="M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6z"/><path d="M9 12l2 2 4-4"/>',
+      broom: '<path d="M19 5 9 15"/><path d="M9 15 5 21l3-1 1-3 3-1z"/><path d="M13 11l6-6 2 2-6 6"/>',
+      tray: '<rect x="3" y="7" width="18" height="13" rx="2"/><path d="M3 13h5l1.5 2h5L16 13h5"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>',
+      mic: '<rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0"/><path d="M12 18v3"/>',
+      sliders: '<path d="M4 7h10M18 7h2M4 17h2M10 17h10"/><circle cx="16" cy="7" r="2"/><circle cx="8" cy="17" r="2"/>',
+      bell: '<path d="M6 16V11a6 6 0 0 1 12 0v5l1.5 2h-15z"/><path d="M10 21h4"/>'
+    };
+
+    const svg = (name, sw) => '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="' + (sw || 2) + '" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + ICO[name] + '</svg>';
+
+    const HEART = '<svg class="heart" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 21s-7.5-4.6-9.6-9.2C.9 8.4 2.7 5 6 5c2 0 3.4 1 4.4 2.5.5.7 1.2.7 1.7 0C13.1 6 14.5 5 16.5 5c3.3 0 5.1 3.4 3.6 6.8C19.5 16.4 12 21 12 21z"/></svg>';
+
+    const I18N = {
+      en: {
+        dir: 'ltr',
+        docTitle: 'MC Portal — open your Minecraft server port in one click',
+        back: 'home',
+        heroTitle: 'MC Portal',
+        pitch: 'Open your Minecraft server port with one click, and close it again when you are done. MC Portal adds and removes the Windows Firewall rules for you, so you never have to dig through firewall settings.',
+        tags: ['Free', 'Windows', 'Minecraft Java', 'One click'],
+        download: 'Download for Windows',
+        github: 'GitHub',
+        sizeUnit: 'MB',
+        mockNote: 'A small demo of the app, not the real thing. It does not touch your firewall.',
+        setTitle: 'Settings',
+        setLabels: ['Open port on launch', 'Close port on exit', 'Minimize to tray', 'Open voice chat port (24454)'],
+        howTitle: 'How it works',
+        howSub: 'three steps, about a minute',
+        how: [
+          ['download', 'Download and run', 'Download the zip and extract it anywhere, then double-click the .exe inside. There is no installer. Windows asks for administrator permission once, because changing firewall rules needs it.'],
+          ['door', 'Click Open Portal', 'MC Portal opens TCP 25565, the default Minecraft port, and the portal lights up. If you use the Simple Voice Chat mod, it opens UDP 24454 too.'],
+          ['server', 'Start your server', 'Run your Minecraft server as usual and let your friends join. When you are done, click Close Portal and the port shuts again.']
+        ],
+        featTitle: 'Good to know',
+        featSub: 'the small details',
+        feat: [
+          ['shield', 'Opens only what it needs', 'Two inbound rules, named MC Portal (Minecraft Server) and MC Portal (Minecraft Voice Chat), so they are easy to spot in Windows Firewall. Nothing else is touched.'],
+          ['broom', 'Cleans up after itself', 'By default the port closes when you quit. If the app or your PC dies with the port open, the next launch clears the leftover rules and tells you it did.'],
+          ['tray', 'Lives in the tray', 'Minimize it to the system tray and open or close the port from the tray menu. The tray icon is a tiny portal that lights up and fades with the real one.'],
+          ['mic', 'Voice chat port', 'For the Simple Voice Chat mod, MC Portal can open its default UDP port 24454 alongside the server port. Switch it off if you do not use voice chat.'],
+          ['sliders', 'Remembers your choices', 'Open on launch, close on exit, minimize to tray and the voice chat port are saved in a small settings file next to the app.'],
+          ['bell', 'Tells you about updates', 'On launch it checks GitHub once for a newer version and shows a small banner with a Get it button. Nothing else goes over the network.']
+        ],
+        faqTitle: 'Questions',
+        faqSub: 'the usual ones',
+        faq: [
+          ['Is it free?', 'Yes, it is free to download and use. It is closed source and not licensed for redistribution, so please share a link to this page or the GitHub releases instead of re-uploading it.'],
+          ['How do I install it?', 'There is nothing to install. Extract the zip anywhere and double-click the .exe inside. Keep the files together, because the settings are saved next to the app.'],
+          ['What does it run on?', 'Windows 10 and 11. It uses the built-in netsh command to manage Windows Firewall.'],
+          ['Does it work with Bedrock Edition?', 'No, it is made for Minecraft Java Edition. Bedrock servers use UDP 19132, which MC Portal does not open.'],
+          ['Why does it ask for administrator permission?', 'Adding and removing firewall rules needs administrator rights, so MC Portal restarts itself as administrator when it starts. Windows shows its usual prompt, and you click Yes.'],
+          ['What exactly does it change?', 'It adds two inbound allow rules with netsh: MC Portal (Minecraft Server) for TCP 25565, and MC Portal (Minecraft Voice Chat) for UDP 24454, only when the voice chat switch is on. Closing the portal removes them again.'],
+          ['Will friends outside my home network be able to join?', 'Not by itself. MC Portal only opens the firewall on this PC. For players over the internet you also need to forward the port on your router, or use a tunnel or VPN. Friends on the same network can join as soon as the portal is open.'],
+          ['Can I change the ports?', 'No. They are fixed at 25565 for the server and 24454 for voice chat. If your server listens on a different port, MC Portal will not help with it.'],
+          ['What if the app crashes with the port open?', 'On the next launch MC Portal notices the leftover session, clears the rules and shows a notice. If you turned off Close port on exit on purpose, it leaves the port open and picks the session back up instead.'],
+          ['Is it safe to leave a port open?', 'An open port lets anyone who can reach your PC try to connect to the server. Keep the server updated, use a whitelist, and close the portal when you are not playing.'],
+          ['Does it need the internet?', 'No. The only network request is the single update check on launch, and the app works fine without it.'],
+          ['Where are my settings?', 'In settings.json next to the app. While the port is open there is also a small session.json that lets MC Portal recover after a crash.'],
+          ['How do updates work?', 'A banner appears when a newer version exists, with a Get it button. You can also download the newest zip from this page and extract it over the old folder. Keep your settings.json if you want to keep your options.']
+        ],
+        endTitle: 'Light it up',
+        endText: 'Free, tiny, and ready in a minute. Stuck somewhere? Ask in the Discord server or on Telegram.',
+        endDiscord: 'Discord server',
+        endTelegram: 'Telegram',
+        footerHome: 'Back to the main page',
+        madeBy: 'This portal was lit with {heart} by Aloy'
+      },
+      fa: {
+        dir: 'rtl',
+        docTitle: 'MC Portal — باز کردن پورت سرور ماینکرفت با یه کلیک',
+        back: 'خانه',
+        heroTitle: 'MC Portal',
+        pitch: 'پورت سرور ماینکرفتت رو با یه کلیک باز کن و وقتی کارت تموم شد دوباره ببند. MC Portal قانون‌های فایروال ویندوز رو خودش اضافه و حذف می‌کنه، پس لازم نیست دنبال تنظیمات فایروال بگردی.',
+        tags: ['رایگان', 'ویندوز', 'ماینکرفت جاوا', 'یه کلیک'],
+        download: 'دانلود برای ویندوز',
+        github: 'گیت‌هاب',
+        sizeUnit: 'مگابایت',
+        mockNote: 'یه نمونه‌ی کوچیک از برنامه‌ست، نه خودش. به فایروالت دست نمی‌زنه. ظاهر برنامه انگلیسیه، برای همین اینجا هم همین‌طوره.',
+        setTitle: 'Settings',
+        setLabels: ['Open port on launch', 'Close port on exit', 'Minimize to tray', 'Open voice chat port (24454)'],
+        howTitle: 'چطوری کار می‌کنه',
+        howSub: 'سه قدم، حدود یه دقیقه',
+        how: [
+          ['download', 'دانلود و اجرا', 'فایل زیپ رو دانلود کن، هرجا خواستی از حالت فشرده دربیار و روی فایل exe داخلش دوبار کلیک کن. نصب‌کننده‌ای در کار نیست. ویندوز یه بار اجازه‌ی ادمین می‌خواد، چون تغییر قانون‌های فایروال بدون اون نمی‌شه.'],
+          ['door', 'روی Open Portal بزن', 'MC Portal پورت TCP 25565 رو که پورت پیش‌فرض ماینکرفته باز می‌کنه و پورتال روشن می‌شه. اگه از مود Simple Voice Chat استفاده می‌کنی، پورت UDP 24454 رو هم باز می‌کنه.'],
+          ['server', 'سرورت رو بالا بیار', 'سرور ماینکرفتت رو مثل همیشه اجرا کن و بذار دوستات وصل بشن. وقتی تموم شد روی Close Portal بزن تا پورت دوباره بسته بشه.']
+        ],
+        featTitle: 'خوبه بدونی',
+        featSub: 'جزئیات کوچیک',
+        feat: [
+          ['shield', 'فقط چیزی که لازمه رو باز می‌کنه', 'دو قانون ورودی با اسم‌های MC Portal (Minecraft Server) و MC Portal (Minecraft Voice Chat) که تو فایروال ویندوز راحت پیدا می‌شن. به چیز دیگه‌ای دست نمی‌زنه.'],
+          ['broom', 'خودش پشت سرش رو جمع می‌کنه', 'به‌صورت پیش‌فرض با بستن برنامه، پورت هم بسته می‌شه. اگه برنامه یا کامپیوترت با پورت باز خاموش بشه، دفعه‌ی بعد قانون‌های جامونده پاک می‌شن و بهت خبر می‌ده.'],
+          ['tray', 'تو سینی سیستم می‌شینه', 'می‌تونی کوچیکش کنی تو سینی سیستم و پورت رو از منوی اون باز و بسته کنی. آیکون سینی یه پورتال کوچیکه که همراه پورتال اصلی روشن و خاموش می‌شه.'],
+          ['mic', 'پورت چت صوتی', 'برای مود Simple Voice Chat، MC Portal می‌تونه پورت UDP پیش‌فرضش یعنی 24454 رو کنار پورت سرور باز کنه. اگه چت صوتی نداری خاموشش کن.'],
+          ['sliders', 'انتخاب‌هات رو یادش می‌مونه', 'باز کردن با اجرا، بستن با خروج، کوچیک شدن تو سینی و پورت چت صوتی تو یه فایل تنظیمات کوچیک کنار برنامه ذخیره می‌شن.'],
+          ['bell', 'از آپدیت‌ها خبرت می‌کنه', 'موقع اجرا یه بار از گیت‌هاب نسخه‌ی جدید رو چک می‌کنه و یه بنر کوچیک با دکمه‌ی Get it نشون می‌ده. هیچ ارتباط شبکه‌ای دیگه‌ای نداره.']
+        ],
+        faqTitle: 'سؤال‌ها',
+        faqSub: 'همون‌هایی که معمولاً می‌پرسن',
+        faq: [
+          ['رایگانه؟', 'آره، دانلود و استفاده‌اش رایگانه. متن‌بسته‌ست و اجازه‌ی پخش مجدد نداره، پس به‌جای آپلود دوباره، لینک همین صفحه یا ریلیزهای گیت‌هاب رو بفرست.'],
+          ['چطوری نصبش کنم؟', 'نصبی در کار نیست. زیپ رو هرجا خواستی باز کن و روی فایل exe داخلش دوبار کلیک کن. فایل‌ها رو کنار هم نگه دار، چون تنظیمات کنار برنامه ذخیره می‌شن.'],
+          ['رو چی کار می‌کنه؟', 'ویندوز ۱۰ و ۱۱. برای مدیریت فایروال ویندوز از دستور خود ویندوز یعنی netsh استفاده می‌کنه.'],
+          ['با نسخه‌ی Bedrock کار می‌کنه؟', 'نه، برای ماینکرفت جاوا ساخته شده. سرورهای Bedrock از UDP 19132 استفاده می‌کنن که MC Portal بازش نمی‌کنه.'],
+          ['چرا اجازه‌ی ادمین می‌خواد؟', 'اضافه و حذف کردن قانون‌های فایروال دسترسی ادمین می‌خواد، برای همین MC Portal موقع شروع خودش رو دوباره به‌عنوان ادمین اجرا می‌کنه. ویندوز پیام همیشگی‌اش رو نشون می‌ده و تو Yes رو می‌زنی.'],
+          ['دقیقاً چی رو عوض می‌کنه؟', 'با netsh دو قانون ورودی اضافه می‌کنه: MC Portal (Minecraft Server) برای TCP 25565 و MC Portal (Minecraft Voice Chat) برای UDP 24454، که فقط وقتی کلید چت صوتی روشنه ساخته می‌شه. با بستن پورتال هر دو دوباره پاک می‌شن.'],
+          ['دوستای بیرون از شبکه‌ی خونه‌م هم می‌تونن وصل بشن؟', 'خودش نه. MC Portal فقط فایروال همین کامپیوتر رو باز می‌کنه. برای بازیکن‌های اینترنتی باید پورت رو تو روتر هم فوروارد کنی یا از تونل یا VPN استفاده کنی. دوستایی که تو همین شبکه‌ان به‌محض باز شدن پورتال می‌تونن وصل بشن.'],
+          ['می‌شه پورت‌ها رو عوض کرد؟', 'نه. پورت سرور روی 25565 و پورت چت صوتی روی 24454 ثابته. اگه سرورت روی پورت دیگه‌ای گوش می‌ده، MC Portal کمکی بهش نمی‌کنه.'],
+          ['اگه برنامه با پورت باز کرش کنه چی؟', 'دفعه‌ی بعد MC Portal جلسه‌ی جامونده رو تشخیص می‌ده، قانون‌ها رو پاک می‌کنه و یه پیام نشون می‌ده. اگه عمداً «Close port on exit» رو خاموش کرده باشی، پورت رو باز نگه می‌داره و جلسه رو دوباره برمی‌داره.'],
+          ['باز گذاشتن پورت امنه؟', 'پورت باز یعنی هرکسی که به کامپیوترت دسترسی شبکه‌ای داره می‌تونه سعی کنه به سرور وصل بشه. سرورت رو آپدیت نگه دار، از وایت‌لیست استفاده کن و وقتی بازی نمی‌کنی پورتال رو ببند.'],
+          ['اینترنت می‌خواد؟', 'نه. تنها درخواست شبکه‌ایش همون یه چک آپدیته موقع اجرا و بدون اون هم برنامه خوب کار می‌کنه.'],
+          ['تنظیماتم کجاست؟', 'تو settings.json کنار برنامه. وقتی پورت بازه یه session.json کوچیک هم هست که کمک می‌کنه MC Portal بعد از کرش خودش رو جمع‌وجور کنه.'],
+          ['آپدیت‌ها چطوری‌ان؟', 'وقتی نسخه‌ی جدید باشه یه بنر با دکمه‌ی Get it میاد. می‌تونی جدیدترین زیپ رو از همین صفحه هم بگیری و روی پوشه‌ی قبلی باز کنی. اگه می‌خوای گزینه‌هات بمونن، فایل settings.json رو نگه دار.']
+        ],
+        endTitle: 'روشنش کن',
+        endText: 'رایگانه، کوچیکه و تو یه دقیقه آماده‌ست. جایی گیر کردی؟ تو سرور دیسکورد یا تلگرام بپرس.',
+        endDiscord: 'سرور دیسکورد',
+        endTelegram: 'تلگرام',
+        footerHome: 'بازگشت به صفحه‌ی اصلی',
+        madeBy: 'این پورتال رو آلوی با {heart} روشن کرده'
+      }
+    };
+
+    const $ = id => document.getElementById(id);
+    const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+    const PERSIAN_DIGITS = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
+    const LATIN_RE = /[A-Za-z][A-Za-z0-9._@+'’\/-]*(?:[  ][A-Za-z][A-Za-z0-9._@+'’\/-]*)*/g;
+
+    let currentLang = localStorage.getItem('lang') === 'en' ? 'en' : 'fa';
+
+    const tx = s => {
+      if (currentLang !== 'fa') return esc(s);
+      let out = '', last = 0, m;
+      LATIN_RE.lastIndex = 0;
+      while ((m = LATIN_RE.exec(s))) {
+        out += esc(s.slice(last, m.index)) + '<bdi>' + esc(m[0]) + '</bdi>';
+        last = m.index + m[0].length;
+      }
+      return out + esc(s.slice(last));
+    };
+    const setTx = (id, s) => { $(id).innerHTML = tx(s); };
+    const fmt = n => currentLang === 'fa' ? String(n).replace(/[0-9]/g, d => PERSIAN_DIGITS[d]) : String(n);
+
+    const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    const pm = { open: false, voice: true, timer: 0, count: 0 };
+
+    function portsText() {
+      return 'TCP 25565' + (pm.voice ? ' • UDP 24454' : '');
+    }
+
+    function paintMock() {
+      $('p-frame').classList.toggle('on', pm.open);
+      $('p-dot').classList.toggle('on', pm.open);
+      const btn = $('p-btn');
+      btn.classList.toggle('on', pm.open);
+      btn.textContent = pm.open ? 'Close Portal' : 'Open Portal';
+      $('p-state-label').textContent = 'Portal';
+      $('p-state-word').textContent = pm.open ? 'Open' : 'Closed';
+      $('p-ports').textContent = portsText();
+    }
+
+    function spawnParticle() {
+      const host = $('p-surface');
+      if (!host || host.querySelectorAll('.p-particle').length > 28) return;
+      const el = document.createElement('i');
+      el.className = 'p-particle';
+      const size = 2 + Math.random() * 3;
+      el.style.left = (6 + Math.random() * 88) + '%';
+      el.style.setProperty('--size', size.toFixed(1) + 'px');
+      el.style.setProperty('--dx', ((Math.random() - 0.5) * 36).toFixed(0) + 'px');
+      el.style.setProperty('--rise', '-' + (90 + Math.random() * 130).toFixed(0) + 'px');
+      el.style.animationDuration = (2.2 + Math.random() * 2.2).toFixed(2) + 's';
+      el.addEventListener('animationend', () => el.remove());
+      host.appendChild(el);
+    }
+
+    function startParticles() {
+      stopParticles();
+      if (reduceMotion) return;
+      for (let i = 0; i < 12; i++) setTimeout(() => { if (pm.open) spawnParticle(); }, i * 60);
+      pm.timer = setInterval(() => { if (pm.open && !document.hidden) spawnParticle(); }, 240);
+    }
+
+    function stopParticles() {
+      clearInterval(pm.timer);
+      pm.timer = 0;
+    }
+
+    function setPortal(on) {
+      pm.open = on;
+      paintMock();
+      if (on) startParticles(); else stopParticles();
+    }
+
+    $('p-btn').addEventListener('click', () => setPortal(!pm.open));
+
+    $('p-set-head').addEventListener('click', () => {
+      const open = $('p-set').classList.toggle('open');
+      $('p-set-head').setAttribute('aria-expanded', String(open));
+    });
+
+    $('p-s-voice').addEventListener('change', e => {
+      pm.voice = e.target.checked;
+      $('p-ports').textContent = portsText();
+    });
+
+    function renderMock() {
+      const t = I18N[currentLang];
+      $('p-set-title').textContent = t.setTitle;
+      ['launch', 'exit', 'tray', 'voice'].forEach((k, i) => { $('p-l-' + k).textContent = t.setLabels[i]; });
+      setTx('mock-note', t.mockNote);
+      paintMock();
+    }
+
+    let release = null;
+
+    function paintRelease() {
+      const t = I18N[currentLang];
+      document.querySelectorAll('a[data-dl]').forEach(a => {
+        a.href = release ? release.url : LatestRelease.page(REPO);
+      });
+      const meta = $('dl-meta');
+      if (!release) { meta.hidden = true; return; }
+      const parts = [];
+      if (release.tag) parts.push('<bdi dir="ltr">' + esc(release.tag) + '</bdi>');
+      if (release.size) parts.push(fmt((release.size / 1048576).toFixed(1).replace('.', currentLang === 'fa' ? '٫' : '.')) + ' ' + t.sizeUnit);
+      meta.innerHTML = parts.join(' · ');
+      meta.hidden = parts.length === 0;
+    }
+
+    function renderHow(t) {
+      $('how-grid').innerHTML = t.how.map(([icon, name, desc], i) => `
+        <div class="card">
+          <div class="card-top">
+            <div class="icon">${svg(icon)}</div>
+            <div class="card-name">${tx(name)}</div>
+            <span class="step-num" aria-hidden="true">${fmt(i + 1)}</span>
+          </div>
+          <p class="card-desc">${tx(desc)}</p>
+        </div>`).join('');
+    }
+
+    function renderFeatures(t) {
+      $('feat-grid').innerHTML = t.feat.map(([icon, name, desc], i) => `
+        <div class="card">
+          <div class="card-top">
+            <div class="icon${i % 2 ? ' alt' : ''}">${svg(icon)}</div>
+            <div class="card-name">${tx(name)}</div>
+          </div>
+          <p class="card-desc">${tx(desc)}</p>
+        </div>`).join('');
+    }
+
+    function renderFaq(t) {
+      $('faq-list').innerHTML = t.faq.map(([q, a], i) => `
+        <div class="faq-item">
+          <button type="button" class="faq-q" id="faq-q-${i}" aria-expanded="false" aria-controls="faq-a-${i}">
+            <span>${tx(q)}</span>
+            <span class="faq-icon" aria-hidden="true"></span>
+          </button>
+          <div class="faq-panel" id="faq-a-${i}" role="region" aria-labelledby="faq-q-${i}">
+            <div class="faq-inner"><div class="answer">${tx(a)}</div></div>
+          </div>
+        </div>`).join('');
+    }
+
+    $('faq-list').addEventListener('click', e => {
+      const btn = e.target.closest('.faq-q');
+      if (!btn) return;
+      const item = btn.parentElement;
+      const open = item.classList.toggle('open');
+      btn.setAttribute('aria-expanded', String(open));
+    });
+
+    function applyLanguage(lang) {
+      currentLang = lang;
+      localStorage.setItem('lang', lang);
+      const t = I18N[lang];
+      document.documentElement.lang = lang;
+      document.documentElement.dir = t.dir;
+      document.title = t.docTitle;
+
+      setTx('back-text', t.back);
+      setTx('hero-title', t.heroTitle);
+      setTx('hero-pitch', t.pitch);
+      $('hero-tags').innerHTML = t.tags.map((x, i) => `<span class="tag${i === 0 ? ' hot' : ''}">${tx(x)}</span>`).join('');
+      document.querySelectorAll('[data-dl-label]').forEach(el => { el.textContent = t.download; });
+      setTx('cta-github', t.github);
+      paintRelease();
+      renderMock();
+
+      setTx('how-title', t.howTitle);
+      setTx('how-sub', t.howSub);
+      renderHow(t);
+
+      setTx('feat-title', t.featTitle);
+      setTx('feat-sub', t.featSub);
+      renderFeatures(t);
+
+      setTx('faq-title', t.faqTitle);
+      setTx('faq-sub', t.faqSub);
+      renderFaq(t);
+
+      setTx('end-title', t.endTitle);
+      setTx('end-text', t.endText);
+      setTx('end-discord', t.endDiscord);
+      setTx('end-telegram', t.endTelegram);
+      setTx('footer-home', t.footerHome);
+      $('made-by').innerHTML = t.madeBy.split('{heart}').map(tx).join(HEART);
+    }
+
+    $('lang-toggle').addEventListener('click', () => {
+      $('lang-toggle').blur();
+      applyLanguage(currentLang === 'en' ? 'fa' : 'en');
+    });
+
+    applyLanguage(currentLang);
+
+    LatestRelease.latest(REPO).then(d => {
+      release = d;
+      paintRelease();
+    });
+  </script>
+</body>
+</html>
