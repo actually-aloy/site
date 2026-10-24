@@ -1,0 +1,2388 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#05070c">
+  <title>Aloy's Multitool — ابزارهای کاربردی ویندوز</title>
+  <meta name="description" content="Aloy's Multitool: twelve small Windows tools in one tidy, portable window. Ping test, change DNS, reset proxy and firewall, shutdown timer, image converter and more.">
+  <link rel="canonical" href="https://actually-aloy.github.io/site/multitool">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Aloy's Multitool — handy Windows tools">
+  <meta property="og:description" content="Twelve small Windows tools in one tidy, portable window. No installer.">
+  <meta property="og:url" content="https://actually-aloy.github.io/site/multitool">
+  <meta property="og:image" content="https://actually-aloy.github.io/site/amt-og.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Aloy's Multitool — handy Windows tools">
+  <meta name="twitter:description" content="Twelve small Windows tools in one tidy, portable window. No installer.">
+  <meta name="twitter:image" content="https://actually-aloy.github.io/site/amt-og.jpg">
+  <link rel="icon" href="amt-logo.png" type="image/png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #05070c;
+      --text: #eaf1f8;
+      --muted: #97a5bd;
+      --line: rgba(255, 255, 255, 0.13);
+      --cyan: #4be8ff;
+      --magenta: #ff3fa4;
+      --pink: #ff7ab6;
+      --ink: #05070c;
+      --radius: 28px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 14% 10%, rgba(75, 232, 255, 0.2), transparent 32%),
+        radial-gradient(circle at 90% 14%, rgba(255, 63, 164, 0.16), transparent 30%),
+        radial-gradient(circle at 52% 94%, rgba(124, 92, 255, 0.1), transparent 34%),
+        var(--bg);
+      animation: page-fade-in 0.4s ease-out;
+      user-select: none;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+    }
+
+    @keyframes page-fade-in {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    html[lang="fa"] body {
+      font-family: Vazirmatn, Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      html { scroll-behavior: smooth; }
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    h1, h2, h3, p {
+      margin: 0;
+    }
+
+    [hidden] {
+      display: none !important;
+    }
+
+    .page {
+      width: min(1080px, calc(100% - 36px));
+      margin: 0 auto;
+      padding: 38px 0 56px;
+    }
+
+    .glass {
+      border: 1px solid var(--line);
+      border-radius: calc(var(--radius) + 10px);
+      background: linear-gradient(145deg, rgba(255, 255, 255, 0.105), rgba(255, 255, 255, 0.045));
+      box-shadow: 0 28px 90px rgba(0, 0, 0, 0.4);
+      backdrop-filter: blur(22px);
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(320px, 460px);
+      gap: 30px;
+      padding: 28px;
+      align-items: center;
+    }
+
+    .intro {
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+      min-width: 0;
+    }
+
+    .topline {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .pill-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 14px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--text);
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 180ms ease, border-color 180ms ease;
+    }
+
+    .pill-btn:hover {
+      background: rgba(255, 255, 255, 0.12);
+      border-color: rgba(75, 232, 255, 0.45);
+    }
+
+    .pill-btn svg {
+      width: 14px;
+      height: 14px;
+    }
+
+    html[dir="rtl"] .pill-btn svg {
+      transform: scaleX(-1);
+    }
+
+    .lang-toggle {
+      margin-inline-start: auto;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .brand img {
+      width: 64px;
+      height: 64px;
+      flex: 0 0 auto;
+      border-radius: 18px;
+      box-shadow: 0 16px 40px rgba(75, 232, 255, 0.35);
+      -webkit-user-drag: none;
+    }
+
+    h1 {
+      font-size: clamp(38px, 6.4vw, 64px);
+      line-height: 1.15;
+      letter-spacing: -0.03em;
+    }
+
+    .gradient-text {
+      background: linear-gradient(90deg, var(--cyan), #a99bff, var(--magenta), var(--cyan));
+      background-size: 300% 100%;
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      animation: enchant 6s linear infinite;
+    }
+
+    @keyframes enchant {
+      to { background-position: -300% 0; }
+    }
+
+    .pitch {
+      max-width: 560px;
+      color: var(--muted);
+      font-size: 18px;
+      line-height: 1.75;
+    }
+
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .tag {
+      padding: 6px 13px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--text);
+      font-size: 12.5px;
+      font-weight: 600;
+    }
+
+    .tag.hot {
+      border-color: transparent;
+      background: linear-gradient(135deg, var(--cyan), var(--magenta));
+      color: var(--ink);
+    }
+
+    .cta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 12px 22px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--text);
+      font-family: inherit;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: filter 180ms ease, transform 180ms ease, background 180ms ease, border-color 180ms ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      background: rgba(255, 255, 255, 0.12);
+      border-color: rgba(75, 232, 255, 0.45);
+    }
+
+    .btn.primary {
+      border-color: transparent;
+      background: linear-gradient(135deg, var(--cyan), var(--magenta));
+      color: var(--ink);
+    }
+
+    .btn.primary:hover {
+      filter: brightness(1.06);
+    }
+
+    .btn svg {
+      width: 16px;
+      height: 16px;
+      flex: 0 0 auto;
+    }
+
+    .btn:focus-visible,
+    .pill-btn:focus-visible,
+    .faq-q:focus-visible {
+      outline: 2px solid var(--cyan);
+      outline-offset: 3px;
+    }
+
+    .dl-meta {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .stage {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+    }
+
+    .stage::before {
+      content: "";
+      position: absolute;
+      inset: 6% -6% 10%;
+      z-index: 0;
+      border-radius: 50%;
+      background: radial-gradient(closest-side, rgba(75, 232, 255, 0.5), rgba(75, 232, 255, 0));
+      filter: blur(24px);
+      pointer-events: none;
+    }
+
+    .mock {
+      --a: #4be8ff;
+      --b: #ff3fa4;
+      --m-void: #05070c;
+      --m-panel: #0d121c;
+      --m-panel2: #121826;
+      --m-panel3: #182033;
+      --m-line: rgba(255, 255, 255, 0.09);
+      --m-text: #eaf1f8;
+      --m-muted: #8392ab;
+      --m-ok: #35e08a;
+      --m-warn: #ffb454;
+      --m-mono: "Cascadia Code", "JetBrains Mono", ui-monospace, SFMono-Regular, Consolas, "Courier New", monospace;
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 460px;
+      overflow: hidden;
+      border: 1px solid var(--m-line);
+      border-radius: 14px;
+      background: var(--m-void);
+      color: var(--m-text);
+      font-family: "Segoe UI", Inter, ui-sans-serif, system-ui, sans-serif;
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(75, 232, 255, 0.14);
+    }
+
+    html[lang="fa"] .mock {
+      font-family: Vazirmatn, "Segoe UI", Inter, ui-sans-serif, system-ui, sans-serif;
+    }
+
+    .mock[data-theme="magenta"] { --a: #ff3fa4; --b: #7c5cff; }
+    .mock[data-theme="emerald"] { --a: #2fe6a0; --b: #4be8ff; }
+    .mock[data-theme="amber"] { --a: #ffb454; --b: #ff5c72; }
+    .mock[data-theme="violet"] { --a: #9b7bff; --b: #4be8ff; }
+    .mock[data-theme="crimson"] { --a: #ff5c72; --b: #ff3fa4; }
+    .mock[data-theme="mono"] { --a: #c7d2e0; --b: #7c8aa3; }
+
+    .m-top {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      height: 40px;
+      padding: 0 10px 0 12px;
+      border-bottom: 1px solid var(--m-line);
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.03), transparent);
+      direction: ltr;
+    }
+
+    .m-radar {
+      width: 24px;
+      height: 24px;
+      flex: none;
+    }
+
+    .m-radar svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .m-radar .swe {
+      transform-origin: 20px 20px;
+      animation: m-spin 4s linear infinite;
+    }
+
+    @keyframes m-spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .m-brand {
+      font-family: var(--m-mono);
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      white-space: nowrap;
+      background: linear-gradient(90deg, var(--a), var(--b));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .m-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-left: auto;
+      padding: 3px 9px;
+      border: 1px solid var(--m-line);
+      border-radius: 999px;
+      background: var(--m-panel);
+      color: var(--m-muted);
+      font-size: 10px;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .m-pill i {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--m-muted);
+    }
+
+    .m-ctl {
+      display: flex;
+      gap: 2px;
+      color: var(--m-muted);
+    }
+
+    .m-ctl span {
+      width: 22px;
+      height: 22px;
+      display: grid;
+      place-items: center;
+    }
+
+    .m-ctl svg {
+      width: 9px;
+      height: 9px;
+    }
+
+    .m-body {
+      height: 340px;
+      padding: 14px;
+      overflow-y: auto;
+      overflow-x: hidden;
+      scrollbar-width: thin;
+      background:
+        radial-gradient(260px 160px at 10% -10%, color-mix(in srgb, var(--a) 12%, transparent), transparent 70%),
+        radial-gradient(260px 160px at 100% 0%, color-mix(in srgb, var(--b) 10%, transparent), transparent 70%),
+        var(--m-void);
+    }
+
+    .m-body.swap > * {
+      animation: m-in 0.32s ease both;
+    }
+
+    @keyframes m-in {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: none; }
+    }
+
+    .m-sec {
+      margin: 0 2px 9px;
+      color: var(--m-muted);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+
+    .m-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    .m-card {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      min-width: 0;
+      padding: 11px;
+      border: 1px solid var(--m-line);
+      border-radius: 12px;
+      background: var(--m-panel);
+      color: inherit;
+      font-family: inherit;
+      text-align: start;
+      cursor: pointer;
+      transition: border-color 0.2s ease, transform 0.2s ease, background 0.2s ease;
+    }
+
+    .m-card:hover {
+      transform: translateY(-2px);
+      border-color: color-mix(in srgb, var(--a) 55%, transparent);
+      background: var(--m-panel2);
+    }
+
+    .m-ico {
+      width: 28px;
+      height: 28px;
+      display: grid;
+      place-items: center;
+      border: 1px solid var(--m-line);
+      border-radius: 8px;
+      background: var(--m-panel3);
+      color: var(--a);
+      transition: color 0.3s ease;
+    }
+
+    .m-ico svg {
+      width: 15px;
+      height: 15px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .m-card h4 {
+      margin: 0;
+      font-size: 12px;
+      font-weight: 700;
+      line-height: 1.3;
+    }
+
+    .m-card p {
+      margin: 0;
+      color: var(--m-muted);
+      font-size: 10px;
+      line-height: 1.5;
+    }
+
+    .m-lock {
+      position: absolute;
+      top: 9px;
+      inset-inline-end: 9px;
+      width: 12px;
+      height: 12px;
+      color: var(--m-muted);
+    }
+
+    .m-lock svg {
+      width: 100%;
+      height: 100%;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .m-th {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .m-th h4 {
+      margin: 0;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .m-th .m-ico {
+      flex: none;
+    }
+
+    .m-ib {
+      width: 28px;
+      height: 28px;
+      flex: none;
+      display: grid;
+      place-items: center;
+      padding: 0;
+      border: 1px solid var(--m-line);
+      border-radius: 8px;
+      background: var(--m-panel);
+      color: var(--m-muted);
+      font-family: inherit;
+      cursor: pointer;
+      transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+    }
+
+    .m-ib:hover {
+      color: var(--a);
+      border-color: color-mix(in srgb, var(--a) 50%, transparent);
+    }
+
+    .m-ib svg {
+      width: 14px;
+      height: 14px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.9;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    html[dir="rtl"] .m-back svg {
+      transform: scaleX(-1);
+    }
+
+    .m-ib.spin svg {
+      animation: m-spin 0.6s ease;
+    }
+
+    .m-help {
+      margin: 0 0 10px;
+      color: var(--m-muted);
+      font-size: 11px;
+      line-height: 1.8;
+    }
+
+    .m-help code {
+      font-family: var(--m-mono);
+      color: var(--m-text);
+    }
+
+    .m-btn {
+      width: 100%;
+      padding: 9px 12px;
+      border: 0;
+      border-radius: 10px;
+      background: linear-gradient(135deg, var(--a), var(--b));
+      color: #05070c;
+      font-family: inherit;
+      font-size: 12px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: filter 0.2s ease, opacity 0.2s ease;
+    }
+
+    .m-btn:hover:not(:disabled) {
+      filter: brightness(1.08);
+    }
+
+    .m-btn:disabled {
+      opacity: 0.55;
+      cursor: default;
+    }
+
+    .m-btn.half {
+      width: auto;
+      flex: 1;
+    }
+
+    .m-btn.stop {
+      background: transparent;
+      border: 1px solid rgba(255, 92, 114, 0.55);
+      color: #ff7a8c;
+    }
+
+    .m-row {
+      display: flex;
+      gap: 8px;
+    }
+
+    .m-btn:focus-visible,
+    .m-card:focus-visible,
+    .m-ib:focus-visible,
+    .m-opt:focus-visible,
+    .m-chip:focus-visible,
+    .m-sw:focus-visible {
+      outline: 2px solid var(--a);
+      outline-offset: 2px;
+    }
+
+    .m-list {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-top: 12px;
+    }
+
+    .m-prow {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      padding: 7px 10px;
+      border: 1px solid var(--m-line);
+      border-radius: 9px;
+      background: var(--m-panel);
+      font-size: 11px;
+    }
+
+    .m-prow .d {
+      width: 7px;
+      height: 7px;
+      flex: none;
+      border-radius: 50%;
+      background: var(--m-panel3);
+      transition: background 0.25s ease;
+    }
+
+    .m-prow.done .d {
+      background: var(--m-ok);
+      box-shadow: 0 0 8px var(--m-ok);
+    }
+
+    .m-prow .n {
+      min-width: 0;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+
+    .m-prow .h {
+      margin-inline-start: auto;
+      color: var(--m-muted);
+      font-family: var(--m-mono);
+      font-size: 9.5px;
+      direction: ltr;
+    }
+
+    .m-prow .r {
+      min-width: 46px;
+      color: var(--m-muted);
+      font-family: var(--m-mono);
+      font-size: 11px;
+      font-weight: 700;
+      text-align: end;
+      direction: ltr;
+    }
+
+    .m-prow.done .r {
+      color: var(--m-ok);
+    }
+
+    .m-spin {
+      width: 10px;
+      height: 10px;
+      display: inline-block;
+      border: 2px solid var(--m-panel3);
+      border-top-color: var(--a);
+      border-radius: 50%;
+      animation: m-spin 0.7s linear infinite;
+    }
+
+    .m-con {
+      margin-top: 12px;
+      min-height: 76px;
+      padding: 9px 11px;
+      border: 1px solid var(--m-line);
+      border-radius: 9px;
+      background: #03050a;
+      color: #9fb0c9;
+      font-family: var(--m-mono);
+      font-size: 10.5px;
+      line-height: 1.75;
+      text-align: left;
+      direction: ltr;
+    }
+
+    .m-con div {
+      animation: m-in 0.25s ease both;
+    }
+
+    .m-con .ok {
+      color: var(--m-ok);
+    }
+
+    .m-con .dim {
+      color: #5d6a80;
+    }
+
+    .m-note {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 10px;
+      padding: 8px 10px;
+      border: 1px solid rgba(255, 180, 84, 0.35);
+      border-radius: 9px;
+      background: rgba(255, 180, 84, 0.08);
+      color: var(--m-warn);
+      font-size: 10.5px;
+      line-height: 1.7;
+    }
+
+    .m-note svg {
+      width: 13px;
+      height: 13px;
+      flex: none;
+      margin-top: 3px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .m-dns {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 6px;
+      margin-bottom: 10px;
+    }
+
+    .m-opt {
+      padding: 7px 9px;
+      border: 1px solid var(--m-line);
+      border-radius: 9px;
+      background: var(--m-panel);
+      color: inherit;
+      font-family: inherit;
+      text-align: start;
+      cursor: pointer;
+      transition: border-color 0.2s ease, background 0.2s ease;
+    }
+
+    .m-opt:hover {
+      border-color: color-mix(in srgb, var(--a) 40%, transparent);
+    }
+
+    .m-opt.on {
+      border-color: var(--a);
+      background: color-mix(in srgb, var(--a) 11%, var(--m-panel));
+    }
+
+    .m-opt b {
+      display: block;
+      font-size: 11px;
+    }
+
+    .m-opt span {
+      display: block;
+      margin-top: 1px;
+      color: var(--m-muted);
+      font-family: var(--m-mono);
+      font-size: 9px;
+      direction: ltr;
+      text-align: start;
+    }
+
+    .m-ring {
+      position: relative;
+      width: 118px;
+      height: 118px;
+      margin: 4px auto 12px;
+    }
+
+    .m-ring svg {
+      width: 100%;
+      height: 100%;
+      transform: rotate(-90deg);
+    }
+
+    .m-ring circle {
+      fill: none;
+      stroke-width: 7;
+      stroke-linecap: round;
+    }
+
+    .m-ring .bg {
+      stroke: var(--m-panel3);
+    }
+
+    .m-ring .fg {
+      stroke: url(#m-rg);
+      stroke-dasharray: 326.73;
+      transition: stroke-dashoffset 0.22s linear;
+    }
+
+    .m-ring .t {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      font-family: var(--m-mono);
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      direction: ltr;
+    }
+
+    .m-chips {
+      display: flex;
+      justify-content: center;
+      gap: 6px;
+      margin-bottom: 12px;
+    }
+
+    .m-chip {
+      padding: 4px 12px;
+      border: 1px solid var(--m-line);
+      border-radius: 999px;
+      background: var(--m-panel);
+      color: var(--m-muted);
+      font-family: var(--m-mono);
+      font-size: 11px;
+      cursor: pointer;
+      transition: color 0.2s ease, border-color 0.2s ease;
+    }
+
+    .m-chip.on {
+      border-color: var(--a);
+      color: var(--a);
+    }
+
+    .m-kv {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 8px;
+      padding: 9px 11px;
+      border: 1px solid var(--m-line);
+      border-radius: 10px;
+      background: var(--m-panel);
+    }
+
+    .m-kv .k {
+      color: var(--m-muted);
+      font-size: 9.5px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .m-kv .v {
+      min-width: 0;
+      margin-top: 2px;
+      font-family: var(--m-mono);
+      font-size: 12px;
+      word-break: break-all;
+      direction: ltr;
+      text-align: left;
+    }
+
+    .m-len {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .m-len label {
+      flex: none;
+      color: var(--m-muted);
+      font-size: 11px;
+    }
+
+    .m-len input {
+      flex: 1;
+      min-width: 0;
+      padding: 6px 9px;
+      border: 1px solid var(--m-line);
+      border-radius: 8px;
+      background: var(--m-panel);
+      color: var(--m-text);
+      font-family: var(--m-mono);
+      font-size: 12px;
+      direction: ltr;
+      user-select: text;
+      -webkit-user-select: text;
+    }
+
+    .m-len input:focus {
+      outline: none;
+      border-color: var(--a);
+    }
+
+    .m-foot {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      padding: 9px 12px;
+      border-top: 1px solid var(--m-line);
+      background: var(--m-panel);
+      direction: ltr;
+    }
+
+    .m-sw {
+      width: 15px;
+      height: 15px;
+      padding: 0;
+      border: 0;
+      border-radius: 50%;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+
+    .m-sw:hover {
+      transform: scale(1.18);
+    }
+
+    .m-sw.on {
+      outline: 2px solid var(--m-text);
+      outline-offset: 2px;
+    }
+
+    .m-theme {
+      margin-left: auto;
+      color: var(--m-muted);
+      font-size: 10.5px;
+      font-weight: 600;
+    }
+
+    .m-toast {
+      position: absolute;
+      left: 50%;
+      bottom: 54px;
+      z-index: 6;
+      max-width: calc(100% - 28px);
+      padding: 6px 13px;
+      border: 1px solid var(--m-line);
+      border-radius: 999px;
+      background: var(--m-panel3);
+      color: var(--m-text);
+      font-size: 11px;
+      font-weight: 600;
+      text-align: center;
+      opacity: 0;
+      transform: translate(-50%, 8px);
+      pointer-events: none;
+      transition: opacity 0.22s ease, transform 0.22s ease;
+    }
+
+    .m-toast.show {
+      opacity: 1;
+      transform: translate(-50%, 0);
+    }
+
+    .mock-note {
+      position: relative;
+      z-index: 1;
+      max-width: 420px;
+      color: var(--muted);
+      font-size: 12.5px;
+      line-height: 1.7;
+      text-align: center;
+    }
+
+    section.block {
+      margin-top: 38px;
+      scroll-margin-top: 18px;
+    }
+
+    .head {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 12px;
+      margin: 0 4px 14px;
+    }
+
+    .head h2 {
+      font-size: 26px;
+      letter-spacing: -0.03em;
+    }
+
+    .head span {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 14px;
+    }
+
+    .grid.three {
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    }
+
+    .grid.cols3 {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    @media (max-width: 900px) {
+      .grid.cols3 {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 560px) {
+      .grid.cols3 {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    .card {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      padding: 20px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: linear-gradient(145deg, rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0.04));
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      backdrop-filter: blur(18px);
+      transition: transform 180ms ease, border-color 180ms ease;
+    }
+
+    .card:hover {
+      transform: translateY(-3px);
+      border-color: rgba(75, 232, 255, 0.42);
+    }
+
+    .card-top {
+      display: flex;
+      align-items: center;
+      gap: 13px;
+    }
+
+    .icon {
+      position: relative;
+      width: 46px;
+      height: 46px;
+      flex: 0 0 auto;
+      display: grid;
+      place-items: center;
+      border-radius: 15px;
+      color: var(--ink);
+      background: linear-gradient(135deg, var(--cyan), var(--magenta));
+      box-shadow: 0 14px 30px rgba(75, 232, 255, 0.25);
+    }
+
+    .icon.alt {
+      background: linear-gradient(135deg, var(--magenta), #9b7bff);
+      box-shadow: 0 14px 30px rgba(255, 63, 164, 0.22);
+    }
+
+    .icon svg {
+      width: 22px;
+      height: 22px;
+    }
+
+    .step-num {
+      margin-inline-start: auto;
+      color: rgba(75, 232, 255, 0.28);
+      font-size: 38px;
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      line-height: 1;
+    }
+
+    .card-name {
+      font-size: 17px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    .card-desc {
+      color: var(--muted);
+      font-size: 14.5px;
+      line-height: 1.75;
+    }
+
+    .groups {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .grp-t {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 10px;
+      margin: 0 4px 10px;
+      color: var(--muted);
+      font-size: 12.5px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    html[lang="fa"] .grp-t {
+      letter-spacing: 0;
+      font-size: 14px;
+    }
+
+    .grp-t span {
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0;
+      text-transform: none;
+      opacity: 0.8;
+    }
+
+    .tiles {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 12px;
+    }
+
+    .tile {
+      position: relative;
+      display: flex;
+      align-items: flex-start;
+      gap: 13px;
+      padding: 15px 16px;
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      background: linear-gradient(145deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.035));
+      transition: transform 180ms ease, border-color 180ms ease;
+    }
+
+    .tile:hover {
+      transform: translateY(-2px);
+      border-color: rgba(75, 232, 255, 0.4);
+    }
+
+    .tile .ti {
+      width: 38px;
+      height: 38px;
+      flex: 0 0 auto;
+      display: grid;
+      place-items: center;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--cyan);
+    }
+
+    .tile .ti svg {
+      width: 19px;
+      height: 19px;
+    }
+
+    .tile h3 {
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+    }
+
+    .tile p {
+      margin-top: 3px;
+      color: var(--muted);
+      font-size: 13.5px;
+      line-height: 1.65;
+    }
+
+    .tile .lk {
+      position: absolute;
+      top: 14px;
+      inset-inline-end: 14px;
+      width: 14px;
+      height: 14px;
+      color: var(--muted);
+      opacity: 0.75;
+    }
+
+    .tile .lk svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    .legend {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin: 14px 4px 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .legend svg {
+      width: 14px;
+      height: 14px;
+      flex: none;
+    }
+
+    .shot {
+      padding: 12px;
+    }
+
+    .shot img {
+      display: block;
+      width: 100%;
+      height: auto;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      -webkit-user-drag: none;
+    }
+
+    .shot figcaption {
+      margin: 12px 6px 2px;
+      color: var(--muted);
+      font-size: 13px;
+      text-align: center;
+    }
+
+    figure {
+      margin: 0;
+    }
+
+    .faq {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .faq-item {
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.05);
+      transition: border-color 240ms ease, background 240ms ease;
+    }
+
+    .faq-item:hover {
+      border-color: rgba(75, 232, 255, 0.28);
+    }
+
+    .faq-item.open {
+      border-color: rgba(75, 232, 255, 0.4);
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .faq-q {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 16px 20px;
+      border: none;
+      border-radius: 20px;
+      background: none;
+      color: var(--text);
+      font-family: inherit;
+      font-size: 15px;
+      font-weight: 700;
+      text-align: start;
+      cursor: pointer;
+    }
+
+    .faq-q:focus-visible {
+      outline-offset: -2px;
+    }
+
+    .faq-icon {
+      position: relative;
+      width: 14px;
+      height: 14px;
+      flex: 0 0 auto;
+      transition: transform 340ms cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+
+    .faq-icon::before,
+    .faq-icon::after {
+      content: "";
+      position: absolute;
+      inset-inline: 0;
+      top: 50%;
+      height: 2px;
+      margin-top: -1px;
+      border-radius: 2px;
+      background: var(--cyan);
+      transition: transform 340ms cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+
+    .faq-icon::after {
+      transform: rotate(90deg);
+    }
+
+    .faq-item.open .faq-icon {
+      transform: rotate(180deg);
+    }
+
+    .faq-item.open .faq-icon::after {
+      transform: rotate(0deg);
+    }
+
+    .faq-panel {
+      display: grid;
+      grid-template-rows: 0fr;
+      opacity: 0;
+      visibility: hidden;
+      transition: grid-template-rows 360ms cubic-bezier(0.2, 0.8, 0.2, 1), opacity 240ms ease, visibility 0s linear 360ms;
+    }
+
+    .faq-item.open .faq-panel {
+      grid-template-rows: 1fr;
+      opacity: 1;
+      visibility: visible;
+      transition: grid-template-rows 360ms cubic-bezier(0.2, 0.8, 0.2, 1), opacity 300ms ease 60ms, visibility 0s;
+    }
+
+    .faq-inner {
+      min-height: 0;
+      overflow: hidden;
+    }
+
+    .faq .answer {
+      padding: 0 20px 18px;
+      color: var(--muted);
+      font-size: 14.5px;
+      line-height: 1.8;
+    }
+
+    .closing {
+      display: flex;
+      align-items: center;
+      gap: 22px;
+      padding: 28px;
+    }
+
+    .closing img {
+      width: 72px;
+      height: 72px;
+      flex: 0 0 auto;
+      border-radius: 20px;
+      box-shadow: 0 16px 40px rgba(75, 232, 255, 0.35);
+      -webkit-user-drag: none;
+    }
+
+    .closing-text {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      min-width: 0;
+    }
+
+    .closing h2 {
+      font-size: 26px;
+      letter-spacing: -0.03em;
+    }
+
+    .closing p {
+      max-width: 520px;
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.75;
+    }
+
+    .closing .cta-row {
+      margin-top: 8px;
+    }
+
+    .footer {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+      margin-top: 40px;
+      text-align: center;
+    }
+
+    .made {
+      color: var(--text);
+      font-size: 15px;
+      font-weight: 600;
+    }
+
+    .heart {
+      display: inline-block;
+      width: 15px;
+      height: 15px;
+      margin: 0 3px;
+      vertical-align: -2px;
+      color: var(--pink);
+      animation: beat 1.8s ease-in-out infinite;
+    }
+
+    @keyframes beat {
+      0%, 60%, 100% { transform: scale(1); }
+      20% { transform: scale(1.22); }
+      40% { transform: scale(1.06); }
+    }
+
+    .legal {
+      color: var(--muted);
+      font-size: 12.5px;
+      opacity: 0.8;
+    }
+
+    .home-link {
+      padding-bottom: 2px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.24);
+      color: var(--muted);
+      font-size: 15px;
+      letter-spacing: -0.01em;
+      transition: color 180ms ease, border-color 180ms ease;
+    }
+
+    .home-link:hover {
+      color: var(--text);
+      border-color: rgba(75, 232, 255, 0.55);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      body { animation: none; }
+      .gradient-text { animation: none; }
+      .heart { animation: none; }
+      .m-radar .swe, .m-spin, .m-body.swap > *, .m-con div, .m-ib.spin svg { animation: none; }
+      .m-card, .m-toast, .m-ring .fg, .m-sw, .tile { transition: none; }
+      .faq-item, .faq-icon, .faq-icon::before, .faq-icon::after, .faq-panel, .card, .btn {
+        transition: none !important;
+      }
+    }
+
+    @media (max-width: 900px) {
+      .hero {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .page {
+        width: min(100% - 22px, 1080px);
+        padding-top: 18px;
+      }
+
+      .hero,
+      .closing {
+        padding: 16px;
+        border-radius: 28px;
+      }
+
+      .intro {
+        gap: 18px;
+      }
+
+      .head {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 2px;
+      }
+
+      .btn {
+        width: 100%;
+      }
+
+      .closing {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .m-ctl {
+        display: none;
+      }
+
+      .m-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .m-body {
+        height: 360px;
+        padding: 12px;
+      }
+
+      .tiles {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+  </style>
+
+</head>
+<body>
+  <main class="page">
+
+    <section class="hero glass">
+      <div class="intro">
+        <div class="topline">
+          <a class="pill-btn" href="index.html" id="back-link">
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 3 5 8l5 5"/></svg>
+            <span id="back-text"></span>
+          </a>
+          <button type="button" class="pill-btn lang-toggle" id="lang-toggle" aria-label="Switch language">EN / فا</button>
+        </div>
+        <div class="brand">
+          <img src="amt-logo.png" alt="" width="64" height="64" draggable="false">
+          <h1><span class="gradient-text" id="hero-title"></span></h1>
+        </div>
+        <p class="pitch" id="hero-pitch"></p>
+        <div class="tags" id="hero-tags"></div>
+        <div class="cta-row">
+          <a class="btn primary" data-dl href="https://github.com/actually-aloy/aloys-multitool/releases/latest">
+            <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M.5 9.9a.5.5 0 0 1 .5.5v2.1a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.1a.5.5 0 0 1 1 0v2.1a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.1a.5.5 0 0 1 .5-.5"/><path d="M7.5 10.29V1.5a.5.5 0 0 1 1 0v8.79l2.15-2.15a.5.5 0 0 1 .7.71l-3 3a.5.5 0 0 1-.7 0l-3-3a.5.5 0 1 1 .7-.71z"/></svg>
+            <span data-dl-label></span>
+          </a>
+          <a class="btn" href="https://github.com/actually-aloy/aloys-multitool" target="_blank" rel="noopener noreferrer">
+            <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8"/></svg>
+            <span id="cta-github"></span>
+          </a>
+        </div>
+        <p class="dl-meta" id="dl-meta" hidden></p>
+      </div>
+
+      <div class="stage">
+        <div class="mock" id="mock" data-theme="cyan">
+          <div class="m-top" aria-hidden="true">
+            <div class="m-radar">
+              <svg viewBox="0 0 40 40">
+                <defs>
+                  <linearGradient id="m-sg" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#4be8ff" stop-opacity="0"/>
+                    <stop offset="100%" stop-color="#4be8ff" stop-opacity="0.9"/>
+                  </linearGradient>
+                </defs>
+                <circle cx="20" cy="20" r="18" fill="none" stroke="#2c3d5a" stroke-width="1.2"/>
+                <circle cx="20" cy="20" r="12.5" fill="none" stroke="#243249" stroke-width="1"/>
+                <circle cx="20" cy="20" r="7" fill="none" stroke="#243249" stroke-width="1"/>
+                <g class="swe"><path d="M20 20 L20 2 A18 18 0 0 1 34.3 9.5 Z" fill="url(#m-sg)"/></g>
+                <circle cx="27" cy="14" r="1.7" fill="#ff3fa4"/>
+                <circle cx="13" cy="27" r="1.7" fill="#4be8ff"/>
+                <circle cx="20" cy="20" r="1.6" fill="#eaf1f8"/>
+              </svg>
+            </div>
+            <span class="m-brand">ALOY'S MULTITOOL</span>
+            <span class="m-pill"><i></i><span id="m-pill-text"></span></span>
+            <div class="m-ctl">
+              <span><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M2 6h8"/></svg></span>
+              <span><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M2.5 2.5l7 7M9.5 2.5l-7 7"/></svg></span>
+            </div>
+          </div>
+          <div class="m-body" id="m-body"></div>
+          <div class="m-foot" id="m-foot"></div>
+          <div class="m-toast" id="m-toast" role="status" aria-live="polite"></div>
+        </div>
+        <p class="mock-note" id="mock-note"></p>
+      </div>
+    </section>
+
+    <section class="block" id="how">
+      <div class="head">
+        <h2 id="how-title"></h2>
+        <span id="how-sub"></span>
+      </div>
+      <div class="grid three" id="how-grid"></div>
+    </section>
+
+    <section class="block" id="tools">
+      <div class="head">
+        <h2 id="tools-title"></h2>
+        <span id="tools-sub"></span>
+      </div>
+      <div class="groups" id="tools-list"></div>
+      <p class="legend" id="tools-legend"></p>
+    </section>
+
+    <section class="block" id="shot">
+      <div class="head">
+        <h2 id="shot-title"></h2>
+        <span id="shot-sub"></span>
+      </div>
+      <figure class="shot glass">
+        <img src="amt-dashboard.png" id="shot-img" alt="" width="1157" height="737" loading="lazy" draggable="false">
+        <figcaption id="shot-cap"></figcaption>
+      </figure>
+    </section>
+
+    <section class="block" id="features">
+      <div class="head">
+        <h2 id="feat-title"></h2>
+        <span id="feat-sub"></span>
+      </div>
+      <div class="grid cols3" id="feat-grid"></div>
+    </section>
+
+    <section class="block" id="faq">
+      <div class="head">
+        <h2 id="faq-title"></h2>
+        <span id="faq-sub"></span>
+      </div>
+      <div class="faq" id="faq-list"></div>
+    </section>
+
+    <section class="block">
+      <div class="closing glass">
+        <img src="amt-logo.png" alt="" width="72" height="72" draggable="false">
+        <div class="closing-text">
+          <h2 id="end-title"></h2>
+          <p id="end-text"></p>
+          <div class="cta-row">
+            <a class="btn primary" data-dl href="https://github.com/actually-aloy/aloys-multitool/releases/latest">
+              <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M.5 9.9a.5.5 0 0 1 .5.5v2.1a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.1a.5.5 0 0 1 1 0v2.1a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.1a.5.5 0 0 1 .5-.5"/><path d="M7.5 10.29V1.5a.5.5 0 0 1 1 0v8.79l2.15-2.15a.5.5 0 0 1 .7.71l-3 3a.5.5 0 0 1-.7 0l-3-3a.5.5 0 1 1 .7-.71z"/></svg>
+              <span data-dl-label></span>
+            </a>
+            <a class="btn" href="https://discord.gg/JqrBUYEM8n" target="_blank" rel="noopener noreferrer">
+              <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M13.545 2.907a13.2 13.2 0 0 0-3.257-1.011.05.05 0 0 0-.052.025c-.141.25-.297.577-.406.833a12.2 12.2 0 0 0-3.658 0 8 8 0 0 0-.412-.833.05.05 0 0 0-.052-.025c-1.125.194-2.22.534-3.257 1.011a.04.04 0 0 0-.021.018C.356 6.024-.213 9.047.066 12.032q.003.022.021.037a13.3 13.3 0 0 0 3.995 2.02.05.05 0 0 0 .056-.019q.463-.63.818-1.329a.05.05 0 0 0-.01-.059l-.018-.011a9 9 0 0 1-1.248-.595.05.05 0 0 1-.02-.066l.015-.019q.127-.095.248-.195a.05.05 0 0 1 .051-.007c2.619 1.196 5.454 1.196 8.041 0a.05.05 0 0 1 .053.007q.121.1.248.195a.05.05 0 0 1-.004.085 8 8 0 0 1-1.249.594.05.05 0 0 0-.03.03.05.05 0 0 0 .003.041c.24.465.515.909.817 1.329a.05.05 0 0 0 .056.019 13.2 13.2 0 0 0 4.001-2.02.05.05 0 0 0 .021-.037c.334-3.451-.559-6.449-2.366-9.106a.03.03 0 0 0-.02-.019m-8.198 7.307c-.789 0-1.438-.724-1.438-1.612s.637-1.613 1.438-1.613c.807 0 1.45.73 1.438 1.613 0 .888-.637 1.612-1.438 1.612m5.316 0c-.788 0-1.438-.724-1.438-1.612s.637-1.613 1.438-1.613c.807 0 1.451.73 1.438 1.613 0 .888-.631 1.612-1.438 1.612"/></svg>
+              <span id="end-discord"></span>
+            </a>
+            <a class="btn" href="https://t.me/actually_aloy" target="_blank" rel="noopener noreferrer">
+              <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8.287 5.906q-1.168.486-4.666 2.01-.567.225-.595.442c-.03.243.275.339.69.47l.175.055c.408.133.958.288 1.243.294q.39.01.868-.32 3.269-2.206 3.374-2.23c.05-.012.12-.026.166.016s.042.12.037.141c-.03.129-1.227 1.241-1.846 1.817-.193.18-.33.307-.358.336a8 8 0 0 1-.188.186c-.38.366-.664.64.015 1.088.327.216.589.393.85.571.284.194.568.387.936.629q.14.092.27.187c.331.236.63.448.997.414.214-.02.435-.22.547-.82.265-1.417.786-4.486.906-5.751a1.4 1.4 0 0 0-.013-.315.34.34 0 0 0-.114-.217.53.53 0 0 0-.31-.093c-.3.005-.763.166-2.984 1.09"/></svg>
+              <span id="end-telegram"></span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="footer">
+      <a class="home-link" href="index.html" id="footer-home"></a>
+      <p class="made" id="made-by"></p>
+      <p class="legal" dir="ltr">© 2026 Aloy</p>
+    </div>
+  </main>
+
+  <script src="releases.js"></script>
+  <script>
+    (function () {
+      var host = location.hostname;
+      var local = host === 'localhost' || host === '127.0.0.1' || /^[\d.]+$/.test(host) || host.charAt(0) === '[';
+      if (local || !/^https?:$/.test(location.protocol)) return;
+      var clean = location.pathname.replace(/\/index\.html$/, '/').replace(/\.html$/, '');
+      if (clean !== location.pathname) history.replaceState(null, '', clean + location.search + location.hash);
+    })();
+
+    const REPO = 'actually-aloy/aloys-multitool';
+
+    const ICO = {
+      radar: '<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4.5"/><path d="M12 12 20 6"/><circle cx="17" cy="8" r="1" fill="currentColor" stroke="none"/>',
+      broom: '<path d="M19 5 9 15"/><path d="M9 15 5 21l3-1 1-3 3-1z"/><path d="M13 11l6-6 2 2-6 6"/>',
+      globe: '<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.6 2.6 4 5.7 4 9s-1.4 6.4-4 9c-2.6-2.6-4-5.7-4-9s1.4-6.4 4-9z"/>',
+      reset: '<path d="M3 12a9 9 0 0 1 15.3-6.4L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-15.3 6.4L3 16"/><path d="M3 21v-5h5"/>',
+      shield: '<path d="M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6z"/><path d="M9 12l2 2 4-4"/>',
+      tag: '<path d="M4 12V5a1 1 0 0 1 1-1h7l8 8-8 8-8-8z"/><circle cx="8" cy="8" r="1.4" fill="currentColor" stroke="none"/>',
+      power: '<path d="M12 2v10"/><path d="M18.36 6.64a9 9 0 1 1-12.73 0"/>',
+      timer: '<circle cx="12" cy="13" r="8"/><path d="M12 9v4l3 2M9 2h6"/>',
+      package: '<path d="M21 8 12 3 3 8l9 5 9-5z"/><path d="M3 8v9l9 5 9-5V8"/><path d="M12 13v9"/>',
+      link: '<path d="M9 15l6-6"/><path d="M13 6l1-1a4 4 0 0 1 6 6l-1 1"/><path d="M11 18l-1 1a4 4 0 0 1-6-6l1-1"/>',
+      image: '<rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="1.6" fill="currentColor" stroke="none"/><path d="M21 16l-5.5-5.5L7 19"/>',
+      key: '<circle cx="8" cy="15" r="4"/><path d="M11 12l9-9M17 6l3 3M14 9l2.5 2.5"/>',
+      lock: '<rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/>',
+      copy: '<rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/>',
+      refresh: '<path d="M3 12a9 9 0 0 1 15.3-6.4L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-15.3 6.4L3 16"/><path d="M3 21v-5h5"/>',
+      back: '<path d="M15 18l-6-6 6-6"/>',
+      tray: '<rect x="3" y="7" width="18" height="13" rx="2"/><path d="M3 13h5l1.5 2h5L16 13h5"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>',
+      palette: '<path d="M12 3a9 9 0 1 0 0 18c1.5 0 2-1 2-2s-.5-1.6-.5-2.4c0-1 .8-1.6 1.8-1.6H18a3 3 0 0 0 3-3C21 7 17 3 12 3z"/><circle cx="7.5" cy="11" r="1"/><circle cx="10" cy="7" r="1"/><circle cx="15" cy="7.5" r="1"/>',
+      calendar: '<rect x="4" y="5" width="16" height="15" rx="2.5"/><path d="M4 10h16"/><path d="M8.5 3v4"/><path d="M15.5 3v4"/>',
+      bolt: '<path d="M13 3 5 14h6l-1 7 8-11h-6z"/>',
+      download: '<path d="M12 4v11"/><path d="M7.5 10.5 12 15l4.5-4.5"/><path d="M5 19h14"/>',
+      cursor: '<path d="M6 4l12 7-5.2 1.6L10.5 18z"/>',
+      grid: '<rect x="4" y="4" width="7" height="7" rx="1.5"/><rect x="13" y="4" width="7" height="7" rx="1.5"/><rect x="4" y="13" width="7" height="7" rx="1.5"/><rect x="13" y="13" width="7" height="7" rx="1.5"/>'
+    };
+
+    const svg = (name, sw) => '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="' + (sw || 2) + '" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + ICO[name] + '</svg>';
+
+    const HEART = '<svg class="heart" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 21s-7.5-4.6-9.6-9.2C.9 8.4 2.7 5 6 5c2 0 3.4 1 4.4 2.5.5.7 1.2.7 1.7 0C13.1 6 14.5 5 16.5 5c3.3 0 5.1 3.4 3.6 6.8C19.5 16.4 12 21 12 21z"/></svg>';
+
+    const TOOLS = [
+      { id: 'ping', group: 'network', icon: 'radar' },
+      { id: 'flushdns', group: 'network', icon: 'broom' },
+      { id: 'dns', group: 'network', icon: 'globe', admin: true },
+      { id: 'proxy', group: 'network', icon: 'reset', admin: true },
+      { id: 'firewall', group: 'network', icon: 'shield', admin: true },
+      { id: 'ip', group: 'network', icon: 'tag' },
+      { id: 'shutdown', group: 'system', icon: 'power' },
+      { id: 'countdown', group: 'system', icon: 'timer' },
+      { id: 'exe', group: 'system', icon: 'package' },
+      { id: 'shorten', group: 'utility', icon: 'link' },
+      { id: 'image', group: 'utility', icon: 'image' },
+      { id: 'gen', group: 'utility', icon: 'key' }
+    ];
+
+    const MOCK_TOOLS = ['ping', 'flushdns', 'dns', 'countdown', 'gen', 'ip'];
+
+    const THEMES = [
+      { id: 'cyan', label: 'Cyan Radar', a: '#4be8ff', b: '#ff3fa4' },
+      { id: 'magenta', label: 'Magenta Pulse', a: '#ff3fa4', b: '#7c5cff' },
+      { id: 'emerald', label: 'Emerald Signal', a: '#2fe6a0', b: '#4be8ff' },
+      { id: 'amber', label: 'Amber Grid', a: '#ffb454', b: '#ff5c72' },
+      { id: 'violet', label: 'Violet Static', a: '#9b7bff', b: '#4be8ff' },
+      { id: 'crimson', label: 'Crimson Sweep', a: '#ff5c72', b: '#ff3fa4' },
+      { id: 'mono', label: 'Mono Steel', a: '#c7d2e0', b: '#7c8aa3' }
+    ];
+
+    const PING = [
+      ['Google', '8.8.8.8', 18, 36],
+      ['Google Secondary', '8.8.4.4', 19, 38],
+      ['Cloudflare', '1.1.1.1', 14, 30],
+      ['Cloudflare Secondary', '1.0.0.1', 15, 32],
+      ['Hamrah Aval', 'mci.ir', 32, 70],
+      ['Shecan', '178.22.122.100', 40, 90],
+      ['Shecan Secondary', '185.51.200.2', 42, 95]
+    ];
+
+    const DNS = [
+      ['google', 'Google', '8.8.8.8, 8.8.4.4'],
+      ['cloudflare', 'Cloudflare', '1.1.1.1, 1.0.0.1'],
+      ['shecan', 'Shecan', '178.22.122.100, 185.51.200.2'],
+      ['begzar', 'Begzar', '185.55.226.26, 185.55.225.25'],
+      ['electro', 'Electro', '78.157.42.100, 78.157.42.101'],
+      ['403', '403', '10.202.10.202, 10.202.10.102'],
+      ['radargame', 'RADAR.GAME', '10.202.10.10, 10.202.10.11'],
+      ['quad9', 'Quad9', '9.9.9.9, 149.112.112.112'],
+      ['opendns', 'OpenDNS', '208.67.222.222, 208.67.220.220'],
+      ['auto', 'Automatic (DHCP)', 'DHCP']
+    ];
+
+    const I18N = {
+      en: {
+        dir: 'ltr',
+        docTitle: "Aloy's Multitool — handy Windows tools",
+        back: 'home',
+        heroTitle: "Aloy's Multitool",
+        pitch: 'Twelve small Windows tools in one tidy window. Check your connection, change DNS, reset the proxy or firewall, set a shutdown timer, convert images and more. Portable, no installer.',
+        tags: ['Free', 'Windows', 'Portable', '12 tools'],
+        download: 'Download for Windows',
+        github: 'GitHub',
+        sizeUnit: 'MB',
+        tools: {
+          ping: ['Ping Test', 'Measure latency to key DNS servers.'],
+          flushdns: ['Flush DNS Cache', 'Clear the local DNS resolver cache.'],
+          dns: ['Change DNS', 'Switch DNS provider on every adapter.'],
+          proxy: ['Reset Proxy', 'Clear proxy, WinHTTP and Winsock settings.'],
+          firewall: ['Reset Firewall', 'Restore Windows Firewall to defaults.'],
+          ip: ['Private IP', "Show this device's local IP address."],
+          shutdown: ['Shutdown Timer', 'Schedule or cancel a system shutdown.'],
+          countdown: ['Countdown Timer', 'A simple visual countdown clock.'],
+          exe: ['Python → EXE', 'Package a script with PyInstaller.'],
+          shorten: ['Shorten URL', 'Create a quick TinyURL short link.'],
+          image: ['Convert Image', "Change an image's file format."],
+          gen: ['UUID & Password', 'Generate a UUID and a random password.']
+        },
+        groups: { network: 'Network', system: 'System', utility: 'Utilities' },
+        toolCount: n => n + ' tools',
+        mock: {
+          standard: 'Standard Mode',
+          back: 'Back (Esc)',
+          note: 'A small demo, not the real app. Nothing here touches your computer.',
+          theme: 'Theme',
+          pingHelp: 'Pings a handful of well-known DNS resolvers and reports round-trip latency.',
+          pingRun: 'Run Ping Test',
+          pingBusy: 'Pinging…',
+          flushHelp: 'Clears the local DNS resolver cache. No admin rights required.',
+          flushRun: 'Flush DNS Cache',
+          flushLines: ['> ipconfig /flushdns', 'Windows IP Configuration', 'Successfully flushed the DNS Resolver Cache.'],
+          dnsHelp: 'Applies the selected DNS servers to every active network adapter.',
+          dnsAdmin: 'Needs administrator access. In the app, one click restarts it as administrator.',
+          dnsRun: 'Apply DNS',
+          dnsPick: 'Pick a provider first.',
+          dnsLines: p => ['Applying ' + p + ' DNS to all adapters...', 'Demo only: nothing was changed on your PC.'],
+          cdHelp: 'A simple local countdown, useful for breaks, builds, or anything timed.',
+          cdStart: 'Start', cdStop: 'Stop', cdDone: 'Time is up!',
+          genHelp: 'Generates a fresh UUID v4 and a random password.',
+          genLen: 'Password length', genUuid: 'UUID v4', genPass: 'Password',
+          refresh: 'Generate new', copy: 'Copy', copied: 'Copied',
+          ipHelp: 'The local (LAN) address this machine uses on its current network. This one is just an example.',
+          ipLabel: 'Private IPv4'
+        },
+        howTitle: 'How it works',
+        howSub: 'three steps, about a minute',
+        how: [
+          ['download', 'Download and unzip', 'Grab the zip with the button above and extract it anywhere. There is no installer.'],
+          ['cursor', 'Run AMT.exe', 'Double-click AMT.exe. Your settings are saved next to it and restored on the next launch.'],
+          ['grid', 'Pick a tool', 'Everything is one click from the main screen. Tools that change system settings carry a small lock and need administrator rights.']
+        ],
+        toolsTitle: 'Twelve tools',
+        toolsSub: 'grouped by what they do',
+        legend: 'These tools change system settings, so they need administrator rights.',
+        shotTitle: 'The real app',
+        shotSub: 'a screenshot of the dashboard',
+        shotAlt: "Screenshot of Aloy's Multitool showing its Network, System and Utilities tools",
+        shotCap: 'The real dashboard, in the default Cyan Radar theme.',
+        featTitle: 'Good to know',
+        featSub: 'the small details',
+        feat: [
+          ['shield', 'Admin only when needed', 'Ping, Flush DNS, the timers and the utilities run as a normal user. Change DNS, Reset Proxy and Reset Firewall need administrator rights, so one click restarts the app as administrator and finishes the job you picked.'],
+          ['tray', 'Lives in the tray', 'Optionally minimize or close to the system tray, start minimized, and launch with Windows. A small tray menu runs Ping, Change DNS, Flush DNS and more without opening the window.'],
+          ['palette', 'Seven themes', 'Cyan Radar, Magenta Pulse, Emerald Signal, Amber Grid, Violet Static, Crimson Sweep and Mono Steel. Try them in the demo above.'],
+          ['calendar', 'Two calendars', 'The top bar shows today as a Gregorian date and a Persian (Jalali) date side by side.'],
+          ['bolt', 'Easy on your PC', 'A Reduce animations switch turns off the background motion and blur for slower machines, and the app pauses its background animation while it is hidden.'],
+          ['package', 'Portable by design', 'No installer and no account. Settings live in a small file next to the app, and opening it a second time just brings the first window forward.']
+        ],
+        faqTitle: 'Questions',
+        faqSub: 'the usual ones',
+        faq: [
+          ['Is it free?', 'Yes, it is free to download and use. It is closed source, so the code is not published.'],
+          ['What does it run on?', 'Windows only. Many of its tools use built-in Windows commands such as PowerShell, netsh and ipconfig.'],
+          ['How do I install it?', 'There is nothing to install. Extract the zip anywhere and double-click AMT.exe.'],
+          ['Does it need the internet?', 'Most of it works offline. The ping test needs a connection to reach the servers, Shorten URL uses TinyURL, and Python → EXE downloads PyInstaller the first time if you do not have it.'],
+          ['Why does it ask for administrator rights?', 'Only three tools need it: Change DNS, Reset Proxy and Reset Firewall, because they change system-wide network settings. They show a lock until the app runs as administrator. Clicking one restarts the app elevated and carries out what you picked.'],
+          ['What exactly does Change DNS do?', 'It sets the DNS servers on every network adapter to the provider you choose: Google, Cloudflare, Shecan, Begzar, Electro, 403, RADAR.GAME, Quad9 or OpenDNS. Choose Automatic (DHCP) to go back to the default.'],
+          ['What does Reset Proxy do?', 'It clears your user proxy settings, WinHTTP and the BITS proxy, flushes the DNS cache, resets Winsock and refreshes group policy. A reboot is recommended afterwards. If another app sets a proxy for you, such as a VPN or a proxy tool, reconnect it afterwards.'],
+          ['Will Reset Firewall delete my rules?', 'Yes. It restores Windows Firewall to its default configuration, so rules you or other apps added are removed. Use it when the firewall is the problem, not as a routine tool.'],
+          ['What does Python → EXE need?', 'Python on your PATH. If PyInstaller is missing, the app installs it with pip first, which needs the internet, then builds a single-file .exe into a dist folder next to your script.'],
+          ['Where are my settings kept?', 'In amt_settings.json next to the app, so moving the folder moves your settings too.'],
+          ['How do updates work?', 'Download the newest zip with the button on this page and extract it over the old folder. Keep your amt_settings.json if you want to keep your theme and options.']
+        ],
+        endTitle: 'Give it a spin',
+        endText: 'Free, portable, and ready in a minute. Stuck somewhere? Ask in the Discord server or on Telegram.',
+        endDiscord: 'Discord server',
+        endTelegram: 'Telegram',
+        footerHome: 'Back to the main page',
+        madeBy: 'Wired together with {heart} by Aloy'
+      },
+      fa: {
+        dir: 'rtl',
+        docTitle: "Aloy's Multitool — ابزارهای کاربردی ویندوز",
+        back: 'خانه',
+        heroTitle: "Aloy's Multitool",
+        pitch: 'دوازده ابزار کوچیک ویندوزی تو یه پنجره‌ی مرتب. اینترنتت رو چک کن، DNS رو عوض کن، پروکسی یا فایروال رو ریست کن، تایمر خاموشی بذار، عکس تبدیل کن و بیشتر. قابل‌حمل و بدون نصب.',
+        tags: ['رایگان', 'ویندوز', 'قابل‌حمل', '۱۲ ابزار'],
+        download: 'دانلود برای ویندوز',
+        github: 'گیت‌هاب',
+        sizeUnit: 'مگابایت',
+        tools: {
+          ping: ['تست پینگ', 'تأخیر تا چند DNS سرور مهم رو اندازه می‌گیره.'],
+          flushdns: ['پاک کردن کش DNS', 'کش محلی DNS رو پاک می‌کنه.'],
+          dns: ['تغییر DNS', 'DNS همه‌ی کارت‌های شبکه رو عوض می‌کنه.'],
+          proxy: ['ریست پروکسی', 'تنظیمات پروکسی، WinHTTP و Winsock رو پاک می‌کنه.'],
+          firewall: ['ریست فایروال', 'فایروال ویندوز رو به حالت پیش‌فرض برمی‌گردونه.'],
+          ip: ['آی‌پی خصوصی', 'آی‌پی محلی این دستگاه رو نشون می‌ده.'],
+          shutdown: ['تایمر خاموشی', 'خاموش شدن سیستم رو زمان‌بندی یا لغو می‌کنه.'],
+          countdown: ['تایمر شمارش معکوس', 'یه ساعت شمارش معکوس ساده و تصویری.'],
+          exe: ['پایتون به EXE', 'یه اسکریپت پایتون رو با PyInstaller بسته‌بندی می‌کنه.'],
+          shorten: ['کوتاه کردن لینک', 'یه لینک کوتاه TinyURL می‌سازه.'],
+          image: ['تبدیل عکس', 'فرمت فایل یه عکس رو عوض می‌کنه.'],
+          gen: ['UUID و رمز عبور', 'یه UUID و یه رمز عبور تصادفی می‌سازه.']
+        },
+        groups: { network: 'شبکه', system: 'سیستم', utility: 'ابزارهای کاربردی' },
+        toolCount: n => String(n).replace(/[0-9]/g, d => '۰۱۲۳۴۵۶۷۸۹'[d]) + ' ابزار',
+        mock: {
+          standard: 'حالت عادی',
+          back: 'برگشت (Esc)',
+          note: 'یه نمونه‌ی کوچیکه، نه خود برنامه. هیچ‌چیزش به کامپیوترت دست نمی‌زنه.',
+          theme: 'تم',
+          pingHelp: 'چند DNS سرور معروف رو پینگ می‌کنه و زمان رفت‌وبرگشت رو نشون می‌ده.',
+          pingRun: 'اجرای تست پینگ',
+          pingBusy: 'در حال پینگ…',
+          flushHelp: 'کش محلی DNS رو پاک می‌کنه. نیازی به دسترسی ادمین نیست.',
+          flushRun: 'پاک کردن کش DNS',
+          flushLines: ['> ipconfig /flushdns', 'Windows IP Configuration', 'Successfully flushed the DNS Resolver Cache.'],
+          dnsHelp: 'DNS انتخابی رو روی همه‌ی کارت‌های شبکه‌ی فعال اعمال می‌کنه.',
+          dnsAdmin: 'دسترسی ادمین لازمه. تو خود برنامه با یه کلیک دوباره به‌عنوان ادمین اجرا می‌شه.',
+          dnsRun: 'اعمال DNS',
+          dnsPick: 'اول یه سرویس‌دهنده انتخاب کن.',
+          dnsLines: p => ['Applying ' + p + ' DNS to all adapters...', 'فقط نمایشیه: چیزی روی کامپیوترت عوض نشد.'],
+          cdHelp: 'یه شمارش معکوس ساده، به درد استراحت، بیلد یا هر چیزی که زمان‌دار باشه.',
+          cdStart: 'شروع', cdStop: 'توقف', cdDone: 'وقت تمومه!',
+          genHelp: 'یه UUID نسخه‌ی ۴ و یه رمز عبور تصادفی تازه می‌سازه.',
+          genLen: 'طول رمز', genUuid: 'UUID v4', genPass: 'رمز عبور',
+          refresh: 'ساخت دوباره', copy: 'کپی', copied: 'کپی شد',
+          ipHelp: 'آدرس محلی (LAN) که این دستگاه تو شبکه‌ی فعلی‌اش داره. این فقط یه نمونه‌ست.',
+          ipLabel: 'IPv4 خصوصی'
+        },
+        howTitle: 'چطوری کار می‌کنه',
+        howSub: 'سه قدم، حدود یه دقیقه',
+        how: [
+          ['download', 'دانلود و بازکردن زیپ', 'فایل زیپ رو با دکمه‌ی بالا بگیر و هرجا خواستی از حالت فشرده دربیار. نصب‌کننده‌ای در کار نیست.'],
+          ['cursor', 'AMT.exe رو اجرا کن', 'روی AMT.exe دوبار کلیک کن. تنظیماتت کنار برنامه ذخیره می‌شه و دفعه‌ی بعد برمی‌گرده.'],
+          ['grid', 'یه ابزار انتخاب کن', 'همه‌چی از صفحه‌ی اصلی یه کلیک فاصله داره. ابزارهایی که تنظیمات سیستم رو عوض می‌کنن یه قفل کوچیک دارن و دسترسی ادمین می‌خوان.']
+        ],
+        toolsTitle: 'دوازده ابزار',
+        toolsSub: 'دسته‌بندی‌شده بر اساس کارشون',
+        legend: 'این ابزارها تنظیمات سیستم رو عوض می‌کنن، برای همین دسترسی ادمین می‌خوان.',
+        shotTitle: 'خود برنامه',
+        shotSub: 'یه اسکرین‌شات از داشبورد',
+        shotAlt: "اسکرین‌شات Aloy's Multitool با ابزارهای شبکه، سیستم و کاربردی",
+        shotCap: 'داشبورد واقعی، با تم پیش‌فرض Cyan Radar.',
+        featTitle: 'خوبه بدونی',
+        featSub: 'جزئیات کوچیک',
+        feat: [
+          ['shield', 'ادمین فقط وقتی لازمه', 'پینگ، پاک کردن کش DNS، تایمرها و ابزارهای کاربردی با کاربر عادی کار می‌کنن. تغییر DNS، ریست پروکسی و ریست فایروال دسترسی ادمین می‌خوان؛ پس با یه کلیک برنامه به‌عنوان ادمین دوباره اجرا می‌شه و کاری که انتخاب کرده بودی رو تموم می‌کنه.'],
+          ['tray', 'تو سینی سیستم می‌شینه', 'می‌تونی دلخواه به سینی سیستم کوچیکش کنی یا ببندیش، کوچیک‌شده شروع بشه و با ویندوز بالا بیاد. یه منوی کوچیک تو سینی، پینگ، تغییر DNS، پاک کردن کش و بقیه رو بدون باز کردن پنجره اجرا می‌کنه.'],
+          ['palette', 'هفت تم', 'Cyan Radar، Magenta Pulse، Emerald Signal، Amber Grid، Violet Static، Crimson Sweep و Mono Steel. تو نمونه‌ی بالا امتحانشون کن.'],
+          ['calendar', 'دو تقویم', 'نوار بالا تاریخ امروز رو هم میلادی هم شمسی کنار هم نشون می‌ده.'],
+          ['bolt', 'برای سیستمت سبکه', 'یه کلید «کاهش انیمیشن‌ها» حرکت پس‌زمینه و بلور رو برای سیستم‌های کندتر خاموش می‌کنه و وقتی برنامه مخفیه، انیمیشن پس‌زمینه‌اش متوقف می‌شه.'],
+          ['package', 'از اول قابل‌حمل', 'نصب‌کننده و اکانتی در کار نیست. تنظیمات تو یه فایل کوچیک کنار برنامه می‌مونه و اگه برنامه رو دوباره باز کنی فقط پنجره‌ی اولی میاد جلو.']
+        ],
+        faqTitle: 'سؤال‌ها',
+        faqSub: 'همون‌هایی که معمولاً می‌پرسن',
+        faq: [
+          ['رایگانه؟', 'آره، دانلود و استفاده‌اش رایگانه. متن‌بسته‌ست و کدش منتشر نشده.'],
+          ['رو چی کار می‌کنه؟', 'فقط ویندوز. خیلی از ابزارهاش از دستورهای خود ویندوز مثل PowerShell، netsh و ipconfig استفاده می‌کنن.'],
+          ['چطوری نصبش کنم؟', 'نصبی در کار نیست. زیپ رو هرجا خواستی باز کن و روی AMT.exe دوبار کلیک کن.'],
+          ['اینترنت می‌خواد؟', 'بیشترش آفلاین کار می‌کنه. تست پینگ برای رسیدن به سرورها اتصال می‌خواد، کوتاه‌کننده‌ی لینک از TinyURL استفاده می‌کنه و «پایتون به EXE» اگه PyInstaller نداشته باشی بار اول دانلودش می‌کنه.'],
+          ['چرا دسترسی ادمین می‌خواد؟', 'فقط سه ابزار می‌خوان: تغییر DNS، ریست پروکسی و ریست فایروال، چون تنظیمات شبکه‌ی کل سیستم رو عوض می‌کنن. تا وقتی برنامه ادمین نباشه قفل دارن. کلیک روی یکی‌شون برنامه رو با دسترسی ادمین دوباره اجرا می‌کنه و کاری که انتخاب کردی رو انجام می‌ده.'],
+          ['تغییر DNS دقیقاً چیکار می‌کنه؟', 'DNS همه‌ی کارت‌های شبکه رو روی سرویس‌دهنده‌ای که انتخاب می‌کنی می‌ذاره: Google، Cloudflare، Shecan، Begzar، Electro، 403، RADAR.GAME، Quad9 یا OpenDNS. با «Automatic (DHCP)» به حالت پیش‌فرض برمی‌گرده.'],
+          ['ریست پروکسی چیکار می‌کنه؟', 'تنظیمات پروکسی کاربر، WinHTTP و پروکسی BITS رو پاک می‌کنه، کش DNS رو خالی می‌کنه، Winsock رو ریست می‌کنه و سیاست‌های گروهی رو رفرش می‌کنه. بعدش ریستارت پیشنهاد می‌شه. اگه برنامه‌ی دیگه‌ای مثل VPN یا ابزار پروکسی برات پروکسی می‌ذاشت، بعدش دوباره وصلش کن.'],
+          ['ریست فایروال قانون‌هام رو پاک می‌کنه؟', 'آره. فایروال ویندوز رو به تنظیمات پیش‌فرض برمی‌گردونه، پس قانون‌هایی که خودت یا برنامه‌های دیگه اضافه کردن پاک می‌شن. وقتی مشکل از فایرواله ازش استفاده کن، نه به‌عنوان کار روتین.'],
+          ['«پایتون به EXE» چی لازم داره؟', 'پایتون باید تو PATH باشه. اگه PyInstaller نباشه، برنامه اول با pip نصبش می‌کنه که اینترنت می‌خواد، بعد یه فایل exe تک‌فایلی تو پوشه‌ی dist کنار اسکریپتت می‌سازه.'],
+          ['تنظیماتم کجا نگه‌داری می‌شه؟', 'تو فایل amt_settings.json کنار برنامه. پس اگه پوشه رو جابه‌جا کنی تنظیماتت هم همراهش می‌آد.'],
+          ['آپدیت‌ها چطوری‌ان؟', 'جدیدترین زیپ رو با دکمه‌ی همین صفحه بگیر و روی پوشه‌ی قبلی باز کن. اگه می‌خوای تم و گزینه‌هات بمونن، فایل amt_settings.json رو نگه دار.']
+        ],
+        endTitle: 'یه امتحانش کن',
+        endText: 'رایگانه، بدون نصبه و تو یه دقیقه آماده‌ست. جایی گیر کردی؟ تو سرور دیسکورد یا تلگرام بپرس.',
+        endDiscord: 'سرور دیسکورد',
+        endTelegram: 'تلگرام',
+        footerHome: 'بازگشت به صفحه‌ی اصلی',
+        madeBy: 'این مولتی‌تول رو آلوی با {heart} سرهم کرده'
+      }
+    };
+
+    const $ = id => document.getElementById(id);
+    const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+    const PERSIAN_DIGITS = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
+    const LATIN_RE = /[A-Za-z][A-Za-z0-9._@+'’\/-]*(?:[  ][A-Za-z][A-Za-z0-9._@+'’\/-]*)*/g;
+
+    let currentLang = localStorage.getItem('lang') === 'en' ? 'en' : 'fa';
+
+    const tx = s => {
+      if (currentLang !== 'fa') return esc(s);
+      let out = '', last = 0, m;
+      LATIN_RE.lastIndex = 0;
+      while ((m = LATIN_RE.exec(s))) {
+        out += esc(s.slice(last, m.index)) + '<bdi>' + esc(m[0]) + '</bdi>';
+        last = m.index + m[0].length;
+      }
+      return out + esc(s.slice(last));
+    };
+    const setTx = (id, s) => { $(id).innerHTML = tx(s); };
+    const fmt = n => currentLang === 'fa' ? String(n).replace(/[0-9]/g, d => PERSIAN_DIGITS[d]) : String(n);
+
+    const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    const mk = { view: null, theme: 'cyan', dns: null, timers: [], cdTotal: 10, cdLeft: 10, cdTimer: 0, cdRunning: false, ip: '192.168.1.24', toastTimer: 0 };
+
+    const RING = 326.73;
+
+    function toast(text) {
+      const el = $('m-toast');
+      el.textContent = text;
+      el.classList.add('show');
+      clearTimeout(mk.toastTimer);
+      mk.toastTimer = setTimeout(() => el.classList.remove('show'), 1700);
+    }
+
+    function clearTimers() {
+      mk.timers.forEach(clearTimeout);
+      mk.timers = [];
+      clearInterval(mk.cdTimer);
+      mk.cdTimer = 0;
+      mk.cdRunning = false;
+    }
+
+    function rnd(a, b) {
+      return a + Math.floor(Math.random() * (b - a + 1));
+    }
+
+    function makeUuid() {
+      if (window.crypto && crypto.randomUUID) return crypto.randomUUID();
+      const b = new Uint8Array(16);
+      crypto.getRandomValues(b);
+      b[6] = (b[6] & 15) | 64;
+      b[8] = (b[8] & 63) | 128;
+      const h = Array.from(b, x => x.toString(16).padStart(2, '0')).join('');
+      return h.slice(0, 8) + '-' + h.slice(8, 12) + '-' + h.slice(12, 16) + '-' + h.slice(16, 20) + '-' + h.slice(20);
+    }
+
+    function makePassword(n) {
+      const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*';
+      const b = new Uint32Array(n);
+      crypto.getRandomValues(b);
+      return Array.from(b, x => chars[x % chars.length]).join('');
+    }
+
+    function clockText(sec) {
+      const s = Math.max(0, Math.ceil(sec));
+      return String(Math.floor(s / 60)).padStart(2, '0') + ':' + String(s % 60).padStart(2, '0');
+    }
+
+    function gridView(t) {
+      return '<div class="m-sec">' + esc(t.groups.network + ' · ' + t.groups.system + ' · ' + t.groups.utility) + '</div><div class="m-grid">' +
+        MOCK_TOOLS.map(id => {
+          const tool = TOOLS.find(x => x.id === id);
+          return '<button type="button" class="m-card" data-act="open" data-id="' + id + '"><span class="m-ico">' + svg(tool.icon, 1.8) + '</span><h4>' + tx(t.tools[id][0]) + '</h4><p>' + tx(t.tools[id][1]) + '</p>' +
+            (tool.admin ? '<span class="m-lock" aria-hidden="true">' + svg('lock') + '</span>' : '') + '</button>';
+        }).join('') + '</div>';
+    }
+
+    function toolHead(t, id) {
+      const tool = TOOLS.find(x => x.id === id);
+      return '<div class="m-th"><button type="button" class="m-ib m-back" data-act="back" aria-label="' + esc(t.mock.back) + '" title="' + esc(t.mock.back) + '">' + svg('back') + '</button><span class="m-ico">' + svg(tool.icon, 1.8) + '</span><h4>' + tx(t.tools[id][0]) + '</h4></div>';
+    }
+
+    function toolView(t, id) {
+      const m = t.mock;
+      let body = '';
+      if (id === 'ping') {
+        body = '<p class="m-help">' + tx(m.pingHelp) + '</p><button type="button" class="m-btn" data-act="ping" id="m-ping-btn">' + tx(m.pingRun) + '</button><div class="m-list" id="m-plist">' +
+          PING.map((p, i) => '<div class="m-prow" id="m-pr' + i + '"><span class="d"></span><span class="n" dir="ltr">' + esc(p[0]) + '</span><span class="h">' + esc(p[1]) + '</span><span class="r">—</span></div>').join('') + '</div>';
+      } else if (id === 'flushdns') {
+        body = '<p class="m-help">' + tx(m.flushHelp) + '</p><button type="button" class="m-btn" data-act="flush" id="m-flush-btn">' + tx(m.flushRun) + '</button><div class="m-con" id="m-con"></div>';
+      } else if (id === 'dns') {
+        body = '<div class="m-note">' + svg('lock') + '<span>' + tx(m.dnsAdmin) + '</span></div><p class="m-help">' + tx(m.dnsHelp) + '</p><div class="m-dns">' +
+          DNS.map(d => '<button type="button" class="m-opt' + (mk.dns === d[0] ? ' on' : '') + '" data-act="dnspick" data-key="' + d[0] + '"><b dir="ltr">' + esc(d[1]) + '</b><span>' + esc(d[2]) + '</span></button>').join('') +
+          '</div><button type="button" class="m-btn" data-act="dnsrun">' + tx(m.dnsRun) + '</button><div class="m-con" id="m-con" style="min-height:0;display:none"></div>';
+      } else if (id === 'countdown') {
+        body = '<p class="m-help">' + tx(m.cdHelp) + '</p><div class="m-chips">' +
+          [10, 30, 60].map(s => '<button type="button" class="m-chip' + (mk.cdTotal === s ? ' on' : '') + '" data-act="cdpick" data-s="' + s + '">' + clockText(s) + '</button>').join('') +
+          '</div><div class="m-ring"><svg viewBox="0 0 120 120" aria-hidden="true"><defs><linearGradient id="m-rg" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" style="stop-color:var(--a)"/><stop offset="100%" style="stop-color:var(--b)"/></linearGradient></defs><circle class="bg" cx="60" cy="60" r="52"/><circle class="fg" id="m-cd-fg" cx="60" cy="60" r="52"/></svg><div class="t" id="m-cd-t">' + clockText(mk.cdLeft) + '</div></div>' +
+          '<div class="m-row"><button type="button" class="m-btn half" data-act="cdtoggle" id="m-cd-btn">' + tx(m.cdStart) + '</button></div>';
+      } else if (id === 'gen') {
+        body = '<p class="m-help">' + tx(m.genHelp) + '</p><div class="m-len"><label for="m-len">' + tx(m.genLen) + '</label><input type="number" id="m-len" min="8" max="64" value="16"><button type="button" class="m-ib" data-act="gen" id="m-gen-btn" aria-label="' + esc(m.refresh) + '" title="' + esc(m.refresh) + '">' + svg('refresh') + '</button></div>' +
+          '<div class="m-kv"><div><div class="k">' + esc(m.genUuid) + '</div><div class="v" id="m-uuid"></div></div><button type="button" class="m-ib" data-act="copy" data-from="m-uuid" aria-label="' + esc(m.copy) + '" title="' + esc(m.copy) + '">' + svg('copy') + '</button></div>' +
+          '<div class="m-kv"><div><div class="k">' + tx(m.genPass) + '</div><div class="v" id="m-pass"></div></div><button type="button" class="m-ib" data-act="copy" data-from="m-pass" aria-label="' + esc(m.copy) + '" title="' + esc(m.copy) + '">' + svg('copy') + '</button></div>';
+      } else if (id === 'ip') {
+        body = '<p class="m-help">' + tx(m.ipHelp) + '</p><div class="m-kv"><div><div class="k">' + tx(m.ipLabel) + '</div><div class="v" id="m-ip">' + esc(mk.ip) + '</div></div><div class="m-row"><button type="button" class="m-ib" data-act="iprefresh" id="m-ip-btn" aria-label="' + esc(m.refresh) + '" title="' + esc(m.refresh) + '">' + svg('refresh') + '</button><button type="button" class="m-ib" data-act="copy" data-from="m-ip" aria-label="' + esc(m.copy) + '" title="' + esc(m.copy) + '">' + svg('copy') + '</button></div></div>';
+      }
+      return toolHead(t, id) + body;
+    }
+
+    function cdPaint() {
+      const fg = $('m-cd-fg');
+      if (!fg) return;
+      fg.style.strokeDashoffset = String(RING * (1 - mk.cdLeft / mk.cdTotal));
+      $('m-cd-t').textContent = clockText(mk.cdLeft);
+    }
+
+    function genPaint() {
+      const len = Math.max(8, Math.min(64, parseInt($('m-len').value, 10) || 16));
+      $('m-uuid').textContent = makeUuid();
+      $('m-pass').textContent = makePassword(len);
+    }
+
+    function renderFoot() {
+      const t = I18N[currentLang].mock;
+      $('m-foot').innerHTML = THEMES.map(x => '<button type="button" class="m-sw' + (x.id === mk.theme ? ' on' : '') + '" data-theme="' + x.id + '" style="background:linear-gradient(135deg,' + x.a + ',' + x.b + ')" aria-pressed="' + (x.id === mk.theme) + '" aria-label="' + esc(x.label) + '" title="' + esc(x.label) + '"></button>').join('') +
+        '<span class="m-theme" dir="ltr">' + esc(THEMES.find(x => x.id === mk.theme).label) + '</span>';
+      $('mock').dataset.theme = mk.theme;
+    }
+
+    function renderMock(animate) {
+      const t = I18N[currentLang];
+      clearTimers();
+      mk.cdLeft = mk.cdTotal;
+      $('m-pill-text').textContent = t.mock.standard;
+      const body = $('m-body');
+      body.innerHTML = mk.view ? toolView(t, mk.view) : gridView(t);
+      body.scrollTop = 0;
+      if (animate && !reduceMotion) {
+        body.classList.remove('swap');
+        void body.offsetWidth;
+        body.classList.add('swap');
+      }
+      if (mk.view === 'countdown') cdPaint();
+      if (mk.view === 'gen') genPaint();
+      renderFoot();
+      setTx('mock-note', t.mock.note);
+    }
+
+    function openTool(id) {
+      mk.view = id;
+      renderMock(true);
+    }
+
+    function runPing() {
+      const btn = $('m-ping-btn');
+      const t = I18N[currentLang].mock;
+      btn.disabled = true;
+      btn.textContent = t.pingBusy;
+      PING.forEach((p, i) => {
+        const row = $('m-pr' + i);
+        row.classList.remove('done');
+        row.querySelector('.r').innerHTML = '<span class="m-spin"></span>';
+        const wait = reduceMotion ? 0 : 280 * (i + 1);
+        mk.timers.push(setTimeout(() => {
+          row.classList.add('done');
+          row.querySelector('.r').textContent = rnd(p[2], p[3]) + 'ms';
+          if (i === PING.length - 1) {
+            btn.disabled = false;
+            btn.textContent = t.pingRun;
+          }
+        }, wait));
+      });
+    }
+
+    function runFlush() {
+      const con = $('m-con');
+      const btn = $('m-flush-btn');
+      const lines = I18N[currentLang].mock.flushLines;
+      btn.disabled = true;
+      con.innerHTML = '';
+      lines.forEach((line, i) => {
+        mk.timers.push(setTimeout(() => {
+          const d = document.createElement('div');
+          d.textContent = line;
+          if (i === 0) d.className = 'dim';
+          if (i === lines.length - 1) { d.className = 'ok'; btn.disabled = false; }
+          con.appendChild(d);
+        }, reduceMotion ? 0 : 380 * (i + 1)));
+      });
+    }
+
+    function runDns() {
+      const m = I18N[currentLang].mock;
+      if (!mk.dns) { toast(m.dnsPick); return; }
+      const label = DNS.find(d => d[0] === mk.dns)[1];
+      const con = $('m-con');
+      con.style.display = 'block';
+      con.style.minHeight = '';
+      con.innerHTML = '';
+      m.dnsLines(label).forEach((line, i) => {
+        mk.timers.push(setTimeout(() => {
+          const d = document.createElement('div');
+          d.textContent = line;
+          d.className = i === 0 ? 'dim' : 'ok';
+          if (i === 1 && currentLang === 'fa') d.style.direction = 'rtl';
+          con.appendChild(d);
+          con.scrollIntoView({ block: 'nearest' });
+        }, reduceMotion ? 0 : 400 * (i + 1)));
+      });
+    }
+
+    function cdToggle() {
+      const m = I18N[currentLang].mock;
+      const btn = $('m-cd-btn');
+      if (mk.cdRunning) {
+        clearInterval(mk.cdTimer);
+        mk.cdRunning = false;
+        mk.cdLeft = mk.cdTotal;
+        cdPaint();
+        btn.textContent = m.cdStart;
+        btn.classList.remove('stop');
+        return;
+      }
+      if (mk.cdLeft <= 0) mk.cdLeft = mk.cdTotal;
+      const end = Date.now() + mk.cdLeft * 1000;
+      mk.cdRunning = true;
+      btn.textContent = m.cdStop;
+      btn.classList.add('stop');
+      mk.cdTimer = setInterval(() => {
+        mk.cdLeft = Math.max(0, (end - Date.now()) / 1000);
+        cdPaint();
+        if (mk.cdLeft <= 0) {
+          clearInterval(mk.cdTimer);
+          mk.cdRunning = false;
+          mk.cdLeft = mk.cdTotal;
+          btn.textContent = m.cdStart;
+          btn.classList.remove('stop');
+          toast(m.cdDone);
+          setTimeout(cdPaint, 700);
+        }
+      }, 200);
+    }
+
+    function spinBtn(id) {
+      const b = $(id);
+      if (!b) return;
+      b.classList.remove('spin');
+      void b.offsetWidth;
+      b.classList.add('spin');
+    }
+
+    $('m-body').addEventListener('click', e => {
+      const el = e.target.closest('[data-act]');
+      if (!el) return;
+      const m = I18N[currentLang].mock;
+      const act = el.dataset.act;
+      if (act === 'open') openTool(el.dataset.id);
+      else if (act === 'back') { mk.view = null; renderMock(true); }
+      else if (act === 'ping') runPing();
+      else if (act === 'flush') runFlush();
+      else if (act === 'dnspick') {
+        mk.dns = el.dataset.key;
+        document.querySelectorAll('.m-opt').forEach(o => o.classList.toggle('on', o.dataset.key === mk.dns));
+      }
+      else if (act === 'dnsrun') runDns();
+      else if (act === 'cdpick') {
+        if (mk.cdRunning) return;
+        mk.cdTotal = Number(el.dataset.s);
+        mk.cdLeft = mk.cdTotal;
+        document.querySelectorAll('.m-chip').forEach(c => c.classList.toggle('on', Number(c.dataset.s) === mk.cdTotal));
+        cdPaint();
+      }
+      else if (act === 'cdtoggle') cdToggle();
+      else if (act === 'gen') { spinBtn('m-gen-btn'); genPaint(); }
+      else if (act === 'iprefresh') {
+        spinBtn('m-ip-btn');
+        mk.ip = '192.168.' + rnd(0, 9) + '.' + rnd(2, 250);
+        $('m-ip').textContent = mk.ip;
+      }
+      else if (act === 'copy') {
+        const text = $(el.dataset.from).textContent;
+        try {
+          navigator.clipboard.writeText(text).then(() => toast(m.copied), () => toast(m.copied));
+        } catch (err) {
+          toast(m.copied);
+        }
+      }
+    });
+
+    $('m-body').addEventListener('input', e => {
+      if (e.target.id === 'm-len') genPaint();
+    });
+
+    $('m-foot').addEventListener('click', e => {
+      const b = e.target.closest('.m-sw');
+      if (!b) return;
+      mk.theme = b.dataset.theme;
+      renderFoot();
+    });
+
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape' && mk.view) { mk.view = null; renderMock(true); }
+    });
+
+    let release = null;
+
+    function paintRelease() {
+      const t = I18N[currentLang];
+      document.querySelectorAll('a[data-dl]').forEach(a => {
+        a.href = release ? release.url : LatestRelease.page(REPO);
+      });
+      const meta = $('dl-meta');
+      if (!release) { meta.hidden = true; return; }
+      const parts = [];
+      if (release.tag) parts.push('<bdi dir="ltr">' + esc(release.tag) + '</bdi>');
+      if (release.size) parts.push(fmt((release.size / 1048576).toFixed(1).replace('.', currentLang === 'fa' ? '٫' : '.')) + ' ' + t.sizeUnit);
+      meta.innerHTML = parts.join(' · ');
+      meta.hidden = parts.length === 0;
+    }
+
+    function renderHow(t) {
+      $('how-grid').innerHTML = t.how.map(([icon, name, desc], i) => `
+        <div class="card">
+          <div class="card-top">
+            <div class="icon">${svg(icon)}</div>
+            <div class="card-name">${tx(name)}</div>
+            <span class="step-num" aria-hidden="true">${fmt(i + 1)}</span>
+          </div>
+          <p class="card-desc">${tx(desc)}</p>
+        </div>`).join('');
+    }
+
+    function renderTools(t) {
+      $('tools-list').innerHTML = ['network', 'system', 'utility'].map(g => {
+        const items = TOOLS.filter(x => x.group === g);
+        return `<div class="grp"><h3 class="grp-t">${tx(t.groups[g])}<span>${esc(t.toolCount(items.length))}</span></h3><div class="tiles">` +
+          items.map(x => `<div class="tile"><div class="ti">${svg(x.icon, 1.8)}</div><div><h3>${tx(t.tools[x.id][0])}</h3><p>${tx(t.tools[x.id][1])}</p></div>${x.admin ? '<span class="lk" aria-hidden="true">' + svg('lock') + '</span>' : ''}</div>`).join('') +
+          '</div></div>';
+      }).join('');
+      $('tools-legend').innerHTML = svg('lock') + '<span>' + tx(t.legend) + '</span>';
+    }
+
+    function renderFeatures(t) {
+      $('feat-grid').innerHTML = t.feat.map(([icon, name, desc], i) => `
+        <div class="card">
+          <div class="card-top">
+            <div class="icon${i % 2 ? ' alt' : ''}">${svg(icon)}</div>
+            <div class="card-name">${tx(name)}</div>
+          </div>
+          <p class="card-desc">${tx(desc)}</p>
+        </div>`).join('');
+    }
+
+    function renderFaq(t) {
+      $('faq-list').innerHTML = t.faq.map(([q, a], i) => `
+        <div class="faq-item">
+          <button type="button" class="faq-q" id="faq-q-${i}" aria-expanded="false" aria-controls="faq-a-${i}">
+            <span>${tx(q)}</span>
+            <span class="faq-icon" aria-hidden="true"></span>
+          </button>
+          <div class="faq-panel" id="faq-a-${i}" role="region" aria-labelledby="faq-q-${i}">
+            <div class="faq-inner"><div class="answer">${tx(a)}</div></div>
+          </div>
+        </div>`).join('');
+    }
+
+    $('faq-list').addEventListener('click', e => {
+      const btn = e.target.closest('.faq-q');
+      if (!btn) return;
+      const item = btn.parentElement;
+      const open = item.classList.toggle('open');
+      btn.setAttribute('aria-expanded', String(open));
+    });
+
+    function applyLanguage(lang) {
+      currentLang = lang;
+      localStorage.setItem('lang', lang);
+      const t = I18N[lang];
+      document.documentElement.lang = lang;
+      document.documentElement.dir = t.dir;
+      document.title = t.docTitle;
+
+      setTx('back-text', t.back);
+      setTx('hero-title', t.heroTitle);
+      setTx('hero-pitch', t.pitch);
+      $('hero-tags').innerHTML = t.tags.map((x, i) => `<span class="tag${i === 0 ? ' hot' : ''}">${tx(x)}</span>`).join('');
+      document.querySelectorAll('[data-dl-label]').forEach(el => { el.textContent = t.download; });
+      setTx('cta-github', t.github);
+      paintRelease();
+      renderMock(false);
+
+      setTx('how-title', t.howTitle);
+      setTx('how-sub', t.howSub);
+      renderHow(t);
+
+      setTx('tools-title', t.toolsTitle);
+      setTx('tools-sub', t.toolsSub);
+      renderTools(t);
+
+      setTx('shot-title', t.shotTitle);
+      setTx('shot-sub', t.shotSub);
+      $('shot-img').alt = t.shotAlt;
+      setTx('shot-cap', t.shotCap);
+
+      setTx('feat-title', t.featTitle);
+      setTx('feat-sub', t.featSub);
+      renderFeatures(t);
+
+      setTx('faq-title', t.faqTitle);
+      setTx('faq-sub', t.faqSub);
+      renderFaq(t);
+
+      setTx('end-title', t.endTitle);
+      setTx('end-text', t.endText);
+      setTx('end-discord', t.endDiscord);
+      setTx('end-telegram', t.endTelegram);
+      setTx('footer-home', t.footerHome);
+      $('made-by').innerHTML = t.madeBy.split('{heart}').map(tx).join(HEART);
+    }
+
+    $('lang-toggle').addEventListener('click', () => {
+      $('lang-toggle').blur();
+      applyLanguage(currentLang === 'en' ? 'fa' : 'en');
+    });
+
+    applyLanguage(currentLang);
+
+    LatestRelease.latest(REPO).then(d => {
+      release = d;
+      paintRelease();
+    });
+  </script>
+</body>
+</html>
