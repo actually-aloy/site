@@ -1,0 +1,1488 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0d0d10">
+  <title>Aloy's YouTube Downloader — save YouTube videos and audio</title>
+  <meta name="description" content="Aloy\'s YouTube Downloader: paste a link, pick a format and quality, and save YouTube videos as MP4, MKV, WebM or audio as MP3, M4A, Opus, FLAC, WAV. Free for Windows.">
+  <link rel="canonical" href="https://actually-aloy.github.io/site/ytdownloader">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Aloy's YouTube Downloader — save videos and audio">
+  <meta property="og:description" content="Paste a link, pick a format and quality, download. Free for Windows.">
+  <meta property="og:url" content="https://actually-aloy.github.io/site/ytdownloader">
+  <meta property="og:image" content="https://actually-aloy.github.io/site/aytd-og.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Aloy's YouTube Downloader — save videos and audio">
+  <meta name="twitter:description" content="Paste a link, pick a format and quality, download. Free for Windows.">
+  <meta name="twitter:image" content="https://actually-aloy.github.io/site/aytd-og.jpg">
+  <link rel="icon" href="aytd-logo.png" type="image/png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0d0d10;
+      --text: #f2f2f5;
+      --muted: #9a9aa8;
+      --line: rgba(255, 255, 255, 0.13);
+      --cyan: #ff7a1a;
+      --magenta: #4ade80;
+      --pink: #ff6b81;
+      --ink: #1c0e02;
+      --radius: 28px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 14% 10%, rgba(255, 122, 26, 0.22), transparent 32%),
+        radial-gradient(circle at 90% 14%, rgba(74, 222, 128, 0.09), transparent 30%),
+        radial-gradient(circle at 52% 94%, rgba(255, 122, 26, 0.07), transparent 34%),
+        var(--bg);
+      animation: page-fade-in 0.4s ease-out;
+      user-select: none;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+    }
+
+    @keyframes page-fade-in {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    html[lang="fa"] body {
+      font-family: Vazirmatn, Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      html { scroll-behavior: smooth; }
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    h1, h2, h3, p {
+      margin: 0;
+    }
+
+    [hidden] {
+      display: none !important;
+    }
+
+    .page {
+      width: min(1080px, calc(100% - 36px));
+      margin: 0 auto;
+      padding: 38px 0 56px;
+    }
+
+    .glass {
+      border: 1px solid var(--line);
+      border-radius: calc(var(--radius) + 10px);
+      background: linear-gradient(145deg, rgba(255, 255, 255, 0.105), rgba(255, 255, 255, 0.045));
+      box-shadow: 0 28px 90px rgba(0, 0, 0, 0.4);
+      backdrop-filter: blur(22px);
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: 30px;
+      padding: 28px;
+      align-items: center;
+    }
+
+    .intro {
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+      min-width: 0;
+    }
+
+    .topline {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .pill-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 14px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--text);
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 180ms ease, border-color 180ms ease;
+    }
+
+    .pill-btn:hover {
+      background: rgba(255, 255, 255, 0.12);
+      border-color: rgba(255, 122, 26, 0.45);
+    }
+
+    .pill-btn svg {
+      width: 14px;
+      height: 14px;
+    }
+
+    html[dir="rtl"] .pill-btn svg {
+      transform: scaleX(-1);
+    }
+
+    .lang-toggle {
+      margin-inline-start: auto;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .brand img {
+      width: 64px;
+      height: 64px;
+      flex: 0 0 auto;
+      border-radius: 18px;
+      box-shadow: 0 16px 40px rgba(255, 122, 26, 0.35);
+      -webkit-user-drag: none;
+    }
+
+    h1 {
+      font-size: clamp(38px, 6.4vw, 60px);
+      line-height: 1.15;
+      letter-spacing: -0.03em;
+    }
+
+    .gradient-text {
+      background: linear-gradient(90deg, #ff7a1a, #ffb066, #ff5e3a, #ff7a1a);
+      background-size: 300% 100%;
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      animation: enchant 6s linear infinite;
+    }
+
+    @keyframes enchant {
+      to { background-position: -300% 0; }
+    }
+
+    .pitch {
+      max-width: 560px;
+      color: var(--muted);
+      font-size: 18px;
+      line-height: 1.75;
+    }
+
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .tag {
+      padding: 6px 13px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--text);
+      font-size: 12.5px;
+      font-weight: 600;
+    }
+
+    .tag.hot {
+      border-color: transparent;
+      background: linear-gradient(135deg, #ffb066, #ff7a1a);
+      color: var(--ink);
+    }
+
+    .cta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 12px 22px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--text);
+      font-family: inherit;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: filter 180ms ease, transform 180ms ease, background 180ms ease, border-color 180ms ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      background: rgba(255, 255, 255, 0.12);
+      border-color: rgba(255, 122, 26, 0.45);
+    }
+
+    .btn.primary {
+      border-color: transparent;
+      background: linear-gradient(135deg, #ffb066, #ff7a1a);
+      color: var(--ink);
+    }
+
+    .btn.primary:hover {
+      filter: brightness(1.06);
+    }
+
+    .btn svg {
+      width: 16px;
+      height: 16px;
+      flex: 0 0 auto;
+    }
+
+    .btn:focus-visible,
+    .pill-btn:focus-visible,
+    .faq-q:focus-visible {
+      outline: 2px solid var(--cyan);
+      outline-offset: 3px;
+    }
+
+    .dl-meta {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .stage {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+    }
+
+    .stage::before {
+      content: "";
+      position: absolute;
+      inset: 6% -6% 10%;
+      z-index: 0;
+      border-radius: 50%;
+      background: radial-gradient(closest-side, rgba(255, 122, 26, 0.5), rgba(255, 122, 26, 0));
+      filter: blur(24px);
+      pointer-events: none;
+    }
+
+    
+
+    section.block {
+      margin-top: 38px;
+      scroll-margin-top: 18px;
+    }
+
+    .head {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 12px;
+      margin: 0 4px 14px;
+    }
+
+    .head h2 {
+      font-size: 26px;
+      letter-spacing: -0.03em;
+    }
+
+    .head span {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 14px;
+    }
+
+    .grid.three {
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    }
+
+    .grid.cols3 {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    @media (max-width: 900px) {
+      .grid.cols3 {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 560px) {
+      .grid.cols3 {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    .card {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      padding: 20px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: linear-gradient(145deg, rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0.04));
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      backdrop-filter: blur(18px);
+      transition: transform 180ms ease, border-color 180ms ease;
+    }
+
+    .card:hover {
+      transform: translateY(-3px);
+      border-color: rgba(255, 122, 26, 0.42);
+    }
+
+    .card-top {
+      display: flex;
+      align-items: center;
+      gap: 13px;
+    }
+
+    .icon {
+      position: relative;
+      width: 46px;
+      height: 46px;
+      flex: 0 0 auto;
+      display: grid;
+      place-items: center;
+      border-radius: 15px;
+      color: var(--ink);
+      background: linear-gradient(135deg, #ffb066, #ff7a1a);
+      box-shadow: 0 14px 30px rgba(255, 122, 26, 0.25);
+    }
+
+    .icon.alt {
+      background: linear-gradient(135deg, #4ade80, #22d3ee);
+      box-shadow: 0 14px 30px rgba(74, 222, 128, 0.22);
+    }
+
+    .icon svg {
+      width: 22px;
+      height: 22px;
+    }
+
+    .step-num {
+      margin-inline-start: auto;
+      color: rgba(255, 122, 26, 0.28);
+      font-size: 38px;
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      line-height: 1;
+    }
+
+    .card-name {
+      font-size: 17px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    .card-desc {
+      color: var(--muted);
+      font-size: 14.5px;
+      line-height: 1.75;
+    }
+
+    .faq {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .faq-item {
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.05);
+      transition: border-color 240ms ease, background 240ms ease;
+    }
+
+    .faq-item:hover {
+      border-color: rgba(255, 122, 26, 0.28);
+    }
+
+    .faq-item.open {
+      border-color: rgba(255, 122, 26, 0.4);
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .faq-q {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 16px 20px;
+      border: none;
+      border-radius: 20px;
+      background: none;
+      color: var(--text);
+      font-family: inherit;
+      font-size: 15px;
+      font-weight: 700;
+      text-align: start;
+      cursor: pointer;
+    }
+
+    .faq-q:focus-visible {
+      outline-offset: -2px;
+    }
+
+    .faq-icon {
+      position: relative;
+      width: 14px;
+      height: 14px;
+      flex: 0 0 auto;
+      transition: transform 340ms cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+
+    .faq-icon::before,
+    .faq-icon::after {
+      content: "";
+      position: absolute;
+      inset-inline: 0;
+      top: 50%;
+      height: 2px;
+      margin-top: -1px;
+      border-radius: 2px;
+      background: var(--cyan);
+      transition: transform 340ms cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+
+    .faq-icon::after {
+      transform: rotate(90deg);
+    }
+
+    .faq-item.open .faq-icon {
+      transform: rotate(180deg);
+    }
+
+    .faq-item.open .faq-icon::after {
+      transform: rotate(0deg);
+    }
+
+    .faq-panel {
+      display: grid;
+      grid-template-rows: 0fr;
+      opacity: 0;
+      visibility: hidden;
+      transition: grid-template-rows 360ms cubic-bezier(0.2, 0.8, 0.2, 1), opacity 240ms ease, visibility 0s linear 360ms;
+    }
+
+    .faq-item.open .faq-panel {
+      grid-template-rows: 1fr;
+      opacity: 1;
+      visibility: visible;
+      transition: grid-template-rows 360ms cubic-bezier(0.2, 0.8, 0.2, 1), opacity 300ms ease 60ms, visibility 0s;
+    }
+
+    .faq-inner {
+      min-height: 0;
+      overflow: hidden;
+    }
+
+    .faq .answer {
+      padding: 0 20px 18px;
+      color: var(--muted);
+      font-size: 14.5px;
+      line-height: 1.8;
+    }
+
+    .closing {
+      display: flex;
+      align-items: center;
+      gap: 22px;
+      padding: 28px;
+    }
+
+    .closing img {
+      width: 72px;
+      height: 72px;
+      flex: 0 0 auto;
+      border-radius: 20px;
+      box-shadow: 0 16px 40px rgba(255, 122, 26, 0.35);
+      -webkit-user-drag: none;
+    }
+
+    .closing-text {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      min-width: 0;
+    }
+
+    .closing h2 {
+      font-size: 26px;
+      letter-spacing: -0.03em;
+    }
+
+    .closing p {
+      max-width: 520px;
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.75;
+    }
+
+    .closing .cta-row {
+      margin-top: 8px;
+    }
+
+    .footer {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+      margin-top: 40px;
+      text-align: center;
+    }
+
+    .made {
+      color: var(--text);
+      font-size: 15px;
+      font-weight: 600;
+    }
+
+    .heart {
+      display: inline-block;
+      width: 15px;
+      height: 15px;
+      margin: 0 3px;
+      vertical-align: -2px;
+      color: var(--pink);
+      animation: beat 1.8s ease-in-out infinite;
+    }
+
+    @keyframes beat {
+      0%, 60%, 100% { transform: scale(1); }
+      20% { transform: scale(1.22); }
+      40% { transform: scale(1.06); }
+    }
+
+    .legal {
+      color: var(--muted);
+      font-size: 12.5px;
+      opacity: 0.8;
+    }
+
+    .home-link {
+      padding-bottom: 2px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.24);
+      color: var(--muted);
+      font-size: 15px;
+      letter-spacing: -0.01em;
+      transition: color 180ms ease, border-color 180ms ease;
+    }
+
+    .home-link:hover {
+      color: var(--text);
+      border-color: rgba(255, 122, 26, 0.55);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      body { animation: none; }
+      .gradient-text { animation: none; }
+      .heart { animation: none; }
+      .faq-item, .faq-icon, .faq-icon::before, .faq-icon::after, .faq-panel, .card, .btn { transition: none !important; }
+    }
+
+    @media (max-width: 560px) {
+      .page { width: min(100% - 22px, 1080px); padding-top: 18px; }
+      .hero, .closing { padding: 16px; border-radius: 28px; }
+      .intro { gap: 18px; }
+      .head { flex-direction: column; align-items: flex-start; gap: 2px; }
+      .btn { width: 100%; }
+      .closing { flex-direction: column; align-items: flex-start; }
+    }
+  
+    .ay {
+      --a-bg: #0d0d10; --a-surface: #15151a; --a-hover: #1d1d23; --a-border: #26262d; --a-border2: #3b3b46;
+      --a-text: #ededf0; --a-text2: #9696a2; --a-muted: #5f5f6b; --a-accent: #ff7a1a; --a-accent2: #ff8f3d; --a-accent3: #e86a0c;
+      --a-ok: #4ade80; --a-err: #f87171; --a-track: #26262d; --a-thumb: #1d1d23;
+      direction: ltr; text-align: left; position: relative; z-index: 1; width: 100%; max-width: 760px; height: 770px; margin: 0 auto;
+      display: flex; flex-direction: column; overflow: hidden; border: 1px solid var(--a-border); border-radius: 14px;
+      background: var(--a-bg); color: var(--a-text);
+      font-family: "Segoe UI", Inter, ui-sans-serif, system-ui, sans-serif; font-size: 13px; box-shadow: 0 30px 80px rgba(0, 0, 0, 0.55);
+      transition: background 0.25s ease, color 0.25s ease, border-color 0.25s ease;
+    }
+    .ay[data-theme="light"] {
+      --a-bg: #f6f6f8; --a-surface: #ffffff; --a-hover: #f0f0f3; --a-border: #e3e3e8; --a-border2: #c8c8d1;
+      --a-text: #15151a; --a-text2: #62626e; --a-muted: #9c9ca8; --a-ok: #16a34a; --a-err: #dc2626; --a-track: #e7e7ec; --a-thumb: #ececf0;
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.4);
+    }
+    .ay * { box-sizing: border-box; }
+    .ay button { font-family: inherit; color: inherit; }
+    .ay-bar { flex: 0 0 32px; display: flex; align-items: center; gap: 8px; padding: 0 12px; background: var(--a-surface); border-bottom: 1px solid var(--a-border); font-size: 11.5px; color: var(--a-text2); transition: background 0.25s ease; }
+    .ay-bar img { width: 14px; height: 14px; border-radius: 4px; }
+    .ay-bar em { margin-left: auto; display: flex; gap: 16px; font-style: normal; opacity: 0.7; }
+    .ay-root { flex: 1; min-height: 0; display: flex; flex-direction: column; gap: 14px; padding: 18px 24px 14px; }
+    .ay-head { display: flex; align-items: center; gap: 10px; }
+    .ay-head img { width: 30px; height: 30px; flex: 0 0 auto; }
+    .ay-head h3 { margin: 0; font-size: 18px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+    .ay-chip { flex: 0 0 auto; padding: 2px 8px; border-radius: 6px; background: var(--a-hover); color: var(--a-text2); font-size: 11px; font-weight: 600; }
+    .ay-sp { flex: 1; }
+    .ay-ib { width: 34px; height: 34px; flex: 0 0 auto; display: grid; place-items: center; border: 0; border-radius: 8px; background: none; cursor: pointer; padding: 0; transition: background 0.15s ease; }
+    .ay-ib:hover { background: var(--a-hover); }
+    .ay-ib svg { width: 17px; height: 17px; }
+    .ay-ib.sm { width: 28px; height: 28px; }
+    .ay-ib.sm svg { width: 15px; height: 15px; }
+    .ay-urlrow { display: flex; gap: 10px; }
+    .ay-input { flex: 1; min-width: 0; height: 46px; display: flex; align-items: center; gap: 8px; padding: 0 6px 0 14px; border: 1px solid var(--a-border); border-radius: 12px; background: var(--a-surface); transition: border-color 0.15s ease, background 0.25s ease; }
+    .ay-input:focus-within { border-color: var(--a-accent); }
+    .ay-input > svg { width: 18px; height: 18px; flex: 0 0 auto; }
+    .ay-input input { flex: 1; min-width: 0; height: 100%; border: 0; outline: 0; background: transparent; color: var(--a-text); font: inherit; font-size: 14px; padding: 0 2px; user-select: text; -webkit-user-select: text; }
+    .ay-input input::placeholder { color: var(--a-muted); }
+    .ay-ghost { display: inline-flex; align-items: center; gap: 6px; padding: 7px 10px; border: 0; border-radius: 8px; background: none; color: var(--a-text2); font-size: 13px; font-weight: 500; cursor: pointer; white-space: nowrap; transition: background 0.15s ease, color 0.15s ease; }
+    .ay-ghost:hover { background: var(--a-hover); color: var(--a-text); }
+    .ay-ghost svg { width: 16px; height: 16px; }
+    .ay-primary { display: inline-flex; align-items: center; justify-content: center; gap: 8px; border: 0; border-radius: 10px; background: var(--a-accent); color: #fff; font-size: 13px; font-weight: 600; cursor: pointer; white-space: nowrap; transition: background 0.15s ease; }
+    .ay-primary:hover { background: var(--a-accent2); }
+    .ay-primary:active { background: var(--a-accent3); }
+    .ay-primary:disabled { background: var(--a-border); color: var(--a-muted); cursor: default; }
+    .ay-primary svg { width: 16px; height: 16px; }
+    #ay-fetch { height: 46px; min-width: 110px; padding: 0 20px; flex-direction: row-reverse; }
+    .ay-hint { margin-top: -6px; font-size: 12px; color: var(--a-muted); min-height: 16px; }
+    .ay-hint.err { color: var(--a-err); }
+    .ay-card { flex: 0 0 auto; display: flex; flex-direction: column; gap: 16px; padding: 18px; border: 1px solid var(--a-border); border-radius: 14px; background: var(--a-surface); transition: background 0.25s ease; }
+    .ay-card[hidden] { display: none; }
+    .ay-info { display: flex; gap: 16px; }
+    .ay-thumb { position: relative; flex: 0 0 auto; width: 208px; height: 117px; display: grid; place-items: center; overflow: hidden; border: 1px solid var(--a-border); border-radius: 10px; background: var(--a-thumb); color: var(--a-muted); font-size: 13px; }
+    .ay-thumb svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+    .ay-meta { min-width: 0; display: flex; flex-direction: column; gap: 6px; }
+    .ay-vtitle { font-size: 15px; font-weight: 600; line-height: 1.35; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; }
+    .ay-vchan { font-size: 12px; color: var(--a-text2); min-height: 16px; }
+    .ay-chips { display: flex; gap: 6px; }
+    .ay-opts { display: flex; align-items: flex-end; gap: 12px; }
+    .ay-col { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 4px; }
+    .ay-col > span { font-size: 12px; color: var(--a-text2); }
+    .ay-sel { position: relative; }
+    .ay-selbtn { width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 9px 14px; border: 1px solid var(--a-border); border-radius: 10px; background: var(--a-surface); font-size: 13px; cursor: pointer; text-align: left; transition: border-color 0.15s ease, background 0.25s ease; }
+    .ay-selbtn:hover { border-color: var(--a-border2); }
+    .ay-sel.open .ay-selbtn { border-color: var(--a-accent); }
+    .ay-selbtn svg { width: 11px; height: 11px; flex: 0 0 auto; transition: transform 0.2s ease; }
+    .ay-sel.open .ay-selbtn svg { transform: rotate(180deg); }
+    .ay-pop { position: absolute; z-index: 6; top: calc(100% + 4px); left: 0; right: 0; max-height: 236px; overflow-y: auto; padding: 4px; border: 1px solid var(--a-border); border-radius: 8px; background: var(--a-surface); box-shadow: 0 14px 34px rgba(0, 0, 0, 0.45); scrollbar-width: thin; scrollbar-color: var(--a-border2) transparent; }
+    .ay-pop[hidden] { display: none; }
+    .ay-pop::-webkit-scrollbar { width: 8px; }
+    .ay-pop::-webkit-scrollbar-track { background: transparent; }
+    .ay-pop::-webkit-scrollbar-thumb { border-radius: 4px; background: var(--a-border2); }
+    .ay-pop button { display: block; width: 100%; min-height: 30px; padding: 6px 10px; border: 0; border-radius: 6px; background: none; font-size: 13px; text-align: left; cursor: pointer; }
+    .ay-pop button:hover { background: var(--a-hover); }
+    .ay-pop button.on { background: var(--a-accent); color: #fff; }
+    #ay-dl { height: 42px; min-width: 150px; padding: 0 20px; }
+    .ay-dlhead { display: flex; align-items: center; gap: 8px; }
+    .ay-dlhead h4 { margin: 0; font-size: 14px; font-weight: 600; }
+    .ay-list { flex: 1; min-height: 130px; overflow-y: auto; padding-right: 4px; display: flex; flex-direction: column; gap: 8px; scrollbar-width: thin; scrollbar-color: var(--a-border2) transparent; }
+    .ay-list::-webkit-scrollbar { width: 8px; }
+    .ay-list::-webkit-scrollbar-track { background: transparent; }
+    .ay-list::-webkit-scrollbar-thumb { border-radius: 4px; background: var(--a-border2); }
+    .ay-empty { margin: auto; padding: 20px; text-align: center; white-space: pre-line; line-height: 1.6; color: var(--a-muted); font-size: 13px; }
+    .ay-row { flex: 0 0 auto; padding: 10px 8px 12px 14px; border: 1px solid var(--a-border); border-radius: 12px; background: var(--a-surface); display: flex; flex-direction: column; gap: 6px; animation: ay-in 0.3s ease; transition: background 0.25s ease; }
+    @keyframes ay-in { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: none; } }
+    .ay-rtop { display: flex; align-items: center; gap: 10px; min-height: 28px; }
+    .ay-rtitle { flex: 1; min-width: 0; font-size: 13px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .ay-rstat { flex: 0 0 auto; font-size: 12px; color: var(--a-text2); }
+    .ay-rstat.ok { color: var(--a-ok); font-weight: 600; }
+    .ay-rstat.off { color: var(--a-muted); }
+    .ay-rbot { display: flex; align-items: center; gap: 10px; padding-right: 6px; }
+    .ay-bar2 { flex: 1; height: 4px; border-radius: 2px; background: var(--a-track); overflow: hidden; }
+    .ay-bar2 i { display: block; height: 100%; width: 0; border-radius: 2px; background: var(--a-accent); }
+    .ay-pct { min-width: 36px; text-align: right; font-size: 12px; color: var(--a-text2); }
+    .ay-div { flex: 0 0 1px; background: var(--a-border); }
+    .ay-foot { display: flex; flex-direction: column; gap: 2px; }
+    .ay-frow { display: flex; align-items: center; gap: 8px; min-height: 34px; }
+    .ay-frow > svg { width: 15px; height: 15px; flex: 0 0 auto; }
+    .ay-frow span:not([data-i]) { flex: 1; min-width: 0; font-size: 12px; color: var(--a-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .ay-dialog { position: absolute; inset: 0; z-index: 9; display: grid; place-items: center; padding: 16px; background: rgba(0, 0, 0, 0.55); }
+    .ay-dialog[hidden] { display: none; }
+    .ay-dbox { width: 100%; max-width: 470px; display: flex; flex-direction: column; gap: 14px; padding: 22px 24px 20px; border: 1px solid var(--a-border); border-radius: 14px; background: var(--a-bg); box-shadow: 0 24px 60px rgba(0, 0, 0, 0.5); }
+    .ay-dbox h4 { margin: 0; font-size: 18px; font-weight: 700; }
+    .ay-dbox p { margin: 0; font-size: 12.5px; line-height: 1.6; color: var(--a-text2); }
+    .ay-dbox p + p { margin-top: -4px; }
+    .ay-dbtn { display: flex; justify-content: flex-end; gap: 8px; }
+    .ay-btn { padding: 9px 16px; border: 1px solid var(--a-border); border-radius: 10px; background: none; font-size: 13px; font-weight: 500; cursor: pointer; transition: background 0.15s ease; }
+    .ay-btn:hover { background: var(--a-hover); border-color: var(--a-border2); }
+    .ay-btn.p { border: 0; background: var(--a-accent); color: #fff; font-weight: 600; }
+    .ay-btn.p:hover { background: var(--a-accent2); }
+    .ay-toast { position: absolute; left: 50%; bottom: 14px; z-index: 12; max-width: calc(100% - 28px); transform: translate(-50%, 20px); padding: 9px 16px; border: 1px solid var(--a-border); border-radius: 999px; background: var(--a-surface); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4); font-size: 12.5px; opacity: 0; pointer-events: none; transition: opacity 0.25s ease, transform 0.25s ease; text-align: center; }
+    .ay-toast.show { opacity: 1; transform: translate(-50%, 0); }
+    .ay button:focus-visible, .ay-input input:focus-visible { outline: 2px solid var(--a-accent); outline-offset: 2px; }
+    .ay-input input:focus-visible { outline: 0; }
+    .mock-note { position: relative; z-index: 1; max-width: 640px; margin: 12px auto 0; color: var(--muted); font-size: 12.5px; line-height: 1.7; text-align: center; }
+
+    @media (max-width: 720px) {
+      .ay { height: 880px; }
+      .ay-root { padding: 14px 12px 10px; gap: 12px; }
+      .ay-bar em { display: none; }
+      .ay-card { padding: 14px; gap: 14px; }
+      .ay-info { flex-direction: column; gap: 12px; }
+      .ay-thumb { width: 100%; height: auto; aspect-ratio: 16 / 9; max-height: 120px; }
+      .ay-opts { flex-wrap: wrap; }
+      .ay-col { flex: 1 1 130px; }
+      #ay-dl { flex: 1 1 100%; }
+      .ay-ghost b { display: none; }
+      #ay-fetch { min-width: 0; padding: 0 14px; }
+      .ay-head h3 { font-size: 15px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .ay, .ay *, .ay-toast { transition: none !important; animation: none !important; }
+    }
+    .ay-selbtn b, .ay-pop button { white-space: pre; }
+    .ay-selbtn b { font-weight: 400; overflow: hidden; text-overflow: ellipsis; }
+    .ay-ib { color: var(--a-text2); }
+    h1 { font-size: clamp(30px, 5.2vw, 48px); }
+    .ay [data-i] { display: inline-flex; align-items: center; justify-content: center; }
+    .ay [data-i] svg { width: 16px; height: 16px; }
+    .ay [data-c="muted"] { color: var(--a-muted); }
+    .ay .ay-input > [data-i] svg { width: 18px; height: 18px; }
+    .ay .ay-frow > [data-i] svg { width: 15px; height: 15px; }
+    .ay .ay-ib svg { width: 17px; height: 17px; }
+    .ay .ay-ib.sm svg { width: 14px; height: 14px; }
+    .ay .ay-selbtn [data-i] svg { width: 11px; height: 11px; }
+    .ay-selbtn [data-i] { color: var(--a-text2); }
+    .ay-sel.open .ay-selbtn [data-i] { transform: rotate(180deg); }
+    .ay-selbtn svg, .ay-sel.open .ay-selbtn svg { transform: none; }
+  </style>
+</head>
+<body>
+  <main class="page">
+
+    <section class="hero glass">
+      <div class="intro">
+        <div class="topline">
+          <a class="pill-btn" href="index.html" id="back-link">
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 3 5 8l5 5"/></svg>
+            <span id="back-text"></span>
+          </a>
+          <button type="button" class="pill-btn lang-toggle" id="lang-toggle" aria-label="Switch language">EN / فا</button>
+        </div>
+        <div class="brand">
+          <img src="aytd-logo.png" alt="" width="64" height="64" draggable="false">
+          <h1><span class="gradient-text" id="hero-title"></span></h1>
+        </div>
+        <p class="pitch" id="hero-pitch"></p>
+        <div class="tags" id="hero-tags"></div>
+        <div class="cta-row">
+          <a class="btn primary" data-dl href="https://github.com/actually-aloy/aloys-youtube-downloader/releases/latest">
+            <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M.5 9.9a.5.5 0 0 1 .5.5v2.1a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.1a.5.5 0 0 1 1 0v2.1a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.1a.5.5 0 0 1 .5-.5"/><path d="M7.5 10.29V1.5a.5.5 0 0 1 1 0v8.79l2.15-2.15a.5.5 0 0 1 .7.71l-3 3a.5.5 0 0 1-.7 0l-3-3a.5.5 0 1 1 .7-.71z"/></svg>
+            <span data-dl-label></span>
+          </a>
+          <a class="btn" href="https://github.com/actually-aloy/aloys-youtube-downloader" target="_blank" rel="noopener noreferrer">
+            <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8"/></svg>
+            <span id="cta-github"></span>
+          </a>
+        </div>
+        <p class="dl-meta" id="dl-meta" hidden></p>
+      </div>
+
+      <div class="stage">
+        <div class="ay" id="ay" data-theme="dark">
+          <div class="ay-bar" aria-hidden="true"><img src="aytd-logo.png" alt="" width="14" height="14" draggable="false">Aloy's YouTube Downloader<em><span>—</span><span>▢</span><span>✕</span></em></div>
+          <div class="ay-root">
+            <div class="ay-head">
+              <img src="aytd-logo.png" alt="" width="30" height="30" draggable="false">
+              <h3>Aloy's YouTube Downloader</h3>
+              <span class="ay-chip" id="ay-ver">v3.1</span>
+              <span class="ay-sp"></span>
+              <button type="button" class="ay-ib" id="ay-web" data-i="globe" aria-label="Website"></button>
+              <button type="button" class="ay-ib" id="ay-tg" data-i="tg" aria-label="Telegram"></button>
+              <button type="button" class="ay-ib" id="ay-theme" aria-label="Switch theme"></button>
+            </div>
+            <div>
+              <div class="ay-urlrow">
+                <div class="ay-input">
+                  <span data-i="link" data-c="muted"></span>
+                  <input type="text" id="ay-url" placeholder="Paste a YouTube link…" autocomplete="off" spellcheck="false" aria-label="YouTube link">
+                  <button type="button" class="ay-ib sm" id="ay-clear" data-i="close" aria-label="Clear" hidden></button>
+                  <button type="button" class="ay-ghost" id="ay-paste"><span data-i="clip"></span><b>Paste</b></button>
+                </div>
+                <button type="button" class="ay-primary" id="ay-fetch"><span id="ay-fetch-t">Fetch</span><span data-i="arrow"></span></button>
+              </div>
+              <div class="ay-hint" id="ay-hint" style="margin-top:8px"></div>
+            </div>
+            <div class="ay-card" id="ay-card" hidden>
+              <div class="ay-info">
+                <div class="ay-thumb" id="ay-thumb"></div>
+                <div class="ay-meta">
+                  <div class="ay-vtitle" id="ay-vtitle"></div>
+                  <div class="ay-vchan" id="ay-vchan"></div>
+                  <div class="ay-chips"><span class="ay-chip" id="ay-vdur" hidden></span></div>
+                </div>
+              </div>
+              <div class="ay-opts">
+                <div class="ay-col"><span>Format</span>
+                  <div class="ay-sel" id="ay-fmt"><button type="button" class="ay-selbtn" aria-haspopup="listbox" aria-expanded="false"><b></b><span data-i="chev"></span></button><div class="ay-pop" role="listbox" hidden></div></div>
+                </div>
+                <div class="ay-col"><span>Quality</span>
+                  <div class="ay-sel" id="ay-qual"><button type="button" class="ay-selbtn" aria-haspopup="listbox" aria-expanded="false"><b></b><span data-i="chev"></span></button><div class="ay-pop" role="listbox" hidden></div></div>
+                </div>
+                <button type="button" class="ay-primary" id="ay-dl"><span data-i="down"></span>Download</button>
+              </div>
+            </div>
+            <div class="ay-dlhead">
+              <h4>Downloads</h4>
+              <span class="ay-chip" id="ay-count" hidden></span>
+              <span class="ay-sp"></span>
+              <button type="button" class="ay-ghost" id="ay-open"><span data-i="folder"></span><b>Open folder</b></button>
+            </div>
+            <div class="ay-list" id="ay-list"><div class="ay-empty" id="ay-empty">Nothing downloaded yet.
+Paste a link above to get started.</div></div>
+            <div class="ay-div"></div>
+            <div class="ay-foot">
+              <div class="ay-frow"><span data-i="folder" data-c="muted"></span><span id="ay-path"></span><button type="button" class="ay-ghost" id="ay-change">Change</button></div>
+              <div class="ay-frow"><span data-i="cookie" data-c="muted"></span><span id="ay-ctext"></span><button type="button" class="ay-ghost" id="ay-cset">Set cookies</button><button type="button" class="ay-ib sm" id="ay-cclear" data-i="close" aria-label="Clear cookies file" hidden></button></div>
+            </div>
+          </div>
+          <div class="ay-dialog" id="ay-dialog" hidden>
+            <div class="ay-dbox" role="dialog" aria-label="Set a cookies file">
+              <h4>Set a cookies file</h4>
+              <p>If YouTube blocks a download with a "Sign in to confirm you're not a bot" error, a cookies.txt file from a logged-in browser usually fixes it.</p>
+              <p>1. Install a "Get cookies.txt LOCALLY" extension in Chrome, Firefox, or Edge.<br>2. Log into youtube.com in that browser.<br>3. Open any YouTube page, click the extension icon, and export cookies.txt.<br>4. Click "Select file" below and choose the file you exported.</p>
+              <div class="ay-dbtn"><button type="button" class="ay-btn" id="ay-dcancel">Cancel</button><button type="button" class="ay-btn p" id="ay-dselect">Select file</button></div>
+            </div>
+          </div>
+          <div class="ay-toast" id="ay-toast" role="status"></div>
+        </div>
+        <p class="mock-note" id="mock-note"></p>
+      </div>
+    </section>
+
+    <section class="block" id="how">
+      <div class="head">
+        <h2 id="how-title"></h2>
+        <span id="how-sub"></span>
+      </div>
+      <div class="grid three" id="how-grid"></div>
+    </section>
+
+    <section class="block" id="features">
+      <div class="head">
+        <h2 id="feat-title"></h2>
+        <span id="feat-sub"></span>
+      </div>
+      <div class="grid cols3" id="feat-grid"></div>
+    </section>
+
+    <section class="block" id="faq">
+      <div class="head">
+        <h2 id="faq-title"></h2>
+        <span id="faq-sub"></span>
+      </div>
+      <div class="faq" id="faq-list"></div>
+    </section>
+
+    <section class="block">
+      <div class="closing glass">
+        <img src="aytd-logo.png" alt="" width="72" height="72" draggable="false">
+        <div class="closing-text">
+          <h2 id="end-title"></h2>
+          <p id="end-text"></p>
+          <div class="cta-row">
+            <a class="btn primary" data-dl href="https://github.com/actually-aloy/aloys-youtube-downloader/releases/latest">
+              <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M.5 9.9a.5.5 0 0 1 .5.5v2.1a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.1a.5.5 0 0 1 1 0v2.1a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.1a.5.5 0 0 1 .5-.5"/><path d="M7.5 10.29V1.5a.5.5 0 0 1 1 0v8.79l2.15-2.15a.5.5 0 0 1 .7.71l-3 3a.5.5 0 0 1-.7 0l-3-3a.5.5 0 1 1 .7-.71z"/></svg>
+              <span data-dl-label></span>
+            </a>
+            <a class="btn" href="https://discord.gg/JqrBUYEM8n" target="_blank" rel="noopener noreferrer">
+              <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M13.545 2.907a13.2 13.2 0 0 0-3.257-1.011.05.05 0 0 0-.052.025c-.141.25-.297.577-.406.833a12.2 12.2 0 0 0-3.658 0 8 8 0 0 0-.412-.833.05.05 0 0 0-.052-.025c-1.125.194-2.22.534-3.257 1.011a.04.04 0 0 0-.021.018C.356 6.024-.213 9.047.066 12.032q.003.022.021.037a13.3 13.3 0 0 0 3.995 2.02.05.05 0 0 0 .056-.019q.463-.63.818-1.329a.05.05 0 0 0-.01-.059l-.018-.011a9 9 0 0 1-1.248-.595.05.05 0 0 1-.02-.066l.015-.019q.127-.095.248-.195a.05.05 0 0 1 .051-.007c2.619 1.196 5.454 1.196 8.041 0a.05.05 0 0 1 .053.007q.121.1.248.195a.05.05 0 0 1-.004.085 8 8 0 0 1-1.249.594.05.05 0 0 0-.03.03.05.05 0 0 0 .003.041c.24.465.515.909.817 1.329a.05.05 0 0 0 .056.019 13.2 13.2 0 0 0 4.001-2.02.05.05 0 0 0 .021-.037c.334-3.451-.559-6.449-2.366-9.106a.03.03 0 0 0-.02-.019m-8.198 7.307c-.789 0-1.438-.724-1.438-1.612s.637-1.613 1.438-1.613c.807 0 1.45.73 1.438 1.613 0 .888-.637 1.612-1.438 1.612m5.316 0c-.788 0-1.438-.724-1.438-1.612s.637-1.613 1.438-1.613c.807 0 1.451.73 1.438 1.613 0 .888-.631 1.612-1.438 1.612"/></svg>
+              <span id="end-discord"></span>
+            </a>
+            <a class="btn" href="https://t.me/actually_aloy" target="_blank" rel="noopener noreferrer">
+              <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8.287 5.906q-1.168.486-4.666 2.01-.567.225-.595.442c-.03.243.275.339.69.47l.175.055c.408.133.958.288 1.243.294q.39.01.868-.32 3.269-2.206 3.374-2.23c.05-.012.12-.026.166.016s.042.12.037.141c-.03.129-1.227 1.241-1.846 1.817-.193.18-.33.307-.358.336a8 8 0 0 1-.188.186c-.38.366-.664.64.015 1.088.327.216.589.393.85.571.284.194.568.387.936.629q.14.092.27.187c.331.236.63.448.997.414.214-.02.435-.22.547-.82.265-1.417.786-4.486.906-5.751a1.4 1.4 0 0 0-.013-.315.34.34 0 0 0-.114-.217.53.53 0 0 0-.31-.093c-.3.005-.763.166-2.984 1.09"/></svg>
+              <span id="end-telegram"></span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="footer">
+      <a class="home-link" href="index.html" id="footer-home"></a>
+      <p class="made" id="made-by"></p>
+      <p class="legal" dir="ltr">© 2026 Aloy</p>
+    </div>
+  </main>
+
+  <script src="releases.js"></script>
+  <script>
+    (function () {
+      var host = location.hostname;
+      var local = host === 'localhost' || host === '127.0.0.1' || /^[\d.]+$/.test(host) || host.charAt(0) === '[';
+      if (local || !/^https?:$/.test(location.protocol)) return;
+      var clean = location.pathname.replace(/\/index\.html$/, '/').replace(/\.html$/, '');
+      if (clean !== location.pathname) history.replaceState(null, '', clean + location.search + location.hash);
+    })();
+
+    const REPO = 'actually-aloy/aloys-youtube-downloader';
+
+    const ICO = {
+      download: '<path d="M12 4v11"/><path d="M7.5 10.5 12 15l4.5-4.5"/><path d="M5 19h14"/>',
+      window: '<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18"/>',
+      link: '<path d="M10 14a4 4 0 0 0 5.66 0l3-3a4 4 0 0 0-5.66-5.66l-1 1"/><path d="M14 10a4 4 0 0 0-5.66 0l-3 3a4 4 0 0 0 5.66 5.66l1-1"/>',
+      film: '<rect x="3" y="5" width="18" height="14" rx="3"/><path d="M10 9.5v5l4.2-2.5z"/>',
+      gauge: '<path d="M4 17a8 8 0 1 1 16 0"/><path d="M12 17l4-5"/><path d="M12 7v1.5M6.3 9.3l1 1M17.7 9.3l-1 1"/>',
+      eye: '<path d="M2 12s3.6-6.5 10-6.5S22 12 22 12s-3.6 6.5-10 6.5S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>',
+      list: '<path d="M8 6h12M8 12h12M8 18h12"/><path d="M4 6h.01M4 12h.01M4 18h.01"/>',
+      shield: '<path d="M12 3 5 6v5.5c0 4.4 2.9 8 7 9.5 4.1-1.5 7-5.1 7-9.5V6z"/><path d="m9 12 2.2 2.2L15.5 10"/>',
+      key: '<circle cx="8" cy="15" r="4"/><path d="m11 12 8-8"/><path d="m16 7 3 3"/>',
+      sun: '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>',
+      refresh: '<path d="M20 11a8 8 0 0 0-14.5-4M4 4v4h4"/><path d="M4 13a8 8 0 0 0 14.5 4M20 20v-4h-4"/>',
+      folder: '<path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>'
+    };
+
+    const svg = (name, sw) => '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="' + (sw || 2) + '" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + ICO[name] + '</svg>';
+
+    const HEART = '<svg class="heart" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 21s-7.5-4.6-9.6-9.2C.9 8.4 2.7 5 6 5c2 0 3.4 1 4.4 2.5.5.7 1.2.7 1.7 0C13.1 6 14.5 5 16.5 5c3.3 0 5.1 3.4 3.6 6.8C19.5 16.4 12 21 12 21z"/></svg>';
+
+    const $ = id => document.getElementById(id);
+    const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+    const PERSIAN_DIGITS = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
+    const LATIN_RE = /[A-Za-z][A-Za-z0-9._@+'’\/-]*(?:[  ][A-Za-z][A-Za-z0-9._@+'’\/-]*)*/g;
+
+    let currentLang = localStorage.getItem('lang') === 'en' ? 'en' : 'fa';
+
+    const tx = s => {
+      if (currentLang !== 'fa') return esc(s);
+      let out = '', last = 0, m;
+      LATIN_RE.lastIndex = 0;
+      while ((m = LATIN_RE.exec(s))) {
+        out += esc(s.slice(last, m.index)) + '<bdi>' + esc(m[0]) + '</bdi>';
+        last = m.index + m[0].length;
+      }
+      return out + esc(s.slice(last));
+    };
+    const setTx = (id, s) => { $(id).innerHTML = tx(s); };
+    const fmt = n => currentLang === 'fa' ? String(n).replace(/[0-9]/g, d => PERSIAN_DIGITS[d]) : String(n);
+
+
+    const I18N = {
+      en: {
+        dir: 'ltr',
+        docTitle: "Aloy's YouTube Downloader — save YouTube videos and audio",
+        back: 'home',
+        heroTitle: "Aloy's YouTube Downloader",
+        pitch: "Paste a YouTube link, pick a format and a quality, and download it. Video or just the audio, with a tidy list of everything you've saved.",
+        tags: ['Free', 'Windows', 'Video & audio', 'Dark & light'],
+        download: 'Download for Windows',
+        github: 'GitHub',
+        sizeUnit: 'MB',
+        mockNote: 'A small demo, not the real thing: nothing is actually downloaded. Press Paste for a sample link, hit Fetch, pick a format and press Download. The sun or moon switches the theme, and Set cookies opens the real dialog.',
+        howTitle: 'How it works',
+        howSub: 'three steps, about a minute',
+        how: [
+          ['download', 'Download and extract', 'Grab the zip with the button above and extract it anywhere. There is no installer.'],
+          ['window', 'Run the app', 'Double-click Aloys YouTube Downloader.exe, paste a youtube.com, youtu.be or Shorts link and press Fetch. You see the thumbnail, title, channel and length first.'],
+          ['film', 'Pick and download', 'Choose a format and quality, press Download and watch it fill up in the list. Finished files open in their folder with one click.']
+        ],
+        featTitle: 'What it does',
+        featSub: 'the useful parts',
+        feat: [
+          ['film', 'Video and audio', 'Save the video as MP4, MKV or WebM, or keep just the sound as MP3, M4A, Opus, FLAC or WAV.'],
+          ['gauge', 'Pick the quality', 'Video goes up to the best the clip has, even 4K. Audio comes in 128 to 320 kbps, and FLAC and WAV are lossless.'],
+          ['eye', 'Preview first', 'Before anything downloads you see the thumbnail, title, channel and length, so you know it is the right video.'],
+          ['list', 'A proper downloads list', 'Each download shows progress, speed and time left, and you can cancel any of them. Finished ones stay in the list.'],
+          ['shield', 'Stubborn videos', 'If YouTube turns a request down, the app quietly tries other ways before giving up, and errors are explained in plain words.'],
+          ['key', 'Cookies for hard cases', 'Hit a bot check or an age-restricted video? Give the app a cookies.txt from your logged-in browser and it usually goes away.'],
+          ['sun', 'Dark and light', 'Two themes in the app\'s orange, switched with one button and remembered next time.'],
+          ['refresh', 'Tells you about updates', 'It checks GitHub when it starts and offers a View release button when there is a newer version.'],
+          ['folder', 'Your folder, your settings', 'Files go to your Downloads folder unless you pick another. Settings and history live in one small file next to the app.']
+        ],
+        faqTitle: 'Questions',
+        faqSub: 'the usual ones',
+        faq: [
+          ['Is it free?', 'Yes, it is free to download and use. It is closed source, so the code is not published.'],
+          ['How do I install it?', 'There is nothing to install. Extract the zip anywhere and double-click Aloys YouTube Downloader.exe.'],
+          ['What can I download?', 'Single YouTube videos: youtube.com/watch links, youtu.be links and Shorts. Any other link is turned down with a message that says what it expects.'],
+          ['Which formats and qualities are there?', 'Video as MP4, MKV or WebM, at Best available or any quality the video has, such as 1080p or 4K. Audio as MP3, M4A (AAC), Opus, FLAC or WAV. MP3, M4A and Opus can be 128, 192, 256 or 320 kbps, and FLAC and WAV are lossless.'],
+          ['Do I need to install anything else?', 'No. Pulling out audio and joining video with sound is done by a converter that comes with the app.'],
+          ['YouTube says "Sign in to confirm you\'re not a bot". What now?', 'That usually clears up by itself after a few tries. If it keeps happening, install a "Get cookies.txt LOCALLY" extension in your browser, log into youtube.com, export cookies.txt, then press Set cookies in the app and pick the file.'],
+          ['Why does an age-restricted video fail?', 'YouTube wants a logged-in account for those. Set a cookies.txt from your account and try again.'],
+          ['Where do my files go?', 'Into your Downloads folder by default. Press Change at the bottom to pick another folder and Open folder to see it. The arrow icon on a finished download shows that file.'],
+          ['Does it remember my downloads?', 'Yes. Finished downloads are still in the list next time you open the app, as long as the files are still there. They are kept in aytd_settings.json next to the app, along with your folder, theme and cookies choice.'],
+          ['How do updates work?', 'The app checks for a newer version when it starts and offers a View release button. Download the newest zip, extract it over the old folder and keep aytd_settings.json so your settings carry over.']
+        ],
+        endTitle: 'Save your first video',
+        endText: 'Free and quick to set up. Found a bug or have an idea? Tell me in the Discord server or on Telegram.',
+        endDiscord: 'Discord server',
+        endTelegram: 'Telegram',
+        footerHome: 'Back to the main page',
+        madeBy: 'Fetched with {heart} by Aloy'
+      },
+      fa: {
+        dir: 'rtl',
+        docTitle: 'Aloy\'s YouTube Downloader — دانلود ویدیو و صدای یوتیوب',
+        back: 'خانه',
+        heroTitle: "Aloy's YouTube Downloader",
+        pitch: 'لینک یوتیوب رو بذار، فرمت و کیفیت رو انتخاب کن و دانلودش کن. ویدیو یا فقط صدا، با یه لیست مرتب از چیزایی که گرفتی.',
+        tags: ['رایگان', 'ویندوز', 'ویدیو و صدا', 'تیره و روشن'],
+        download: 'دانلود برای ویندوز',
+        github: 'گیت‌هاب',
+        sizeUnit: 'مگابایت',
+        mockNote: 'یه نمونه‌ی کوچیکه، نه خود برنامه: چیزی واقعاً دانلود نمی‌شه. با Paste یه لینک نمونه بذار، Fetch رو بزن، فرمت رو انتخاب کن و Download رو بزن. خورشید یا ماه تم رو عوض می‌کنه و Set cookies همون پنجره‌ی واقعی رو باز می‌کنه.',
+        howTitle: 'چطوری کار می‌کنه',
+        howSub: 'سه قدم، حدود یه دقیقه',
+        how: [
+          ['download', 'دانلود و بازکردن زیپ', 'فایل زیپ رو با دکمه‌ی بالا بگیر و هرجا خواستی از حالت فشرده دربیار. نصب‌کننده‌ای در کار نیست.'],
+          ['window', 'برنامه رو اجرا کن', 'روی Aloys YouTube Downloader.exe دوبار کلیک کن، یه لینک youtube.com، youtu.be یا Shorts بذار و Fetch رو بزن. اول عکس بندانگشتی، عنوان، کانال و مدت‌زمان رو می‌بینی.'],
+          ['film', 'انتخاب کن و دانلود کن', 'فرمت و کیفیت رو انتخاب کن، Download رو بزن و پر شدنش تو لیست رو ببین. فایل‌های تموم‌شده با یه کلیک تو پوشه‌شون باز می‌شن.']
+        ],
+        featTitle: 'چیکار می‌کنه',
+        featSub: 'بخش‌های به‌دردبخور',
+        feat: [
+          ['film', 'ویدیو و صدا', 'ویدیو رو به‌صورت MP4، MKV یا WebM ذخیره کن، یا فقط صدا رو به‌صورت MP3، M4A، Opus، FLAC یا WAV نگه دار.'],
+          ['gauge', 'کیفیت رو خودت انتخاب کن', 'ویدیو تا بهترین کیفیتی که کلیپ داره می‌ره، حتی 4K. صدا از ۱۲۸ تا ۳۲۰ کیلوبیت‌برثانیه‌ست و FLAC و WAV بی‌افت‌ان.'],
+          ['eye', 'اول پیش‌نمایش', 'قبل از دانلود، عکس بندانگشتی، عنوان، کانال و مدت‌زمان رو می‌بینی تا مطمئن بشی ویدیوی درسته.'],
+          ['list', 'یه لیست دانلود درست‌حسابی', 'هر دانلود پیشرفت، سرعت و زمان باقی‌مونده‌اش رو نشون می‌ده و می‌تونی هرکدوم رو لغو کنی. تموم‌شده‌ها تو لیست می‌مونن.'],
+          ['shield', 'ویدیوهای لجباز', 'اگه یوتیوب یه درخواست رو رد کنه، برنامه بی‌سروصدا چند راه دیگه رو امتحان می‌کنه و بعد تسلیم می‌شه، و خطاها هم به زبون ساده توضیح داده می‌شن.'],
+          ['key', 'کوکی برای موارد سخت', 'به بررسی ربات یا ویدیوی دارای محدودیت سنی خوردی؟ یه cookies.txt از مرورگر واردشده‌ات به برنامه بده و معمولاً درست می‌شه.'],
+          ['sun', 'تیره و روشن', 'دو تم با رنگ نارنجی برنامه، با یه دکمه عوض می‌شن و دفعه‌ی بعد هم یادشون می‌مونه.'],
+          ['refresh', 'آپدیت رو خبر می‌ده', 'موقع شروع GitHub رو چک می‌کنه و اگه نسخه‌ی جدیدتری باشه دکمه‌ی View release رو نشونت می‌ده.'],
+          ['folder', 'پوشه‌ی خودت، تنظیمات خودت', 'فایل‌ها می‌رن تو پوشه‌ی Downloads مگه اینکه یه پوشه‌ی دیگه انتخاب کنی. تنظیمات و تاریخچه تو یه فایل کوچیک کنار برنامه می‌مونن.']
+        ],
+        faqTitle: 'سؤال‌ها',
+        faqSub: 'همون‌هایی که معمولاً می‌پرسن',
+        faq: [
+          ['رایگانه؟', 'آره، دانلود و استفاده‌اش رایگانه. متن‌بسته‌ست و کدش منتشر نشده.'],
+          ['چطوری نصبش کنم؟', 'نصبی در کار نیست. زیپ رو هرجا خواستی باز کن و روی Aloys YouTube Downloader.exe دوبار کلیک کن.'],
+          ['چی رو می‌شه دانلود کرد؟', 'ویدیوهای تکی یوتیوب: لینک‌های youtube.com/watch، لینک‌های youtu.be و Shorts. هر لینک دیگه‌ای با یه پیام که می‌گه چه لینکی رو می‌خواد رد می‌شه.'],
+          ['چه فرمت‌ها و کیفیت‌هایی داره؟', 'ویدیو به‌صورت MP4، MKV یا WebM، با Best available یا هر کیفیتی که ویدیو داره، مثل 1080p یا 4K. صدا به‌صورت MP3، M4A (AAC)، Opus، FLAC یا WAV. MP3، M4A و Opus می‌تونن ۱۲۸، ۱۹۲، ۲۵۶ یا ۳۲۰ کیلوبیت‌برثانیه باشن و FLAC و WAV بی‌افت‌ان.'],
+          ['باید چیز دیگه‌ای نصب کنم؟', 'نه. جدا کردن صدا و چسبوندن ویدیو به صدا رو یه مبدل انجام می‌ده که همراه برنامه می‌آد.'],
+          ['یوتیوب می‌گه «Sign in to confirm you\'re not a bot». چیکار کنم؟', 'معمولاً بعد از چند بار امتحان خودش درست می‌شه. اگه ادامه داشت، یه افزونه‌ی «Get cookies.txt LOCALLY» تو مرورگرت نصب کن، تو youtube.com وارد شو، cookies.txt رو اکسپورت کن، بعد تو برنامه Set cookies رو بزن و فایل رو انتخاب کن.'],
+          ['چرا ویدیوی دارای محدودیت سنی خطا می‌ده؟', 'یوتیوب برای اون‌ها اکانت واردشده می‌خواد. یه cookies.txt از اکانتت بده و دوباره امتحان کن.'],
+          ['فایل‌هام کجا می‌رن؟', 'پیش‌فرض تو پوشه‌ی Downloads. پایین پنجره Change رو بزن تا یه پوشه‌ی دیگه انتخاب کنی و Open folder رو بزن تا ببینیش. آیکون فلش رو دانلود تموم‌شده همون فایل رو نشون می‌ده.'],
+          ['دانلودهام یادش می‌مونن؟', 'آره. دانلودهای تموم‌شده دفعه‌ی بعد که برنامه رو باز کنی هنوز تو لیستن، تا وقتی که فایل‌ها سر جاشون باشن. همراه پوشه، تم و کوکی تو aytd_settings.json کنار برنامه نگه داشته می‌شن.'],
+          ['آپدیت‌ها چطوری‌ان؟', 'برنامه موقع شروع نسخه‌ی جدیدتر رو چک می‌کنه و دکمه‌ی View release رو نشون می‌ده. جدیدترین زیپ رو بگیر، روی پوشه‌ی قبلی باز کن و aytd_settings.json رو نگه دار تا تنظیماتت بمونه.']
+        ],
+        endTitle: 'اولین ویدیوت رو ذخیره کن',
+        endText: 'رایگانه و راه‌اندازیش سریعه. باگی دیدی یا ایده‌ای داری؟ تو سرور دیسکورد یا تلگرام بگو.',
+        endDiscord: 'سرور دیسکورد',
+        endTelegram: 'تلگرام',
+        footerHome: 'بازگشت به صفحه‌ی اصلی',
+        madeBy: 'این یکی رو آلوی با {heart} ساخته'
+      }
+    };
+
+    const AYI = {
+      globe: ['fill', 'M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m7.5-6.923c-.67.204-1.335.82-1.887 1.855A8 8 0 0 0 5.145 4H7.5zM4.09 4a9.3 9.3 0 0 1 .64-1.539 7 7 0 0 1 .597-.933A7.03 7.03 0 0 0 2.255 4zm-.582 3.5c.03-.877.138-1.718.312-2.5H1.674a7 7 0 0 0-.656 2.5zM4.847 5a12.5 12.5 0 0 0-.338 2.5H7.5V5zM8.5 5v2.5h2.99a12.5 12.5 0 0 0-.337-2.5zM4.51 8.5a12.5 12.5 0 0 0 .337 2.5H7.5V8.5zm3.99 0V11h2.653c.187-.765.306-1.608.338-2.5zM5.145 12q.208.58.468 1.068c.552 1.035 1.218 1.65 1.887 1.855V12zm.182 2.472a7 7 0 0 1-.597-.933A9.3 9.3 0 0 1 4.09 12H2.255a7 7 0 0 0 3.072 2.472M3.82 11a13.7 13.7 0 0 1-.312-2.5h-2.49c.062.89.291 1.733.656 2.5zm6.853 3.472A7 7 0 0 0 13.745 12H11.91a9.3 9.3 0 0 1-.64 1.539 7 7 0 0 1-.597.933M8.5 12v2.923c.67-.204 1.335-.82 1.887-1.855q.26-.487.468-1.068zm3.68-1h2.146c.365-.767.594-1.61.656-2.5h-2.49a13.7 13.7 0 0 1-.312 2.5m2.802-3.5a7 7 0 0 0-.656-2.5H12.18c.174.782.282 1.623.312 2.5zM11.27 2.461c.247.464.462.98.64 1.539h1.835a7 7 0 0 0-3.072-2.472c.218.284.418.598.597.933M10.855 4a8 8 0 0 0-.468-1.068C9.835 1.897 9.17 1.282 8.5 1.077V4z'],
+      tg: ['tg', 'M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8.287 5.906q-1.168.486-4.666 2.01-.567.225-.595.442c-.03.243.275.339.69.47l.175.055c.408.133.958.288 1.243.294q.39.01.868-.32 3.269-2.206 3.374-2.23c.05-.012.12-.026.166.016s.042.12.037.141c-.03.129-1.227 1.241-1.846 1.817-.193.18-.33.307-.358.336a8 8 0 0 1-.188.186c-.38.366-.664.64.015 1.088.327.216.589.393.85.571.284.194.568.387.936.629q.14.092.27.187c.331.236.63.448.997.414.214-.02.435-.22.547-.82.265-1.417.786-4.486.906-5.751a1.4 1.4 0 0 0-.013-.315.34.34 0 0 0-.114-.217.53.53 0 0 0-.31-.093c-.3.005-.763.166-2.984 1.09'],
+      link: ['stroke', 'M10 14a4 4 0 0 0 5.66 0l3-3a4 4 0 0 0-5.66-5.66l-1 1M14 10a4 4 0 0 0-5.66 0l-3 3a4 4 0 0 0 5.66 5.66l1-1'],
+      clip: ['stroke', 'M9 4h6a1 1 0 0 1 1 1v1H8V5a1 1 0 0 1 1-1zM8 6H7a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-1'],
+      arrow: ['stroke', 'M5 12h14m-6-6 6 6-6 6'],
+      down: ['stroke', 'M12 4v11m0 0-4-4m4 4 4-4M5 19h14'],
+      folder: ['stroke', 'M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z'],
+      cookie: ['stroke', 'M12 3a9 9 0 1 0 9 9 4 4 0 0 1-4-4 4 4 0 0 1-5-5zM8.5 11.5h.01M12 16h.01M15.5 13.5h.01'],
+      close: ['stroke', 'M6 6l12 12M18 6 6 18'],
+      reveal: ['stroke', 'M14 4h6v6M20 4l-9 9M18 14v4a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4'],
+      sun: ['stroke', 'M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8zM12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4'],
+      moon: ['stroke', 'M20.5 14.5A8.5 8.5 0 1 1 9.5 3.5a7 7 0 0 0 11 11z'],
+      chev: ['chev', 'M2.5 4.5L6 8L9.5 4.5']
+    };
+
+    function ayIcon(name) {
+      const d = AYI[name];
+      if (d[0] === 'fill') return '<svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="' + d[1] + '"/></svg>';
+      if (d[0] === 'tg') return '<svg viewBox="0 0 16 16" aria-hidden="true"><defs><linearGradient id="aytg" x1="0" y1="0" x2="16" y2="16" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2AABEE"/><stop offset="1" stop-color="#229ED9"/></linearGradient></defs><path fill="url(#aytg)" d="' + d[1] + '"/></svg>';
+      if (d[0] === 'chev') return '<svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="' + d[1] + '"/></svg>';
+      return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="' + d[1] + '"/></svg>';
+    }
+
+    const AY_FORMATS = [
+      ['video_mp4', 'MP4  ·  Video'], ['video_mkv', 'MKV  ·  Video'], ['video_webm', 'WebM  ·  Video'],
+      ['audio_mp3', 'MP3  ·  Audio'], ['audio_m4a', 'M4A  ·  Audio (AAC)'], ['audio_opus', 'Opus  ·  Audio'],
+      ['audio_flac', 'FLAC  ·  Audio (lossless)'], ['audio_wav', 'WAV  ·  Audio (lossless)']
+    ];
+    const AY_SAMPLES = [
+      { url: 'https://www.youtube.com/watch?v=Zq3xK8mP1aW', title: 'City lights at night, 4K timelapse', channel: 'Sample Channel', dur: 222, h: [2160, 1440, 1080, 720, 480, 360, 240, 144], c: ['#ff7a1a', '#6d28d9'] },
+      { url: 'https://youtu.be/Rj9pLw2NcE4', title: 'How to cook perfect rice every time', channel: 'Kitchen Basics', dur: 615, h: [1080, 720, 480, 360, 240, 144], c: ['#22d3ee', '#16a34a'] },
+      { url: 'https://www.youtube.com/shorts/Tn6bQ4vHy0s', title: 'The cat and the cucumber', channel: 'Funny Clips', dur: 42, h: [1080, 720, 480, 360], c: ['#f472b6', '#f59e0b'] }
+    ];
+    const AY_FOLDERS = ['C:\\Users\\You\\Downloads', 'D:\\Videos\\YouTube', 'C:\\Users\\You\\Music'];
+    const AY_HINT = 'Works with youtube.com, youtu.be and Shorts links';
+    const AY_COOKIES_OFF = 'No cookies file set (helps if YouTube blocks a download)';
+    const AY_LABELS = { 2160: '4K (2160p)', 1440: '1440p', 1080: '1080p', 720: '720p', 480: '480p', 360: '360p', 240: '240p', 144: '144p' };
+
+    const ay = {
+      root: $('ay'), dark: true, video: null, fetching: false, fmt: 'video_mp4', qual: 'best',
+      rows: 0, folder: 0, cookies: false, sample: 0, toastTimer: 0, timers: new Set()
+    };
+
+    function ayToast(msg) {
+      const t = $('ay-toast');
+      t.textContent = msg;
+      t.classList.add('show');
+      clearTimeout(ay.toastTimer);
+      ay.toastTimer = setTimeout(() => t.classList.remove('show'), 2200);
+    }
+
+    function ayHint(msg, err) {
+      const h = $('ay-hint');
+      h.textContent = msg;
+      h.classList.toggle('err', !!err);
+    }
+
+    function ayPaintTheme() {
+      ay.root.dataset.theme = ay.dark ? 'dark' : 'light';
+      $('ay-theme').innerHTML = ayIcon(ay.dark ? 'sun' : 'moon');
+      $('ay-theme').title = ay.dark ? 'Switch to light theme' : 'Switch to dark theme';
+    }
+
+    document.querySelectorAll('#ay [data-i]').forEach(el => { el.innerHTML = ayIcon(el.dataset.i); });
+    ayPaintTheme();
+    ayHint(AY_HINT);
+    $('ay-path').textContent = AY_FOLDERS[0];
+    $('ay-ctext').textContent = AY_COOKIES_OFF;
+
+    $('ay-theme').addEventListener('click', () => { ay.dark = !ay.dark; ayPaintTheme(); });
+    $('ay-web').addEventListener('click', () => ayToast('In the app this opens the website'));
+    $('ay-tg').addEventListener('click', () => ayToast('In the app this opens t.me/actually_aloy'));
+
+    const ayUrl = $('ay-url');
+    ayUrl.addEventListener('input', () => {
+      $('ay-clear').hidden = !ayUrl.value;
+      if ($('ay-hint').classList.contains('err')) ayHint(AY_HINT);
+    });
+    ayUrl.addEventListener('keydown', e => { if (e.key === 'Enter') ayFetch(); });
+    $('ay-clear').addEventListener('click', () => { ayUrl.value = ''; $('ay-clear').hidden = true; ayUrl.focus(); });
+    $('ay-paste').addEventListener('click', () => {
+      ayUrl.value = AY_SAMPLES[ay.sample % AY_SAMPLES.length].url;
+      ay.sample++;
+      $('ay-clear').hidden = false;
+      if ($('ay-hint').classList.contains('err')) ayHint(AY_HINT);
+      ayUrl.focus();
+    });
+    $('ay-fetch').addEventListener('click', ayFetch);
+
+    function ayValid(u) { return /youtube\.com\/watch|youtu\.be\/|youtube\.com\/shorts\//.test(u); }
+
+    function ayPick(u) {
+      const exact = AY_SAMPLES.find(s => s.url === u);
+      if (exact) return exact;
+      if (u.indexOf('/shorts/') > -1) return AY_SAMPLES[2];
+      let n = 0;
+      for (let i = 0; i < u.length; i++) n += u.charCodeAt(i);
+      return AY_SAMPLES[n % 2];
+    }
+
+    function ayThumbSvg(c, id) {
+      return '<svg viewBox="0 0 208 117" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><defs><linearGradient id="' + id + '" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="' + c[0] + '"/><stop offset="1" stop-color="' + c[1] + '"/></linearGradient></defs><rect width="208" height="117" fill="url(#' + id + ')"/><circle cx="152" cy="36" r="15" fill="rgba(255,255,255,.4)"/><path d="M0 117 50 68 90 98 140 58 208 117Z" fill="rgba(0,0,0,.3)"/><circle cx="104" cy="58" r="17" fill="rgba(0,0,0,.45)"/><path d="M99 50 112 58 99 66Z" fill="#fff"/></svg>';
+    }
+
+    function ayDur(s) {
+      const m = Math.floor(s / 60), h = Math.floor(m / 60);
+      return h ? h + ':' + String(m % 60).padStart(2, '0') + ':' + String(s % 60).padStart(2, '0') : m + ':' + String(s % 60).padStart(2, '0');
+    }
+
+    function ayFetch() {
+      if (ay.fetching) return;
+      const u = ayUrl.value.trim();
+      if (!u) { ayHint('Please enter a URL.', true); return; }
+      if (!ayValid(u)) { ayHint("That doesn't look like a YouTube URL. Expected youtube.com/watch?v=... or youtu.be/...", true); return; }
+      ayHint(AY_HINT);
+      ay.video = null;
+      ay.fetching = true;
+      $('ay-fetch').disabled = true;
+      $('ay-fetch-t').textContent = 'Fetching…';
+      $('ay-card').hidden = false;
+      $('ay-thumb').textContent = 'Loading...';
+      $('ay-vtitle').textContent = 'Loading video info...';
+      $('ay-vchan').textContent = '';
+      $('ay-vdur').hidden = true;
+      const v = ayPick(u);
+      setTimeout(() => {
+        ay.video = v;
+        ay.fetching = false;
+        $('ay-fetch').disabled = false;
+        $('ay-fetch-t').textContent = 'Fetch';
+        $('ay-thumb').innerHTML = ayThumbSvg(v.c, 'ayg' + Date.now());
+        $('ay-vtitle').textContent = v.title;
+        $('ay-vchan').textContent = v.channel;
+        $('ay-vdur').textContent = ayDur(v.dur);
+        $('ay-vdur').hidden = false;
+        ayQualities(true);
+      }, 900);
+    }
+
+    function ayQualityList() {
+      if (ay.fmt.startsWith('audio')) {
+        const c = ay.fmt.split('_')[1];
+        if (c === 'wav' || c === 'flac') return [['0', 'Lossless']];
+        return [['320', '320 kbps'], ['256', '256 kbps'], ['192', '192 kbps'], ['128', '128 kbps']];
+      }
+      const list = [['best', 'Best available']];
+      if (ay.video) ay.video.h.forEach(h => list.push([String(h), AY_LABELS[h] || h + 'p']));
+      return list;
+    }
+
+    function ayQualities(reset) {
+      const list = ayQualityList();
+      if (reset || !list.some(q => q[0] === ay.qual)) ay.qual = list[0][0];
+      ayFillSel('ay-qual', list, ay.qual);
+    }
+
+    function ayFillSel(id, list, cur) {
+      const box = $(id);
+      const pop = box.querySelector('.ay-pop');
+      pop.innerHTML = list.map(([v, l]) => '<button type="button" role="option" data-v="' + esc(v) + '"' + (v === cur ? ' class="on" aria-selected="true"' : '') + '>' + esc(l) + '</button>').join('');
+      box.querySelector('b').textContent = (list.find(x => x[0] === cur) || list[0])[1];
+    }
+
+    function ayClosePops() {
+      document.querySelectorAll('#ay .ay-sel.open').forEach(s => {
+        s.classList.remove('open');
+        s.querySelector('.ay-pop').hidden = true;
+        s.querySelector('.ay-selbtn').setAttribute('aria-expanded', 'false');
+      });
+    }
+
+    ['ay-fmt', 'ay-qual'].forEach(id => {
+      const box = $(id);
+      box.querySelector('.ay-selbtn').addEventListener('click', e => {
+        e.stopPropagation();
+        const was = box.classList.contains('open');
+        ayClosePops();
+        if (!was) {
+          box.classList.add('open');
+          box.querySelector('.ay-pop').hidden = false;
+          box.querySelector('.ay-selbtn').setAttribute('aria-expanded', 'true');
+          const on = box.querySelector('.on');
+          if (on) on.scrollIntoView({ block: 'nearest' });
+        }
+      });
+      box.querySelector('.ay-pop').addEventListener('click', e => {
+        const b = e.target.closest('button[data-v]');
+        if (!b) return;
+        if (id === 'ay-fmt') { ay.fmt = b.dataset.v; ayFillSel('ay-fmt', AY_FORMATS, ay.fmt); ayQualities(true); }
+        else { ay.qual = b.dataset.v; ayFillSel('ay-qual', ayQualityList(), ay.qual); }
+        ayClosePops();
+        box.querySelector('.ay-selbtn').focus();
+      });
+    });
+    document.addEventListener('click', e => { if (!e.target.closest('.ay-sel')) ayClosePops(); });
+    ayFillSel('ay-fmt', AY_FORMATS, ay.fmt);
+    ayFillSel('ay-qual', ayQualityList(), ay.qual);
+
+    function ayCount() {
+      const c = $('ay-count');
+      c.textContent = ay.rows;
+      c.hidden = ay.rows === 0;
+    }
+
+    $('ay-dl').addEventListener('click', () => {
+      if (!ay.video) return;
+      ay.rows++;
+      ayCount();
+      $('ay-empty').hidden = true;
+      const row = document.createElement('div');
+      row.className = 'ay-row';
+      row.innerHTML = '<div class="ay-rtop"><div class="ay-rtitle"></div><div class="ay-rstat">Starting...</div><button type="button" class="ay-ib sm" aria-label="Cancel" title="Cancel">' + ayIcon('close') + '</button></div><div class="ay-rbot"><div class="ay-bar2"><i></i></div><div class="ay-pct">0%</div></div>';
+      row.querySelector('.ay-rtitle').textContent = ay.video.title;
+      const list = $('ay-list');
+      list.insertBefore(row, list.firstChild);
+      list.scrollTop = 0;
+      const stat = row.querySelector('.ay-rstat'), bar = row.querySelector('.ay-bar2 i'), pct = row.querySelector('.ay-pct');
+      const act = row.querySelector('button'), bot = row.querySelector('.ay-rbot');
+      const total = 6000 + Math.random() * 3500 + ay.video.dur * 6;
+      const speed = 4 + Math.random() * 7;
+      const t0 = performance.now();
+      let state = 'run';
+      const finish = () => {
+        state = 'done';
+        ay.timers.delete(timer);
+        clearInterval(timer);
+        bot.hidden = true;
+        stat.textContent = 'Completed';
+        stat.className = 'ay-rstat ok';
+        act.innerHTML = ayIcon('reveal');
+        act.title = 'Show in folder';
+        act.setAttribute('aria-label', 'Show in folder');
+      };
+      const timer = setInterval(() => {
+        const p = Math.min(100, ((performance.now() - t0) / total) * 100);
+        bar.style.width = p + '%';
+        pct.textContent = Math.floor(p) + '%';
+        if (p >= 100) {
+          stat.textContent = 'Processing...';
+          clearInterval(timer);
+          setTimeout(() => { if (state === 'run') finish(); }, 700);
+          return;
+        }
+        const left = Math.max(1, Math.round((total - (performance.now() - t0)) / 1000));
+        stat.textContent = p >= 99 ? 'Processing...' : speed.toFixed(1) + ' MB/s  ·  ETA ' + Math.floor(left / 60) + 'm ' + (left % 60) + 's';
+      }, 120);
+      ay.timers.add(timer);
+      act.addEventListener('click', () => {
+        if (state === 'run') {
+          state = 'cancelled';
+          clearInterval(timer);
+          ay.timers.delete(timer);
+          bot.hidden = true;
+          stat.textContent = 'Cancelled';
+          stat.className = 'ay-rstat off';
+          act.hidden = true;
+        } else if (state === 'done') {
+          ayToast('In the app this shows the file in its folder');
+        }
+      });
+    });
+
+    $('ay-open').addEventListener('click', () => ayToast('In the app this opens your download folder'));
+    $('ay-change').addEventListener('click', () => {
+      ay.folder = (ay.folder + 1) % AY_FOLDERS.length;
+      $('ay-path').textContent = AY_FOLDERS[ay.folder];
+    });
+
+    function ayDialog(show) { $('ay-dialog').hidden = !show; if (show) $('ay-dselect').focus(); }
+    $('ay-cset').addEventListener('click', () => ayDialog(true));
+    $('ay-dcancel').addEventListener('click', () => ayDialog(false));
+    $('ay-dialog').addEventListener('click', e => { if (e.target === $('ay-dialog')) ayDialog(false); });
+    $('ay-dselect').addEventListener('click', () => {
+      ayDialog(false);
+      $('ay-ctext').textContent = 'Cookies: cookies.txt';
+      $('ay-cclear').hidden = false;
+    });
+    $('ay-cclear').addEventListener('click', () => {
+      $('ay-ctext').textContent = AY_COOKIES_OFF;
+      $('ay-cclear').hidden = true;
+    });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') { ayDialog(false); ayClosePops(); } });
+
+
+    function renderMock() {
+      setTx('mock-note', I18N[currentLang].mockNote);
+    }
+
+    let release = null;
+
+    function paintRelease() {
+      const t = I18N[currentLang];
+      document.querySelectorAll('a[data-dl]').forEach(a => {
+        a.href = release ? release.url : LatestRelease.page(REPO);
+      });
+      const meta = $('dl-meta');
+      if (release && release.tag) $('ay-ver').textContent = /^v/i.test(release.tag) ? release.tag : 'v' + release.tag;
+      if (!release) { meta.hidden = true; return; }
+      const parts = [];
+      if (release.tag) parts.push('<bdi dir="ltr">' + esc(release.tag) + '</bdi>');
+      if (release.size) parts.push(fmt((release.size / 1048576).toFixed(1).replace('.', currentLang === 'fa' ? '٫' : '.')) + ' ' + t.sizeUnit);
+      meta.innerHTML = parts.join(' · ');
+      meta.hidden = parts.length === 0;
+    }
+
+    function renderHow(t) {
+      $('how-grid').innerHTML = t.how.map(([icon, name, desc], i) => `
+        <div class="card">
+          <div class="card-top">
+            <div class="icon">${svg(icon)}</div>
+            <div class="card-name">${tx(name)}</div>
+            <span class="step-num" aria-hidden="true">${fmt(i + 1)}</span>
+          </div>
+          <p class="card-desc">${tx(desc)}</p>
+        </div>`).join('');
+    }
+
+    function renderFeatures(t) {
+      $('feat-grid').innerHTML = t.feat.map(([icon, name, desc], i) => `
+        <div class="card">
+          <div class="card-top">
+            <div class="icon${i % 2 ? ' alt' : ''}">${svg(icon)}</div>
+            <div class="card-name">${tx(name)}</div>
+          </div>
+          <p class="card-desc">${tx(desc)}</p>
+        </div>`).join('');
+    }
+
+    function renderFaq(t) {
+      $('faq-list').innerHTML = t.faq.map(([q, a], i) => `
+        <div class="faq-item">
+          <button type="button" class="faq-q" id="faq-q-${i}" aria-expanded="false" aria-controls="faq-a-${i}">
+            <span>${tx(q)}</span>
+            <span class="faq-icon" aria-hidden="true"></span>
+          </button>
+          <div class="faq-panel" id="faq-a-${i}" role="region" aria-labelledby="faq-q-${i}">
+            <div class="faq-inner"><div class="answer">${tx(a)}</div></div>
+          </div>
+        </div>`).join('');
+    }
+
+    $('faq-list').addEventListener('click', e => {
+      const btn = e.target.closest('.faq-q');
+      if (!btn) return;
+      const item = btn.parentElement;
+      const open = item.classList.toggle('open');
+      btn.setAttribute('aria-expanded', String(open));
+    });
+
+    function applyLanguage(lang) {
+      currentLang = lang;
+      localStorage.setItem('lang', lang);
+      const t = I18N[lang];
+      document.documentElement.lang = lang;
+      document.documentElement.dir = t.dir;
+      document.title = t.docTitle;
+
+      setTx('back-text', t.back);
+      setTx('hero-title', t.heroTitle);
+      setTx('hero-pitch', t.pitch);
+      $('hero-tags').innerHTML = t.tags.map((x, i) => `<span class="tag${i === 0 ? ' hot' : ''}">${tx(x)}</span>`).join('');
+      document.querySelectorAll('[data-dl-label]').forEach(el => { el.textContent = t.download; });
+      setTx('cta-github', t.github);
+      paintRelease();
+      renderMock();
+
+      setTx('how-title', t.howTitle);
+      setTx('how-sub', t.howSub);
+      renderHow(t);
+
+      setTx('feat-title', t.featTitle);
+      setTx('feat-sub', t.featSub);
+      renderFeatures(t);
+
+      setTx('faq-title', t.faqTitle);
+      setTx('faq-sub', t.faqSub);
+      renderFaq(t);
+
+      setTx('end-title', t.endTitle);
+      setTx('end-text', t.endText);
+      setTx('end-discord', t.endDiscord);
+      setTx('end-telegram', t.endTelegram);
+      setTx('footer-home', t.footerHome);
+      $('made-by').innerHTML = t.madeBy.split('{heart}').map(tx).join(HEART);
+    }
+
+    $('lang-toggle').addEventListener('click', () => {
+      $('lang-toggle').blur();
+      applyLanguage(currentLang === 'en' ? 'fa' : 'en');
+    });
+
+    applyLanguage(currentLang);
+
+    LatestRelease.latest(REPO).then(d => {
+      release = d;
+      paintRelease();
+    });
+  </script>
+</body>
+</html>

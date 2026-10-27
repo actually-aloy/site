@@ -1,0 +1,1436 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#14121f">
+  <title>Questlog — عادت‌های روزانه به شکل ماموریت، آفلاین</title>
+  <meta name="description" content="Questlog: track daily habits as quests with streaks, XP, levels and streak freezes. Offline, portable, free for Windows.">
+  <link rel="canonical" href="https://actually-aloy.github.io/site/questlog">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Questlog — daily habits as quests, offline">
+  <meta property="og:description" content="Track daily habits as quests with streaks and XP. Free, offline, for Windows.">
+  <meta property="og:url" content="https://actually-aloy.github.io/site/questlog">
+  <meta property="og:image" content="https://actually-aloy.github.io/site/questlog-og.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Questlog — daily habits as quests, offline">
+  <meta name="twitter:description" content="Track daily habits as quests with streaks and XP. Free, offline, for Windows.">
+  <meta name="twitter:image" content="https://actually-aloy.github.io/site/questlog-og.jpg">
+  <link rel="icon" href="questlog-logo.png" type="image/png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #14121f;
+      --text: #f1eefa;
+      --muted: #9691b0;
+      --line: rgba(255, 255, 255, 0.13);
+      --cyan: #f0b429;
+      --magenta: #3ddc97;
+      --pink: #ff7ab6;
+      --ink: #14121f;
+      --radius: 28px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 14% 10%, rgba(124, 111, 240, 0.22), transparent 32%),
+        radial-gradient(circle at 90% 14%, rgba(61, 220, 151, 0.09), transparent 30%),
+        radial-gradient(circle at 52% 94%, rgba(240, 180, 41, 0.07), transparent 34%),
+        var(--bg);
+      animation: page-fade-in 0.4s ease-out;
+      user-select: none;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+    }
+
+    @keyframes page-fade-in {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    html[lang="fa"] body {
+      font-family: Vazirmatn, Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      html { scroll-behavior: smooth; }
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    h1, h2, h3, p {
+      margin: 0;
+    }
+
+    [hidden] {
+      display: none !important;
+    }
+
+    .page {
+      width: min(1080px, calc(100% - 36px));
+      margin: 0 auto;
+      padding: 38px 0 56px;
+    }
+
+    .glass {
+      border: 1px solid var(--line);
+      border-radius: calc(var(--radius) + 10px);
+      background: linear-gradient(145deg, rgba(255, 255, 255, 0.105), rgba(255, 255, 255, 0.045));
+      box-shadow: 0 28px 90px rgba(0, 0, 0, 0.4);
+      backdrop-filter: blur(22px);
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: 30px;
+      padding: 28px;
+      align-items: center;
+    }
+
+    .intro {
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+      min-width: 0;
+    }
+
+    .topline {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .pill-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 14px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--text);
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 180ms ease, border-color 180ms ease;
+    }
+
+    .pill-btn:hover {
+      background: rgba(255, 255, 255, 0.12);
+      border-color: rgba(240, 180, 41, 0.45);
+    }
+
+    .pill-btn svg {
+      width: 14px;
+      height: 14px;
+    }
+
+    html[dir="rtl"] .pill-btn svg {
+      transform: scaleX(-1);
+    }
+
+    .lang-toggle {
+      margin-inline-start: auto;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .brand img {
+      width: 64px;
+      height: 64px;
+      flex: 0 0 auto;
+      border-radius: 18px;
+      box-shadow: 0 16px 40px rgba(240, 180, 41, 0.35);
+      -webkit-user-drag: none;
+    }
+
+    h1 {
+      font-size: clamp(38px, 6.4vw, 60px);
+      line-height: 1.15;
+      letter-spacing: -0.03em;
+    }
+
+    .gradient-text {
+      background: linear-gradient(90deg, #f0b429, #ffce5c, #3ddc97, #f0b429);
+      background-size: 300% 100%;
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      animation: enchant 6s linear infinite;
+    }
+
+    @keyframes enchant {
+      to { background-position: -300% 0; }
+    }
+
+    .pitch {
+      max-width: 560px;
+      color: var(--muted);
+      font-size: 18px;
+      line-height: 1.75;
+    }
+
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .tag {
+      padding: 6px 13px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--text);
+      font-size: 12.5px;
+      font-weight: 600;
+    }
+
+    .tag.hot {
+      border-color: transparent;
+      background: linear-gradient(135deg, #ffce5c, #f0b429);
+      color: var(--ink);
+    }
+
+    .cta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 12px 22px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--text);
+      font-family: inherit;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: filter 180ms ease, transform 180ms ease, background 180ms ease, border-color 180ms ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      background: rgba(255, 255, 255, 0.12);
+      border-color: rgba(240, 180, 41, 0.45);
+    }
+
+    .btn.primary {
+      border-color: transparent;
+      background: linear-gradient(135deg, #ffce5c, #f0b429);
+      color: var(--ink);
+    }
+
+    .btn.primary:hover {
+      filter: brightness(1.06);
+    }
+
+    .btn svg {
+      width: 16px;
+      height: 16px;
+      flex: 0 0 auto;
+    }
+
+    .btn:focus-visible,
+    .pill-btn:focus-visible,
+    .faq-q:focus-visible {
+      outline: 2px solid var(--cyan);
+      outline-offset: 3px;
+    }
+
+    .dl-meta {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .stage {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+    }
+
+    .stage::before {
+      content: "";
+      position: absolute;
+      inset: 6% -6% 10%;
+      z-index: 0;
+      border-radius: 50%;
+      background: radial-gradient(closest-side, rgba(240, 180, 41, 0.5), rgba(240, 180, 41, 0));
+      filter: blur(24px);
+      pointer-events: none;
+    }
+
+    .qm {
+      --q-bg: #14121f; --q-bg2: #191629; --q-surface: #201c33; --q-surface2: #29233f; --q-border: #342d4d;
+      --q-text: #f1eefa; --q-dim: #9691b0; --q-faint: #6c6788; --q-gold: #f0b429; --q-goldl: #ffce5c; --q-coral: #ff6b6b; --q-teal: #3ddc97;
+      direction: ltr; text-align: left; position: relative; z-index: 1; width: 100%; max-width: 900px; height: 600px; margin: 0 auto;
+      display: flex; flex-direction: column; overflow: hidden; border: 1px solid var(--q-border); border-radius: 16px;
+      background: radial-gradient(circle at 85% 0%, rgba(61, 220, 151, 0.07), transparent 40%), var(--q-bg); color: var(--q-text);
+      font-family: "Segoe UI", Inter, ui-sans-serif, system-ui, sans-serif; box-shadow: 0 30px 80px rgba(0, 0, 0, 0.55); transition: background 0.3s ease, color 0.3s ease;
+    }
+    .qm * { box-sizing: border-box; }
+    .qm button { font-family: inherit; color: inherit; }
+    .qm-bar { flex: 0 0 34px; display: flex; align-items: center; gap: 8px; padding: 0 10px 0 14px; background: var(--q-bg2); border-bottom: 1px solid var(--q-border); font-size: 11px; letter-spacing: 0.2em; color: var(--q-dim); }
+    .qm-bar i { width: 7px; height: 7px; border-radius: 50%; background: var(--q-gold); }
+    .qm-bar em { margin-left: auto; display: flex; gap: 16px; font-style: normal; letter-spacing: 0; opacity: 0.7; }
+    .qm-scroll { flex: 1; min-height: 0; overflow-y: auto; padding: 18px 22px 24px; scrollbar-width: thin; scrollbar-color: var(--q-faint) transparent; }
+    .qm-scroll::-webkit-scrollbar { width: 7px; }
+    .qm-scroll::-webkit-scrollbar-track { background: transparent; }
+    .qm-scroll::-webkit-scrollbar-thumb { border-radius: 999px; background: var(--q-faint); border: 2px solid transparent; background-clip: padding-box; }
+    .qm-scroll::-webkit-scrollbar-thumb:hover { background: var(--q-gold); background-clip: padding-box; }
+    .qm-head { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 14px; }
+    .qm-head small { display: block; font-size: 10.5px; letter-spacing: 0.22em; color: var(--q-dim); }
+    .qm-head h3 { margin: 2px 0 0; font-size: 28px; font-weight: 800; letter-spacing: -0.02em; line-height: 1.15; }
+    .qm-head h3 b { color: var(--q-gold); }
+    .qm-head h3 i { font-size: 11px; font-weight: 400; font-style: normal; color: var(--q-faint); margin-left: 4px; }
+    .qm-gear { width: 38px; height: 38px; display: grid; place-items: center; cursor: pointer; border: 1px solid var(--q-border); border-radius: 11px; background: var(--q-surface); }
+    .qm-gear svg { width: 18px; height: 18px; }
+    .qm-card { border: 1px solid var(--q-border); border-radius: 14px; background: linear-gradient(145deg, var(--q-surface), var(--q-bg2)); }
+    .qm-stats { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px; margin-bottom: 10px; }
+    .qm-stats .qm-card { padding: 12px 14px; }
+    .qm-stats .num { font: 700 24px/1 ui-monospace, "Cascadia Mono", Consolas, monospace; }
+    .qm-stats .cap { margin-top: 6px; font-size: 9.5px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--q-faint); line-height: 1.5; }
+    .qm-stats .sub { margin-top: 3px; font-size: 11px; color: var(--q-dim); }
+    .qm-stats .wide { grid-column: span 2; }
+    .qm-stats .perfect { border-color: var(--q-gold); box-shadow: 0 0 22px rgba(240, 180, 41, 0.18); }
+    .qm-lvl { display: flex; align-items: center; gap: 12px; }
+    .qm-lvl svg { width: 52px; height: 52px; flex: 0 0 auto; transform: rotate(-90deg); }
+    .qm-date { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: 12px 0 16px; padding: 12px 16px; flex-wrap: wrap; }
+    .qm-date .d { font: 700 15px ui-monospace, Consolas, monospace; }
+    .qm-date small { display: block; margin-top: 2px; font-size: 11.5px; color: var(--q-dim); font-weight: 400; font-family: inherit; }
+    .qm-date .t { text-align: right; }
+    .qm-date .t small { font-size: 9.5px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--q-faint); }
+    .qm-date .t b { font: 700 19px ui-monospace, Consolas, monospace; color: var(--q-teal); }
+    .qm-sec { display: flex; align-items: center; justify-content: space-between; margin: 4px 0 4px; }
+    .qm-sec h4 { margin: 0; font-size: 17px; font-weight: 800; color: var(--q-gold); }
+    .qm-seg { display: flex; gap: 3px; padding: 3px; border: 1px solid var(--q-border); border-radius: 10px; background: var(--q-surface); }
+    .qm-seg button { min-width: 28px; padding: 5px 9px; border: 0; border-radius: 7px; background: none; font-size: 12px; font-weight: 600; cursor: pointer; color: var(--q-dim); }
+    .qm-seg button.on { background: var(--q-gold); color: #1a1405; }
+    .qm-hint { margin: 0 0 12px; font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--q-faint); }
+    .qm-list { display: flex; flex-direction: column; gap: 12px; }
+    .qm-list.grid { display: grid; grid-template-columns: 1fr 1fr; }
+    .qm-list.compact { gap: 6px; }
+    .qm-quest { display: grid; grid-template-columns: 38px 1fr auto; gap: 4px 12px; align-items: center; padding: 12px 14px; border-left: 3px solid var(--c, var(--q-gold)); }
+    .qm-quest.risk { border-top-color: rgba(255, 107, 107, 0.3); }
+    .qm-quest.done { background: linear-gradient(145deg, rgba(61, 220, 151, 0.1), var(--q-bg2)); }
+    .qm-em { width: 38px; height: 38px; display: grid; place-items: center; border-radius: 11px; background: var(--q-surface2); font-size: 19px; }
+    .qm-name { font-weight: 700; font-size: 14.5px; }
+    .qm-meta { margin-top: 2px; font-size: 11.5px; color: var(--q-dim); display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+    .qm-meta b { color: var(--c, var(--q-gold)); font-weight: 700; }
+    .qm-tag { padding: 1px 7px; border: 1px solid; border-radius: 999px; font: 700 9.5px ui-monospace, Consolas, monospace; letter-spacing: 0.05em; text-transform: uppercase; }
+    .qm-tag.xp { color: var(--q-gold); border-color: rgba(240, 180, 41, 0.5); background: rgba(240, 180, 41, 0.1); }
+    .qm-tag.frost { color: #7dd3fc; border-color: rgba(125, 211, 252, 0.5); background: rgba(125, 211, 252, 0.1); }
+    .qm-tag.risk { color: var(--q-coral); border-color: rgba(255, 107, 107, 0.5); background: rgba(255, 107, 107, 0.1); }
+    .qm-act { display: flex; align-items: center; gap: 6px; }
+    .qm-mark { padding: 9px 16px; border: 1px solid var(--q-border); border-radius: 10px; background: var(--q-surface2); font-size: 13px; font-weight: 600; cursor: pointer; white-space: nowrap; transition: background 0.2s ease, border-color 0.2s ease; }
+    .qm-mark:hover { border-color: var(--q-gold); }
+    .qm-quest.done .qm-mark { background: var(--q-teal); border-color: var(--q-teal); color: #08301f; }
+    .qm-x { width: 28px; height: 28px; border: 0; border-radius: 8px; background: none; cursor: pointer; color: var(--q-faint); font-size: 15px; }
+    .qm-x:hover { color: var(--q-coral); background: var(--q-surface2); }
+    .qm-stat7 { grid-column: 1 / -1; font-size: 11.5px; color: var(--q-dim); }
+    .qm-stat7 b { color: var(--q-text); font-family: ui-monospace, Consolas, monospace; }
+    .qm-days { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(15, minmax(0, 1fr)); gap: 4px; max-width: 520px; }
+    .qm-days button { aspect-ratio: 1; min-height: 14px; border: 1px solid transparent; border-radius: 4px; background: var(--q-surface2); cursor: pointer; padding: 0; font-size: 9px; line-height: 1; }
+    .qm-days button.on { background: var(--q-teal); }
+    .qm-days button.fz { background: #4d7fb3; color: #fff; border-color: #9fd0f5; }
+    .qm-days button.today { border-color: var(--q-gold); }
+    .qm-list.grid .qm-quest { grid-template-columns: 38px 1fr; }
+    .qm-list.grid .qm-act { grid-column: 1 / -1; }
+    .qm-list.compact .qm-quest { grid-template-columns: 30px 1fr auto; padding: 8px 12px; }
+    .qm-list.compact .qm-days, .qm-list.compact .qm-stat7 { display: none; }
+    .qm-list.compact .qm-em { width: 30px; height: 30px; font-size: 15px; }
+    .qm-add { margin: 18px 0; padding: 14px 16px; }
+    .qm-add h5, .qm-ch h5 { margin: 0 0 10px; font-size: 11.5px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--q-faint); font-weight: 600; }
+    .qm-add input[type="text"] { width: 100%; padding: 10px 12px; border: 1px solid var(--q-border); border-radius: 10px; background: var(--q-bg); color: var(--q-text); font: inherit; font-size: 13.5px; user-select: text; -webkit-user-select: text; }
+    .qm-add input:focus-visible, .qm button:focus-visible, .qm-sw input:focus-visible + span { outline: 2px solid var(--q-gold); outline-offset: 2px; }
+    .qm-emo, .qm-col { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 10px; }
+    .qm-emo button { width: 34px; height: 34px; border: 1px solid var(--q-border); border-radius: 9px; background: var(--q-surface2); font-size: 16px; cursor: pointer; }
+    .qm-emo button.on { border-color: var(--q-gold); box-shadow: 0 0 0 1px var(--q-gold); }
+    .qm-col { align-items: center; }
+    .qm-col button { width: 22px; height: 22px; border: 2px solid transparent; border-radius: 50%; cursor: pointer; padding: 0; }
+    .qm-col button.on { border-color: var(--q-text); }
+    .qm-addbtn { margin-left: auto; padding: 8px 18px; border: 0; border-radius: 10px; background: linear-gradient(135deg, var(--q-goldl), var(--q-gold)); color: #1a1405; font-weight: 800; font-size: 13px; cursor: pointer; }
+    .qm-charts { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .qm-ch { padding: 14px 16px; min-width: 0; }
+    .qm-ch .qm-sec { margin-bottom: 10px; }
+    .qm-ch .qm-sec h5 { margin: 0; }
+    .qm-bars { display: flex; align-items: flex-end; gap: 4px; height: 110px; }
+    .qm-bars span { flex: 1; min-width: 0; display: flex; flex-direction: column; justify-content: flex-end; height: 100%; }
+    .qm-bars i { display: block; border-radius: 4px 4px 0 0; background: linear-gradient(180deg, var(--q-teal), rgba(61, 220, 151, 0.35)); min-height: 2px; transition: height 0.3s ease; }
+    .qm-bl { display: flex; gap: 4px; margin-top: 5px; font-size: 9.5px; color: var(--q-faint); }
+    .qm-bl span { flex: 1; text-align: center; overflow: hidden; }
+    .qm-heat { display: grid; grid-auto-flow: column; grid-template-rows: repeat(7, 1fr); gap: 3px; height: 128px; }
+    .qm-heat i { border-radius: 3px; background: var(--q-surface2); }
+    .qm-heat i.l1 { background: color-mix(in srgb, var(--q-teal) 30%, var(--q-surface2)); }
+    .qm-heat i.l2 { background: color-mix(in srgb, var(--q-teal) 55%, var(--q-surface2)); }
+    .qm-heat i.l3 { background: color-mix(in srgb, var(--q-teal) 80%, var(--q-surface2)); }
+    .qm-heat i.l4 { background: var(--q-teal); }
+    .qm-modal { position: absolute; inset: 34px 0 0 0; z-index: 5; display: flex; flex-direction: column; background: var(--q-bg); }
+    .qm-modal[hidden] { display: none; }
+    .qm-mh { display: flex; align-items: center; justify-content: space-between; padding: 14px 22px; border-bottom: 1px solid var(--q-border); font-size: 18px; font-weight: 800; }
+    .qm-mh button { width: 30px; height: 30px; border: 0; border-radius: 8px; background: none; cursor: pointer; font-size: 16px; color: var(--q-dim); }
+    .qm-mb { flex: 1; min-height: 0; overflow-y: auto; padding: 14px 22px 22px; scrollbar-width: thin; scrollbar-color: var(--q-faint) transparent; }
+    .qm-mb h6 { margin: 14px 0 8px; font: 600 11px ui-monospace, Consolas, monospace; letter-spacing: 0.16em; text-transform: uppercase; color: var(--q-faint); }
+    .qm-mb h6:first-child { margin-top: 0; }
+    .qm-mb p { margin: 0 0 8px; font-size: 12.5px; color: var(--q-dim); }
+    .qm-opts { display: flex; flex-wrap: wrap; gap: 10px; }
+    .qm-opts button { display: inline-flex; align-items: center; gap: 8px; padding: 9px 13px; border: 1px solid var(--q-border); border-radius: 10px; background: var(--q-surface2); font-size: 13px; font-weight: 600; cursor: pointer; transition: border-color 0.12s ease, transform 0.1s ease; }
+    .qm-opts button:hover { transform: translateY(-1px); }
+    .qm-opts button.on { border-color: var(--q-gold); box-shadow: inset 0 0 0 1px var(--q-gold); }
+    .qm-opts button i { display: block; flex: 0 0 auto; width: 18px; height: 18px; border-radius: 50%; box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.12); }
+    .qm-row { display: flex; align-items: center; justify-content: space-between; gap: 14px; margin-bottom: 8px; padding: 12px 14px; border: 1px solid var(--q-border); border-radius: 12px; background: var(--q-surface); }
+    .qm-row b { display: block; font-size: 13px; }
+    .qm-row small { display: block; margin-top: 2px; color: var(--q-faint); font-size: 11.5px; line-height: 1.5; }
+    .qm-sw { position: relative; flex: 0 0 auto; width: 42px; height: 24px; }
+    .qm-sw input { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; opacity: 0; cursor: pointer; z-index: 1; }
+    .qm-sw span { position: absolute; inset: 0; border-radius: 24px; background: var(--q-surface2); border: 1px solid var(--q-border); transition: background 0.2s ease; }
+    .qm-sw span::before { content: ""; position: absolute; left: 3px; top: 3px; width: 16px; height: 16px; border-radius: 50%; background: var(--q-dim); transition: transform 0.2s ease, background 0.2s ease; }
+    .qm-sw input:checked + span { background: var(--q-gold); }
+    .qm-sw input:checked + span::before { transform: translateX(18px); background: #fff; }
+    .qm.reduce *, .qm.reduce *::before { transition: none !important; animation: none !important; }
+    .qm-toast { position: absolute; left: 50%; bottom: 16px; z-index: 8; transform: translate(-50%, 20px); padding: 9px 16px; border: 1px solid var(--q-border); border-radius: 999px; background: var(--q-surface2); font-size: 12.5px; opacity: 0; pointer-events: none; transition: opacity 0.25s ease, transform 0.25s ease; white-space: nowrap; }
+    .qm-toast.show { opacity: 1; transform: translate(-50%, 0); }
+    .ex-note { position: relative; z-index: 1; }
+    .mock-note { position: relative; z-index: 1; max-width: 640px; margin: 12px auto 0; color: var(--muted); font-size: 12.5px; line-height: 1.7; text-align: center; }
+
+    @media (max-width: 720px) {
+      .qm { height: 640px; }
+      .qm-scroll { padding: 14px 12px 20px; }
+      .qm-stats { grid-template-columns: 1fr 1fr; }
+      .qm-stats .wide:first-child { grid-column: span 2; }
+      .qm-stats .wide { grid-column: span 1; }
+      .qm-charts { grid-template-columns: 1fr; }
+      .qm-list.grid { grid-template-columns: 1fr; }
+      .qm-quest { grid-template-columns: 34px 1fr; }
+      .qm-act { grid-column: 1 / -1; }
+      .qm-days { grid-template-columns: repeat(10, minmax(0, 1fr)); }
+      .qm-head h3 { font-size: 22px; }
+    }
+
+    section.block {
+      margin-top: 38px;
+      scroll-margin-top: 18px;
+    }
+
+    .head {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 12px;
+      margin: 0 4px 14px;
+    }
+
+    .head h2 {
+      font-size: 26px;
+      letter-spacing: -0.03em;
+    }
+
+    .head span {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 14px;
+    }
+
+    .grid.three {
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    }
+
+    .grid.cols3 {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    @media (max-width: 900px) {
+      .grid.cols3 {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 560px) {
+      .grid.cols3 {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    .card {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      padding: 20px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: linear-gradient(145deg, rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0.04));
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      backdrop-filter: blur(18px);
+      transition: transform 180ms ease, border-color 180ms ease;
+    }
+
+    .card:hover {
+      transform: translateY(-3px);
+      border-color: rgba(240, 180, 41, 0.42);
+    }
+
+    .card-top {
+      display: flex;
+      align-items: center;
+      gap: 13px;
+    }
+
+    .icon {
+      position: relative;
+      width: 46px;
+      height: 46px;
+      flex: 0 0 auto;
+      display: grid;
+      place-items: center;
+      border-radius: 15px;
+      color: var(--ink);
+      background: linear-gradient(135deg, #ffce5c, #f0b429);
+      box-shadow: 0 14px 30px rgba(240, 180, 41, 0.25);
+    }
+
+    .icon.alt {
+      background: linear-gradient(135deg, #3ddc97, #4d9de0);
+      box-shadow: 0 14px 30px rgba(61, 220, 151, 0.22);
+    }
+
+    .icon svg {
+      width: 22px;
+      height: 22px;
+    }
+
+    .step-num {
+      margin-inline-start: auto;
+      color: rgba(240, 180, 41, 0.28);
+      font-size: 38px;
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      line-height: 1;
+    }
+
+    .card-name {
+      font-size: 17px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    .card-desc {
+      color: var(--muted);
+      font-size: 14.5px;
+      line-height: 1.75;
+    }
+
+    .faq {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .faq-item {
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.05);
+      transition: border-color 240ms ease, background 240ms ease;
+    }
+
+    .faq-item:hover {
+      border-color: rgba(240, 180, 41, 0.28);
+    }
+
+    .faq-item.open {
+      border-color: rgba(240, 180, 41, 0.4);
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .faq-q {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 16px 20px;
+      border: none;
+      border-radius: 20px;
+      background: none;
+      color: var(--text);
+      font-family: inherit;
+      font-size: 15px;
+      font-weight: 700;
+      text-align: start;
+      cursor: pointer;
+    }
+
+    .faq-q:focus-visible {
+      outline-offset: -2px;
+    }
+
+    .faq-icon {
+      position: relative;
+      width: 14px;
+      height: 14px;
+      flex: 0 0 auto;
+      transition: transform 340ms cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+
+    .faq-icon::before,
+    .faq-icon::after {
+      content: "";
+      position: absolute;
+      inset-inline: 0;
+      top: 50%;
+      height: 2px;
+      margin-top: -1px;
+      border-radius: 2px;
+      background: var(--cyan);
+      transition: transform 340ms cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+
+    .faq-icon::after {
+      transform: rotate(90deg);
+    }
+
+    .faq-item.open .faq-icon {
+      transform: rotate(180deg);
+    }
+
+    .faq-item.open .faq-icon::after {
+      transform: rotate(0deg);
+    }
+
+    .faq-panel {
+      display: grid;
+      grid-template-rows: 0fr;
+      opacity: 0;
+      visibility: hidden;
+      transition: grid-template-rows 360ms cubic-bezier(0.2, 0.8, 0.2, 1), opacity 240ms ease, visibility 0s linear 360ms;
+    }
+
+    .faq-item.open .faq-panel {
+      grid-template-rows: 1fr;
+      opacity: 1;
+      visibility: visible;
+      transition: grid-template-rows 360ms cubic-bezier(0.2, 0.8, 0.2, 1), opacity 300ms ease 60ms, visibility 0s;
+    }
+
+    .faq-inner {
+      min-height: 0;
+      overflow: hidden;
+    }
+
+    .faq .answer {
+      padding: 0 20px 18px;
+      color: var(--muted);
+      font-size: 14.5px;
+      line-height: 1.8;
+    }
+
+    .closing {
+      display: flex;
+      align-items: center;
+      gap: 22px;
+      padding: 28px;
+    }
+
+    .closing img {
+      width: 72px;
+      height: 72px;
+      flex: 0 0 auto;
+      border-radius: 20px;
+      box-shadow: 0 16px 40px rgba(240, 180, 41, 0.35);
+      -webkit-user-drag: none;
+    }
+
+    .closing-text {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      min-width: 0;
+    }
+
+    .closing h2 {
+      font-size: 26px;
+      letter-spacing: -0.03em;
+    }
+
+    .closing p {
+      max-width: 520px;
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.75;
+    }
+
+    .closing .cta-row {
+      margin-top: 8px;
+    }
+
+    .footer {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+      margin-top: 40px;
+      text-align: center;
+    }
+
+    .made {
+      color: var(--text);
+      font-size: 15px;
+      font-weight: 600;
+    }
+
+    .heart {
+      display: inline-block;
+      width: 15px;
+      height: 15px;
+      margin: 0 3px;
+      vertical-align: -2px;
+      color: var(--pink);
+      animation: beat 1.8s ease-in-out infinite;
+    }
+
+    @keyframes beat {
+      0%, 60%, 100% { transform: scale(1); }
+      20% { transform: scale(1.22); }
+      40% { transform: scale(1.06); }
+    }
+
+    .legal {
+      color: var(--muted);
+      font-size: 12.5px;
+      opacity: 0.8;
+    }
+
+    .home-link {
+      padding-bottom: 2px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.24);
+      color: var(--muted);
+      font-size: 15px;
+      letter-spacing: -0.01em;
+      transition: color 180ms ease, border-color 180ms ease;
+    }
+
+    .home-link:hover {
+      color: var(--text);
+      border-color: rgba(240, 180, 41, 0.55);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      body { animation: none; }
+      .gradient-text { animation: none; }
+      .heart { animation: none; }
+      .qm, .qm *, .qm-toast { transition: none !important; }
+      .faq-item, .faq-icon, .faq-icon::before, .faq-icon::after, .faq-panel, .card, .btn { transition: none !important; }
+    }
+
+    @media (max-width: 560px) {
+      .page { width: min(100% - 22px, 1080px); padding-top: 18px; }
+      .hero, .closing { padding: 16px; border-radius: 28px; }
+      .intro { gap: 18px; }
+      .head { flex-direction: column; align-items: flex-start; gap: 2px; }
+      .btn { width: 100%; }
+      .closing { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+
+    <section class="hero glass">
+      <div class="intro">
+        <div class="topline">
+          <a class="pill-btn" href="index.html" id="back-link">
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 3 5 8l5 5"/></svg>
+            <span id="back-text"></span>
+          </a>
+          <button type="button" class="pill-btn lang-toggle" id="lang-toggle" aria-label="Switch language">EN / فا</button>
+        </div>
+        <div class="brand">
+          <img src="questlog-logo.png" alt="" width="64" height="64" draggable="false">
+          <h1><span class="gradient-text" id="hero-title"></span></h1>
+        </div>
+        <p class="pitch" id="hero-pitch"></p>
+        <div class="tags" id="hero-tags"></div>
+        <div class="cta-row">
+          <a class="btn primary" data-dl href="https://github.com/actually-aloy/questlog/releases/latest">
+            <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M.5 9.9a.5.5 0 0 1 .5.5v2.1a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.1a.5.5 0 0 1 1 0v2.1a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.1a.5.5 0 0 1 .5-.5"/><path d="M7.5 10.29V1.5a.5.5 0 0 1 1 0v8.79l2.15-2.15a.5.5 0 0 1 .7.71l-3 3a.5.5 0 0 1-.7 0l-3-3a.5.5 0 1 1 .7-.71z"/></svg>
+            <span data-dl-label></span>
+          </a>
+          <a class="btn" href="https://github.com/actually-aloy/questlog" target="_blank" rel="noopener noreferrer">
+            <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8"/></svg>
+            <span id="cta-github"></span>
+          </a>
+        </div>
+        <p class="dl-meta" id="dl-meta" hidden></p>
+      </div>
+
+      <div class="stage">
+        <div class="qm" id="mock" data-theme="nightfall">
+          <div class="qm-bar" aria-hidden="true"><i></i>QUESTLOG<em><span>—</span><span>▢</span><span>✕</span></em></div>
+          <div class="qm-scroll" id="qm-scroll">
+            <div class="qm-head">
+              <div><small>QUESTLOG</small><h3>Your Daily <b>Quests</b> <i>v11</i></h3></div>
+              <button type="button" class="qm-gear" id="qm-gear" aria-label="Settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1-1.5 1.7 1.7 0 0 0-1.9.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1 1.7 1.7 0 0 0-.3-1.9l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.9.3h0a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5h0a1.7 1.7 0 0 0 1.9-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.9v0a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></button>
+            </div>
+            <div class="qm-stats" id="qm-stats"></div>
+            <div class="qm-card qm-date" id="qm-date"></div>
+            <div class="qm-sec"><h4>Active quests</h4>
+              <div class="qm-seg" id="qm-lay" role="group" aria-label="Layout"><button type="button" data-l="list" class="on" aria-label="List">☰</button><button type="button" data-l="grid" aria-label="Grid">▦</button><button type="button" data-l="compact" aria-label="Compact">≡</button></div>
+            </div>
+            <p class="qm-hint">Tap any square to mark that day, tap ✕ to delete</p>
+            <div class="qm-list" id="qm-list"></div>
+            <div class="qm-card qm-add">
+              <h5>Add a quest</h5>
+              <input type="text" id="qm-name" maxlength="40" placeholder="e.g. Read 10 pages, Drink water, Stretch..." aria-label="Quest name">
+              <div class="qm-emo" id="qm-emo"></div>
+              <div class="qm-col" id="qm-col"></div>
+              <div style="display:flex;margin-top:10px"><button type="button" class="qm-addbtn" id="qm-add">+ Add</button></div>
+            </div>
+            <div class="qm-charts">
+              <div class="qm-card qm-ch"><div class="qm-sec"><h5>All quests — last <span id="qm-bn">7</span> days</h5><div class="qm-seg" id="qm-bw"><button type="button" data-n="7" class="on">7d</button><button type="button" data-n="14">14d</button><button type="button" data-n="30">30d</button></div></div><div class="qm-bars" id="qm-bars"></div><div class="qm-bl" id="qm-bl"></div></div>
+              <div class="qm-card qm-ch"><div class="qm-sec"><h5>All quests — last <span id="qm-hn">12</span> weeks</h5><div class="qm-seg" id="qm-hw"><button type="button" data-n="8">8w</button><button type="button" data-n="12" class="on">12w</button><button type="button" data-n="24">24w</button></div></div><div class="qm-heat" id="qm-heat"></div></div>
+            </div>
+          </div>
+          <div class="qm-modal" id="qm-modal" hidden>
+            <div class="qm-mh"><span>Settings</span><button type="button" id="qm-mx" aria-label="Close">✕</button></div>
+            <div class="qm-mb">
+              <h6>Theme</h6><div class="qm-opts" id="qm-th"></div>
+              <h6>Date shown on hover</h6><p>Controls the date shown when you hover a quest's day squares.</p><div class="qm-opts" id="qm-df"></div>
+              <h6>Active quests layout</h6><div class="qm-opts" id="qm-ly"></div>
+              <h6>System tray</h6>
+              <div class="qm-row"><div><b>Minimize to tray instead of closing</b><small>Closing the window keeps Questlog running quietly in the tray.</small></div><label class="qm-sw"><input type="checkbox" aria-label="Minimize to tray"><span></span></label></div>
+              <div class="qm-row"><div><b>Start minimized to tray</b><small>Launch Questlog straight into the tray instead of opening the window.</small></div><label class="qm-sw"><input type="checkbox" aria-label="Start minimized"><span></span></label></div>
+              <h6>Performance</h6>
+              <div class="qm-row"><div><b>Reduce animations &amp; effects</b><small>Turns off transitions, pulses, and background blur to lighten the GUI on slower machines.</small></div><label class="qm-sw"><input type="checkbox" id="qm-red" aria-label="Reduce animations"><span></span></label></div>
+              <h6>Startup</h6>
+              <div class="qm-row"><div><b>Launch Questlog when Windows starts</b><small>Adds Questlog to your Windows startup apps.</small></div><label class="qm-sw"><input type="checkbox" aria-label="Launch at startup"><span></span></label></div>
+            </div>
+          </div>
+          <div class="qm-toast" id="qm-toast" role="status"></div>
+        </div>
+        <p class="mock-note" id="mock-note"></p>
+      </div>
+    </section>
+
+    <section class="block" id="how">
+      <div class="head">
+        <h2 id="how-title"></h2>
+        <span id="how-sub"></span>
+      </div>
+      <div class="grid three" id="how-grid"></div>
+    </section>
+
+    <section class="block" id="features">
+      <div class="head">
+        <h2 id="feat-title"></h2>
+        <span id="feat-sub"></span>
+      </div>
+      <div class="grid cols3" id="feat-grid"></div>
+    </section>
+
+    <section class="block" id="faq">
+      <div class="head">
+        <h2 id="faq-title"></h2>
+        <span id="faq-sub"></span>
+      </div>
+      <div class="faq" id="faq-list"></div>
+    </section>
+
+    <section class="block">
+      <div class="closing glass">
+        <img src="questlog-logo.png" alt="" width="72" height="72" draggable="false">
+        <div class="closing-text">
+          <h2 id="end-title"></h2>
+          <p id="end-text"></p>
+          <div class="cta-row">
+            <a class="btn primary" data-dl href="https://github.com/actually-aloy/questlog/releases/latest">
+              <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M.5 9.9a.5.5 0 0 1 .5.5v2.1a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.1a.5.5 0 0 1 1 0v2.1a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.1a.5.5 0 0 1 .5-.5"/><path d="M7.5 10.29V1.5a.5.5 0 0 1 1 0v8.79l2.15-2.15a.5.5 0 0 1 .7.71l-3 3a.5.5 0 0 1-.7 0l-3-3a.5.5 0 1 1 .7-.71z"/></svg>
+              <span data-dl-label></span>
+            </a>
+            <a class="btn" href="https://discord.gg/JqrBUYEM8n" target="_blank" rel="noopener noreferrer">
+              <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M13.545 2.907a13.2 13.2 0 0 0-3.257-1.011.05.05 0 0 0-.052.025c-.141.25-.297.577-.406.833a12.2 12.2 0 0 0-3.658 0 8 8 0 0 0-.412-.833.05.05 0 0 0-.052-.025c-1.125.194-2.22.534-3.257 1.011a.04.04 0 0 0-.021.018C.356 6.024-.213 9.047.066 12.032q.003.022.021.037a13.3 13.3 0 0 0 3.995 2.02.05.05 0 0 0 .056-.019q.463-.63.818-1.329a.05.05 0 0 0-.01-.059l-.018-.011a9 9 0 0 1-1.248-.595.05.05 0 0 1-.02-.066l.015-.019q.127-.095.248-.195a.05.05 0 0 1 .051-.007c2.619 1.196 5.454 1.196 8.041 0a.05.05 0 0 1 .053.007q.121.1.248.195a.05.05 0 0 1-.004.085 8 8 0 0 1-1.249.594.05.05 0 0 0-.03.03.05.05 0 0 0 .003.041c.24.465.515.909.817 1.329a.05.05 0 0 0 .056.019 13.2 13.2 0 0 0 4.001-2.02.05.05 0 0 0 .021-.037c.334-3.451-.559-6.449-2.366-9.106a.03.03 0 0 0-.02-.019m-8.198 7.307c-.789 0-1.438-.724-1.438-1.612s.637-1.613 1.438-1.613c.807 0 1.45.73 1.438 1.613 0 .888-.637 1.612-1.438 1.612m5.316 0c-.788 0-1.438-.724-1.438-1.612s.637-1.613 1.438-1.613c.807 0 1.451.73 1.438 1.613 0 .888-.631 1.612-1.438 1.612"/></svg>
+              <span id="end-discord"></span>
+            </a>
+            <a class="btn" href="https://t.me/actually_aloy" target="_blank" rel="noopener noreferrer">
+              <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8.287 5.906q-1.168.486-4.666 2.01-.567.225-.595.442c-.03.243.275.339.69.47l.175.055c.408.133.958.288 1.243.294q.39.01.868-.32 3.269-2.206 3.374-2.23c.05-.012.12-.026.166.016s.042.12.037.141c-.03.129-1.227 1.241-1.846 1.817-.193.18-.33.307-.358.336a8 8 0 0 1-.188.186c-.38.366-.664.64.015 1.088.327.216.589.393.85.571.284.194.568.387.936.629q.14.092.27.187c.331.236.63.448.997.414.214-.02.435-.22.547-.82.265-1.417.786-4.486.906-5.751a1.4 1.4 0 0 0-.013-.315.34.34 0 0 0-.114-.217.53.53 0 0 0-.31-.093c-.3.005-.763.166-2.984 1.09"/></svg>
+              <span id="end-telegram"></span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="footer">
+      <a class="home-link" href="index.html" id="footer-home"></a>
+      <p class="made" id="made-by"></p>
+      <p class="legal" dir="ltr">© 2026 Aloy</p>
+    </div>
+  </main>
+
+  <script src="releases.js"></script>
+  <script>
+    (function () {
+      var host = location.hostname;
+      var local = host === 'localhost' || host === '127.0.0.1' || /^[\d.]+$/.test(host) || host.charAt(0) === '[';
+      if (local || !/^https?:$/.test(location.protocol)) return;
+      var clean = location.pathname.replace(/\/index\.html$/, '/').replace(/\.html$/, '');
+      if (clean !== location.pathname) history.replaceState(null, '', clean + location.search + location.hash);
+    })();
+
+    const REPO = 'actually-aloy/questlog';
+
+    const ICO = {
+      download: '<path d="M12 4v11"/><path d="M7.5 10.5 12 15l4.5-4.5"/><path d="M5 19h14"/>',
+      window: '<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18"/>',
+      plus: '<circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/>',
+      flame: '<path d="M12 3c1 3 5 5 5 10a5 5 0 0 1-10 0c0-2 1-3 2-4 0 2 1 3 2 3 0-3-1-5 1-9z"/>',
+      snow: '<path d="M12 3v18M4.2 7.5l15.6 9M19.8 7.5l-15.6 9"/><path d="M9.5 4.5 12 7l2.5-2.5M9.5 19.5 12 17l2.5 2.5"/>',
+      chart: '<path d="M4 20V10M10 20V4M16 20v-8M22 20H2"/>',
+      calendar: '<rect x="4" y="5" width="16" height="15" rx="2.5"/><path d="M4 10h16"/><path d="M8.5 3v4"/><path d="M15.5 3v4"/>',
+      palette: '<path d="M12 3a9 9 0 1 0 0 18c1.5 0 2-1 2-2s-.5-1.6-.5-2.4c0-1 .8-1.6 1.8-1.6H18a3 3 0 0 0 3-3C21 7 17 3 12 3z"/><circle cx="7.5" cy="11" r="1"/><circle cx="10" cy="7" r="1"/><circle cx="15" cy="7.5" r="1"/>',
+      tray: '<rect x="3" y="7" width="18" height="13" rx="2"/><path d="M3 13h5l1.5 2h5L16 13h5"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>',
+      lock: '<rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/>',
+      trophy: '<path d="M8 4h8v5a4 4 0 0 1-8 0z"/><path d="M8 6H4a3 3 0 0 0 4 4M16 6h4a3 3 0 0 1-4 4M12 13v4M8 20h8"/>',
+      bolt: '<path d="M13 3 5 14h6l-1 7 8-11h-6z"/>'
+    };
+
+    const svg = (name, sw) => '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="' + (sw || 2) + '" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + ICO[name] + '</svg>';
+
+    const HEART = '<svg class="heart" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 21s-7.5-4.6-9.6-9.2C.9 8.4 2.7 5 6 5c2 0 3.4 1 4.4 2.5.5.7 1.2.7 1.7 0C13.1 6 14.5 5 16.5 5c3.3 0 5.1 3.4 3.6 6.8C19.5 16.4 12 21 12 21z"/></svg>';
+
+    const I18N = {
+      en: {
+        dir: 'ltr',
+        docTitle: 'Questlog — daily habits as quests, offline',
+        back: 'home',
+        heroTitle: 'Questlog',
+        pitch: 'Turn your daily habits into quests. Tick them off, build streaks, earn XP and level up. Everything stays on your PC, offline, with no account.',
+        tags: ['Free', 'Windows', 'Offline', 'Portable'],
+        download: 'Download for Windows',
+        github: 'GitHub',
+        sizeUnit: 'MB',
+        mockNote: 'A small demo with sample quests, not the real thing. Try marking today, clicking past squares, adding a quest or opening the settings with the gear. Nothing is saved; refresh to start over.',
+        toastAdd: 'Quest added',
+        toastDel: 'Quest deleted',
+        toastNeed: 'Type a name first',
+        howTitle: 'How it works',
+        howSub: 'three steps, about a minute',
+        how: [
+          ['download', 'Download and extract', 'Grab the zip with the button above and extract it anywhere. There is no installer.'],
+          ['window', 'Run Questlog.exe', 'Double-click Questlog.exe. Your quests are saved in a small file right next to it.'],
+          ['plus', 'Add your first quest', 'Give it a name, an emoji and a colour, then tap today\'s square whenever you do it.']
+        ],
+        featTitle: 'What it does',
+        featSub: 'the useful parts',
+        feat: [
+          ['bolt', 'Streaks, XP and levels', 'Every completion earns 10 XP. The longer a streak runs, the more each one is worth, up to 5x. Levels need a little more XP each time.'],
+          ['snow', 'Streak freeze', 'Every 7 days of a streak earns a freeze, and you can hold two. Miss a day and a freeze quietly covers it. A quest shows "at risk" until you mark it today.'],
+          ['trophy', 'Medals', 'Hit a 7, 30 or 100 day streak on a quest and it earns a bronze medal, a silver medal or a trophy. A perfect streak counts the days you finished every quest.'],
+          ['chart', 'Charts', 'A bar chart of the last 7, 14 or 30 days and a heatmap of the last 8, 12 or 24 weeks, both across all your quests.'],
+          ['calendar', 'Two calendars', 'Dates show in Gregorian and Hejri Shamsi side by side, and you pick which one appears when you hover a square. A clock counts down the time left today.'],
+          ['palette', 'Themes and layouts', 'Twelve themes, from Nightfall to Daylight, Dracula and Nord, and three layouts for your quests: list, grid or compact.'],
+          ['tray', 'Lives in the tray', 'Minimize or close to the tray, start minimized, launch with Windows. The tray icon is a ring that fills as you finish today\'s quests, and a small popup lets you tick them without opening the window.'],
+          ['lock', 'Offline and private', 'Your data is one JSON file on your computer. No cloud and no account. Save and restore backups from inside the app.']
+        ],
+        faqTitle: 'Questions',
+        faqSub: 'the usual ones',
+        faq: [
+          ['Is it free?', 'Yes, it is free to download and use. It is closed source, so the code is not published.'],
+          ['What does it run on?', 'Windows. The tray and launch at startup use Windows features.'],
+          ['How do I install it?', 'There is nothing to install. Extract the zip anywhere and double-click Questlog.exe.'],
+          ['Does it need the internet?', 'No. It works fully offline and nothing leaves your computer.'],
+          ['Where is my data?', 'In questlog_data.json next to Questlog.exe. Moving the folder moves your quests with it.'],
+          ['How do I back up my quests?', 'Use the Save backup (.json) and Restore backup buttons in the app, or just copy questlog_data.json somewhere safe. To restore by hand, drop a saved backup into the app folder to replace it.'],
+          ['How is XP worked out?', 'Each completed day gives 10 XP, multiplied by your streak boost. The boost starts at 1x and grows by 1x every 25 days of streak, capped at 5x. Level 1 needs 100 XP, and every level after needs 20 more than the one before.'],
+          ['What is a streak freeze?', 'Every 7 days of a quest\'s streak earns one freeze, and a quest can hold two. If you miss a day, a freeze fills it in automatically so the streak and its XP carry on. Frozen days show a snowflake.'],
+          ['What does "at risk" mean?', 'The quest has a running streak but is not marked today. If it has a freeze it says "freeze ready" and will be protected tonight, otherwise the streak resets at midnight.'],
+          ['Can I fix a day I forgot?', 'Yes. Tap any square in a quest\'s grid to mark or unmark that day, and the streaks and XP update.'],
+          ['Can I keep a quest without deleting it?', 'Yes. Archive it and it moves to an archived list you can restore from. Deleting is permanent and asks you to confirm after a short countdown.'],
+          ['How do updates work?', 'Download the newest zip from this page and extract it over the old folder. Keep questlog_data.json so your quests stay.']
+        ],
+        endTitle: 'Start your first quest',
+        endText: 'Free, offline, and ready in a minute. Found a bug or have an idea? Tell me in the Discord server or on Telegram.',
+        endDiscord: 'Discord server',
+        endTelegram: 'Telegram',
+        footerHome: 'Back to the main page',
+        madeBy: 'This quest was logged with {heart} by Aloy'
+      },
+      fa: {
+        dir: 'rtl',
+        docTitle: 'Questlog — عادت‌های روزانه به شکل ماموریت، آفلاین',
+        back: 'خانه',
+        heroTitle: 'Questlog',
+        pitch: 'عادت‌های روزانه‌ات رو تبدیل کن به ماموریت. تیک بزن، رکورد بساز، XP بگیر و لول آپ کن. همه‌چی روی کامپیوتر خودت می‌مونه، آفلاین و بدون اکانت.',
+        tags: ['رایگان', 'ویندوز', 'آفلاین', 'قابل‌حمل'],
+        download: 'دانلود برای ویندوز',
+        github: 'گیت‌هاب',
+        sizeUnit: 'مگابایت',
+        mockNote: 'یه نمونه‌ی کوچیک با ماموریت‌های نمونه‌ست، نه خود برنامه. امروز رو تیک بزن، رو مربع‌های روزهای قبل کلیک کن، یه ماموریت اضافه کن یا با چرخ‌دنده تنظیمات رو باز کن. چیزی ذخیره نمی‌شه و با رفرش از اول شروع می‌شه. ظاهر برنامه انگلیسیه، برای همین اینجا هم همین‌طوره.',
+        toastAdd: 'Quest added',
+        toastDel: 'Quest deleted',
+        toastNeed: 'Type a name first',
+        howTitle: 'چطوری کار می‌کنه',
+        howSub: 'سه قدم، حدود یه دقیقه',
+        how: [
+          ['download', 'دانلود و بازکردن زیپ', 'فایل زیپ رو با دکمه‌ی بالا بگیر و هرجا خواستی از حالت فشرده دربیار. نصب‌کننده‌ای در کار نیست.'],
+          ['window', 'Questlog.exe رو اجرا کن', 'روی Questlog.exe دوبار کلیک کن. ماموریت‌هات تو یه فایل کوچیک کنار خود برنامه ذخیره می‌شن.'],
+          ['plus', 'اولین ماموریتت رو اضافه کن', 'یه اسم، یه ایموجی و یه رنگ بهش بده و هر بار انجامش دادی مربع امروز رو بزن.']
+        ],
+        featTitle: 'چیکار می‌کنه',
+        featSub: 'بخش‌های به‌دردبخور',
+        feat: [
+          ['bolt', 'رکورد، XP و لول', 'هر بار انجام دادن ۱۰ تا XP می‌ده. هرچی رکورد طولانی‌تر باشه هر انجام ارزش بیشتری داره، تا ۵ برابر. هر لول هم یه کم XP بیشتری می‌خواد.'],
+          ['snow', 'فریز رکورد', 'هر ۷ روز رکورد یه فریز می‌ده و می‌تونی دوتا نگه داری. یه روز رو جا بندازی یه فریز بی‌صدا پوششش می‌ده. تا وقتی ماموریت رو امروز تیک نزنی بالاش «at risk» می‌خوره.'],
+          ['trophy', 'مدال', 'رکورد ۷، ۳۰ یا ۱۰۰ روزه تو یه ماموریت مدال برنز، مدال نقره یا جام می‌گیره. رکورد کامل روزهایی رو می‌شماره که همه‌ی ماموریت‌ها رو تموم کردی.'],
+          ['chart', 'نمودار', 'یه نمودار میله‌ای از ۷، ۱۴ یا ۳۰ روز گذشته و یه نقشه‌ی حرارتی از ۸، ۱۲ یا ۲۴ هفته‌ی گذشته، هر دو برای همه‌ی ماموریت‌ها با هم.'],
+          ['calendar', 'دو تقویم', 'تاریخ‌ها هم میلادی هم شمسی کنار هم نشون داده می‌شن و خودت انتخاب می‌کنی با هاور روی مربع‌ها کدوم بیاد. یه ساعت هم زمان باقی‌مونده‌ی امروز رو می‌شمره.'],
+          ['palette', 'تم و چیدمان', 'دوازده تم، از Nightfall تا Daylight، Dracula و Nord، و سه چیدمان برای ماموریت‌ها: لیست، شبکه‌ای یا فشرده.'],
+          ['tray', 'تو سینی سیستم می‌شینه', 'می‌تونی کوچیکش کنی یا ببندیش تو سینی، کوچیک‌شده شروع بشه و با ویندوز بالا بیاد. آیکون سینی یه حلقه‌ست که با تموم کردن ماموریت‌های امروز پر می‌شه و یه پاپ‌آپ کوچیک بدون باز کردن پنجره بهت اجازه‌ی تیک زدن می‌ده.'],
+          ['lock', 'آفلاین و خصوصی', 'داده‌هات یه فایل JSON روی کامپیوتر خودته. بدون ابر و بدون اکانت. پشتیبان‌گیری و بازگردانی هم از داخل برنامه انجام می‌شه.']
+        ],
+        faqTitle: 'سؤال‌ها',
+        faqSub: 'همون‌هایی که معمولاً می‌پرسن',
+        faq: [
+          ['رایگانه؟', 'آره، دانلود و استفاده‌اش رایگانه. متن‌بسته‌ست و کدش منتشر نشده.'],
+          ['رو چی کار می‌کنه؟', 'ویندوز. سینی سیستم و اجرا با ویندوز از امکانات خود ویندوز استفاده می‌کنن.'],
+          ['چطوری نصبش کنم؟', 'نصبی در کار نیست. زیپ رو هرجا خواستی باز کن و روی Questlog.exe دوبار کلیک کن.'],
+          ['اینترنت می‌خواد؟', 'نه. کاملاً آفلاین کار می‌کنه و چیزی از کامپیوترت بیرون نمیره.'],
+          ['داده‌هام کجاست؟', 'تو questlog_data.json کنار Questlog.exe. اگه پوشه رو جابه‌جا کنی ماموریت‌هات هم همراهش می‌آد.'],
+          ['چطوری پشتیبان بگیرم؟', 'از دکمه‌های Save backup (.json) و Restore backup تو برنامه استفاده کن، یا فقط questlog_data.json رو یه جای امن کپی کن. برای بازگردانی دستی، فایل پشتیبان رو بذار تو پوشه‌ی برنامه تا جایگزین بشه.'],
+          ['XP چطوری حساب می‌شه؟', 'هر روزِ انجام‌شده ۱۰ تا XP می‌ده که تو ضریب رکورد ضرب می‌شه. ضریب از ۱ شروع می‌شه و هر ۲۵ روز رکورد یکی اضافه می‌شه، با سقف ۵. لول ۱ صد تا XP می‌خواد و هر لول بعدی ۲۰ تا بیشتر از قبلی.'],
+          ['فریز رکورد چیه؟', 'هر ۷ روز رکورد یه ماموریت یه فریز می‌ده و هر ماموریت می‌تونه دوتا نگه داره. اگه یه روز رو جا بندازی، یه فریز خودش اون روز رو پر می‌کنه تا رکورد و XP‌اش ادامه پیدا کنه. روزهای فریزشده یه دونه‌برف دارن.'],
+          ['«at risk» یعنی چی؟', 'ماموریت یه رکورد فعال داره ولی امروز تیک نخورده. اگه فریز داشته باشه «freeze ready» می‌نویسه و امشب محافظت می‌شه، وگرنه رکورد نیمه‌شب صفر می‌شه.'],
+          ['می‌تونم روزی که یادم رفت رو درست کنم؟', 'آره. رو هر مربع تو شبکه‌ی ماموریت بزن تا اون روز تیک بخوره یا برداشته بشه و رکوردها و XP به‌روز می‌شن.'],
+          ['می‌تونم ماموریت رو بدون حذف نگه دارم؟', 'آره. آرشیوش کن تا بره تو یه لیست آرشیو که می‌تونی ازش برگردونیش. حذف کردن همیشگیه و بعد از یه شمارش معکوس کوتاه ازت تأیید می‌گیره.'],
+          ['آپدیت‌ها چطوری‌ان؟', 'جدیدترین زیپ رو از همین صفحه بگیر و روی پوشه‌ی قبلی باز کن. questlog_data.json رو نگه دار تا ماموریت‌هات بمونن.']
+        ],
+        endTitle: 'اولین ماموریتت رو شروع کن',
+        endText: 'رایگانه، آفلاینه و تو یه دقیقه آماده‌ست. باگی دیدی یا ایده‌ای داری؟ تو سرور دیسکورد یا تلگرام بگو.',
+        endDiscord: 'سرور دیسکورد',
+        endTelegram: 'تلگرام',
+        footerHome: 'بازگشت به صفحه‌ی اصلی',
+        madeBy: 'این ماموریت رو آلوی با {heart} ثبت کرده'
+      }
+    };
+
+    const $ = id => document.getElementById(id);
+    const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+    const PERSIAN_DIGITS = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
+    const LATIN_RE = /[A-Za-z][A-Za-z0-9._@+'’\/-]*(?:[  ][A-Za-z][A-Za-z0-9._@+'’\/-]*)*/g;
+
+    let currentLang = localStorage.getItem('lang') === 'en' ? 'en' : 'fa';
+
+    const tx = s => {
+      if (currentLang !== 'fa') return esc(s);
+      let out = '', last = 0, m;
+      LATIN_RE.lastIndex = 0;
+      while ((m = LATIN_RE.exec(s))) {
+        out += esc(s.slice(last, m.index)) + '<bdi>' + esc(m[0]) + '</bdi>';
+        last = m.index + m[0].length;
+      }
+      return out + esc(s.slice(last));
+    };
+    const setTx = (id, s) => { $(id).innerHTML = tx(s); };
+    const fmt = n => currentLang === 'fa' ? String(n).replace(/[0-9]/g, d => PERSIAN_DIGITS[d]) : String(n);
+
+    const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const QT = {"nightfall": {"bg": "#14121f", "bg2": "#191629", "surface": "#201c33", "surface2": "#29233f", "border": "#342d4d", "text": "#f1eefa", "textDim": "#9691b0", "textFaint": "#6c6788", "gold": "#f0b429", "goldLight": "#ffce5c", "coral": "#ff6b6b", "teal": "#3ddc97"}, "true-dark": {"bg": "#000000", "bg2": "#050505", "surface": "#0c0c0c", "surface2": "#161616", "border": "#272727", "text": "#f5f5f5", "textDim": "#9a9a9a", "textFaint": "#6b6b6b", "gold": "#f0b429", "goldLight": "#ffce5c", "coral": "#ff6b6b", "teal": "#3ddc97"}, "daylight": {"bg": "#f6f5fb", "bg2": "#eeecf6", "surface": "#ffffff", "surface2": "#f1eef9", "border": "#dcd8ea", "text": "#211c33", "textDim": "#5b5570", "textFaint": "#8a84a0", "gold": "#c9820f", "goldLight": "#e8a83c", "coral": "#d84a49", "teal": "#0f9e6e"}, "ember": {"bg": "#160f0d", "bg2": "#1c1210", "surface": "#241713", "surface2": "#2e1c17", "border": "#3d251d", "text": "#f9ede8", "textDim": "#c2a89e", "textFaint": "#8f6f64", "gold": "#ff8a3d", "goldLight": "#ffb26b", "coral": "#ff5a5a", "teal": "#3ddc97"}, "ocean": {"bg": "#0a141f", "bg2": "#0e1a27", "surface": "#132234", "surface2": "#182c42", "border": "#203a55", "text": "#eaf3fb", "textDim": "#93b0c7", "textFaint": "#63849e", "gold": "#3fb8f0", "goldLight": "#7cd2ff", "coral": "#ff6b6b", "teal": "#3ddc97"}, "rose": {"bg": "#160f1a", "bg2": "#1c1220", "surface": "#251729", "surface2": "#2e1c33", "border": "#3d2544", "text": "#faeef8", "textDim": "#c39cc0", "textFaint": "#8f6d8c", "gold": "#f0509b", "goldLight": "#ff85be", "coral": "#ff6b6b", "teal": "#3ddc97"}, "forest": {"bg": "#0d1710", "bg2": "#122015", "surface": "#182b1c", "surface2": "#1f3624", "border": "#2d4a34", "text": "#eef7ee", "textDim": "#a9c4ac", "textFaint": "#7a9a7e", "gold": "#e0a458", "goldLight": "#f0c27f", "coral": "#ff7a5c", "teal": "#4cd28a"}, "aurora": {"bg": "#0a0e1a", "bg2": "#0d1220", "surface": "#131a2c", "surface2": "#1a2338", "border": "#28345a", "text": "#eef2fb", "textDim": "#9aa8c9", "textFaint": "#69739a", "gold": "#7dd3fc", "goldLight": "#a5e6fc", "coral": "#f472b6", "teal": "#34d399"}, "sakura": {"bg": "#1a1117", "bg2": "#20141b", "surface": "#2a1a22", "surface2": "#33202a", "border": "#452b38", "text": "#fbeef3", "textDim": "#cf9fb2", "textFaint": "#9c7086", "gold": "#e88fb0", "goldLight": "#f7b8d0", "coral": "#ff90a8", "teal": "#7fd8c4"}, "nord": {"bg": "#2e3440", "bg2": "#2b303b", "surface": "#3b4252", "surface2": "#434c5e", "border": "#4c566a", "text": "#eceff4", "textDim": "#b7c0d1", "textFaint": "#818aa0", "gold": "#ebcb8b", "goldLight": "#f2d8a0", "coral": "#bf616a", "teal": "#88c0d0"}, "dracula": {"bg": "#191a21", "bg2": "#1e1f29", "surface": "#282a36", "surface2": "#343746", "border": "#44475a", "text": "#f8f8f2", "textDim": "#c2c3d1", "textFaint": "#8c8fa3", "gold": "#f1fa8c", "goldLight": "#f6ffb0", "coral": "#ff5555", "teal": "#50fa7b"}, "sunset": {"bg": "#170f14", "bg2": "#1e1219", "surface": "#2a1620", "surface2": "#351b28", "border": "#4a2536", "text": "#fdece7", "textDim": "#d9a599", "textFaint": "#a37568", "gold": "#ff8552", "goldLight": "#ffab7a", "coral": "#ff5d73", "teal": "#4ecdc4"}};
+
+    const SWATCH = { nightfall: ['#14121f', '#f0b429', 'Nightfall (default)'], 'true-dark': ['#000000', '#f0b429', 'True Dark'], daylight: ['#f6f5fb', '#c9820f', 'Daylight'], ember: ['#160f0d', '#ff8a3d', 'Ember'], ocean: ['#0a141f', '#3fb8f0', 'Ocean'], rose: ['#160f1a', '#f0509b', 'Rose'], forest: ['#0d1710', '#e0a458', 'Forest'], aurora: ['#0a0e1a', '#7dd3fc', 'Aurora'], sakura: ['#1a1117', '#e88fb0', 'Sakura'], nord: ['#2e3440', '#88c0d0', 'Nord'], dracula: ['#282a36', '#bd93f9', 'Dracula'], sunset: ['#170f14', '#ff8552', 'Sunset'] };
+    const EMOJIS = ['✅', '💧', '📖', '🏃', '🧘', '🥗', '😴', '✍️', '🎯', '🧹', '💪', '🎨'];
+    const COLORS = ['#3ddc97', '#f0b429', '#7c6ff0', '#4d9de0', '#e07a5f', '#ec4899', '#22d3ee', '#84cc16'];
+    const MAX_FREEZES = 2, FREEZE_DAYS = 7;
+
+    const dstr = d => d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+    const addDays = (d, n) => { const x = new Date(d.getFullYear(), d.getMonth(), d.getDate() + n); return x; };
+    let TODAY = dstr(new Date());
+    const dayDiff = (a, b) => Math.round((new Date(b + 'T00:00:00') - new Date(a + 'T00:00:00')) / 86400000);
+
+    const q = { habits: [], logs: {}, theme: 'nightfall', dateFmt: 'gregorian', layout: 'list', barDays: 7, heatWeeks: 12, emoji: EMOJIS[0], color: COLORS[0], fc: {}, nid: 1 };
+
+    function seed() {
+      let s = 7;
+      const rnd = () => { s = (s * 1664525 + 1013904223) % 4294967296; return s / 4294967296; };
+      const mk = (id, name, emoji, color, fn) => {
+        q.habits.push({ id, name, emoji, color });
+        const log = {};
+        for (let k = 0; k <= 70; k++) if (fn(k, rnd())) log[dstr(addDays(new Date(), -k))] = true;
+        q.logs[id] = log;
+      };
+      mk('study', 'Study', '📖', '#4d9de0', (k, r) => k === 0 ? false : (k <= 20 ? k !== 9 : r < 0.75));
+      mk('workout', 'Workout', '💪', '#f0b429', (k, r) => k === 0 ? false : (k <= 2 ? true : (k === 3 ? false : r < 0.55)));
+    }
+
+    const isDone = (id, d) => !!(q.logs[id] && q.logs[id][d]);
+
+    function freezeInfo(id) {
+      if (q.fc[id]) return q.fc[id];
+      const log = q.logs[id] || {};
+      const dates = Object.keys(log).filter(d => log[d]).sort();
+      const frozen = {};
+      let count = 0, next = FREEZE_DAYS, len = 0;
+      if (dates.length) {
+        let cur = new Date(dates[0] + 'T00:00:00');
+        for (let g = 0; dstr(cur) <= TODAY && g < 5000; g++) {
+          const ds = dstr(cur), isT = ds === TODAY;
+          if (isDone(id, ds)) len++;
+          else if (!isT && count > 0 && len > 0) { frozen[ds] = true; count--; len++; }
+          else if (!isT) { len = 0; next = FREEZE_DAYS; }
+          while (len >= next) { if (count < MAX_FREEZES) count++; next += FREEZE_DAYS; }
+          cur = addDays(cur, 1);
+        }
+      }
+      return (q.fc[id] = { frozen, count });
+    }
+
+    const okDay = (id, d) => isDone(id, d) || !!freezeInfo(id).frozen[d];
+    function streakOf(id) {
+      let c = new Date(), n = 0;
+      if (!okDay(id, dstr(c))) c = addDays(c, -1);
+      while (okDay(id, dstr(c))) { n++; c = addDays(c, -1); }
+      return n;
+    }
+    function perfectStreak() {
+      if (!q.habits.length) return 0;
+      const all = d => q.habits.every(h => okDay(h.id, d));
+      let c = new Date(), n = 0;
+      if (!all(dstr(c))) c = addDays(c, -1);
+      while (all(dstr(c)) && n < 4000) { n++; c = addDays(c, -1); }
+      return n;
+    }
+    const mult = n => n <= 1 ? 1 : Math.min(5, 1 + (n - 1) / 25);
+    const pct = (id, days) => { let n = 0; for (let i = 0; i < days; i++) if (isDone(id, dstr(addDays(new Date(), -i)))) n++; return Math.round(100 * n / days); };
+    const medal = n => n >= 100 ? '🏆' : n >= 30 ? '🥈' : n >= 7 ? '🥉' : '';
+
+    function xpOf(id) {
+      const log = q.logs[id] || {}, fr = freezeInfo(id).frozen, info = {};
+      Object.keys(log).forEach(d => { if (log[d]) info[d] = 1; });
+      Object.keys(fr).forEach(d => { if (!info[d]) info[d] = 2; });
+      const ds = Object.keys(info).sort();
+      let xp = 0, st = 0, prev = null;
+      ds.forEach(d => { if (prev !== null && dayDiff(prev, d) !== 1) st = 0; st++; if (info[d] === 1) xp += 10 * mult(st); prev = d; });
+      return xp;
+    }
+    function level(xp) {
+      let lv = 1, rem = xp;
+      while (rem >= 100 + (lv - 1) * 20) { rem -= 100 + (lv - 1) * 20; lv++; }
+      return { lv, into: Math.round(rem), need: 100 + (lv - 1) * 20 };
+    }
+
+    function jal(dt) {
+      try {
+        const o = {};
+        new Intl.DateTimeFormat('en-u-ca-persian-nu-latn', { day: '2-digit', month: '2-digit', year: 'numeric' }).formatToParts(dt).forEach(x => { o[x.type] = x.value; });
+        return o.day + '/' + o.month + '/' + o.year;
+      } catch (e) { return ''; }
+    }
+
+    function dateText(d) {
+      const dt = new Date(d + 'T00:00:00');
+      const g = dt.toLocaleDateString('en-GB', { weekday: 'long', month: 'long', day: 'numeric' });
+      let j = '';
+      j = jal(dt);
+      const gs = dt.toLocaleDateString('en-GB');
+      return q.dateFmt === 'shamsi' ? j : q.dateFmt === 'both' ? gs + ' · ' + j : gs;
+    }
+
+    function renderStats() {
+      const act = q.habits;
+      const xp = Math.round(act.reduce((a, h) => a + xpOf(h.id), 0));
+      const L = level(xp);
+      const C = 2 * Math.PI * 22, off = C * (1 - L.into / L.need);
+      const done = act.filter(h => isDone(h.id, TODAY)).length;
+      const avg = n => act.length ? Math.round(act.reduce((a, h) => a + pct(h.id, n), 0) / act.length) : 0;
+      const best = act.reduce((m, h) => Math.max(m, streakOf(h.id)), 0);
+      const per = perfectStreak();
+      const tp = act.length ? Math.round(100 * done / act.length) : 0;
+      $('qm-stats').innerHTML =
+        '<div class="qm-card wide"><div class="qm-lvl"><svg viewBox="0 0 52 52"><circle cx="26" cy="26" r="22" fill="none" stroke="var(--q-border)" stroke-width="6"/><circle cx="26" cy="26" r="22" fill="none" stroke="var(--q-gold)" stroke-width="6" stroke-linecap="round" stroke-dasharray="' + C.toFixed(1) + '" stroke-dashoffset="' + off.toFixed(1) + '"/></svg><div><div class="num" style="color:var(--q-gold)">Lv ' + L.lv + '</div><div class="cap" style="margin-top:2px">Level</div><div class="sub">' + L.into + ' / ' + L.need + ' XP</div></div></div></div>' +
+        '<div class="qm-card"><div class="num" style="color:var(--q-teal)">' + tp + '%</div><div class="cap">Today</div><div class="sub">' + done + ' of ' + act.length + ' quests</div></div>' +
+        '<div class="qm-card"><div class="num" style="color:#7c6ff0">' + avg(7) + '%</div><div class="cap">7-day average</div></div>' +
+        '<div class="qm-card"><div class="num" style="color:#4d9de0">' + avg(30) + '%</div><div class="cap">30-day average</div></div>' +
+        '<div class="qm-card wide"><div class="num" style="color:var(--q-coral)">' + best + ' 🔥</div><div class="cap">Best active streak</div></div><div class="qm-card wide' + (per > 0 ? ' perfect' : '') + '"><div class="num" style="color:var(--q-coral)">' + per + ' 🔥</div><div class="cap">Perfect streak —<br>all quests</div></div>';
+    }
+
+    function renderList() {
+      const list = $('qm-list');
+      list.className = 'qm-list' + (q.layout !== 'list' ? ' ' + q.layout : '');
+      list.innerHTML = q.habits.length ? q.habits.map(h => {
+        const done = isDone(h.id, TODAY), st = streakOf(h.id), fi = freezeInfo(h.id), risk = st > 0 && !done, ready = risk && fi.count > 0, m = mult(st);
+        let days = '';
+        for (let i = 29; i >= 0; i--) {
+          const d = dstr(addDays(new Date(), -i)), fz = fi.frozen[d];
+          days += '<button type="button" data-h="' + h.id + '" data-d="' + d + '" class="' + (isDone(h.id, d) ? 'on' : fz ? 'fz' : '') + (d === TODAY ? ' today' : '') + '" title="' + esc(dateText(d)) + '" aria-label="' + esc(dateText(d)) + '">' + (fz ? '❄' : '') + '</button>';
+        }
+        return '<div class="qm-card qm-quest' + (done ? ' done' : '') + (risk ? ' risk' : '') + '" style="--c:' + h.color + '"><div class="qm-em">' + h.emoji + '</div><div><div class="qm-name">' + esc(h.name) + '</div><div class="qm-meta"><span><b>' + st + '</b> day streak</span>' + (m > 1 ? '<span class="qm-tag xp">' + m.toFixed(1) + 'x xp</span>' : '') + (risk ? (ready ? '<span class="qm-tag frost">freeze ready</span>' : '<span class="qm-tag risk">at risk</span>') : '') + (medal(st) ? '<span>' + medal(st) + '</span>' : '') + (fi.count ? '<span>' + '❄'.repeat(fi.count) + '</span>' : '') + '</div></div><div class="qm-act"><button type="button" class="qm-mark" data-t="' + h.id + '">' + (done ? '✓ Done' : '○ Mark today') + '</button><button type="button" class="qm-x" data-x="' + h.id + '" aria-label="Delete quest">✕</button></div><div class="qm-stat7">Last 7 days: <b>' + pct(h.id, 7) + '%</b> &nbsp;·&nbsp; Last 30 days: <b>' + pct(h.id, 30) + '%</b></div><div class="qm-days">' + days + '</div></div>';
+      }).join('') : '<div class="qm-card" style="padding:18px;color:var(--q-dim);font-size:13px">No quests yet. Add your first habit below to start earning XP.</div>';
+    }
+
+    function renderCharts() {
+      const n = q.barDays, hs = q.habits.length || 1;
+      let bars = '', lab = '';
+      for (let i = n - 1; i >= 0; i--) {
+        const d = addDays(new Date(), -i), ds = dstr(d);
+        const c = q.habits.filter(h => isDone(h.id, ds)).length;
+        bars += '<span title="' + esc(dateText(ds)) + ': ' + c + '/' + q.habits.length + '"><i style="height:' + Math.round(100 * c / hs) + '%"></i></span>';
+        lab += '<span>' + (n <= 14 ? d.toLocaleDateString('en-GB', { weekday: 'short' }).slice(0, 3) : (i % 5 === 0 ? d.getDate() : '')) + '</span>';
+      }
+      $('qm-bars').innerHTML = bars; $('qm-bl').innerHTML = lab; $('qm-bn').textContent = n;
+      const wk = q.heatWeeks, tdow = (new Date().getDay() + 6) % 7;
+      let heat = '';
+      for (let w = wk - 1; w >= 0; w--) for (let dow = 0; dow < 7; dow++) {
+        const back = w * 7 + (tdow - dow);
+        if (back < 0) { heat += '<i style="visibility:hidden"></i>'; continue; }
+        const ds = dstr(addDays(new Date(), -back));
+        const f = q.habits.length ? q.habits.filter(h => isDone(h.id, ds)).length / q.habits.length : 0;
+        heat += '<i class="' + (f > 0 ? 'l' + (f <= 0.25 ? 1 : f <= 0.5 ? 2 : f < 1 ? 3 : 4) : '') + '" title="' + esc(dateText(ds)) + '"></i>';
+      }
+      $('qm-heat').innerHTML = heat; $('qm-hn').textContent = wk;
+    }
+
+    function renderDate() {
+      const now = new Date();
+      const g = now.toLocaleDateString('en-GB', { weekday: 'long', month: 'long', day: 'numeric' });
+      let jShort = '', jLong = '';
+      try {
+        jShort = jal(now);
+        jLong = new Intl.DateTimeFormat('fa-IR-u-ca-persian', { weekday: 'long', day: 'numeric', month: 'long' }).format(now);
+      } catch (e) {}
+      $('qm-date').innerHTML = '<div style="display:flex;gap:26px;flex-wrap:wrap"><div class="d">' + now.toLocaleDateString('en-GB') + '<small>' + g + '</small></div>' + (jShort ? '<div class="d">' + jShort + '<small dir="rtl" style="text-align:left">' + jLong + '</small></div>' : '') + '</div><div class="t"><small>Time left today</small><br><b id="qm-clock"></b></div>';
+      tick();
+    }
+
+    function tick() {
+      const c = $('qm-clock');
+      if (!c) return;
+      const n = new Date(), end = new Date(n.getFullYear(), n.getMonth(), n.getDate() + 1);
+      const s = Math.max(0, Math.floor((end - n) / 1000));
+      c.textContent = [Math.floor(s / 3600), Math.floor(s % 3600 / 60), s % 60].map(x => String(x).padStart(2, '0')).join(':');
+      if (dstr(n) !== TODAY) { TODAY = dstr(n); q.fc = {}; renderAll(); }
+    }
+    setInterval(tick, 1000);
+
+    function renderAll() { renderStats(); renderList(); renderCharts(); }
+
+    let toastT = 0;
+    function toast(msg) {
+      const t = $('qm-toast');
+      t.textContent = msg;
+      t.classList.add('show');
+      clearTimeout(toastT);
+      toastT = setTimeout(() => t.classList.remove('show'), 1600);
+    }
+
+    function applyTheme(id) {
+      q.theme = id;
+      const p = QT[id], m = $('mock');
+      const map = { bg: 'bg', bg2: 'bg2', surface: 'surface', surface2: 'surface2', border: 'border', text: 'text', textDim: 'dim', textFaint: 'faint', gold: 'gold', goldLight: 'goldl', coral: 'coral', teal: 'teal' };
+      Object.keys(map).forEach(k => m.style.setProperty('--q-' + map[k], p[k]));
+    }
+
+    function renderSettings() {
+      $('qm-th').innerHTML = Object.keys(SWATCH).map(id => '<button type="button" data-th="' + id + '" class="' + (q.theme === id ? 'on' : '') + '"><i style="background:linear-gradient(135deg,' + SWATCH[id][0] + ', ' + SWATCH[id][1] + ')"></i>' + SWATCH[id][2] + '</button>').join('');
+      $('qm-df').innerHTML = [['gregorian', 'Gregorian'], ['shamsi', 'Hejri Shamsi'], ['both', 'Both']].map(x => '<button type="button" data-df="' + x[0] + '" class="' + (q.dateFmt === x[0] ? 'on' : '') + '">' + x[1] + '</button>').join('');
+      $('qm-ly').innerHTML = [['list', 'List'], ['grid', 'Grid'], ['compact', 'Compact']].map(x => '<button type="button" data-ly="' + x[0] + '" class="' + (q.layout === x[0] ? 'on' : '') + '">' + x[1] + '</button>').join('');
+      document.querySelectorAll('#qm-lay button').forEach(b => b.classList.toggle('on', b.dataset.l === q.layout));
+    }
+
+    function renderPickers() {
+      $('qm-emo').innerHTML = EMOJIS.map(e => '<button type="button" data-e="' + e + '" class="' + (q.emoji === e ? 'on' : '') + '" aria-label="' + e + '">' + e + '</button>').join('');
+      $('qm-col').innerHTML = COLORS.map(c => '<button type="button" data-c="' + c + '" class="' + (q.color === c ? 'on' : '') + '" style="background:' + c + '" aria-label="' + c + '"></button>').join('');
+    }
+
+    $('qm-list').addEventListener('click', e => {
+      const t = e.target.closest('button');
+      if (!t) return;
+      if (t.dataset.t) { const l = q.logs[t.dataset.t]; if (l[TODAY]) delete l[TODAY]; else l[TODAY] = true; }
+      else if (t.dataset.d) { const l = q.logs[t.dataset.h]; if (l[t.dataset.d]) delete l[t.dataset.d]; else l[t.dataset.d] = true; }
+      else if (t.dataset.x) { q.habits = q.habits.filter(h => h.id !== t.dataset.x); delete q.logs[t.dataset.x]; toast(I18N[currentLang].toastDel); }
+      else return;
+      q.fc = {};
+      renderAll();
+    });
+    $('qm-lay').addEventListener('click', e => { const b = e.target.closest('button'); if (b) { q.layout = b.dataset.l; renderSettings(); renderList(); } });
+    $('qm-bw').addEventListener('click', e => { const b = e.target.closest('button'); if (b) { q.barDays = Number(b.dataset.n); document.querySelectorAll('#qm-bw button').forEach(x => x.classList.toggle('on', x === b)); renderCharts(); } });
+    $('qm-hw').addEventListener('click', e => { const b = e.target.closest('button'); if (b) { q.heatWeeks = Number(b.dataset.n); document.querySelectorAll('#qm-hw button').forEach(x => x.classList.toggle('on', x === b)); renderCharts(); } });
+    $('qm-emo').addEventListener('click', e => { const b = e.target.closest('button'); if (b) { q.emoji = b.dataset.e; renderPickers(); } });
+    $('qm-col').addEventListener('click', e => { const b = e.target.closest('button'); if (b) { q.color = b.dataset.c; renderPickers(); } });
+    function addQuest() {
+      const name = $('qm-name').value.trim();
+      if (!name) { toast(I18N[currentLang].toastNeed); return; }
+      const id = 'n' + q.nid++;
+      q.habits.push({ id, name, emoji: q.emoji, color: q.color });
+      q.logs[id] = {};
+      $('qm-name').value = '';
+      q.fc = {};
+      renderAll();
+      toast(I18N[currentLang].toastAdd);
+    }
+    $('qm-add').addEventListener('click', addQuest);
+    $('qm-name').addEventListener('keydown', e => { if (e.key === 'Enter') addQuest(); });
+    $('qm-gear').addEventListener('click', () => { renderSettings(); $('qm-modal').hidden = false; });
+    $('qm-mx').addEventListener('click', () => { $('qm-modal').hidden = true; });
+    $('qm-modal').addEventListener('click', e => {
+      const b = e.target.closest('button');
+      if (!b) return;
+      if (b.dataset.th) applyTheme(b.dataset.th);
+      else if (b.dataset.df) { q.dateFmt = b.dataset.df; renderCharts(); renderList(); }
+      else if (b.dataset.ly) { q.layout = b.dataset.ly; renderList(); }
+      else return;
+      renderSettings();
+    });
+    $('qm-red').addEventListener('change', e => $('mock').classList.toggle('reduce', e.target.checked));
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') $('qm-modal').hidden = true; });
+
+    function renderMock() {
+      setTx('mock-note', I18N[currentLang].mockNote);
+    }
+
+    let release = null;
+
+    function paintRelease() {
+      const t = I18N[currentLang];
+      document.querySelectorAll('a[data-dl]').forEach(a => {
+        a.href = release ? release.url : LatestRelease.page(REPO);
+      });
+      const meta = $('dl-meta');
+      if (!release) { meta.hidden = true; return; }
+      const parts = [];
+      if (release.tag) parts.push('<bdi dir="ltr">' + esc(release.tag) + '</bdi>');
+      if (release.size) parts.push(fmt((release.size / 1048576).toFixed(1).replace('.', currentLang === 'fa' ? '٫' : '.')) + ' ' + t.sizeUnit);
+      meta.innerHTML = parts.join(' · ');
+      meta.hidden = parts.length === 0;
+    }
+
+    function renderHow(t) {
+      $('how-grid').innerHTML = t.how.map(([icon, name, desc], i) => `
+        <div class="card">
+          <div class="card-top">
+            <div class="icon">${svg(icon)}</div>
+            <div class="card-name">${tx(name)}</div>
+            <span class="step-num" aria-hidden="true">${fmt(i + 1)}</span>
+          </div>
+          <p class="card-desc">${tx(desc)}</p>
+        </div>`).join('');
+    }
+
+    function renderFeatures(t) {
+      $('feat-grid').innerHTML = t.feat.map(([icon, name, desc], i) => `
+        <div class="card">
+          <div class="card-top">
+            <div class="icon${i % 2 ? ' alt' : ''}">${svg(icon)}</div>
+            <div class="card-name">${tx(name)}</div>
+          </div>
+          <p class="card-desc">${tx(desc)}</p>
+        </div>`).join('');
+    }
+
+    function renderFaq(t) {
+      $('faq-list').innerHTML = t.faq.map(([q, a], i) => `
+        <div class="faq-item">
+          <button type="button" class="faq-q" id="faq-q-${i}" aria-expanded="false" aria-controls="faq-a-${i}">
+            <span>${tx(q)}</span>
+            <span class="faq-icon" aria-hidden="true"></span>
+          </button>
+          <div class="faq-panel" id="faq-a-${i}" role="region" aria-labelledby="faq-q-${i}">
+            <div class="faq-inner"><div class="answer">${tx(a)}</div></div>
+          </div>
+        </div>`).join('');
+    }
+
+    $('faq-list').addEventListener('click', e => {
+      const btn = e.target.closest('.faq-q');
+      if (!btn) return;
+      const item = btn.parentElement;
+      const open = item.classList.toggle('open');
+      btn.setAttribute('aria-expanded', String(open));
+    });
+
+    function applyLanguage(lang) {
+      currentLang = lang;
+      localStorage.setItem('lang', lang);
+      const t = I18N[lang];
+      document.documentElement.lang = lang;
+      document.documentElement.dir = t.dir;
+      document.title = t.docTitle;
+
+      setTx('back-text', t.back);
+      setTx('hero-title', t.heroTitle);
+      setTx('hero-pitch', t.pitch);
+      $('hero-tags').innerHTML = t.tags.map((x, i) => `<span class="tag${i === 0 ? ' hot' : ''}">${tx(x)}</span>`).join('');
+      document.querySelectorAll('[data-dl-label]').forEach(el => { el.textContent = t.download; });
+      setTx('cta-github', t.github);
+      paintRelease();
+      renderMock();
+
+      setTx('how-title', t.howTitle);
+      setTx('how-sub', t.howSub);
+      renderHow(t);
+
+      setTx('feat-title', t.featTitle);
+      setTx('feat-sub', t.featSub);
+      renderFeatures(t);
+
+      setTx('faq-title', t.faqTitle);
+      setTx('faq-sub', t.faqSub);
+      renderFaq(t);
+
+      setTx('end-title', t.endTitle);
+      setTx('end-text', t.endText);
+      setTx('end-discord', t.endDiscord);
+      setTx('end-telegram', t.endTelegram);
+      setTx('footer-home', t.footerHome);
+      $('made-by').innerHTML = t.madeBy.split('{heart}').map(tx).join(HEART);
+    }
+
+    $('lang-toggle').addEventListener('click', () => {
+      $('lang-toggle').blur();
+      applyLanguage(currentLang === 'en' ? 'fa' : 'en');
+    });
+
+    seed();
+    renderPickers();
+    renderSettings();
+    renderDate();
+    renderAll();
+    applyLanguage(currentLang);
+
+    LatestRelease.latest(REPO).then(d => {
+      release = d;
+      paintRelease();
+    });
+  </script>
+</body>
+</html>

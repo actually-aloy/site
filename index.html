@@ -11,11 +11,11 @@
   <meta property="og:title" content="Aloy">
   <meta property="og:description" content="Aloy&#039;s corner of the internet — links, an OC, and whatever else.">
   <meta property="og:url" content="https://actually-aloy.github.io/site">
-  <meta property="og:image" content="https://actually-aloy.github.io/site/oc.png">
+  <meta property="og:image" content="https://actually-aloy.github.io/site/og.jpg">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Aloy">
   <meta name="twitter:description" content="Aloy&#039;s corner of the internet — links, an OC, and whatever else.">
-  <meta name="twitter:image" content="https://actually-aloy.github.io/site/oc.png">
+  <meta name="twitter:image" content="https://actually-aloy.github.io/site/og.jpg">
   <link rel="icon" href="favicon.svg?v=2" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -339,6 +339,10 @@
       border-radius: 23px;
       background: rgba(255, 244, 249, 0.06);
       transition: transform 180ms ease, border-color 180ms ease, background 180ms ease;
+    }
+
+    .social:last-child:nth-child(odd) {
+      grid-column: 1 / -1;
     }
 
     .social:hover {
@@ -866,6 +870,39 @@
       flex: 0 0 auto;
     }
 
+    .discord-alt {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      max-width: 440px;
+      padding: 9px 14px;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: rgba(255, 244, 249, 0.06);
+      color: var(--muted);
+      font-size: 13.5px;
+      line-height: 1.6;
+      transition: border-color 180ms ease, background 180ms ease, color 180ms ease;
+    }
+
+    .discord-alt:hover {
+      border-color: rgba(255, 209, 231, 0.4);
+      background: rgba(255, 244, 249, 0.1);
+      color: var(--text);
+    }
+
+    .discord-alt img {
+      width: 30px;
+      height: 30px;
+      flex: 0 0 auto;
+      border-radius: 9px;
+    }
+
+    .discord-alt b {
+      color: var(--text);
+      font-weight: 700;
+    }
+
     .discord-top {
       display: flex;
       align-items: center;
@@ -1149,7 +1186,10 @@
     }
 
     .app-ver {
-      font-size: 12px;
+      flex-basis: 100%;
+      text-align: center;
+      line-height: 1.1;
+      font-size: 11px;
       font-weight: 600;
       opacity: 0.7;
     }
@@ -1166,7 +1206,7 @@
 
     .app-links {
       display: flex;
-      flex-wrap: wrap;
+      flex-wrap: nowrap;
       gap: 8px;
       margin-top: auto;
     }
@@ -1180,6 +1220,8 @@
 
     .app-link {
       flex: 1;
+      min-width: 0;
+      white-space: nowrap;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -1200,6 +1242,8 @@
     }
 
     .app-link.primary {
+      flex-wrap: wrap;
+      row-gap: 0;
       color: #141018;
       border-color: transparent;
       background: linear-gradient(135deg, var(--pink), var(--pink-soft));
@@ -1323,6 +1367,16 @@
         </span>
       </a>
     
+      <a class="social" href="https://www.threads.com/@aloy_shoots" target="_blank" rel="noopener noreferrer">
+        <span class="social-icon"><svg viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+        <path d="M6.321 6.016c-.27-.18-1.166-.802-1.166-.802.756-1.081 1.753-1.502 3.132-1.502.975 0 1.803.327 2.394.948s.928 1.509 1.005 2.644q.492.207.905.484c1.109.745 1.719 1.86 1.719 3.137 0 2.716-2.226 5.075-6.256 5.075C4.594 16 1 13.987 1 7.994 1 2.034 4.482 0 8.044 0 9.69 0 13.55.243 15 5.036l-1.36.353C12.516 1.974 10.163 1.43 8.006 1.43c-3.565 0-5.582 2.171-5.582 6.79 0 4.143 2.254 6.343 5.63 6.343 2.777 0 4.847-1.443 4.847-3.556 0-1.438-1.208-2.127-1.27-2.127-.236 1.234-.868 3.31-3.644 3.31-1.618 0-3.013-1.118-3.013-2.582 0-2.09 1.984-2.847 3.55-2.847.586 0 1.294.04 1.663.114 0-.637-.54-1.728-1.9-1.728-1.25 0-1.566.405-1.967.868ZM8.716 8.19c-2.04 0-2.304.87-2.304 1.416 0 .878 1.043 1.168 1.6 1.168 1.02 0 2.067-.282 2.232-2.423a6.2 6.2 0 0 0-1.528-.161"/>
+    </svg></span>
+        <span>
+          <strong>Threads</strong>
+          <span>threads.com/@aloy_shoots</span>
+        </span>
+      </a>
+    
       <a class="social" href="https://github.com/actually-aloy" target="_blank" rel="noopener noreferrer">
         <span class="social-icon"><svg viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
         <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8"/>
@@ -1417,6 +1471,7 @@
           <svg viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M13.545 2.907a13.2 13.2 0 0 0-3.257-1.011.05.05 0 0 0-.052.025c-.141.25-.297.577-.406.833a12.2 12.2 0 0 0-3.658 0 8 8 0 0 0-.412-.833.05.05 0 0 0-.052-.025c-1.125.194-2.22.534-3.257 1.011a.04.04 0 0 0-.021.018C.356 6.024-.213 9.047.066 12.032q.003.022.021.037a13.3 13.3 0 0 0 3.995 2.02.05.05 0 0 0 .056-.019q.463-.63.818-1.329a.05.05 0 0 0-.01-.059l-.018-.011a9 9 0 0 1-1.248-.595.05.05 0 0 1-.02-.066l.015-.019q.127-.095.248-.195a.05.05 0 0 1 .051-.007c2.619 1.196 5.454 1.196 8.041 0a.05.05 0 0 1 .053.007q.121.1.248.195a.05.05 0 0 1-.004.085 8 8 0 0 1-1.249.594.05.05 0 0 0-.03.03.05.05 0 0 0 .003.041c.24.465.515.909.817 1.329a.05.05 0 0 0 .056.019 13.2 13.2 0 0 0 4.001-2.02.05.05 0 0 0 .021-.037c.334-3.451-.559-6.449-2.366-9.106a.03.03 0 0 0-.02-.019m-8.198 7.307c-.789 0-1.438-.724-1.438-1.612s.637-1.613 1.438-1.613c.807 0 1.45.73 1.438 1.613 0 .888-.637 1.612-1.438 1.612m5.316 0c-.788 0-1.438-.724-1.438-1.612s.637-1.613 1.438-1.613c.807 0 1.451.73 1.438 1.613 0 .888-.631 1.612-1.438 1.612"/></svg>
           <span id="discord-join-label">Join the server</span>
         </a>
+        <a class="discord-alt" id="discord-alt" href="papion.html"></a>
       </div>
       <div class="discord-live-card is-loading" id="discord-live-card">
         <div class="discord-card-head">
@@ -1483,7 +1538,9 @@
         nameFa: "کوئست‌لاگ",
         tag: "daily habit tracker",
         tagFa: "ردیاب عادت‌های روزانه",
-        repo: "actually-aloy/questlog"
+        repo: "actually-aloy/questlog",
+        page: "questlog.html",
+        icon: "questlog-logo.png"
       },
       {
         name: "Aloy's Multitool",
@@ -1506,13 +1563,17 @@
         nameFa: "راست‌نویس",
         tag: "finglish → persian + speech-to-text",
         tagFa: "فینگلیش ← فارسی + تبدیل گفتار به نوشتار",
-        repo: "actually-aloy/rastnevis"
+        repo: "actually-aloy/rastnevis",
+        page: "rastnevis.html",
+        icon: "rastnevis-logo.png"
       },
       {
         name: "Aloy's YouTube Downloader",
         tag: "youtube downloader",
         tagFa: "دانلودکننده یوتیوب",
-        repo: "actually-aloy/aloys-youtube-downloader"
+        repo: "actually-aloy/aloys-youtube-downloader",
+        page: "ytdownloader.html",
+        icon: "aytd-logo.png"
       }
     ];
 
@@ -1601,6 +1662,7 @@
         discordSubtitle: 'come say hi',
         discordCta: 'Come hang out, chat, and vibe with everyone.',
         discordJoin: 'Join the server',
+        discordAlt: 'Discord not opening for you? <b>Papion</b> gets you in →',
         discordOnlineWord: 'online',
         discordOnlineSection: 'Online',
         discordMoreOnline: 'more online',
@@ -1639,6 +1701,7 @@
         discordSubtitle: 'بیا یه سر بزن',
         discordCta: 'بیا با بقیه گپ بزنیم و یکم وقت بگذرونیم.',
         discordJoin: 'عضو سرور شو',
+        discordAlt: 'دیسکورد برات باز نمی‌شه؟ با <b><bdi>Papion</bdi></b> بازش کن ←',
         discordOnlineWord: 'نفر آنلاین',
         discordOnlineSection: 'آنلاین',
         discordMoreOnline: 'نفر دیگه آنلاینن',
@@ -1716,6 +1779,7 @@
       document.getElementById('discord-subtitle').textContent = t.discordSubtitle;
       document.getElementById('discord-cta-text').textContent = t.discordCta;
       document.getElementById('discord-join-label').textContent = t.discordJoin;
+      document.getElementById('discord-alt').innerHTML = '<img src="papion-logo-on.png" alt="" width="30" height="30" draggable="false"><span>' + t.discordAlt + '</span>';
       renderDiscordStatus(lang);
       flagBtn.setAttribute('aria-label', t.flagLabel);
       modalTitle.textContent = t.modalTitle;

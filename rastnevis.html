@@ -1,0 +1,1390 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#070b16">
+  <title>راست‌نویس — تبدیل فینگلیش به فارسی، آفلاین</title>
+  <meta name="description" content="Rastnevis: convert Finglish to Persian instantly and offline, plus offline speech to text. A free, portable Windows app.">
+  <link rel="canonical" href="https://actually-aloy.github.io/site/rastnevis">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Rastnevis — Finglish to Persian, offline">
+  <meta property="og:description" content="Type Persian in English letters and get proper Persian text. Free, offline, for Windows.">
+  <meta property="og:url" content="https://actually-aloy.github.io/site/rastnevis">
+  <meta property="og:image" content="https://actually-aloy.github.io/site/rastnevis-og.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Rastnevis — Finglish to Persian, offline">
+  <meta name="twitter:description" content="Type Persian in English letters and get proper Persian text. Free, offline, for Windows.">
+  <meta name="twitter:image" content="https://actually-aloy.github.io/site/rastnevis-og.jpg">
+  <link rel="icon" href="rastnevis-logo.png" type="image/png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #070b16;
+      --text: #eef2f7;
+      --muted: #94a3b8;
+      --line: rgba(255, 255, 255, 0.13);
+      --cyan: #60a5fa;
+      --magenta: #8b5cf6;
+      --pink: #ff7ab6;
+      --ink: #070b16;
+      --radius: 28px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 14% 10%, rgba(96, 165, 250, 0.2), transparent 32%),
+        radial-gradient(circle at 90% 14%, rgba(96, 165, 250, 0.16), transparent 30%),
+        radial-gradient(circle at 52% 94%, rgba(139, 92, 246, 0.1), transparent 34%),
+        var(--bg);
+      animation: page-fade-in 0.4s ease-out;
+      user-select: none;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+    }
+
+    @keyframes page-fade-in {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    html[lang="fa"] body {
+      font-family: Vazirmatn, Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      html { scroll-behavior: smooth; }
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    h1, h2, h3, p {
+      margin: 0;
+    }
+
+    [hidden] {
+      display: none !important;
+    }
+
+    .page {
+      width: min(1080px, calc(100% - 36px));
+      margin: 0 auto;
+      padding: 38px 0 56px;
+    }
+
+    .glass {
+      border: 1px solid var(--line);
+      border-radius: calc(var(--radius) + 10px);
+      background: linear-gradient(145deg, rgba(255, 255, 255, 0.105), rgba(255, 255, 255, 0.045));
+      box-shadow: 0 28px 90px rgba(0, 0, 0, 0.4);
+      backdrop-filter: blur(22px);
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: 30px;
+      padding: 28px;
+      align-items: center;
+    }
+
+    .intro {
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+      min-width: 0;
+    }
+
+    .topline {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .pill-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 14px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--text);
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 180ms ease, border-color 180ms ease;
+    }
+
+    .pill-btn:hover {
+      background: rgba(255, 255, 255, 0.12);
+      border-color: rgba(96, 165, 250, 0.45);
+    }
+
+    .pill-btn svg {
+      width: 14px;
+      height: 14px;
+    }
+
+    html[dir="rtl"] .pill-btn svg {
+      transform: scaleX(-1);
+    }
+
+    .lang-toggle {
+      margin-inline-start: auto;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .brand img {
+      width: 64px;
+      height: 64px;
+      flex: 0 0 auto;
+      border-radius: 18px;
+      box-shadow: 0 16px 40px rgba(96, 165, 250, 0.35);
+      -webkit-user-drag: none;
+    }
+
+    h1 {
+      font-size: clamp(38px, 6.4vw, 60px);
+      line-height: 1.15;
+      letter-spacing: -0.03em;
+    }
+
+    .gradient-text {
+      background: linear-gradient(90deg, #60a5fa, #c4b5fd, #a78bfa, #60a5fa);
+      background-size: 300% 100%;
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      animation: enchant 6s linear infinite;
+    }
+
+    @keyframes enchant {
+      to { background-position: -300% 0; }
+    }
+
+    .pitch {
+      max-width: 560px;
+      color: var(--muted);
+      font-size: 18px;
+      line-height: 1.75;
+    }
+
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .tag {
+      padding: 6px 13px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--text);
+      font-size: 12.5px;
+      font-weight: 600;
+    }
+
+    .tag.hot {
+      border-color: transparent;
+      background: linear-gradient(135deg, #7db4ff, #a78bfa);
+      color: var(--ink);
+    }
+
+    .cta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 12px 22px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--text);
+      font-family: inherit;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: filter 180ms ease, transform 180ms ease, background 180ms ease, border-color 180ms ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      background: rgba(255, 255, 255, 0.12);
+      border-color: rgba(96, 165, 250, 0.45);
+    }
+
+    .btn.primary {
+      border-color: transparent;
+      background: linear-gradient(135deg, #7db4ff, #a78bfa);
+      color: var(--ink);
+    }
+
+    .btn.primary:hover {
+      filter: brightness(1.06);
+    }
+
+    .btn svg {
+      width: 16px;
+      height: 16px;
+      flex: 0 0 auto;
+    }
+
+    .btn:focus-visible,
+    .pill-btn:focus-visible,
+    .faq-q:focus-visible {
+      outline: 2px solid var(--cyan);
+      outline-offset: 3px;
+    }
+
+    .dl-meta {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .stage {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+    }
+
+    .stage::before {
+      content: "";
+      position: absolute;
+      inset: 6% -6% 10%;
+      z-index: 0;
+      border-radius: 50%;
+      background: radial-gradient(closest-side, rgba(96, 165, 250, 0.5), rgba(96, 165, 250, 0));
+      filter: blur(24px);
+      pointer-events: none;
+    }
+
+    .rn {
+      --r-bg: #0b1020;
+      --r-card: rgba(23, 30, 48, 0.65);
+      --r-solid: #151d30;
+      --r-text: #eef2f7;
+      --r-dim: #94a3b8;
+      --r-accent: #60a5fa;
+      --r-border: rgba(255, 255, 255, 0.09);
+      --r-input: rgba(255, 255, 255, 0.05);
+      --r-ok: #34d399;
+      direction: rtl;
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 18px;
+      border: 1px solid var(--r-border);
+      border-radius: 20px;
+      color: var(--r-text);
+      background: radial-gradient(circle at 100% 0%, rgba(59, 130, 246, 0.22), transparent 45%), radial-gradient(circle at 0% 100%, rgba(139, 92, 246, 0.2), transparent 45%), var(--r-bg);
+      font-family: Vazirmatn, "Segoe UI", Tahoma, sans-serif;
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.55);
+      transition: background 0.3s ease, color 0.3s ease;
+    }
+
+    .rn[data-theme="light"] {
+      --r-bg: #eef2f9;
+      --r-card: rgba(255, 255, 255, 0.75);
+      --r-solid: #ffffff;
+      --r-text: #1f2a37;
+      --r-dim: #64748b;
+      --r-accent: #3b82f6;
+      --r-border: rgba(15, 23, 42, 0.1);
+      --r-input: rgba(255, 255, 255, 0.95);
+      --r-ok: #059669;
+    }
+
+    .rn-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+    .rn-brand { display: flex; align-items: center; gap: 10px; }
+    .rn-brand img { width: 40px; height: 40px; border-radius: 12px; }
+    .rn-brand b { display: block; font-size: 16px; }
+    .rn-brand small { display: block; color: var(--r-dim); font-size: 11.5px; }
+
+    .rn-sun {
+      width: 38px; height: 38px; display: grid; place-items: center; cursor: pointer;
+      border: 1px solid var(--r-border); border-radius: 12px; background: var(--r-card); color: var(--r-text);
+    }
+    .rn-sun svg { width: 18px; height: 18px; }
+
+    .rn-tabs {
+      display: flex; gap: 4px; max-width: 100%; width: fit-content; margin: 14px auto 12px; padding: 5px; overflow-x: auto;
+      border: 1px solid var(--r-border); border-radius: 14px; background: var(--r-card);
+    }
+    .rn-tabs button {
+      padding: 8px 14px; border: 0; border-radius: 10px; white-space: nowrap; flex: 0 0 auto; background: none; color: var(--r-dim);
+      font-family: inherit; font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.2s ease;
+    }
+    .rn-tabs button.on { background: linear-gradient(135deg, #3b82f6, #8b5cf6); color: #fff; box-shadow: 0 8px 20px rgba(59, 130, 246, 0.35); }
+
+    .rn-panel, .rn-box, .rn-tabs { scrollbar-width: thin; scrollbar-color: color-mix(in srgb, var(--r-dim) 45%, transparent) transparent; }
+    .rn-panel::-webkit-scrollbar, .rn-box::-webkit-scrollbar, .rn-tabs::-webkit-scrollbar { width: 6px; height: 6px; }
+    .rn-panel::-webkit-scrollbar-track, .rn-box::-webkit-scrollbar-track, .rn-tabs::-webkit-scrollbar-track { background: transparent; }
+    .rn-panel::-webkit-scrollbar-thumb, .rn-box::-webkit-scrollbar-thumb, .rn-tabs::-webkit-scrollbar-thumb { border-radius: 6px; background: color-mix(in srgb, var(--r-dim) 45%, transparent); }
+    .rn-panel::-webkit-scrollbar-thumb:hover, .rn-box::-webkit-scrollbar-thumb:hover { background: color-mix(in srgb, var(--r-dim) 70%, transparent); }
+    .rn-body { height: 368px; }
+    .rn-panel { height: 100%; display: flex; flex-direction: column; gap: 12px; padding: 14px; overflow: auto; border: 1px solid var(--r-border); border-radius: 16px; background: var(--r-card); }
+    .rn-panel[hidden] { display: none; }
+    .rn-cols { flex: 1; min-height: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; direction: ltr; }
+    .rn-col { min-width: 0; min-height: 0; display: flex; flex-direction: column; direction: rtl; }
+    .rn-lab { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 6px; font-size: 12.5px; font-weight: 700; }
+    .rn-lab small { color: var(--r-dim); font-weight: 400; font-size: 11px; }
+    .rn-box {
+      width: 100%; flex: 1; min-height: 0; margin: 0; padding: 12px; overflow: auto; resize: none;
+      border: 1px solid var(--r-border); border-radius: 12px; background: var(--r-input); color: var(--r-text);
+      font-family: inherit; font-size: 14px; line-height: 1.8; user-select: text; -webkit-user-select: text;
+    }
+    .rn-box.in { direction: ltr; text-align: left; }
+    .rn-wout { text-align: left; font-size: 13px; }
+    .rn-box.out { direction: rtl; white-space: pre-wrap; overflow-wrap: anywhere; }
+    .rn-box.out:empty::before { content: attr(data-ph); color: var(--r-dim); }
+    .rn-box:focus-visible { outline: 2px solid var(--r-accent); outline-offset: 1px; }
+
+    .rn-bar { display: flex; align-items: center; justify-content: space-between; gap: 8px; direction: ltr; flex-wrap: wrap; }
+    .rn-b {
+      padding: 10px 20px; border: 1px solid var(--r-border); border-radius: 12px; background: var(--r-input); color: var(--r-text);
+      font-family: inherit; font-size: 13px; font-weight: 700; cursor: pointer; transition: transform 0.15s ease, filter 0.15s ease;
+    }
+    .rn-b:hover { transform: translateY(-1px); }
+    .rn-b.go { border-color: transparent; color: #fff; background: linear-gradient(135deg, #3b82f6, #8b5cf6); box-shadow: 0 10px 24px rgba(59, 130, 246, 0.4); }
+    .rn-b.cp { color: var(--r-ok); border-color: color-mix(in srgb, var(--r-ok) 40%, transparent); }
+    .rn-hint { padding: 6px 12px; border: 1px solid var(--r-border); border-radius: 20px; color: var(--r-dim); font-size: 11px; direction: ltr; }
+    .rn-mid { display: flex; align-items: center; gap: 8px; }
+
+    .rn-gd { display: grid; gap: 14px; padding-inline-end: 6px; }
+    .rn-gd h5 { margin: 0 0 8px; font-size: 13px; }
+    .rn-gd ol, .rn-gd ul { margin: 0; padding-inline-start: 20px; color: var(--r-dim); font-size: 12.5px; line-height: 1.9; }
+    .rn-chips { display: flex; flex-wrap: wrap; gap: 6px; direction: ltr; }
+    .rn-chips span { padding: 4px 10px; border: 1px solid var(--r-border); border-radius: 8px; background: var(--r-input); font-size: 12.5px; }
+    .rn-chips span b { color: var(--r-accent); font-weight: 600; margin: 0 4px; }
+    .rn-stt-top { display: grid; grid-template-columns: 1fr 54px 1fr; align-items: center; gap: 10px; direction: ltr; }
+    .rn-status { justify-self: start; }
+    .rn-status { padding: 5px 12px; border: 1px solid var(--r-border); border-radius: 20px; background: var(--r-input); color: var(--r-dim); font-size: 12px; }
+    .rn-status.live { color: var(--r-ok); border-color: color-mix(in srgb, var(--r-ok) 45%, transparent); }
+    .rn-mic {
+      width: 54px; height: 54px; display: grid; place-items: center; cursor: pointer; border: 0; border-radius: 50%; color: #fff;
+      background: linear-gradient(135deg, #3b82f6, #8b5cf6); box-shadow: 0 10px 26px rgba(59, 130, 246, 0.45);
+    }
+    .rn-mic svg { width: 24px; height: 24px; }
+    .rn-mic.live { animation: rn-pulse 1.3s ease-in-out infinite; background: linear-gradient(135deg, #ef4444, #f97316); }
+    @keyframes rn-pulse { 0%, 100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.5); } 50% { box-shadow: 0 0 0 14px rgba(239, 68, 68, 0); } }
+    .rn-tip { margin: 0; text-align: center; color: var(--r-dim); font-size: 12.5px; }
+    .rn-stt-box { min-height: 70px; }
+    .rn-add { display: flex; align-items: center; gap: 10px; font-size: 12.5px; direction: rtl; cursor: pointer; }
+    .rn-row { display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 10px 4px; border-bottom: 1px solid var(--r-border); }
+    .rn-row:last-child { border-bottom: 0; }
+    .rn-row b { display: block; font-size: 13.5px; }
+    .rn-row small { display: block; margin-top: 2px; color: var(--r-dim); font-size: 12px; line-height: 1.7; }
+    .rn-switch { position: relative; flex: 0 0 auto; width: 42px; height: 24px; direction: ltr; display: inline-block; }
+    .rn-switch input { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; opacity: 0; cursor: pointer; z-index: 1; }
+    .rn-slider { position: absolute; inset: 0; border-radius: 24px; background: rgba(148, 163, 184, 0.35); transition: background 0.2s ease; }
+    .rn-slider::before { content: ""; position: absolute; left: 3px; top: 3px; width: 18px; height: 18px; border-radius: 50%; background: #fff; transition: transform 0.2s ease; }
+    .rn-switch input:checked + .rn-slider { background: linear-gradient(135deg, #3b82f6, #8b5cf6); }
+    .rn-switch input:checked + .rn-slider::before { transform: translateX(18px); }
+    .rn-switch input:focus-visible + .rn-slider, .rn-mic:focus-visible { outline: 2px solid var(--r-accent); outline-offset: 2px; }
+    .rn-foot { margin-top: 12px; text-align: center; color: var(--r-dim); font-size: 11.5px; }
+
+    .ex { position: relative; z-index: 1; display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 8px; margin-top: 14px; }
+    .ex span { color: var(--muted); font-size: 12.5px; }
+    .ex button {
+      padding: 7px 14px; border: 1px solid var(--line); border-radius: 999px; background: rgba(255, 255, 255, 0.05);
+      color: var(--text); font-family: inherit; font-size: 12.5px; cursor: pointer; direction: ltr; transition: background 0.2s ease, border-color 0.2s ease;
+    }
+    .ex button:hover { background: rgba(255, 255, 255, 0.1); border-color: rgba(96, 165, 250, 0.5); }
+
+    .mock-note { position: relative; z-index: 1; max-width: 640px; margin: 12px auto 0; color: var(--muted); font-size: 12.5px; line-height: 1.7; text-align: center; }
+
+    @media (max-width: 640px) {
+      .rn { padding: 12px; }
+      .rn-cols { grid-template-columns: 1fr; }
+      .rn-body { height: 470px; }
+      .rn-tabs { justify-content: flex-start; }
+      .rn-hint { display: none; }
+      .rn-bar { justify-content: center; }
+    }
+
+    section.block {
+      margin-top: 38px;
+      scroll-margin-top: 18px;
+    }
+
+    .head {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 12px;
+      margin: 0 4px 14px;
+    }
+
+    .head h2 {
+      font-size: 26px;
+      letter-spacing: -0.03em;
+    }
+
+    .head span {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 14px;
+    }
+
+    .grid.three {
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    }
+
+    .grid.cols3 {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    @media (max-width: 900px) {
+      .grid.cols3 {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 560px) {
+      .grid.cols3 {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    .card {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      padding: 20px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: linear-gradient(145deg, rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0.04));
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      backdrop-filter: blur(18px);
+      transition: transform 180ms ease, border-color 180ms ease;
+    }
+
+    .card:hover {
+      transform: translateY(-3px);
+      border-color: rgba(96, 165, 250, 0.42);
+    }
+
+    .card-top {
+      display: flex;
+      align-items: center;
+      gap: 13px;
+    }
+
+    .icon {
+      position: relative;
+      width: 46px;
+      height: 46px;
+      flex: 0 0 auto;
+      display: grid;
+      place-items: center;
+      border-radius: 15px;
+      color: var(--ink);
+      background: linear-gradient(135deg, #7db4ff, #a78bfa);
+      box-shadow: 0 14px 30px rgba(96, 165, 250, 0.25);
+    }
+
+    .icon.alt {
+      background: linear-gradient(135deg, #a78bfa, #60a5fa);
+      box-shadow: 0 14px 30px rgba(167, 139, 250, 0.22);
+    }
+
+    .icon svg {
+      width: 22px;
+      height: 22px;
+    }
+
+    .step-num {
+      margin-inline-start: auto;
+      color: rgba(96, 165, 250, 0.28);
+      font-size: 38px;
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      line-height: 1;
+    }
+
+    .card-name {
+      font-size: 17px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    .card-desc {
+      color: var(--muted);
+      font-size: 14.5px;
+      line-height: 1.75;
+    }
+
+    .faq {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .faq-item {
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.05);
+      transition: border-color 240ms ease, background 240ms ease;
+    }
+
+    .faq-item:hover {
+      border-color: rgba(96, 165, 250, 0.28);
+    }
+
+    .faq-item.open {
+      border-color: rgba(96, 165, 250, 0.4);
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .faq-q {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 16px 20px;
+      border: none;
+      border-radius: 20px;
+      background: none;
+      color: var(--text);
+      font-family: inherit;
+      font-size: 15px;
+      font-weight: 700;
+      text-align: start;
+      cursor: pointer;
+    }
+
+    .faq-q:focus-visible {
+      outline-offset: -2px;
+    }
+
+    .faq-icon {
+      position: relative;
+      width: 14px;
+      height: 14px;
+      flex: 0 0 auto;
+      transition: transform 340ms cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+
+    .faq-icon::before,
+    .faq-icon::after {
+      content: "";
+      position: absolute;
+      inset-inline: 0;
+      top: 50%;
+      height: 2px;
+      margin-top: -1px;
+      border-radius: 2px;
+      background: var(--cyan);
+      transition: transform 340ms cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+
+    .faq-icon::after {
+      transform: rotate(90deg);
+    }
+
+    .faq-item.open .faq-icon {
+      transform: rotate(180deg);
+    }
+
+    .faq-item.open .faq-icon::after {
+      transform: rotate(0deg);
+    }
+
+    .faq-panel {
+      display: grid;
+      grid-template-rows: 0fr;
+      opacity: 0;
+      visibility: hidden;
+      transition: grid-template-rows 360ms cubic-bezier(0.2, 0.8, 0.2, 1), opacity 240ms ease, visibility 0s linear 360ms;
+    }
+
+    .faq-item.open .faq-panel {
+      grid-template-rows: 1fr;
+      opacity: 1;
+      visibility: visible;
+      transition: grid-template-rows 360ms cubic-bezier(0.2, 0.8, 0.2, 1), opacity 300ms ease 60ms, visibility 0s;
+    }
+
+    .faq-inner {
+      min-height: 0;
+      overflow: hidden;
+    }
+
+    .faq .answer {
+      padding: 0 20px 18px;
+      color: var(--muted);
+      font-size: 14.5px;
+      line-height: 1.8;
+    }
+
+    .closing {
+      display: flex;
+      align-items: center;
+      gap: 22px;
+      padding: 28px;
+    }
+
+    .closing img {
+      width: 72px;
+      height: 72px;
+      flex: 0 0 auto;
+      border-radius: 20px;
+      box-shadow: 0 16px 40px rgba(96, 165, 250, 0.35);
+      -webkit-user-drag: none;
+    }
+
+    .closing-text {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      min-width: 0;
+    }
+
+    .closing h2 {
+      font-size: 26px;
+      letter-spacing: -0.03em;
+    }
+
+    .closing p {
+      max-width: 520px;
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.75;
+    }
+
+    .closing .cta-row {
+      margin-top: 8px;
+    }
+
+    .footer {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+      margin-top: 40px;
+      text-align: center;
+    }
+
+    .made {
+      color: var(--text);
+      font-size: 15px;
+      font-weight: 600;
+    }
+
+    .heart {
+      display: inline-block;
+      width: 15px;
+      height: 15px;
+      margin: 0 3px;
+      vertical-align: -2px;
+      color: var(--pink);
+      animation: beat 1.8s ease-in-out infinite;
+    }
+
+    @keyframes beat {
+      0%, 60%, 100% { transform: scale(1); }
+      20% { transform: scale(1.22); }
+      40% { transform: scale(1.06); }
+    }
+
+    .legal {
+      color: var(--muted);
+      font-size: 12.5px;
+      opacity: 0.8;
+    }
+
+    .home-link {
+      padding-bottom: 2px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.24);
+      color: var(--muted);
+      font-size: 15px;
+      letter-spacing: -0.01em;
+      transition: color 180ms ease, border-color 180ms ease;
+    }
+
+    .home-link:hover {
+      color: var(--text);
+      border-color: rgba(96, 165, 250, 0.55);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      body { animation: none; }
+      .gradient-text { animation: none; }
+      .heart { animation: none; }
+      .rn, .rn-tabs button, .rn-b, .rn-slider, .rn-slider::before { transition: none !important; }
+      .rn-mic.live { animation: none; }
+      .faq-item, .faq-icon, .faq-icon::before, .faq-icon::after, .faq-panel, .card, .btn { transition: none !important; }
+    }
+
+    @media (max-width: 560px) {
+      .page { width: min(100% - 22px, 1080px); padding-top: 18px; }
+      .hero, .closing { padding: 16px; border-radius: 28px; }
+      .intro { gap: 18px; }
+      .head { flex-direction: column; align-items: flex-start; gap: 2px; }
+      .btn { width: 100%; }
+      .closing { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+
+    <section class="hero glass">
+      <div class="intro">
+        <div class="topline">
+          <a class="pill-btn" href="index.html" id="back-link">
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 3 5 8l5 5"/></svg>
+            <span id="back-text"></span>
+          </a>
+          <button type="button" class="pill-btn lang-toggle" id="lang-toggle" aria-label="Switch language">EN / فا</button>
+        </div>
+        <div class="brand">
+          <img src="rastnevis-logo.png" alt="" width="64" height="64" draggable="false">
+          <h1><span class="gradient-text" id="hero-title"></span></h1>
+        </div>
+        <p class="pitch" id="hero-pitch"></p>
+        <div class="tags" id="hero-tags"></div>
+        <div class="cta-row">
+          <a class="btn primary" data-dl href="https://github.com/actually-aloy/rastnevis/releases/latest">
+            <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M.5 9.9a.5.5 0 0 1 .5.5v2.1a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.1a.5.5 0 0 1 1 0v2.1a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.1a.5.5 0 0 1 .5-.5"/><path d="M7.5 10.29V1.5a.5.5 0 0 1 1 0v8.79l2.15-2.15a.5.5 0 0 1 .7.71l-3 3a.5.5 0 0 1-.7 0l-3-3a.5.5 0 1 1 .7-.71z"/></svg>
+            <span data-dl-label></span>
+          </a>
+          <a class="btn" href="https://github.com/actually-aloy/rastnevis" target="_blank" rel="noopener noreferrer">
+            <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8"/></svg>
+            <span id="cta-github"></span>
+          </a>
+        </div>
+        <p class="dl-meta" id="dl-meta" hidden></p>
+      </div>
+
+      <div class="stage">
+        <div class="rn" id="mock" data-theme="dark" dir="rtl">
+          <div class="rn-head">
+            <div class="rn-brand">
+              <img src="rastnevis-logo.png" alt="" width="40" height="40" draggable="false">
+              <div><b>راست‌نویس</b><small>تبدیل فینگلیش به فارسی، آفلاین و دقیق</small></div>
+            </div>
+            <button type="button" class="rn-sun" id="rn-theme" aria-label="Light / dark">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+            </button>
+          </div>
+          <div class="rn-tabs" role="tablist">
+            <button type="button" role="tab" class="on" data-tab="conv" aria-selected="true">تبدیل‌کننده</button>
+            <button type="button" role="tab" data-tab="stt" aria-selected="false">گفتار به متن</button>
+            <button type="button" role="tab" data-tab="guide" aria-selected="false">راهنما</button>
+            <button type="button" role="tab" data-tab="set" aria-selected="false">تنظیمات</button>
+          </div>
+          <div class="rn-body">
+            <section class="rn-panel" id="rn-conv">
+              <div class="rn-cols">
+                <div class="rn-col">
+                  <div class="rn-lab"><span>فینگلیش</span><small id="rn-cin"></small></div>
+                  <textarea class="rn-box in" id="rn-in" spellcheck="false" placeholder="...متن فینگلیش را اینجا وارد کنید" aria-label="Finglish"></textarea>
+                </div>
+                <div class="rn-col">
+                  <div class="rn-lab"><span>فارسی</span><small id="rn-cout"></small></div>
+                  <div class="rn-box out" id="rn-out" role="status" aria-live="polite" data-ph="متن تبدیل شده اینجا نمایش داده می‌شود"></div>
+                </div>
+              </div>
+              <div class="rn-bar">
+                <button type="button" class="rn-b" id="rn-clear">پاک کردن</button>
+                <div class="rn-mid"><span class="rn-hint">Ctrl+Enter برای تبدیل سریع</span><button type="button" class="rn-b go" id="rn-go">تبدیل کن ←</button></div>
+                <button type="button" class="rn-b cp" id="rn-copy">کپی متن فارسی</button>
+              </div>
+            </section>
+            <section class="rn-panel" id="rn-stt" hidden>
+              <div class="rn-stt-top">
+                <span class="rn-status" id="rn-st">آماده</span>
+                <button type="button" class="rn-mic" id="rn-mic" aria-label="Microphone"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0"/><path d="M12 18v3"/></svg></button>
+              </div>
+              <p class="rn-tip" id="rn-tip">برای شروع ضبط، روی میکروفون کلیک کن</p>
+              <div class="rn-lab"><span>متن</span><small id="rn-sc"></small></div>
+              <div class="rn-box out rn-stt-box" id="rn-sout" data-ph=""></div>
+              <div class="rn-bar">
+                <button type="button" class="rn-b" id="rn-sclear">پاک کردن</button>
+                <label class="rn-add"><span>افزودن به متن</span><span class="rn-switch"><input type="checkbox" id="rn-add" aria-label="Add to text"><span class="rn-slider"></span></span></label>
+                <button type="button" class="rn-b cp" id="rn-scopy">کپی متن</button>
+              </div>
+            </section>
+            <section class="rn-panel" id="rn-guide" hidden>
+              <div class="rn-gd" id="rn-gd"></div>
+            </section>
+            <section class="rn-panel" id="rn-set" hidden>
+              <div class="rn-row"><div><b>انیمیشن‌ها</b><small>جلوه‌های تصویری، تار شدن پس‌زمینه و انیمیشن‌های متحرک. خاموش کردنش مصرف منابع برنامه رو کاهش می‌ده.</small></div><label class="rn-switch"><input type="checkbox" id="rn-s1" aria-label="انیمیشن‌ها" checked><span class="rn-slider"></span></label></div>
+              <div class="rn-row"><div><b>اجرای خودکار با ویندوز</b><small>راست‌نویس با روشن شدن ویندوز به‌صورت خودکار اجرا بشه.</small></div><label class="rn-switch"><input type="checkbox" id="rn-s2" aria-label="اجرای خودکار با ویندوز"><span class="rn-slider"></span></label></div>
+              <div class="rn-row"><div><b>کوچک‌شدن در سینی سیستم</b><small>با زدن دکمه بستن، برنامه بسته نشه و به سینی سیستم (Tray) بره.</small></div><label class="rn-switch"><input type="checkbox" id="rn-s3" aria-label="کوچک‌شدن در سینی سیستم"><span class="rn-slider"></span></label></div>
+              <div class="rn-row"><div><b>شروع به‌صورت کوچک‌شده</b><small>در اجرای بعدی، برنامه مستقیم توی سینی سیستم باز بشه، بدون نمایش پنجره.</small></div><label class="rn-switch"><input type="checkbox" id="rn-s4" aria-label="شروع به‌صورت کوچک‌شده"><span class="rn-slider"></span></label></div>
+            </section>
+          </div>
+          <div class="rn-foot" dir="ltr">t.me/actually_aloy • v3.6</div>
+        </div>
+        <div class="ex" id="rn-ex"></div>
+        <p class="mock-note" id="mock-note"></p>
+      </div>
+    </section>
+
+    <section class="block" id="how">
+      <div class="head">
+        <h2 id="how-title"></h2>
+        <span id="how-sub"></span>
+      </div>
+      <div class="grid three" id="how-grid"></div>
+    </section>
+
+    <section class="block" id="features">
+      <div class="head">
+        <h2 id="feat-title"></h2>
+        <span id="feat-sub"></span>
+      </div>
+      <div class="grid cols3" id="feat-grid"></div>
+    </section>
+
+    <section class="block" id="faq">
+      <div class="head">
+        <h2 id="faq-title"></h2>
+        <span id="faq-sub"></span>
+      </div>
+      <div class="faq" id="faq-list"></div>
+    </section>
+
+    <section class="block">
+      <div class="closing glass">
+        <img src="rastnevis-logo.png" alt="" width="72" height="72" draggable="false">
+        <div class="closing-text">
+          <h2 id="end-title"></h2>
+          <p id="end-text"></p>
+          <div class="cta-row">
+            <a class="btn primary" data-dl href="https://github.com/actually-aloy/rastnevis/releases/latest">
+              <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M.5 9.9a.5.5 0 0 1 .5.5v2.1a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.1a.5.5 0 0 1 1 0v2.1a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.1a.5.5 0 0 1 .5-.5"/><path d="M7.5 10.29V1.5a.5.5 0 0 1 1 0v8.79l2.15-2.15a.5.5 0 0 1 .7.71l-3 3a.5.5 0 0 1-.7 0l-3-3a.5.5 0 1 1 .7-.71z"/></svg>
+              <span data-dl-label></span>
+            </a>
+            <a class="btn" href="https://discord.gg/JqrBUYEM8n" target="_blank" rel="noopener noreferrer">
+              <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M13.545 2.907a13.2 13.2 0 0 0-3.257-1.011.05.05 0 0 0-.052.025c-.141.25-.297.577-.406.833a12.2 12.2 0 0 0-3.658 0 8 8 0 0 0-.412-.833.05.05 0 0 0-.052-.025c-1.125.194-2.22.534-3.257 1.011a.04.04 0 0 0-.021.018C.356 6.024-.213 9.047.066 12.032q.003.022.021.037a13.3 13.3 0 0 0 3.995 2.02.05.05 0 0 0 .056-.019q.463-.63.818-1.329a.05.05 0 0 0-.01-.059l-.018-.011a9 9 0 0 1-1.248-.595.05.05 0 0 1-.02-.066l.015-.019q.127-.095.248-.195a.05.05 0 0 1 .051-.007c2.619 1.196 5.454 1.196 8.041 0a.05.05 0 0 1 .053.007q.121.1.248.195a.05.05 0 0 1-.004.085 8 8 0 0 1-1.249.594.05.05 0 0 0-.03.03.05.05 0 0 0 .003.041c.24.465.515.909.817 1.329a.05.05 0 0 0 .056.019 13.2 13.2 0 0 0 4.001-2.02.05.05 0 0 0 .021-.037c.334-3.451-.559-6.449-2.366-9.106a.03.03 0 0 0-.02-.019m-8.198 7.307c-.789 0-1.438-.724-1.438-1.612s.637-1.613 1.438-1.613c.807 0 1.45.73 1.438 1.613 0 .888-.637 1.612-1.438 1.612m5.316 0c-.788 0-1.438-.724-1.438-1.612s.637-1.613 1.438-1.613c.807 0 1.451.73 1.438 1.613 0 .888-.631 1.612-1.438 1.612"/></svg>
+              <span id="end-discord"></span>
+            </a>
+            <a class="btn" href="https://t.me/actually_aloy" target="_blank" rel="noopener noreferrer">
+              <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8.287 5.906q-1.168.486-4.666 2.01-.567.225-.595.442c-.03.243.275.339.69.47l.175.055c.408.133.958.288 1.243.294q.39.01.868-.32 3.269-2.206 3.374-2.23c.05-.012.12-.026.166.016s.042.12.037.141c-.03.129-1.227 1.241-1.846 1.817-.193.18-.33.307-.358.336a8 8 0 0 1-.188.186c-.38.366-.664.64.015 1.088.327.216.589.393.85.571.284.194.568.387.936.629q.14.092.27.187c.331.236.63.448.997.414.214-.02.435-.22.547-.82.265-1.417.786-4.486.906-5.751a1.4 1.4 0 0 0-.013-.315.34.34 0 0 0-.114-.217.53.53 0 0 0-.31-.093c-.3.005-.763.166-2.984 1.09"/></svg>
+              <span id="end-telegram"></span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="footer">
+      <a class="home-link" href="index.html" id="footer-home"></a>
+      <p class="made" id="made-by"></p>
+      <p class="legal" dir="ltr">© 2026 Aloy</p>
+    </div>
+  </main>
+
+  <script src="releases.js"></script>
+  <script>
+    (function () {
+      var host = location.hostname;
+      var local = host === 'localhost' || host === '127.0.0.1' || /^[\d.]+$/.test(host) || host.charAt(0) === '[';
+      if (local || !/^https?:$/.test(location.protocol)) return;
+      var clean = location.pathname.replace(/\/index\.html$/, '/').replace(/\.html$/, '');
+      if (clean !== location.pathname) history.replaceState(null, '', clean + location.search + location.hash);
+    })();
+
+    const REPO = 'actually-aloy/rastnevis';
+
+    const ICO = {
+      download: '<path d="M12 4v11"/><path d="M7.5 10.5 12 15l4.5-4.5"/><path d="M5 19h14"/>',
+      window: '<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18"/>',
+      pen: '<path d="M4 20l4-1 11-11-3-3L5 16z"/><path d="M14 6l3 3"/>',
+      book: '<path d="M5 4h10a3 3 0 0 1 3 3v13H8a3 3 0 0 1-3-3z"/><path d="M5 17a3 3 0 0 1 3-3h10"/>',
+      mic: '<rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0"/><path d="M12 18v3"/>',
+      list: '<path d="M9 6h11M9 12h11M9 18h11"/><circle cx="4.5" cy="6" r="1" fill="currentColor" stroke="none"/><circle cx="4.5" cy="12" r="1" fill="currentColor" stroke="none"/><circle cx="4.5" cy="18" r="1" fill="currentColor" stroke="none"/>',
+      sparkle: '<path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/>',
+      tray: '<rect x="3" y="7" width="18" height="13" rx="2"/><path d="M3 13h5l1.5 2h5L16 13h5"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>',
+      shield: '<path d="M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6z"/><path d="M9 12l2 2 4-4"/>',
+      moon: '<path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/>'
+    };
+
+    const svg = (name, sw) => '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="' + (sw || 2) + '" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + ICO[name] + '</svg>';
+
+    const HEART = '<svg class="heart" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 21s-7.5-4.6-9.6-9.2C.9 8.4 2.7 5 6 5c2 0 3.4 1 4.4 2.5.5.7 1.2.7 1.7 0C13.1 6 14.5 5 16.5 5c3.3 0 5.1 3.4 3.6 6.8C19.5 16.4 12 21 12 21z"/></svg>';
+
+    const EXAMPLES = ['salam chetori? man khubam', 'emruz kheili kar daram', 'ketab ha ro bebin', 'PC va internet'];
+
+    const GUIDE = {
+      steps: ['جستجوی کلمه در دیکشنری داخلی', 'حروف چندکاراکتری با اولویت بلندتر', 'حروف تک‌کاراکتری'],
+      multi: ['kh خ', 'sh ش', 'ch چ', 'zh ژ', 'gh غ', 'ph ف', 'th ث', 'ee ی', 'oo و', 'aa آ / ا'],
+      single: ['b ب', 'p پ', 't ت', 's س', 'j ج', 'h ه', 'd د', 'z ز', 'r ر', 'v و', 'y ی', 'f ف', 'q ق', 'k ک', 'g گ', 'l ل', 'm م', 'n ن', 'c ک', 'x خ', 'w و', 'u و', 'o و', 'i ی', 'a ا', 'e ه/ا'],
+      notes: ['aa فقط ابتدای کلمه «آ» می‌شه؛ وسط یا آخر کلمه «ا» (aab → آب، salaam → سلام)', 'آپاستروف به «ع» تبدیل می‌شه (jam\'e → جامعه)', 'ha بعد از یک کلمه با نیم‌فاصله بهش می‌چسبه (ketab ha → کتاب‌ها)', 'کلمه‌ی تماماً بزرگ (مثل PC) حرف‌به‌حرف نوشته می‌شه']
+    };
+
+
+    const I18N = {
+      en: {
+        dir: 'ltr',
+        docTitle: 'Rastnevis — Finglish to Persian, offline',
+        back: 'home',
+        heroTitle: 'Rastnevis',
+        pitch: 'Type Persian in plain English letters and get proper Persian text back. Rastnevis converts Finglish to Persian instantly and offline, with a big dictionary and a very good conversion engine behind it, and can also turn your voice into text. No installer, no account.',
+        tags: ['Free', 'Windows', 'Offline', 'Portable'],
+        download: 'Download for Windows',
+        github: 'GitHub',
+        sizeUnit: 'MB',
+        exLabel: 'Try an example:',
+        mockNote: 'A small demo of the app, not the real thing. It only has about a hundred common words and the basic letter rules. The real app adds a dictionary of nearly 5,000 words and a very good conversion engine, so it gets far more right. The app itself is in Persian.',
+        chars: n => n + ' characters',
+        copied: 'کپی شد',
+        howTitle: 'How it works',
+        howSub: 'three steps, about a minute',
+        how: [
+          ['download', 'Download and extract', 'Grab the zip with the button above and extract it anywhere. There is no installer.'],
+          ['window', 'Open rastnevis.exe', 'Double-click rastnevis.exe. Your settings are saved in a small file next to it.'],
+          ['pen', 'Type Finglish', 'Write something like salam chetori in the left box and press Ctrl+Enter. The Persian text appears on the right, ready to copy.']
+        ],
+        featTitle: 'What it does',
+        featSub: 'the useful parts',
+        feat: [
+          ['book', 'Dictionary, then a smart engine', 'Every word is looked up in a built-in dictionary of nearly 5,000 words first. Words it does not know go to a very good conversion engine, and only then to the plain letter rules, so results are far better than letter-by-letter.'],
+          ['mic', 'Speech to text, offline', 'Press the microphone and talk. Recognition runs on your PC with a Persian speech model, so your voice never leaves it. The model is a one-time download.'],
+          ['list', 'New words report', 'Paste a Finglish text and the app lists the words that are not in the dictionary. Copy them and send them to Aloy on Telegram to get them added.'],
+          ['sparkle', 'Small details done right', 'ALL CAPS is read letter by letter, ha joins the word before it with a half-space, an apostrophe becomes ع, digits turn Persian, and web addresses are left untouched.'],
+          ['tray', 'Stays out of the way', 'Minimize to the system tray, start minimized and launch with Windows if you like. Opening it a second time just brings the first window forward.'],
+          ['moon', 'Light and dark', 'The theme follows Windows the first time and is yours to switch. A switch turns off the animations and blur to save resources on slower PCs.']
+        ],
+        faqTitle: 'Questions',
+        faqSub: 'the usual ones',
+        faq: [
+          ['Is it free?', 'Yes, it is free to download and use.'],
+          ['What does it run on?', 'Windows. Starting with Windows and the system tray rely on Windows features.'],
+          ['How do I install it?', 'There is nothing to install. Extract the zip anywhere and double-click rastnevis.exe.'],
+          ['Does it need the internet?', 'No. Conversion and speech to text both work offline, and your voice is never sent anywhere. The only thing you download is the speech model, once, from your browser.'],
+          ['How does the conversion work?', 'It looks each word up in the built-in dictionary first. If it is not there, a very good built-in conversion engine takes a guess. The letter rules (multi-letter groups such as kh, sh, ch and gh win over single letters) are the last step.'],
+          ['Why did a word come out wrong?', 'Finglish is spelled in many ways, so no converter gets everything right. Use the New words report to list the words the dictionary does not know, then send them to Aloy on Telegram and they can be added in a later version.'],
+          ['Are there special rules?', 'Yes. aa becomes آ only at the start of a word, an apostrophe becomes ع (jam\'e → جامعه), ha after a word joins it with a half-space (ketab ha → کتاب‌ها), a fully capitalized word is spelled letter by letter, digits become Persian digits, and commas and question marks become Persian ones.'],
+          ['How do I set up speech to text?', 'Once only. Download a small Persian speech model, using the link in the app\'s own setup guide. Extract it so you get a folder, put that folder in the models folder next to the app, and press the recheck button. The Speech to text tab has a step-by-step guide with buttons that open the download page and the folder.'],
+          ['What does "Add to text" do?', 'When it is off, every recording replaces the previous text. When it is on, new speech is added to the end of what you already have.'],
+          ['Where are my settings?', 'In rastnevis_data.json next to the app. It keeps your theme, your switches and the last speech text, so moving the folder moves them too.'],
+          ['How do updates work?', 'Download the newest zip from this page and extract it over the old folder. Keep your models folder and rastnevis_data.json so you do not have to set things up again.']
+        ],
+        endTitle: 'Start typing',
+        endText: 'Free, offline, and ready in a minute. Missing a word, or found a bug? Tell me in the Discord server or on Telegram.',
+        endDiscord: 'Discord server',
+        endTelegram: 'Telegram',
+        footerHome: 'Back to the main page',
+        madeBy: 'Typed out with {heart} by Aloy'
+      },
+      fa: {
+        dir: 'rtl',
+        docTitle: 'راست‌نویس — تبدیل فینگلیش به فارسی، آفلاین',
+        back: 'خانه',
+        heroTitle: 'راست‌نویس',
+        pitch: 'فارسی رو با حروف انگلیسی تایپ کن و متن فارسی درست تحویل بگیر. راست‌نویس فینگلیش رو فوری و آفلاین به فارسی تبدیل می‌کنه، با یه دیکشنری بزرگ و یه موتور تبدیل واقعاً خوب پشتش، و می‌تونه صدات رو هم به متن تبدیل کنه. بدون نصب و بدون اکانت.',
+        tags: ['رایگان', 'ویندوز', 'آفلاین', 'قابل‌حمل'],
+        download: 'دانلود برای ویندوز',
+        github: 'گیت‌هاب',
+        sizeUnit: 'مگابایت',
+        exLabel: 'یه مثال امتحان کن:',
+        mockNote: 'یه نمونه‌ی کوچیک از برنامه‌ست، نه خودش. اینجا فقط حدود صد کلمه‌ی رایج و قوانین پایه‌ی حروف هست. برنامه‌ی اصلی یه دیکشنری نزدیک به ۵۰۰۰ کلمه‌ای و یه موتور تبدیل واقعاً خوب هم داره، برای همین خیلی بیشتر رو درست تبدیل می‌کنه.',
+        chars: n => String(n).replace(/[0-9]/g, d => '۰۱۲۳۴۵۶۷۸۹'[d]) + ' کاراکتر',
+        copied: 'کپی شد',
+        howTitle: 'چطوری کار می‌کنه',
+        howSub: 'سه قدم، حدود یه دقیقه',
+        how: [
+          ['download', 'دانلود و بازکردن زیپ', 'فایل زیپ رو با دکمه‌ی بالا بگیر و هرجا خواستی از حالت فشرده دربیار. نصب‌کننده‌ای در کار نیست.'],
+          ['window', 'rastnevis.exe رو اجرا کن', 'روی rastnevis.exe دوبار کلیک کن. تنظیماتت تو یه فایل کوچیک کنار برنامه ذخیره می‌شه.'],
+          ['pen', 'فینگلیش بنویس', 'یه چیزی مثل salam chetori تو کادر چپ بنویس و Ctrl+Enter رو بزن. متن فارسی سمت راست میاد، آماده‌ی کپی.']
+        ],
+        featTitle: 'چیکار می‌کنه',
+        featSub: 'بخش‌های به‌دردبخور',
+        feat: [
+          ['book', 'اول دیکشنری، بعد یه موتور هوشمند', 'هر کلمه اول تو یه دیکشنری داخلی نزدیک به ۵۰۰۰ کلمه‌ای جستجو می‌شه. کلمه‌هایی که نمی‌شناسه می‌رن سراغ یه موتور تبدیل واقعاً خوب، و فقط بعدش قوانین ساده‌ی حروف میان، پس نتیجه خیلی بهتر از حرف‌به‌حرف نوشتنه.'],
+          ['mic', 'گفتار به متن، آفلاین', 'روی میکروفون بزن و حرف بزن. تشخیص صدا با یه مدل گفتاری فارسی روی خود کامپیوترت انجام می‌شه، پس صدات از کامپیوترت بیرون نمیره. مدل رو فقط یه بار دانلود می‌کنی.'],
+          ['list', 'گزارش لغات جدید', 'یه متن فینگلیش بچسبون تا برنامه کلمه‌هایی که تو دیکشنری نیستن رو لیست کنه. کپیشون کن و تو تلگرام برای آلوی بفرست تا اضافه بشن.'],
+          ['sparkle', 'جزئیات کوچیک، درست', 'کلمه‌های تماماً بزرگ حرف‌به‌حرف خونده می‌شن، ha با نیم‌فاصله به کلمه‌ی قبلی می‌چسبه، آپاستروف می‌شه ع، عددها فارسی می‌شن و آدرس سایت‌ها دست‌نخورده می‌مونن.'],
+          ['tray', 'سر راهت نمی‌ایسته', 'می‌تونی کوچیکش کنی تو سینی سیستم، کوچیک‌شده شروع بشه و با ویندوز بالا بیاد. اگه دوباره بازش کنی فقط پنجره‌ی اولی میاد جلو.'],
+          ['moon', 'روشن و تاریک', 'تم بار اول از ویندوز پیروی می‌کنه و بعدش دست خودته. یه کلید هم انیمیشن‌ها و بلور رو برای سیستم‌های کندتر خاموش می‌کنه.']
+        ],
+        faqTitle: 'سؤال‌ها',
+        faqSub: 'همون‌هایی که معمولاً می‌پرسن',
+        faq: [
+          ['رایگانه؟', 'آره، دانلود و استفاده‌اش رایگانه.'],
+          ['رو چی کار می‌کنه؟', 'ویندوز. اجرای خودکار با ویندوز و سینی سیستم از امکانات خود ویندوز استفاده می‌کنن.'],
+          ['چطوری نصبش کنم؟', 'نصبی در کار نیست. زیپ رو هرجا خواستی باز کن و روی rastnevis.exe دوبار کلیک کن.'],
+          ['اینترنت می‌خواد؟', 'نه. تبدیل متن و گفتار به متن هر دو آفلاین کار می‌کنن و صدات جایی فرستاده نمی‌شه. تنها چیزی که دانلود می‌کنی مدل گفتاره، یه بار و از مرورگر خودت.'],
+          ['تبدیل چطوری کار می‌کنه؟', 'هر کلمه اول تو دیکشنری داخلی دنبال می‌شه. اگه نبود، یه موتور تبدیل واقعاً خوبِ داخلی حدسش رو می‌زنه. قوانین حروف آخرین مرحله‌ان (گروه‌های چندحرفی مثل kh، sh، ch و gh بر حروف تکی اولویت دارن).'],
+          ['چرا یه کلمه غلط درومد؟', 'فینگلیش به روش‌های زیادی نوشته می‌شه و هیچ مبدلی همه‌چی رو درست نمی‌زنه. از «گزارش لغات جدید» استفاده کن تا کلمه‌هایی که دیکشنری نمی‌شناسه لیست بشن، بعد تو تلگرام برای آلوی بفرستشون تا تو نسخه‌ی بعدی اضافه بشن.'],
+          ['قانون‌های خاصی داره؟', 'آره. aa فقط ابتدای کلمه «آ» می‌شه، آپاستروف می‌شه «ع» (jam\'e → جامعه)، ha بعد از یه کلمه با نیم‌فاصله بهش می‌چسبه (ketab ha → کتاب‌ها)، کلمه‌ی تماماً بزرگ حرف‌به‌حرف نوشته می‌شه، عددها فارسی می‌شن و کاما و علامت سؤال هم فارسی می‌شن.'],
+          ['گفتار به متن رو چطوری راه بندازم؟', 'فقط یه بار. یه مدل گفتاری کوچیک فارسی دانلود کن، با لینکی که تو راهنمای نصب خود برنامه هست. بازش کن تا یه پوشه بگیری، اون پوشه رو بذار تو پوشه‌ی models کنار برنامه و دکمه‌ی «بررسی مجدد» رو بزن. تب گفتار به متن یه راهنمای قدم‌به‌قدم داره، با دکمه‌هایی که صفحه‌ی دانلود و پوشه رو باز می‌کنن.'],
+          ['«افزودن به متن» چیکار می‌کنه؟', 'وقتی خاموشه، هر ضبط جدید جای متن قبلی رو می‌گیره. وقتی روشنه، حرف‌های جدید به انتهای متنی که داری اضافه می‌شن.'],
+          ['تنظیماتم کجاست؟', 'تو rastnevis_data.json کنار برنامه. تم، کلیدها و آخرین متن گفتاری اونجا نگه‌داری می‌شن، پس اگه پوشه رو جابه‌جا کنی همراهش می‌آد.'],
+          ['آپدیت‌ها چطوری‌ان؟', 'جدیدترین زیپ رو از همین صفحه بگیر و روی پوشه‌ی قبلی باز کن. پوشه‌ی models و rastnevis_data.json رو نگه دار تا مجبور نشی دوباره همه‌چی رو تنظیم کنی.']
+        ],
+        endTitle: 'شروع کن به تایپ',
+        endText: 'رایگانه، آفلاینه و تو یه دقیقه آماده‌ست. کلمه‌ای کم بود یا باگی دیدی؟ تو سرور دیسکورد یا تلگرام بگو.',
+        endDiscord: 'سرور دیسکورد',
+        endTelegram: 'تلگرام',
+        footerHome: 'بازگشت به صفحه‌ی اصلی',
+        madeBy: 'این راست‌نویس رو آلوی با {heart} تایپ کرده'
+      }
+    };
+
+    const $ = id => document.getElementById(id);
+    const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+    const PERSIAN_DIGITS = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
+    const LATIN_RE = /[A-Za-z][A-Za-z0-9._@+'’\/-]*(?:[  ][A-Za-z][A-Za-z0-9._@+'’\/-]*)*/g;
+
+    let currentLang = localStorage.getItem('lang') === 'en' ? 'en' : 'fa';
+
+    const tx = s => {
+      if (currentLang !== 'fa') return esc(s);
+      let out = '', last = 0, m;
+      LATIN_RE.lastIndex = 0;
+      while ((m = LATIN_RE.exec(s))) {
+        out += esc(s.slice(last, m.index)) + '<bdi>' + esc(m[0]) + '</bdi>';
+        last = m.index + m[0].length;
+      }
+      return out + esc(s.slice(last));
+    };
+    const setTx = (id, s) => { $(id).innerHTML = tx(s); };
+    const fmt = n => currentLang === 'fa' ? String(n).replace(/[0-9]/g, d => PERSIAN_DIGITS[d]) : String(n);
+
+    const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const DICT = {"salam": "سلام", "chetori": "چطوری", "chetorid": "چطورید", "chetor": "چطور", "khoobi": "خوبی", "khubam": "خوبم", "khoob": "خوب", "man": "من", "to": "تو", "shoma": "شما", "mamnun": "ممنون", "merci": "مرسی", "mersi": "مرسی", "doost": "دوست", "dari": "داری", "daram": "دارم", "ketab": "کتاب", "hast": "هست", "hastam": "هستم", "emruz": "امروز", "farda": "فردا", "khodahafez": "خداحافظ", "khodafez": "خداحافظ", "biya": "بیا", "miam": "میام", "mikham": "می‌خوام", "mikonam": "می‌کنم", "kardi": "کردی", "ghashang": "قشنگ", "kheili": "خیلی", "kheyli": "خیلی", "yek": "یک", "ruz": "روز", "shab": "شب", "sobh": "صبح", "bekheir": "به‌خیر", "che": "چه", "chi": "چی", "koja": "کجا", "alan": "الان", "inja": "اینجا", "bale": "بله", "na": "نه", "lotfan": "لطفاً", "vaght": "وقت", "dars": "درس", "kar": "کار", "ro": "رو", "ra": "را", "hamin": "همین", "ham": "هم", "ba": "با", "ke": "که", "in": "این", "un": "اون", "va": "و", "dar": "در", "az": "از", "be": "به", "baraye": "برای", "nist": "نیست", "mishe": "میشه", "bayad": "باید", "shayad": "شاید", "hatman": "حتماً", "albate": "البته", "vali": "ولی", "agar": "اگر", "chera": "چرا", "hamishe": "همیشه", "besiar": "بسیار", "kam": "کم", "jadid": "جدید", "sakht": "سخت", "rastnevis": "راست نویس", "matn": "متن", "tabdil": "تبدیل", "telegram": "تلگرام", "internet": "اینترنت", "offline": "آفلاین", "emshab": "امشب", "hal": "حال", "azizam": "عزیزم", "jan": "جان", "baba": "بابا", "bebakhshid": "ببخشید", "dorost": "درست", "zood": "زود", "hame": "همه", "bebin": "ببین", "midunam": "میدونم", "fekr": "فکر", "vaghean": "واقعا", "click": "کلیک", "video": "ویدیو", "cheat": "چیت", "pc": "پی سی"};
+
+    const CHAR = { kh: 'خ', sh: 'ش', ch: 'چ', zh: 'ژ', gh: 'غ', ph: 'ف', th: 'ث', ee: 'ی', oo: 'و', aa: 'آ', b: 'ب', p: 'پ', t: 'ت', s: 'س', j: 'ج', h: 'ه', d: 'د', z: 'ز', r: 'ر', v: 'و', y: 'ی', f: 'ف', q: 'ق', k: 'ک', g: 'گ', l: 'ل', m: 'م', n: 'ن', c: 'ک', x: 'خ', w: 'و', u: 'و', o: 'و', i: 'ی', a: 'ا', e: 'ه', "'": 'ع' };
+    const MULTI = Object.keys(CHAR).filter(k => k.length > 1);
+    const LETTERS = { A: 'ای', B: 'بی', C: 'سی', D: 'دی', E: 'ای', F: 'اف', G: 'جی', H: 'اچ', I: 'آی', J: 'جی', K: 'کی', L: 'ال', M: 'ام', N: 'ان', O: 'او', P: 'پی', Q: 'کیو', R: 'آر', S: 'اس', T: 'تی', U: 'یو', V: 'وی', W: 'دابلیو', X: 'اکس', Y: 'وای', Z: 'زِد' };
+    const DIG = '۰۱۲۳۴۵۶۷۸۹';
+    const URL_RE = /^(?:https?:\/\/\S+|www\.\S+|[A-Za-z0-9.-]+\.[A-Za-z]{2,}(?:\/\S*)?)/;
+    const WORD_CH = /[A-Za-z0-9']/;
+
+    function convertWord(word) {
+      if (/^[A-Z]+$/.test(word)) return word.split('').map(c => LETTERS[c] || c).join(' ');
+      if (/^[0-9]+$/.test(word)) return word.replace(/[0-9]/g, d => DIG[d]);
+      let w = word.toLowerCase();
+      if (DICT[w]) return DICT[w];
+      if (w[0] === 'e') w = 'a' + w.slice(1);
+      let out = '', i = 0;
+      while (i < w.length) {
+        const key = MULTI.find(k => w.startsWith(k, i));
+        if (key) {
+          out += key === 'aa' ? (i === 0 ? 'آ' : 'ا') : CHAR[key];
+          i += key.length;
+          continue;
+        }
+        const c = w[i];
+        out += /[0-9]/.test(c) ? DIG[c] : (CHAR[c] || c);
+        i++;
+      }
+      return out;
+    }
+
+    function convertText(raw) {
+      raw = (raw || '').replace(/\n+$/, '');
+      if (!raw.trim()) return '';
+      const res = [];
+      let i = 0;
+      while (i < raw.length) {
+        const m = URL_RE.exec(raw.slice(i));
+        if (m) { res.push(m[0]); i += m[0].length; continue; }
+        if (WORD_CH.test(raw[i])) {
+          const s = i;
+          while (i < raw.length && WORD_CH.test(raw[i])) i++;
+          const word = raw.slice(s, i);
+          const lw = word.toLowerCase();
+          if ((lw === 'ha' || lw === 'haa') && res.length >= 2 && res[res.length - 1] === ' ' && /[؀-ۿ]$/.test(res[res.length - 2])) res[res.length - 1] = '‌';
+          res.push(convertWord(word));
+        } else {
+          res.push(raw[i] === ',' ? '،' : raw[i] === '?' ? '؟' : raw[i]);
+          i++;
+        }
+      }
+      return res.join('').replace(/\s+([،؛؟!])/g, '$1');
+    }
+
+    const faCount = n => String(n).replace(/[0-9]/g, d => DIG[d]) + ' کاراکتر';
+
+    function paintCounts() {
+      $('rn-cin').textContent = faCount($('rn-in').value.length);
+      $('rn-cout').textContent = faCount($('rn-out').textContent.length);
+    }
+
+    function doConvert() {
+      $('rn-out').textContent = convertText($('rn-in').value);
+      paintCounts();
+    }
+
+    function renderGuide() {
+      const g = GUIDE;
+      const chips = a => '<div class="rn-chips">' + a.map(x => { const p = x.split(' '); return '<span>' + p[0] + '<b>→</b>' + p.slice(1).join(' ') + '</span>'; }).join('') + '</div>';
+      $('rn-gd').innerHTML =
+        '<div><h5>اولویت تبدیل</h5><ol>' + g.steps.map(s => '<li>' + s + '</li>').join('') + '</ol></div>' +
+        '<div><h5>حروف چندکاراکتری</h5>' + chips(g.multi) + '</div>' +
+        '<div><h5>حروف تک‌کاراکتری</h5>' + chips(g.single) + '</div>' +
+        '<div><h5>نکات نگارشی</h5><ul>' + g.notes.map(s => '<li>' + s + '</li>').join('') + '</ul></div>';
+    }
+
+    function renderExamples() {
+      const t = I18N[currentLang];
+      $('rn-ex').innerHTML = '<span>' + tx(t.exLabel) + '</span>' + EXAMPLES.map((x, i) => '<button type="button" data-i="' + i + '">' + esc(x) + '</button>').join('');
+    }
+
+    $('rn-ex').addEventListener('click', e => {
+      const b = e.target.closest('button');
+      if (!b) return;
+      setTab('conv');
+      $('rn-in').value = EXAMPLES[Number(b.dataset.i)];
+      doConvert();
+    });
+
+    const TABS = ['conv', 'stt', 'guide', 'set'];
+
+    function setTab(name) {
+      document.querySelectorAll('.rn-tabs button').forEach(x => {
+        const on = x.dataset.tab === name;
+        x.classList.toggle('on', on);
+        x.setAttribute('aria-selected', String(on));
+      });
+      TABS.forEach(t => { $('rn-' + t).hidden = t !== name; });
+      if (name !== 'stt') sttStop();
+    }
+
+    document.querySelector('.rn-tabs').addEventListener('click', e => {
+      const b = e.target.closest('button');
+      if (b) setTab(b.dataset.tab);
+    });
+    $('rn-go').addEventListener('click', doConvert);
+    $('rn-in').addEventListener('input', paintCounts);
+    $('rn-in').addEventListener('keydown', e => {
+      if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) { e.preventDefault(); doConvert(); }
+    });
+    $('rn-clear').addEventListener('click', () => {
+      $('rn-in').value = '';
+      $('rn-out').textContent = '';
+      paintCounts();
+      $('rn-in').focus();
+    });
+    let copyTimer = 0;
+    $('rn-copy').addEventListener('click', () => {
+      const text = $('rn-out').textContent;
+      if (!text) return;
+      try { navigator.clipboard.writeText(text).catch(() => {}); } catch (err) {}
+      const b = $('rn-copy');
+      b.textContent = I18N[currentLang].copied;
+      clearTimeout(copyTimer);
+      copyTimer = setTimeout(() => { b.textContent = 'کپی متن فارسی'; }, 1300);
+    });
+    $('rn-theme').addEventListener('click', () => {
+      const m = $('mock');
+      m.dataset.theme = m.dataset.theme === 'dark' ? 'light' : 'dark';
+    });
+
+    function flash(btn, label) {
+      btn.textContent = I18N[currentLang].copied;
+      setTimeout(() => { btn.textContent = label; }, 1300);
+    }
+
+    const PHRASES = ['سلام، حالت چطوره؟ امروز خیلی کار دارم', 'می‌خوام یه متن فارسی رو با صدام بنویسم', 'راست‌نویس همه‌چی رو آفلاین انجام می‌ده'];
+    const stt = { live: false, timers: [], n: 0 };
+
+    function sttPaint() {
+      $('rn-mic').classList.toggle('live', stt.live);
+      const st = $('rn-st');
+      st.classList.toggle('live', stt.live);
+      st.textContent = stt.live ? 'در حال گوش دادن…' : 'آماده';
+      $('rn-tip').textContent = stt.live ? 'صحبت کن، برای توقف دوباره روی میکروفون کلیک کن' : 'برای شروع ضبط، روی میکروفون کلیک کن';
+      $('rn-sc').textContent = String($('rn-sout').textContent.length).replace(/[0-9]/g, d => DIG[d]) + ' کاراکتر';
+    }
+
+    function sttStop() {
+      stt.timers.forEach(clearTimeout);
+      stt.timers = [];
+      stt.live = false;
+      sttPaint();
+    }
+
+    function sttStart() {
+      const base = $('rn-add').checked ? $('rn-sout').textContent : '';
+      const words = PHRASES[stt.n++ % PHRASES.length].split(' ');
+      const sep = base && !/\s$/.test(base) ? ' ' : '';
+      stt.live = true;
+      if (!base) $('rn-sout').textContent = '';
+      sttPaint();
+      let cur = '';
+      words.forEach((w, i) => {
+        stt.timers.push(setTimeout(() => {
+          cur += (i ? ' ' : '') + w;
+          $('rn-sout').textContent = base + sep + cur;
+          sttPaint();
+        }, reduceMotion ? 0 : 500 * (i + 1)));
+      });
+      stt.timers.push(setTimeout(sttStop, reduceMotion ? 10 : 500 * (words.length + 1)));
+    }
+
+    $('rn-mic').addEventListener('click', () => { if (stt.live) sttStop(); else sttStart(); });
+    $('rn-sclear').addEventListener('click', () => { $('rn-sout').textContent = ''; sttPaint(); });
+    $('rn-scopy').addEventListener('click', () => {
+      const text = $('rn-sout').textContent;
+      if (!text) return;
+      try { navigator.clipboard.writeText(text).catch(() => {}); } catch (err) {}
+      flash($('rn-scopy'), 'کپی متن');
+    });
+
+    function renderMock() {
+      setTx('mock-note', I18N[currentLang].mockNote);
+      renderExamples();
+      paintCounts();
+      sttPaint();
+    }
+
+    let release = null;
+
+    function paintRelease() {
+      const t = I18N[currentLang];
+      document.querySelectorAll('a[data-dl]').forEach(a => {
+        a.href = release ? release.url : LatestRelease.page(REPO);
+      });
+      const meta = $('dl-meta');
+      if (!release) { meta.hidden = true; return; }
+      const parts = [];
+      if (release.tag) parts.push('<bdi dir="ltr">' + esc(release.tag) + '</bdi>');
+      if (release.size) parts.push(fmt((release.size / 1048576).toFixed(1).replace('.', currentLang === 'fa' ? '٫' : '.')) + ' ' + t.sizeUnit);
+      meta.innerHTML = parts.join(' · ');
+      meta.hidden = parts.length === 0;
+    }
+
+    function renderHow(t) {
+      $('how-grid').innerHTML = t.how.map(([icon, name, desc], i) => `
+        <div class="card">
+          <div class="card-top">
+            <div class="icon">${svg(icon)}</div>
+            <div class="card-name">${tx(name)}</div>
+            <span class="step-num" aria-hidden="true">${fmt(i + 1)}</span>
+          </div>
+          <p class="card-desc">${tx(desc)}</p>
+        </div>`).join('');
+    }
+
+    function renderFeatures(t) {
+      $('feat-grid').innerHTML = t.feat.map(([icon, name, desc], i) => `
+        <div class="card">
+          <div class="card-top">
+            <div class="icon${i % 2 ? ' alt' : ''}">${svg(icon)}</div>
+            <div class="card-name">${tx(name)}</div>
+          </div>
+          <p class="card-desc">${tx(desc)}</p>
+        </div>`).join('');
+    }
+
+    function renderFaq(t) {
+      $('faq-list').innerHTML = t.faq.map(([q, a], i) => `
+        <div class="faq-item">
+          <button type="button" class="faq-q" id="faq-q-${i}" aria-expanded="false" aria-controls="faq-a-${i}">
+            <span>${tx(q)}</span>
+            <span class="faq-icon" aria-hidden="true"></span>
+          </button>
+          <div class="faq-panel" id="faq-a-${i}" role="region" aria-labelledby="faq-q-${i}">
+            <div class="faq-inner"><div class="answer">${tx(a)}</div></div>
+          </div>
+        </div>`).join('');
+    }
+
+    $('faq-list').addEventListener('click', e => {
+      const btn = e.target.closest('.faq-q');
+      if (!btn) return;
+      const item = btn.parentElement;
+      const open = item.classList.toggle('open');
+      btn.setAttribute('aria-expanded', String(open));
+    });
+
+    function applyLanguage(lang) {
+      currentLang = lang;
+      localStorage.setItem('lang', lang);
+      const t = I18N[lang];
+      document.documentElement.lang = lang;
+      document.documentElement.dir = t.dir;
+      document.title = t.docTitle;
+
+      setTx('back-text', t.back);
+      setTx('hero-title', t.heroTitle);
+      setTx('hero-pitch', t.pitch);
+      $('hero-tags').innerHTML = t.tags.map((x, i) => `<span class="tag${i === 0 ? ' hot' : ''}">${tx(x)}</span>`).join('');
+      document.querySelectorAll('[data-dl-label]').forEach(el => { el.textContent = t.download; });
+      setTx('cta-github', t.github);
+      paintRelease();
+      renderMock();
+
+      setTx('how-title', t.howTitle);
+      setTx('how-sub', t.howSub);
+      renderHow(t);
+
+      setTx('feat-title', t.featTitle);
+      setTx('feat-sub', t.featSub);
+      renderFeatures(t);
+
+      setTx('faq-title', t.faqTitle);
+      setTx('faq-sub', t.faqSub);
+      renderFaq(t);
+
+      setTx('end-title', t.endTitle);
+      setTx('end-text', t.endText);
+      setTx('end-discord', t.endDiscord);
+      setTx('end-telegram', t.endTelegram);
+      setTx('footer-home', t.footerHome);
+      $('made-by').innerHTML = t.madeBy.split('{heart}').map(tx).join(HEART);
+    }
+
+    $('lang-toggle').addEventListener('click', () => {
+      $('lang-toggle').blur();
+      applyLanguage(currentLang === 'en' ? 'fa' : 'en');
+    });
+
+    renderGuide();
+    $('rn-in').value = EXAMPLES[0];
+    doConvert();
+    applyLanguage(currentLang);
+
+    LatestRelease.latest(REPO).then(d => {
+      release = d;
+      paintRelease();
+    });
+  </script>
+</body>
+</html>
