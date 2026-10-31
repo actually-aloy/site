@@ -303,6 +303,7 @@
       --a-accent: #4fd1c5;
       --a-indigo: #7c83fd;
       --a-danger: #e0555f;
+      --a-warn: #e0a83e;
       position: relative;
       z-index: 1;
       width: 100%;
@@ -369,7 +370,7 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      min-height: 428px;
+      min-height: 0;
       padding: 30px 22px 22px;
       text-align: center;
     }
@@ -711,6 +712,1248 @@
       margin-top: 2px;
       color: var(--a-muted);
       font-size: 12px;
+    }
+
+    .m-views {
+      position: relative;
+      height: 548px;
+    }
+
+    .m-view {
+      position: absolute;
+      inset: 0;
+      overflow-x: hidden;
+      overflow-y: auto;
+      visibility: hidden;
+      opacity: 0;
+      padding: 16px 18px 22px;
+      scrollbar-width: thin;
+      scrollbar-color: #2a2e3a transparent;
+      transition: opacity 0.22s ease, visibility 0s linear 0.22s;
+    }
+
+    .mock[data-view="home"] #mv-home,
+    .mock[data-view="dns"] #mv-dns,
+    .mock[data-view="usage"] #mv-usage,
+    .mock[data-view="set"] #mv-set {
+      visibility: visible;
+      opacity: 1;
+      transition: opacity 0.22s ease;
+    }
+
+    .m-view.m-home {
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      padding: 0;
+    }
+
+    .m-top {
+      position: absolute;
+      top: 12px;
+      inset-inline: 14px;
+      z-index: 2;
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+    }
+
+    .m-round {
+      flex: none;
+      width: 34px;
+      height: 34px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+      border: 1px solid var(--a-border);
+      border-radius: 50%;
+      background: var(--a-panel);
+      color: var(--a-muted);
+      font-family: inherit;
+      cursor: pointer;
+      transition: transform 0.2s cubic-bezier(0.3, 0.7, 0.2, 1), color 0.15s, border-color 0.15s;
+    }
+
+    .m-round:hover {
+      color: var(--a-text);
+      border-color: var(--a-indigo);
+      transform: scale(1.07);
+    }
+
+    .m-round:active {
+      transform: scale(0.9);
+    }
+
+    .m-round svg {
+      width: 16px;
+      height: 16px;
+      display: block;
+    }
+
+    .m-round:focus-visible,
+    .m-back:focus-visible,
+    .m-dns-tile:focus-visible,
+    .m-dns-apply:focus-visible,
+    .m-flush:focus-visible,
+    .m-opt:focus-visible,
+    .m-seg button:focus-visible {
+      outline: 2px solid var(--a-indigo);
+      outline-offset: 2px;
+    }
+
+    .m-home .m-body {
+      flex: 1;
+      min-height: 0;
+      justify-content: center;
+      padding: 44px 20px 4px;
+    }
+
+    .m-home .signal {
+      margin: 0 0 14px;
+    }
+
+    .m-home .m-sub {
+      min-height: 40px;
+      margin-top: 4px;
+      line-height: 1.55;
+    }
+
+    .m-home .m-btn {
+      margin-top: 10px;
+      height: 44px;
+    }
+
+    .m-home .m-slot {
+      max-width: 360px;
+      min-height: 118px;
+      margin-top: 12px;
+    }
+
+    .m-home .m-tagline,
+    .m-home .m-progress {
+      padding-top: 12px;
+    }
+
+    .m-stats {
+      flex-wrap: wrap;
+    }
+
+    .m-cell {
+      padding: 8px 6px;
+    }
+
+    .m-cell .k {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+    }
+
+    .m-cell .k svg {
+      width: 11px;
+      height: 11px;
+      flex: none;
+      fill: none;
+      stroke-width: 1.9;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .m-cell .k.dn svg {
+      stroke: var(--a-indigo);
+    }
+
+    .m-cell .k.upl svg {
+      stroke: var(--a-warn);
+      transform: rotate(180deg);
+    }
+
+    .m-live {
+      flex: 0 0 100%;
+      padding: 8px 12px 6px;
+      border-top: 1px solid var(--a-border);
+    }
+
+    .m-live svg {
+      display: block;
+      width: 100%;
+      height: 30px;
+      overflow: visible;
+    }
+
+    .m-live .lbase {
+      stroke: var(--a-border);
+      stroke-width: 1;
+      vector-effect: non-scaling-stroke;
+    }
+
+    .m-live .ll {
+      fill: none;
+      stroke-width: 1.7;
+      stroke-linejoin: round;
+      stroke-linecap: round;
+      vector-effect: non-scaling-stroke;
+    }
+
+    .m-live .ll.dn {
+      stroke: var(--a-indigo);
+    }
+
+    .m-live .ll.upl {
+      stroke: var(--a-warn);
+    }
+
+    .m-live .la.dn {
+      fill: var(--a-indigo);
+      opacity: 0.16;
+    }
+
+    .m-live .la.upl {
+      fill: var(--a-warn);
+      opacity: 0.12;
+    }
+
+    .m-live-cap {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      margin-top: 3px;
+      direction: ltr;
+      color: var(--a-muted);
+      font-size: 10.5px;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .m-foot {
+      flex: none;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+      margin: 0 20px 10px;
+      padding-top: 5px;
+      border-top: 1px solid var(--a-border);
+    }
+
+    .m-ver {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 6px;
+      direction: ltr;
+      color: var(--a-muted);
+      font-size: 9.5px;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .m-ver span:first-child {
+      unicode-bidi: plaintext;
+    }
+
+    .m-ver-tag {
+      padding: 0 8px;
+      border: 1px solid #2f8f87;
+      border-radius: 999px;
+      background: rgba(79, 209, 197, 0.08);
+      color: var(--a-accent);
+      font-size: 9.5px;
+      line-height: 1.6;
+      unicode-bidi: plaintext;
+    }
+
+    .m-links {
+      display: flex;
+      gap: 16px;
+      color: var(--a-muted);
+    }
+
+    .m-links svg {
+      width: 18px;
+      height: 18px;
+      display: block;
+      padding: 3px;
+      box-sizing: content-box;
+    }
+
+    .m-head {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .m-head-title {
+      font-size: 15px;
+      font-weight: 600;
+    }
+
+    .m-back {
+      position: relative;
+      flex: none;
+      width: 28px;
+      height: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+      border: 1px solid var(--a-border);
+      border-radius: 50%;
+      background: var(--a-panel);
+      color: var(--a-muted);
+      cursor: pointer;
+      transition: transform 0.2s cubic-bezier(0.3, 0.7, 0.2, 1), border-color 0.15s, color 0.15s;
+    }
+
+    .m-back:hover {
+      color: var(--a-text);
+      border-color: var(--a-indigo);
+      transform: scale(1.09);
+    }
+
+    .m-back:active {
+      transform: scale(0.86);
+    }
+
+    .m-back svg {
+      width: 14px;
+      height: 14px;
+    }
+
+    [dir="rtl"] .m-back svg {
+      transform: scaleX(-1);
+    }
+
+    .m-seg {
+      position: relative;
+      display: flex;
+      flex: none;
+      padding: 2px;
+      gap: 3px;
+      border: 1px solid var(--a-border);
+      border-radius: 9px;
+      background: var(--a-panel);
+    }
+
+    .m-seg::before {
+      content: "";
+      position: absolute;
+      top: 2px;
+      bottom: 2px;
+      left: var(--pill-x, 2px);
+      width: var(--pill-w, 0px);
+      border-radius: 7px;
+      background: var(--a-indigo);
+      box-shadow: 0 2px 8px -2px rgba(124, 131, 253, 0.55);
+      transition: left 0.32s cubic-bezier(0.3, 0.8, 0.2, 1), width 0.32s cubic-bezier(0.3, 0.8, 0.2, 1);
+    }
+
+    .m-seg button {
+      position: relative;
+      z-index: 1;
+      padding: 5px 13px;
+      border: 0;
+      border-radius: 7px;
+      background: none;
+      color: var(--a-muted);
+      font-family: inherit;
+      font-size: 11.5px;
+      cursor: pointer;
+      transition: color 0.25s;
+    }
+
+    .m-seg button.active {
+      color: #fff;
+    }
+
+    .m-dns-hero {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 8px;
+      padding: 12px 14px;
+      border: 1px solid var(--a-border);
+      border-radius: 16px;
+      background: linear-gradient(135deg, rgba(124, 131, 253, 0.1), rgba(79, 209, 197, 0.06));
+    }
+
+    .m-dns-hero.flash {
+      animation: mFlash 0.9s ease-out;
+    }
+
+    @keyframes mFlash {
+      0% { box-shadow: 0 0 0 0 rgba(79, 209, 197, 0.55); }
+      100% { box-shadow: 0 0 0 14px rgba(79, 209, 197, 0); }
+    }
+
+    .m-dns-ic {
+      position: relative;
+      flex: none;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 12px;
+      background: rgba(79, 209, 197, 0.16);
+      color: var(--a-accent);
+    }
+
+    .m-dns-ic::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border: 2px solid currentColor;
+      border-radius: 12px;
+      opacity: 0;
+      animation: mPulse 2.4s ease-out infinite;
+    }
+
+    @keyframes mPulse {
+      0% { transform: scale(1); opacity: 0.5; }
+      100% { transform: scale(1.35); opacity: 0; }
+    }
+
+    .m-dns-ic svg {
+      width: 19px;
+      height: 19px;
+    }
+
+    .m-dns-txt {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .m-dns-label {
+      color: var(--a-muted);
+      font-size: 11px;
+    }
+
+    .m-dns-cur {
+      min-height: 25px;
+      font-size: 16px;
+      font-weight: 700;
+      line-height: 1.5;
+    }
+
+    .m-dns-curips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      min-height: 15px;
+      color: var(--a-muted);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 11px;
+    }
+
+    .m-dns-curips span,
+    .m-dns-ips span {
+      direction: ltr;
+      unicode-bidi: isolate;
+    }
+
+    .m-flush {
+      flex: none;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+      border: 1px solid var(--a-border);
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.03);
+      color: var(--a-muted);
+      cursor: pointer;
+      transition: color 0.15s, border-color 0.15s, transform 0.2s;
+    }
+
+    .m-flush:hover {
+      color: var(--a-text);
+      border-color: var(--a-indigo);
+      transform: scale(1.07);
+    }
+
+    .m-flush svg {
+      width: 15px;
+      height: 15px;
+    }
+
+    .m-flush.spin svg {
+      animation: mSpin 0.65s cubic-bezier(0.4, 0.1, 0.3, 1);
+    }
+
+    @keyframes mSpin {
+      to { transform: rotate(360deg); }
+    }
+
+    .m-help {
+      margin: 0 4px 12px;
+      color: var(--a-muted);
+      font-size: 12px;
+      line-height: 1.8;
+    }
+
+    .m-dns-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    .m-dns-tile {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      min-width: 0;
+      padding: 9px 10px;
+      border: 1px solid var(--a-border);
+      border-radius: 14px;
+      background: var(--a-panel);
+      color: var(--a-text);
+      font-family: inherit;
+      text-align: start;
+      cursor: pointer;
+      transition: border-color 0.18s, background 0.18s, transform 0.2s cubic-bezier(0.3, 0.7, 0.2, 1), box-shadow 0.22s;
+    }
+
+    .m-dns-tile:hover {
+      border-color: #3a3f4e;
+      transform: translateY(-2px);
+    }
+
+    .m-dns-tile:active {
+      transform: scale(0.985);
+    }
+
+    .m-dns-tile.sel {
+      border-color: var(--a-accent);
+      background: rgba(79, 209, 197, 0.08);
+      box-shadow: 0 0 0 3px rgba(79, 209, 197, 0.12);
+    }
+
+    .m-dns-badge {
+      flex: none;
+      width: 30px;
+      height: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 9px;
+      color: #fff;
+      font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      text-shadow: 0 1px 1px rgba(0, 0, 0, 0.25);
+      transition: transform 0.3s cubic-bezier(0.3, 1.5, 0.4, 1);
+    }
+
+    .m-dns-badge.sm {
+      font-size: 10.5px;
+    }
+
+    .m-dns-tile.sel .m-dns-badge {
+      transform: scale(1.1) rotate(-5deg);
+    }
+
+    .m-dns-text {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .m-dns-name {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      min-width: 0;
+      font-size: 12.5px;
+      font-weight: 600;
+    }
+
+    .m-dns-name span {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .m-dns-tile.cur .m-dns-name::before {
+      content: "";
+      flex: none;
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--a-accent);
+    }
+
+    .m-dns-ips {
+      display: flex;
+      flex-direction: column;
+      color: var(--a-muted);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 10px;
+    }
+
+    .m-dns-apply {
+      position: relative;
+      width: 100%;
+      height: 40px;
+      margin-top: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      overflow: hidden;
+      padding: 0;
+      border: 0;
+      border-radius: 10px;
+      background: var(--a-indigo);
+      color: #fff;
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.3s, opacity 0.2s, transform 0.15s;
+    }
+
+    .m-dns-apply:disabled {
+      opacity: 0.42;
+      cursor: default;
+    }
+
+    .m-dns-apply:active:not(:disabled) {
+      transform: scale(0.985);
+    }
+
+    .m-dns-apply i {
+      display: none;
+      width: 14px;
+      height: 14px;
+      flex: none;
+    }
+
+    .m-dns-apply.loading i {
+      display: block;
+      border: 2px solid rgba(255, 255, 255, 0.35);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: mSpin 0.7s linear infinite;
+    }
+
+    .m-dns-apply.loading:disabled {
+      opacity: 0.85;
+    }
+
+    .m-dns-apply.done {
+      background: var(--a-accent);
+      color: #08201d;
+      opacity: 1;
+    }
+
+    .m-dns-apply.done i {
+      display: block;
+    }
+
+    .m-dns-apply.done i::before {
+      content: "";
+      display: block;
+      width: 12px;
+      height: 6px;
+      border-bottom: 2.5px solid #08201d;
+      border-left: 2.5px solid #08201d;
+      transform: rotate(-45deg) translate(1px, -2px);
+    }
+
+    .m-dns-msg {
+      min-height: 20px;
+      margin: 10px 4px 0;
+      color: var(--a-muted);
+      font-size: 12px;
+      line-height: 1.8;
+    }
+
+    .m-dns-msg.ok {
+      color: var(--a-accent);
+    }
+
+    .m-utop {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin: 0 0 10px;
+    }
+
+    .m-ulive {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      min-width: 0;
+      color: var(--a-muted);
+      font-size: 11px;
+      line-height: 1.5;
+    }
+
+    .m-ulive i {
+      flex: none;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #5b5f6e;
+    }
+
+    .m-ulive.on {
+      color: var(--a-accent);
+    }
+
+    .m-ulive.on i {
+      background: var(--a-accent);
+      animation: mPulse 2s ease-out infinite;
+    }
+
+    .m-uhero {
+      margin-bottom: 10px;
+      padding: 14px 16px 12px;
+      border: 1px solid var(--a-border);
+      border-radius: 16px;
+      background: linear-gradient(135deg, rgba(124, 131, 253, 0.1), rgba(79, 209, 197, 0.06));
+    }
+
+    .m-ulabel {
+      color: var(--a-muted);
+      font-size: 11.5px;
+    }
+
+    .m-unum {
+      display: flex;
+      align-items: baseline;
+      justify-content: flex-start;
+      gap: 7px;
+      margin: 2px 0 12px;
+      direction: ltr;
+      font-weight: 700;
+    }
+
+    [dir="rtl"] .m-unum {
+      justify-content: flex-end;
+    }
+
+    .m-unum b {
+      font-size: 32px;
+      font-weight: 700;
+      line-height: 1.15;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .m-unum span {
+      color: var(--a-muted);
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .m-ratio + .m-ratio {
+      margin-top: 10px;
+    }
+
+    .m-ratio-title {
+      margin-bottom: 5px;
+      color: var(--a-muted);
+      font-size: 11px;
+    }
+
+    .m-ratio-bar {
+      display: flex;
+      height: 9px;
+      overflow: hidden;
+      border-radius: 5px;
+      background: rgba(255, 255, 255, 0.06);
+      direction: ltr;
+    }
+
+    .m-ratio-bar span {
+      display: block;
+      width: 0;
+      height: 100%;
+      transition: width 0.7s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+
+    .m-ratio-bar .b {
+      margin-inline-start: 2px;
+    }
+
+    .m-ratio-legend {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      margin-top: 6px;
+      font-size: 11.5px;
+    }
+
+    .m-lg {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      min-width: 0;
+    }
+
+    .m-lg i {
+      flex: none;
+      width: 8px;
+      height: 8px;
+      border-radius: 3px;
+    }
+
+    .m-lg em {
+      color: var(--a-muted);
+      font-style: normal;
+      font-variant-numeric: tabular-nums;
+    }
+
+    #m-rroute .m-ratio-bar .a,
+    #m-rroute .m-lg.a i,
+    .m-uchart.m-route .m-ub-stack i:nth-child(1) {
+      background: #4fd1c5;
+    }
+
+    #m-rroute .m-ratio-bar .b,
+    #m-rroute .m-lg.b i,
+    .m-uchart.m-route .m-ub-stack i:nth-child(2) {
+      background: #6b7390;
+    }
+
+    #m-rdir .m-ratio-bar .a,
+    #m-rdir .m-lg.a i,
+    .m-uchart.m-dir .m-ub-stack i:nth-child(1) {
+      background: #7c83fd;
+    }
+
+    #m-rdir .m-ratio-bar .b,
+    #m-rdir .m-lg.b i,
+    .m-uchart.m-dir .m-ub-stack i:nth-child(2) {
+      background: #e0a83e;
+    }
+
+    .m-ucard {
+      margin-bottom: 10px;
+      padding: 12px 12px 10px;
+      border: 1px solid var(--a-border);
+      border-radius: 16px;
+      background: var(--a-panel);
+    }
+
+    .m-ucard-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .m-umax {
+      color: var(--a-muted);
+      font-size: 11px;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .m-uplot {
+      position: relative;
+    }
+
+    .m-uchart {
+      display: grid;
+      grid-auto-flow: column;
+      grid-auto-columns: 1fr;
+      gap: 3px;
+      align-items: end;
+      height: 120px;
+      direction: ltr;
+      background: repeating-linear-gradient(to top, transparent 0, transparent calc(25% - 1px), rgba(255, 255, 255, 0.06) calc(25% - 1px), rgba(255, 255, 255, 0.06) 25%);
+    }
+
+    .m-uaxis {
+      display: grid;
+      grid-auto-flow: column;
+      grid-auto-columns: 1fr;
+      gap: 3px;
+      margin-top: 6px;
+      direction: ltr;
+      color: var(--a-muted);
+      font-size: 10px;
+      text-align: center;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .m-uaxis span {
+      min-width: 0;
+      white-space: nowrap;
+    }
+
+    .m-ub {
+      position: relative;
+      height: 100%;
+      display: flex;
+      align-items: flex-end;
+    }
+
+    .m-ub::before {
+      content: "";
+      position: absolute;
+      inset: 0 -1px;
+      border-radius: 5px;
+      background: rgba(255, 255, 255, 0);
+      transition: background 0.15s;
+    }
+
+    .m-ub:hover::before {
+      background: rgba(255, 255, 255, 0.06);
+    }
+
+    .m-ub-stack {
+      position: relative;
+      width: 100%;
+      display: flex;
+      flex-direction: column-reverse;
+      overflow: hidden;
+      border-radius: 4px 4px 0 0;
+      transform-origin: bottom;
+      animation: mBarIn 0.55s cubic-bezier(0.2, 0.8, 0.2, 1) backwards;
+      animation-delay: calc(var(--i, 0) * 14ms);
+    }
+
+    .m-ub-stack i {
+      display: block;
+      width: 100%;
+      transition: flex-grow 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+
+    @keyframes mBarIn {
+      from { transform: scaleY(0); }
+      to { transform: scaleY(1); }
+    }
+
+    .m-utip {
+      position: absolute;
+      z-index: 5;
+      min-width: 124px;
+      padding: 7px 10px;
+      border: 1px solid var(--a-border);
+      border-radius: 10px;
+      background: #0e1015;
+      box-shadow: 0 10px 24px -10px rgba(0, 0, 0, 0.8);
+      font-size: 11px;
+      line-height: 1.7;
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(4px);
+      transition: opacity 0.12s, transform 0.12s;
+    }
+
+    .m-utip.show {
+      opacity: 1;
+      transform: none;
+    }
+
+    .m-utip b {
+      display: block;
+      font-weight: 700;
+    }
+
+    .m-utip div {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--a-muted);
+    }
+
+    .m-utip div i {
+      flex: none;
+      width: 8px;
+      height: 8px;
+      border-radius: 3px;
+    }
+
+    .m-utip div span {
+      margin-inline-start: auto;
+      padding-inline-start: 10px;
+      color: var(--a-text);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .m-sites-title {
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .m-site {
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 7px 8px;
+      overflow: hidden;
+      border-radius: 9px;
+    }
+
+    .m-site::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      width: var(--w, 0%);
+      border-radius: 9px;
+      background: rgba(124, 131, 253, 0.1);
+    }
+
+    .m-site > * {
+      position: relative;
+    }
+
+    .m-site-name {
+      flex: 1;
+      min-width: 0;
+      overflow: hidden;
+      text-align: start;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      font-size: 12px;
+    }
+
+    .m-site-size {
+      flex: none;
+      color: var(--a-muted);
+      font-size: 11.5px;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .m-sites-empty {
+      padding: 10px 4px 4px;
+      color: var(--a-muted);
+      font-size: 12px;
+      line-height: 1.8;
+      text-align: center;
+    }
+
+    .m-unote {
+      margin: 10px 4px 0;
+      color: var(--a-muted);
+      font-size: 11px;
+      line-height: 1.8;
+    }
+
+    .m-sec {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin: 16px 4px 9px;
+      color: var(--a-muted);
+      font-size: 11.5px;
+      font-weight: 700;
+    }
+
+    .m-sec:first-of-type {
+      margin-top: 2px;
+    }
+
+    .m-sec::before {
+      content: "";
+      flex: none;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--a-accent);
+    }
+
+    .m-group {
+      overflow: hidden;
+      border: 1px solid var(--a-border);
+      border-radius: 14px;
+      background: var(--a-panel);
+    }
+
+    .m-row {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      min-height: 48px;
+      padding: 9px 14px;
+    }
+
+    .m-row + .m-row {
+      border-top: 1px solid var(--a-border);
+    }
+
+    .m-ri {
+      flex: none;
+      width: 28px;
+      height: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 9px;
+    }
+
+    .m-ri svg {
+      width: 15px;
+      height: 15px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .m-ri.teal {
+      background: rgba(79, 209, 197, 0.13);
+      color: var(--a-accent);
+    }
+
+    .m-ri.violet {
+      background: rgba(124, 131, 253, 0.14);
+      color: var(--a-indigo);
+    }
+
+    .m-ri.amber {
+      background: rgba(224, 168, 62, 0.14);
+      color: var(--a-warn);
+    }
+
+    .m-rt {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      text-align: start;
+    }
+
+    .m-rtitle {
+      font-size: 12.5px;
+      font-weight: 600;
+      line-height: 1.5;
+    }
+
+    .m-rsub {
+      color: var(--a-muted);
+      font-size: 10.5px;
+      line-height: 1.7;
+    }
+
+    .m-switch {
+      position: relative;
+      flex: none;
+      width: 38px;
+      height: 22px;
+    }
+
+    .m-switch input {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      opacity: 0;
+      cursor: pointer;
+    }
+
+    .m-slider {
+      position: absolute;
+      inset: 0;
+      border-radius: 20px;
+      background: var(--a-border);
+      transition: background 0.2s;
+    }
+
+    .m-slider::before {
+      content: "";
+      position: absolute;
+      top: 3px;
+      inset-inline-start: 3px;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: #fff;
+      transition: inset-inline-start 0.22s cubic-bezier(0.3, 0.8, 0.3, 1), background 0.2s;
+    }
+
+    .m-switch input:checked + .m-slider {
+      background: #2f8f87;
+    }
+
+    .m-switch input:checked + .m-slider::before {
+      inset-inline-start: 19px;
+      background: var(--a-accent);
+    }
+
+    .m-switch input:focus-visible + .m-slider {
+      outline: 2px solid var(--a-indigo);
+      outline-offset: 2px;
+    }
+
+    .m-modes {
+      display: grid;
+      gap: 8px;
+    }
+
+    .m-opt {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      padding: 11px 14px 10px;
+      border: 1px solid var(--a-border);
+      border-radius: 14px;
+      background: var(--a-panel);
+      color: var(--a-text);
+      font-family: inherit;
+      text-align: start;
+      cursor: pointer;
+      transition: border-color 0.2s, background 0.2s, transform 0.12s;
+    }
+
+    .m-opt:hover {
+      border-color: #3a3f4e;
+    }
+
+    .m-opt:active {
+      transform: scale(0.99);
+    }
+
+    .m-opt.active {
+      border-color: var(--a-accent);
+      background: linear-gradient(180deg, rgba(79, 209, 197, 0.11), rgba(79, 209, 197, 0.03));
+    }
+
+    .m-opt b {
+      padding-inline-end: 24px;
+      font-size: 12.5px;
+      font-weight: 700;
+      line-height: 1.5;
+    }
+
+    .m-opt span {
+      color: var(--a-muted);
+      font-size: 10.5px;
+      line-height: 1.7;
+    }
+
+    .m-opt::after {
+      content: "";
+      position: absolute;
+      top: 12px;
+      inset-inline-end: 12px;
+      width: 16px;
+      height: 16px;
+      box-sizing: border-box;
+      border: 2px solid var(--a-border);
+      border-radius: 50%;
+      transition: border-color 0.2s, background 0.2s;
+    }
+
+    .m-opt.active::after {
+      border-color: var(--a-accent);
+      background: radial-gradient(circle, var(--a-accent) 0 36%, transparent 40%);
     }
 
     .mock-note {
@@ -1328,7 +2571,7 @@
       </div>
 
       <div class="stage">
-        <div class="mock" id="mock" data-state="off">
+        <div class="mock" id="mock" data-state="off" data-view="home">
           <div class="m-title" aria-hidden="true">
             <div class="m-title-name"><img src="papion-logo-on.png" alt="" draggable="false"><span id="m-title-text"></span></div>
             <div class="m-title-btns">
@@ -1336,31 +2579,135 @@
               <span><svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1"><path d="M0 0l10 10M10 0 0 10"/></svg></span>
             </div>
           </div>
-          <div class="m-body">
-            <div class="signal" id="m-signal" aria-hidden="true">
-              <span class="ring r1"></span><span class="ring r2"></span><span class="ring r3"></span>
-              <img class="off-img" src="papion-logo-off.png" alt="" draggable="false">
-              <img class="on-img" src="papion-logo-on.png" alt="" draggable="false">
-            </div>
-            <div class="m-status" id="m-status" role="status" aria-live="polite"></div>
-            <div class="m-sub" id="m-sub"></div>
-            <button type="button" class="m-btn hint" id="m-btn"></button>
-            <div class="m-slot">
-              <div class="m-tagline show" id="m-tagline"></div>
-              <div class="m-progress" id="m-progress">
-                <div class="m-bar"><span id="m-bar-fill"></span></div>
-                <div class="m-counts">
-                  <span class="ok"><b id="m-ok">0</b> <span id="m-ok-label"></span></span>
-                  <span class="fail"><b id="m-fail">0</b> <span id="m-fail-label"></span></span>
-                  <span id="m-total"></span>
+          <div class="m-views">
+            <section class="m-view m-home" id="mv-home">
+              <div class="m-top">
+                <button type="button" class="m-round" id="m-b-set"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.87l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.7 1.7 0 0 0-1.87-.34 1.7 1.7 0 0 0-1 1.56V21a2 2 0 0 1-4 0v-.09A1.7 1.7 0 0 0 9 19.4a1.7 1.7 0 0 0-1.87.34l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.7 1.7 0 0 0 4.6 15a1.7 1.7 0 0 0-1.56-1H3a2 2 0 0 1 0-4h.09A1.7 1.7 0 0 0 4.6 9a1.7 1.7 0 0 0-.34-1.87l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.7 1.7 0 0 0 9 4.6a1.7 1.7 0 0 0 1-1.56V3a2 2 0 0 1 4 0v.09a1.7 1.7 0 0 0 1 1.56 1.7 1.7 0 0 0 1.87-.34l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.7 1.7 0 0 0 19.4 9a1.7 1.7 0 0 0 1.56 1H21a2 2 0 0 1 0 4h-.09a1.7 1.7 0 0 0-1.51 1z"/></svg></button>
+                <button type="button" class="m-round" id="m-b-dns"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="8" rx="2"/><rect x="2" y="13" width="20" height="8" rx="2"/><line x1="6" y1="7" x2="6.01" y2="7"/><line x1="6" y1="17" x2="6.01" y2="17"/></svg></button>
+                <button type="button" class="m-round" id="m-b-usage"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></button>
+              </div>
+              <div class="m-body">
+                <div class="signal" id="m-signal" aria-hidden="true">
+                  <span class="ring r1"></span><span class="ring r2"></span><span class="ring r3"></span>
+                  <img class="off-img" src="papion-logo-off.png" alt="" draggable="false">
+                  <img class="on-img" src="papion-logo-on.png" alt="" draggable="false">
+                </div>
+                <div class="m-status" id="m-status" role="status" aria-live="polite"></div>
+                <div class="m-sub" id="m-sub"></div>
+                <button type="button" class="m-btn hint" id="m-btn"></button>
+                <div class="m-slot">
+                  <div class="m-tagline show" id="m-tagline"></div>
+                  <div class="m-progress" id="m-progress">
+                    <div class="m-bar"><span id="m-bar-fill"></span></div>
+                    <div class="m-counts">
+                      <span class="ok"><b id="m-ok">0</b> <span id="m-ok-label"></span></span>
+                      <span class="fail"><b id="m-fail">0</b> <span id="m-fail-label"></span></span>
+                      <span id="m-total"></span>
+                    </div>
+                  </div>
+                  <div class="m-stats" id="m-stats">
+                    <div class="m-cell"><span class="v" id="m-down"></span><span class="k dn"><svg viewBox="0 0 10 10" aria-hidden="true"><path d="M5 1.2v7.4M1.9 5.7 5 8.8l3.1-3.1"/></svg><span id="m-down-label"></span></span></div>
+                    <div class="m-cell"><span class="v" id="m-time"></span><span class="k" id="m-time-label"></span></div>
+                    <div class="m-cell"><span class="v" id="m-up"></span><span class="k upl"><svg viewBox="0 0 10 10" aria-hidden="true"><path d="M5 1.2v7.4M1.9 5.7 5 8.8l3.1-3.1"/></svg><span id="m-up-label"></span></span></div>
+                    <div class="m-live">
+                      <svg viewBox="0 0 300 44" preserveAspectRatio="none" aria-hidden="true">
+                        <line class="lbase" x1="0" x2="300" y1="43.5" y2="43.5"/>
+                        <path class="la dn" id="m-ad" d=""/><path class="ll dn" id="m-ld" d=""/>
+                        <path class="la upl" id="m-au" d=""/><path class="ll upl" id="m-lu" d=""/>
+                      </svg>
+                      <div class="m-live-cap"><span id="m-live-title"></span><span id="m-peak"></span></div>
+                    </div>
+                  </div>
                 </div>
               </div>
-              <div class="m-stats" id="m-stats">
-                <div class="m-cell"><span class="v" id="m-time"></span><span class="k" id="m-time-label"></span></div>
-                <div class="m-cell"><span class="v" id="m-down"></span><span class="k" id="m-down-label"></span></div>
-                <div class="m-cell"><span class="v" id="m-up"></span><span class="k" id="m-up-label"></span></div>
+              <div class="m-foot" aria-hidden="true">
+                <div class="m-ver"><span id="m-foot-name"></span><span id="m-ver-num"></span><span class="m-ver-tag" id="m-ver-tag"></span></div>
+                <div class="m-links">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M21.05 3.32 2.87 10.37c-1.24.5-1.24 1.2-.22 1.5l4.67 1.46 1.8 5.56c.22.6.11.85.75.85.49 0 .71-.22.98-.49l2.18-2.12 4.6 3.4c.84.47 1.45.23 1.66-.78l3-14.15c.3-1.27-.48-1.84-1.24-1.28Zm-12.3 9.4 9.4-5.93c.47-.28.9-.13.55.18l-7.73 6.98-.3 3.25-1.46-3.08c-.35-.7-.09-.97.44-1.4Z"/></svg>
+                  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.3 5.37A17.6 17.6 0 0 0 15.84 4a.07.07 0 0 0-.07.03c-.19.35-.41.8-.56 1.15a16.24 16.24 0 0 0-4.42 0c-.15-.36-.37-.8-.57-1.15A.07.07 0 0 0 10.15 4a17.5 17.5 0 0 0-4.46 1.37.06.06 0 0 0-.03.02C2.4 9.44 1.56 13.4 1.98 17.3a.08.08 0 0 0 .03.05 17.68 17.68 0 0 0 5.3 2.67.07.07 0 0 0 .08-.03c.41-.55.77-1.14 1.09-1.76a.07.07 0 0 0-.04-.1 11.6 11.6 0 0 1-1.66-.79.07.07 0 0 1-.01-.12c.11-.08.22-.17.33-.26a.07.07 0 0 1 .07-.01c3.49 1.6 7.27 1.6 10.72 0a.07.07 0 0 1 .08.01c.11.09.22.18.33.26a.07.07 0 0 1-.01.12c-.53.31-1.08.57-1.66.79a.07.07 0 0 0-.04.1c.33.62.69 1.21 1.09 1.76a.07.07 0 0 0 .08.03 17.6 17.6 0 0 0 5.32-2.67.07.07 0 0 0 .03-.05c.5-4.5-.84-8.42-3.55-11.9a.06.06 0 0 0-.03-.03ZM8.68 14.9c-1.05 0-1.91-.97-1.91-2.15 0-1.19.84-2.15 1.91-2.15 1.08 0 1.94.98 1.92 2.15 0 1.18-.84 2.15-1.92 2.15Zm6.65 0c-1.05 0-1.91-.97-1.91-2.15 0-1.19.84-2.15 1.91-2.15 1.08 0 1.94.98 1.92 2.15 0 1.18-.83 2.15-1.92 2.15Z"/></svg>
+                </div>
               </div>
-            </div>
+            </section>
+
+            <section class="m-view" id="mv-dns">
+              <div class="m-head">
+                <button type="button" class="m-back" data-back><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button>
+                <div class="m-head-title" id="m-dns-title"></div>
+              </div>
+              <div class="m-dns-hero" id="m-dns-hero">
+                <div class="m-dns-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="8" rx="2"/><rect x="2" y="13" width="20" height="8" rx="2"/><line x1="6" y1="7" x2="6.01" y2="7"/><line x1="6" y1="17" x2="6.01" y2="17"/></svg></div>
+                <div class="m-dns-txt">
+                  <div class="m-dns-label" id="m-dns-now"></div>
+                  <div class="m-dns-cur" id="m-dns-cur"></div>
+                  <div class="m-dns-curips" id="m-dns-curips"></div>
+                </div>
+                <button type="button" class="m-flush" id="m-flush"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg></button>
+              </div>
+              <p class="m-help" id="m-dns-help"></p>
+              <div class="m-dns-grid" id="m-dns-grid"></div>
+              <button type="button" class="m-dns-apply" id="m-dns-apply"><i></i><span id="m-dns-apply-lbl"></span></button>
+              <div class="m-dns-msg" id="m-dns-msg" role="status"></div>
+            </section>
+
+            <section class="m-view" id="mv-usage">
+              <div class="m-head">
+                <button type="button" class="m-back" data-back><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button>
+                <div class="m-head-title" id="m-usage-title"></div>
+              </div>
+              <div class="m-utop">
+                <div class="m-seg" id="m-range"></div>
+                <div class="m-ulive" id="m-ulive"><i></i><span id="m-ulive-txt"></span></div>
+              </div>
+              <div class="m-uhero">
+                <div class="m-ulabel" id="m-urange"></div>
+                <div class="m-unum" id="m-utotal"><b></b><span></span></div>
+                <div class="m-ratio" id="m-rroute">
+                  <div class="m-ratio-title" id="m-rroute-t"></div>
+                  <div class="m-ratio-bar"><span class="a"></span><span class="b"></span></div>
+                  <div class="m-ratio-legend">
+                    <span class="m-lg a"><i></i><b id="m-rroute-an"></b><em id="m-rroute-a"></em></span>
+                    <span class="m-lg b"><i></i><b id="m-rroute-bn"></b><em id="m-rroute-b"></em></span>
+                  </div>
+                </div>
+                <div class="m-ratio" id="m-rdir">
+                  <div class="m-ratio-title" id="m-rdir-t"></div>
+                  <div class="m-ratio-bar"><span class="a"></span><span class="b"></span></div>
+                  <div class="m-ratio-legend">
+                    <span class="m-lg a"><i></i><b id="m-rdir-an"></b><em id="m-rdir-a"></em></span>
+                    <span class="m-lg b"><i></i><b id="m-rdir-bn"></b><em id="m-rdir-b"></em></span>
+                  </div>
+                </div>
+              </div>
+              <div class="m-ucard">
+                <div class="m-ucard-head">
+                  <div class="m-seg" id="m-umode"></div>
+                  <div class="m-umax" id="m-umax"></div>
+                </div>
+                <div class="m-uplot" id="m-uplot">
+                  <div class="m-uchart m-route" id="m-uchart"></div>
+                  <div class="m-uaxis" id="m-uaxis"></div>
+                  <div class="m-utip" id="m-utip" role="tooltip"></div>
+                </div>
+              </div>
+              <div class="m-ucard">
+                <div class="m-ucard-head">
+                  <div class="m-sites-title" id="m-sites-title"></div>
+                  <div class="m-umax" id="m-sites-sub"></div>
+                </div>
+                <div id="m-sites"></div>
+                <div class="m-sites-empty" id="m-sites-empty"></div>
+              </div>
+              <p class="m-unote" id="m-unote"></p>
+            </section>
+
+            <section class="m-view" id="mv-set">
+              <div class="m-head">
+                <button type="button" class="m-back" data-back><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button>
+                <div class="m-head-title" id="m-set-title"></div>
+              </div>
+              <div id="m-set-body"></div>
+            </section>
           </div>
         </div>
         <p class="mock-note" id="mock-note"></p>
@@ -1484,9 +2831,35 @@
           connect: 'Connect', disconnect: 'Disconnect', cancel: 'Cancel',
           tagline: 'No limits. No cost. No hassle.',
           ok: 'working', fail: 'failed', total: (a, b) => a + ' of ' + b,
-          time: 'Time connected', down: 'Downloaded', up: 'Uploaded',
+          time: 'Time connected', down: 'Download', up: 'Upload',
           units: ['B', 'KB', 'MB', 'GB'],
-          note: 'Interactive preview. Nothing is actually connecting.'
+          rateUnits: ['B/s', 'KB/s', 'MB/s', 'GB/s'],
+          liveTitle: 'Last minute', peak: x => 'Peak ' + x,
+          upToDate: 'Up to date',
+          tipSettings: 'Settings', tipDns: 'Change DNS', tipUsage: 'Network usage', tipBack: 'Back',
+          setTitle: 'Settings', secGeneral: 'General', secRouting: 'Routing',
+          lblLang: 'Language', lblAuto: 'Auto-connect on launch', lblStartup: 'Launch when Windows starts', lblMin: 'Start minimized',
+          lblUsage: 'Record network usage', descUsage: 'Keeps hourly totals on this PC only. Nothing is sent anywhere.',
+          lblTray: 'Minimize to tray on close',
+          modes: [
+            ['Selected services', 'Discord plus any service you pick below goes through the tunnel.'],
+            ['Everything except Iran', 'All your traffic goes through the tunnel except Iranian sites and your own local network.'],
+            ['Everything', 'All your traffic, Iranian sites included, goes through the tunnel. Only your own local network stays direct.']
+          ],
+          dnsTitle: 'DNS', dnsNow: 'Current DNS',
+          dnsHelp: 'Changes the DNS servers of your active network connections (Wi-Fi, Ethernet).',
+          dnsApply: 'Apply', dnsApplying: 'Applying…', dnsDoneShort: 'Done',
+          dnsDone: x => 'DNS set to ' + x + '.', dnsFlush: 'Flush DNS cache', dnsFlushed: 'DNS cache cleared.',
+          dnsAuto: 'Empty (DHCP)',
+          usageTitle: 'Network usage', segDay: 'Day', segWeek: 'Week', segMonth: 'Month',
+          ranges: { day: 'Last 24 hours', week: 'Last 7 days', month: 'Last 30 days' },
+          route: 'Route', proxied: 'Proxied', direct: 'Direct', direction: 'Direction',
+          usageRec: 'Recording', usagePaused: 'Recording resumes when you connect', usageOff: 'Recording is off',
+          max: x => 'Max ' + x,
+          sites: 'Top sites', sitesSub: 'all time',
+          sitesEmpty: 'No traffic yet.', sitesOffline: 'Connect to see which sites are using data.',
+          usageNote: 'Counts only traffic that passes through Papion. Totals are exact; the proxied/direct split is an estimate.',
+          note: 'Interactive preview. Nothing is actually connecting, and the numbers are made up.'
         },
         howTitle: 'How it works',
         howSub: 'three steps, about a minute',
@@ -1500,13 +2873,13 @@
         feat: [
           ['search', 'Finds the best server for you', 'Papion tests a batch of servers at once, checks them with a real request to Discord and a quick speed test, then connects to the best one.'],
           ['refresh', 'Stays connected', 'It keeps checking the connection. If a server dies it quietly switches to another one, and if your internet drops it waits and reconnects when it is back.'],
-          ['dns', 'Change the DNS', 'On top of the proxies, Papion lets you change the DNS too, for a stronger and steadier connection.'],
+          ['dns', 'Change the DNS', 'On top of the proxies, change your DNS in one click from a ready list (Shecan, Cloudflare, Google and more), and flush the DNS cache when you need to.'],
           ['mic', 'Voice calls that work', 'TUN mode sends Discord voice through the tunnel too. It needs admin rights, so it is off by default. Turn it on if voice will not connect on your network.'],
           ['globe', 'Everything except Iran', 'One switch sends all your traffic through the tunnel except sites hosted in Iran, so local sites stay fast and direct.'],
           ['layers', 'More than Discord', 'YouTube, Telegram, Spotify, ChatGPT and more are one toggle away in Settings.'],
           ['share', 'Share with other devices', 'Let your phone or console use this PC as its Discord proxy over your home network. Off until you turn it on.'],
           ['terminal', 'Made for your scripts', 'A separate local proxy port, 127.0.0.1 only, so a Discord bot or any other app on your PC can use the same tunnel.'],
-          ['bell', 'Quiet and tidy', 'Lives in the tray, connects on launch, can start with Windows and updates in one click. Persian and English, with a one-minute tour on first launch.']
+          ['bell', 'Quiet and tidy', 'Lives in the tray, connects on launch, can start with Windows and updates in one click. It shows your live speed and how much data you used per day, week or month. Persian and English, with a one-minute tour on first launch.']
         ],
         svcTitle: 'More than Discord',
         svcSub: 'switch them on in Settings',
@@ -1558,9 +2931,35 @@
           connect: 'اتصال', disconnect: 'قطع اتصال', cancel: 'لغو',
           tagline: 'بدون محدودیت، بدون هزینه، بدون دردسر',
           ok: 'سالم', fail: 'ناموفق', total: (a, b) => a + ' از ' + b,
-          time: 'مدت اتصال', down: 'دریافت', up: 'ارسال',
+          time: 'مدت اتصال', down: 'دانلود', up: 'آپلود',
           units: ['بایت', 'کیلوبایت', 'مگابایت', 'گیگابایت'],
-          note: 'پیش‌نمایش تعاملی؛ چیزی واقعاً وصل نمی‌شه.'
+          rateUnits: ['بایت/ث', 'کیلوبایت/ث', 'مگابایت/ث', 'گیگابایت/ث'],
+          liveTitle: 'یک دقیقه‌ی اخیر', peak: x => 'اوج ' + x,
+          upToDate: 'به‌روز',
+          tipSettings: 'تنظیمات', tipDns: 'تغییر DNS', tipUsage: 'مصرف شبکه', tipBack: 'بازگشت',
+          setTitle: 'تنظیمات', secGeneral: 'عمومی', secRouting: 'مسیردهی',
+          lblLang: 'زبان', lblAuto: 'وصل شدن خودکار موقع باز کردن برنامه', lblStartup: 'با ویندوز اجرا شو', lblMin: 'شروع به‌صورت مخفی تو سینی',
+          lblUsage: 'ثبت مصرف شبکه', descUsage: 'جمع مصرف ساعت‌به‌ساعت فقط روی همین کامپیوتر ذخیره می‌شه و جایی فرستاده نمی‌شه.',
+          lblTray: 'به‌جای بستن، بره تو سینی',
+          modes: [
+            ['سرویس‌های انتخابی', 'دیسکورد و هر سرویسی که پایین انتخاب کنی از تونل رد می‌شه.'],
+            ['همه‌چیز جز ایران', 'همه‌ی ترافیکت از تونل رد می‌شه، به‌جز سایت‌های ایرانی و شبکه‌ی محلی خودت.'],
+            ['همه‌چیز', 'همه‌ی ترافیکت، حتی سایت‌های ایرانی، از تونل رد می‌شه. فقط شبکه‌ی محلی خودت مستقیم می‌مونه.']
+          ],
+          dnsTitle: 'تغییر DNS', dnsNow: 'DNS فعلی',
+          dnsHelp: 'سرور DNS همه‌ی اتصال‌های فعال شبکه‌ات (وای‌فای، کابل) رو عوض می‌کنه.',
+          dnsApply: 'اعمال', dnsApplying: 'در حال اعمال…', dnsDoneShort: 'انجام شد',
+          dnsDone: x => 'DNS روی ' + x + ' تنظیم شد.', dnsFlush: 'پاک کردن کش DNS', dnsFlushed: 'کش DNS پاک شد.',
+          dnsAuto: 'خالی (DHCP)',
+          usageTitle: 'مصرف شبکه', segDay: 'روز', segWeek: 'هفته', segMonth: 'ماه',
+          ranges: { day: '۲۴ ساعت اخیر', week: '۷ روز اخیر', month: '۳۰ روز اخیر' },
+          route: 'مسیر', proxied: 'پروکسی', direct: 'مستقیم', direction: 'جهت',
+          usageRec: 'در حال ثبت', usagePaused: 'با وصل شدن ثبت می‌شه', usageOff: 'ثبت مصرف خاموشه',
+          max: x => 'حداکثر ' + x,
+          sites: 'پرمصرف‌ترین سایت‌ها', sitesSub: 'کل مصرف',
+          sitesEmpty: 'هنوز ترافیکی نبوده.', sitesOffline: 'برای دیدن اینکه کدوم سایت‌ها مصرف دارن، به پاپیون وصل شو.',
+          usageNote: 'فقط ترافیکی که از پاپیون رد می‌شه شمرده می‌شه. جمع کل دقیقه؛ تفکیک پروکسی/مستقیم تخمینیه.',
+          note: 'پیش‌نمایش تعاملی؛ چیزی واقعاً وصل نمی‌شه و عددها نمونه‌ست.'
         },
         howTitle: 'چطوری کار می‌کنه',
         howSub: 'سه قدم، حدوداً یه دقیقه',
@@ -1574,13 +2973,13 @@
         feat: [
           ['search', 'بهترین سرور رو خودش پیدا می‌کنه', 'پاپیون یه دسته سرور رو هم‌زمان آزمایش می‌کنه، با یه درخواست واقعی به دیسکورد و یه تست سرعت چکشون می‌کنه و به بهترینشون وصل می‌شه.'],
           ['refresh', 'وصل می‌مونه', 'مرتب اتصال رو چک می‌کنه. اگه یه سرور بمیره بی‌سروصدا می‌ره سراغ یکی دیگه، و اگه اینترنتت قطع شه صبر می‌کنه و به‌محض برگشتنش دوباره وصل می‌شه.'],
-          ['dns', 'تغییر DNS', 'علاوه بر پراکسی‌ها، می‌تونی DNS رو هم عوض کنی تا اتصالت قوی‌تر و پایدارتر شه.'],
+          ['dns', 'تغییر DNS', 'علاوه بر پراکسی‌ها، می‌تونی DNS رو با یه کلیک از بین یه لیست آماده (شکن، کلودفلر، گوگل و بقیه) عوض کنی و کش DNS رو هم پاک کنی.'],
           ['mic', 'تماس صوتی که کار می‌کنه', 'حالت TUN صدای دیسکورد رو هم از تونل رد می‌کنه. دسترسی ادمین می‌خواد، برای همین پیش‌فرض خاموشه. اگه تماس صوتی تو شبکه‌ت وصل نشد، روشنش کن.'],
           ['globe', 'همه‌چیز به‌جز ایران', 'با یه کلید، همه‌ی ترافیکت از تونل رد می‌شه جز سایت‌هایی که تو ایران هاست شدن؛ پس سایت‌های داخلی سریع و مستقیم می‌مونن.'],
           ['layers', 'فقط دیسکورد نیست', 'یوتیوب، تلگرام، اسپاتیفای، ChatGPT و بقیه فقط با یه کلید تو تنظیمات فعال می‌شن.'],
           ['share', 'اشتراک با بقیه‌ی دستگاه‌ها', 'بذار گوشی یا کنسولت از همین کامپیوتر به‌عنوان پراکسی دیسکورد استفاده کنه، اونم از طریق شبکه‌ی خونه. تا خودت روشنش نکنی خاموشه.'],
           ['terminal', 'مخصوص اسکریپت‌های تو', 'یه پورت پراکسی جدا که فقط روی ۱۲۷.۰.۰.۱ باز می‌شه، تا یه ربات دیسکورد یا هر برنامه‌ی دیگه‌ی روی کامپیوترت از همین تونل استفاده کنه.'],
-          ['bell', 'ساکت و مرتب', 'تو سینی سیستم می‌مونه، موقع اجرا وصل می‌شه، می‌تونه با ویندوز بالا بیاد و با یه کلیک آپدیت می‌شه. فارسی و انگلیسی داره و بار اول یه تور یک‌دقیقه‌ای نشونت می‌ده.']
+          ['bell', 'ساکت و مرتب', 'تو سینی سیستم می‌مونه، موقع اجرا وصل می‌شه، می‌تونه با ویندوز بالا بیاد و با یه کلیک آپدیت می‌شه. سرعت لحظه‌ای و مصرف روزانه، هفتگی و ماهانه‌ت رو نشون می‌ده. فارسی و انگلیسی داره و بار اول یه تور یک‌دقیقه‌ای نشونت می‌ده.']
         ],
         svcTitle: 'فقط دیسکورد نیست',
         svcSub: 'از تنظیمات روشنشون کن',
@@ -1638,13 +3037,51 @@
     const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const TOTAL = 20;
     const OK_PATTERN = [0, 1, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 1, 0];
-    const mock = { state: 'off', tested: 0, ok: 0, fail: 0, secs: 0, down: 0, up: 0, timer: 0, shown: '' };
+    const HIST = 60;
+    const mock = { state: 'off', view: 'home', lang: '', tested: 0, ok: 0, fail: 0, secs: 0, down: 0, up: 0, hd: [], hu: [], timer: 0, shown: '' };
+    const zeros = () => new Array(HIST).fill(0);
+    mock.hd = zeros();
+    mock.hu = zeros();
 
-    function bytes(n, units) {
+    const DNS_LIST = [
+      ['google', 'Google', ['8.8.8.8', '8.8.4.4'], '#4285f4'],
+      ['cloudflare', 'Cloudflare', ['1.1.1.1', '1.0.0.1'], '#f6821f'],
+      ['shecan', 'Shecan', ['178.22.122.100', '185.51.200.2'], '#22c55e'],
+      ['begzar', 'Begzar', ['185.55.226.26', '185.55.225.25'], '#a78bfa'],
+      ['electro', 'Electro', ['78.157.42.100', '78.157.42.101'], '#f43f5e'],
+      ['403', '403', ['10.202.10.202', '10.202.10.102'], '#64748b'],
+      ['radargame', 'RADAR.GAME', ['10.202.10.10', '10.202.10.11'], '#06b6d4'],
+      ['quad9', 'Quad9', ['9.9.9.9', '149.112.112.112'], '#ec4899'],
+      ['opendns', 'OpenDNS', ['208.67.222.222', '208.67.220.220'], '#f59e0b'],
+      ['auto', 'Automatic (DHCP)', [], '#5b5f6e']
+    ];
+    const dns = { cur: 'auto', sel: null, busy: false, done: false, msg: null };
+    const SITES = [['discord.com', 0.3], ['cdn.discordapp.com', 0.24], ['gateway.discord.gg', 0.15], ['youtube.com', 0.12], ['googlevideo.com', 0.08]];
+    const U = { range: 'day', mode: 'route', buckets: [] };
+    const SET = { auto: false, startup: true, min: false, usage: true, tray: true, route: 'selected' };
+    const SET_ROWS = [
+      ['auto', 'lblAuto', '', 'teal', '<polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>'],
+      ['startup', 'lblStartup', '', 'amber', '<path d="M18.36 6.64a9 9 0 1 1-12.73 0"/><line x1="12" y1="2" x2="12" y2="12"/>'],
+      ['min', 'lblMin', '', 'violet', '<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/>'],
+      ['usage', 'lblUsage', 'descUsage', 'amber', '<line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/>'],
+      ['tray', 'lblTray', '', 'teal', '<polyline points="4 14 10 14 10 20"/><polyline points="20 10 14 10 14 4"/><line x1="14" y1="10" x2="21" y2="3"/><line x1="3" y1="21" x2="10" y2="14"/>']
+    ];
+
+    function split(n, units) {
       let i = 0, v = n;
       while (v >= 1024 && i < units.length - 1) { v /= 1024; i++; }
       const num = i === 0 ? String(Math.floor(v)) : (v < 10 ? v.toFixed(1) : String(Math.round(v)));
-      return '<span>' + fmt(num.replace('.', currentLang === 'fa' ? '٫' : '.')) + '</span><span class="u">' + units[i] + '</span>';
+      return [fmt(num.replace('.', currentLang === 'fa' ? '٫' : '.')), units[i]];
+    }
+
+    function bytes(n, units) {
+      const [a, b] = split(n, units);
+      return '<span>' + a + '</span><span class="u">' + b + '</span>';
+    }
+
+    function plain(n, units) {
+      const [a, b] = split(n, units);
+      return a + ' ' + b;
     }
 
     function clock(s) {
@@ -1659,9 +3096,300 @@
       el.classList.add('swap');
     }
 
+    function placePill(seg) {
+      const a = seg.querySelector('.active');
+      if (!a) return;
+      seg.style.setProperty('--pill-x', a.offsetLeft + 'px');
+      seg.style.setProperty('--pill-w', a.offsetWidth + 'px');
+    }
+
+    function buildSeg(id, items, current, onPick) {
+      const seg = $(id);
+      seg.innerHTML = items.map(([k, label]) => '<button type="button" data-k="' + k + '" class="' + (k === current ? 'active' : '') + '">' + esc(label) + '</button>').join('');
+      seg.querySelectorAll('button').forEach(b => b.addEventListener('click', () => {
+        seg.querySelectorAll('button').forEach(x => x.classList.toggle('active', x === b));
+        placePill(seg);
+        onPick(b.dataset.k);
+      }));
+      placePill(seg);
+    }
+
+    function setView(v) {
+      mock.view = v;
+      $('mock').dataset.view = v;
+      const el = $('mv-' + v);
+      if (el) el.scrollTop = 0;
+      if (v === 'usage') renderUsage();
+      if (v === 'set') requestAnimationFrame(() => document.querySelectorAll('#mv-set .m-seg').forEach(placePill));
+      if (v === 'dns') paintDns();
+    }
+
+    function livePath(arr, peak, area) {
+      const pts = arr.map((v, i) => (i / (HIST - 1) * 300).toFixed(1) + ' ' + (43 - v / peak * 39).toFixed(1));
+      const line = 'M' + pts.join('L');
+      return area ? line + 'L300 43.5L0 43.5Z' : line;
+    }
+
+    function paintLive() {
+      const t = I18N[currentLang].mock;
+      const on = mock.state === 'on';
+      const peak = Math.max(1, ...mock.hd, ...mock.hu);
+      const last = HIST - 1;
+      $('m-down').innerHTML = bytes(mock.hd[last], t.rateUnits);
+      $('m-up').innerHTML = bytes(mock.hu[last], t.rateUnits);
+      $('m-ad').setAttribute('d', on ? livePath(mock.hd, peak, true) : '');
+      $('m-ld').setAttribute('d', on ? livePath(mock.hd, peak, false) : '');
+      $('m-au').setAttribute('d', on ? livePath(mock.hu, peak, true) : '');
+      $('m-lu').setAttribute('d', on ? livePath(mock.hu, peak, false) : '');
+      $('m-peak').textContent = on && mock.secs > 0 ? t.peak(plain(peak, t.rateUnits)) : '';
+    }
+
+    function dnsName(k) {
+      const t = I18N[currentLang].mock;
+      const row = DNS_LIST.find(r => r[0] === k);
+      return k === 'auto' ? t.dnsAuto : row[1];
+    }
+
+    function buildDns() {
+      $('m-dns-grid').innerHTML = DNS_LIST.map(([k, label, ips, color]) => {
+        const letter = k === '403' ? '403' : label.charAt(0).toUpperCase();
+        return '<button type="button" class="m-dns-tile" data-k="' + k + '"><span class="m-dns-badge' + (letter.length > 1 ? ' sm' : '') + '" style="background:' + color + '">' + letter + '</span><span class="m-dns-text"><span class="m-dns-name"><span>' + tx(dnsName(k)) + '</span></span><span class="m-dns-ips">' + ips.map(ip => '<span>' + ip + '</span>').join('') + '</span></span></button>';
+      }).join('');
+      $('m-dns-grid').querySelectorAll('.m-dns-tile').forEach(b => b.addEventListener('click', () => {
+        if (dns.busy) return;
+        dns.sel = b.dataset.k;
+        dns.done = false;
+        paintDns();
+      }));
+    }
+
+    function paintDns() {
+      const t = I18N[currentLang].mock;
+      const row = DNS_LIST.find(r => r[0] === dns.cur);
+      $('m-dns-title').textContent = t.dnsTitle;
+      $('m-dns-now').textContent = t.dnsNow;
+      $('m-dns-help').textContent = t.dnsHelp;
+      $('m-dns-cur').innerHTML = tx(dnsName(dns.cur));
+      $('m-dns-curips').innerHTML = row[2].map(ip => '<span>' + ip + '</span>').join('');
+      $('m-flush').title = t.dnsFlush;
+      $('m-flush').setAttribute('aria-label', t.dnsFlush);
+      document.querySelectorAll('.m-dns-tile').forEach(b => {
+        b.classList.toggle('sel', b.dataset.k === dns.sel);
+        b.classList.toggle('cur', b.dataset.k === dns.cur);
+      });
+      const btn = $('m-dns-apply');
+      btn.disabled = dns.busy || dns.done || !dns.sel || dns.sel === dns.cur;
+      btn.classList.toggle('loading', dns.busy);
+      btn.classList.toggle('done', dns.done);
+      $('m-dns-apply-lbl').textContent = dns.busy ? t.dnsApplying : dns.done ? t.dnsDoneShort : t.dnsApply;
+      const msg = $('m-dns-msg');
+      msg.textContent = dns.msg ? (dns.msg.k === 'done' ? t.dnsDone(dnsName(dns.msg.v)) : t.dnsFlushed) : '';
+      msg.classList.toggle('ok', !!dns.msg);
+    }
+
+    $('m-dns-apply').addEventListener('click', () => {
+      if (dns.busy || !dns.sel || dns.sel === dns.cur) return;
+      dns.busy = true;
+      dns.msg = null;
+      paintDns();
+      setTimeout(() => {
+        dns.busy = false;
+        dns.done = true;
+        dns.cur = dns.sel;
+        dns.msg = { k: 'done', v: dns.cur };
+        const hero = $('m-dns-hero');
+        hero.classList.remove('flash');
+        void hero.offsetWidth;
+        hero.classList.add('flash');
+        paintDns();
+        setTimeout(() => { dns.done = false; paintDns(); }, 1700);
+      }, reduceMotion ? 150 : 1300);
+    });
+
+    $('m-flush').addEventListener('click', () => {
+      const b = $('m-flush');
+      b.classList.remove('spin');
+      void b.offsetWidth;
+      b.classList.add('spin');
+      dns.msg = { k: 'flush' };
+      paintDns();
+    });
+
+    function rng(seed) {
+      let s = seed;
+      return () => { s = (s * 1664525 + 1013904223) >>> 0; return s / 4294967296; };
+    }
+
+    function usageBuckets(range) {
+      const n = range === 'day' ? 24 : range === 'week' ? 7 : 30;
+      const r = rng(range === 'day' ? 11 : range === 'week' ? 29 : 47);
+      const scale = range === 'day' ? 420e6 : range === 'week' ? 5.4e9 : 3.2e9;
+      const nowH = new Date().getHours();
+      const out = [];
+      for (let i = 0; i < n; i++) {
+        let w = 0.35 + r() * 0.65;
+        if (range === 'day') {
+          const h = (nowH - (n - 1) + i + 24) % 24;
+          w = h < 6 ? 0.06 + r() * 0.12 : h < 10 ? 0.25 + r() * 0.3 : h < 17 ? 0.4 + r() * 0.35 : 0.7 + r() * 0.3;
+        }
+        const total = Math.round(w * scale);
+        const p = 0.55 + r() * 0.3;
+        const d = 0.86 + r() * 0.07;
+        out.push({ total, a: total * p, b: total * (1 - p), down: total * d, up: total * (1 - d) });
+      }
+      return out;
+    }
+
+    function usageLabels(range, t) {
+      const loc = currentLang === 'fa' ? 'fa-IR' : 'en-US';
+      const n = range === 'day' ? 24 : range === 'week' ? 7 : 30;
+      const now = new Date();
+      const out = [];
+      for (let i = 0; i < n; i++) {
+        if (range === 'day') {
+          const h = (now.getHours() - (n - 1) + i + 24) % 24;
+          const two = x => fmt((x < 10 ? '0' : '') + x);
+          out.push({ axis: i % 4 === 3 ? two(h) : '', tip: two(h) + ':00 – ' + two((h + 1) % 24) + ':00' });
+        } else {
+          const d = new Date(now.getFullYear(), now.getMonth(), now.getDate() - (n - 1 - i));
+          const full = d.toLocaleDateString(loc, { weekday: 'short', day: 'numeric', month: 'short' });
+          const axis = range === 'week' ? d.toLocaleDateString(loc, { weekday: 'short' }) : ((n - 1 - i) % 5 === 0 ? d.toLocaleDateString(loc, { day: 'numeric' }) : '');
+          out.push({ axis, tip: full });
+        }
+      }
+      return out;
+    }
+
+    function paintChartParts() {
+      const route = U.mode === 'route';
+      const max = Math.max(...U.buckets.map(x => x.total));
+      const stacks = $('m-uchart').querySelectorAll('.m-ub-stack');
+      U.buckets.forEach((x, i) => {
+        const s = stacks[i];
+        if (!s) return;
+        s.style.height = (x.total / max * 100) + '%';
+        s.children[0].style.flexGrow = route ? x.a : x.down;
+        s.children[1].style.flexGrow = route ? x.b : x.up;
+      });
+      $('m-uchart').className = 'm-uchart ' + (route ? 'm-route' : 'm-dir');
+    }
+
+    function renderUsage() {
+      const t = I18N[currentLang].mock;
+      U.buckets = usageBuckets(U.range);
+      const labels = usageLabels(U.range, t);
+      const sum = k => U.buckets.reduce((s, x) => s + x[k], 0);
+      const total = sum('total');
+      const max = Math.max(...U.buckets.map(x => x.total));
+      const [n, u] = split(total, t.units);
+      $('m-usage-title').textContent = t.usageTitle;
+      $('m-urange').textContent = t.ranges[U.range];
+      $('m-utotal').innerHTML = '<b>' + n + '</b><span>' + u + '</span>';
+      $('m-rroute-t').textContent = t.route;
+      $('m-rdir-t').textContent = t.direction;
+      $('m-rroute-an').textContent = t.proxied;
+      $('m-rroute-bn').textContent = t.direct;
+      $('m-rdir-an').textContent = t.down;
+      $('m-rdir-bn').textContent = t.up;
+      $('m-rroute-a').textContent = plain(sum('a'), t.units);
+      $('m-rroute-b').textContent = plain(sum('b'), t.units);
+      $('m-rdir-a').textContent = plain(sum('down'), t.units);
+      $('m-rdir-b').textContent = plain(sum('up'), t.units);
+      const setBar = (id, a, b) => {
+        const sp = $(id).querySelectorAll('.m-ratio-bar span');
+        const pa = a / (a + b) * 100;
+        sp[0].style.width = 'calc(' + pa + '% - 1px)';
+        sp[1].style.width = 'calc(' + (100 - pa) + '% - 1px)';
+      };
+      setBar('m-rroute', sum('a'), sum('b'));
+      setBar('m-rdir', sum('down'), sum('up'));
+      $('m-umax').textContent = t.max(plain(max, t.units));
+      $('m-uchart').innerHTML = U.buckets.map((x, i) => '<div class="m-ub" data-i="' + i + '"><div class="m-ub-stack" style="--i:' + i + '"><i></i><i></i></div></div>').join('');
+      $('m-uaxis').innerHTML = labels.map(l => '<span>' + esc(l.axis) + '</span>').join('');
+      $('m-uaxis').style.fontSize = U.range === 'day' ? '10px' : U.range === 'week' ? '9.5px' : '10px';
+      U.labels = labels;
+      paintChartParts();
+      buildSeg('m-range', [['day', t.segDay], ['week', t.segWeek], ['month', t.segMonth]], U.range, k => { U.range = k; renderUsage(); });
+      buildSeg('m-umode', [['route', t.route], ['dir', t.direction]], U.mode, k => { U.mode = k; paintChartParts(); });
+      $('m-sites-title').textContent = t.sites;
+      $('m-sites-sub').textContent = t.sitesSub;
+      $('m-unote').textContent = t.usageNote;
+      buildSites();
+      paintUsageLive();
+    }
+
+    function buildSites() {
+      const t = I18N[currentLang].mock;
+      const on = mock.state === 'on';
+      const total = mock.down + mock.up;
+      const show = on && total > 0;
+      $('m-sites').innerHTML = show ? SITES.map(([name, share], i) => '<div class="m-site" style="--w:' + (share / SITES[0][1] * 100) + '%"><span class="m-site-name"><bdi dir="ltr">' + esc(name) + '</bdi></span><span class="m-site-size" data-s="' + share + '"></span></div>').join('') : '';
+      $('m-sites-empty').textContent = show ? '' : on ? t.sitesEmpty : t.sitesOffline;
+      paintSites();
+    }
+
+    function paintSites() {
+      const t = I18N[currentLang].mock;
+      const total = mock.down + mock.up;
+      document.querySelectorAll('#m-sites .m-site-size').forEach(el => { el.textContent = plain(total * parseFloat(el.dataset.s), t.units); });
+    }
+
+    function paintUsageLive() {
+      const t = I18N[currentLang].mock;
+      const on = mock.state === 'on' && SET.usage;
+      $('m-ulive').classList.toggle('on', on);
+      $('m-ulive-txt').textContent = !SET.usage ? t.usageOff : mock.state === 'on' ? t.usageRec : t.usagePaused;
+    }
+
+    $('m-uchart').addEventListener('pointerover', e => {
+      const el = e.target.closest('.m-ub');
+      const tip = $('m-utip');
+      if (!el) return;
+      const t = I18N[currentLang].mock;
+      const i = +el.dataset.i;
+      const x = U.buckets[i];
+      const route = U.mode === 'route';
+      const rows = route ? [['#4fd1c5', t.proxied, x.a], ['#6b7390', t.direct, x.b]] : [['#7c83fd', t.down, x.down], ['#e0a83e', t.up, x.up]];
+      tip.innerHTML = '<b>' + esc(U.labels[i].tip) + '</b>' + rows.map(r => '<div><i style="background:' + r[0] + '"></i>' + esc(r[1]) + '<span>' + plain(r[2], t.units) + '</span></div>').join('');
+      const plot = $('m-uplot');
+      const stack = el.querySelector('.m-ub-stack');
+      const w = tip.offsetWidth;
+      const left = Math.min(Math.max(el.offsetLeft + el.offsetWidth / 2 - w / 2, 0), plot.offsetWidth - w);
+      tip.style.left = left + 'px';
+      tip.style.top = Math.max(0, 120 - stack.offsetHeight - tip.offsetHeight - 8) + 'px';
+      tip.classList.add('show');
+    });
+
+    $('m-uchart').addEventListener('pointerleave', () => $('m-utip').classList.remove('show'));
+
+    function buildSettings() {
+      const t = I18N[currentLang].mock;
+      $('m-set-title').textContent = t.setTitle;
+      const rows = SET_ROWS.map(([k, label, sub, tone, path]) => '<label class="m-row"><span class="m-ri ' + tone + '"><svg viewBox="0 0 24 24">' + path + '</svg></span><span class="m-rt"><span class="m-rtitle">' + tx(t[label]) + '</span>' + (sub ? '<span class="m-rsub">' + tx(t[sub]) + '</span>' : '') + '</span><span class="m-switch"><input type="checkbox" data-k="' + k + '"' + (SET[k] ? ' checked' : '') + '><span class="m-slider"></span></span></label>').join('');
+      const langRow = '<div class="m-row"><span class="m-ri violet"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></span><span class="m-rt"><span class="m-rtitle">' + esc(t.lblLang) + '</span></span><div class="m-seg" id="m-langseg"></div></div>';
+      const modes = t.modes.map(([name, sub], i) => '<button type="button" class="m-opt' + (SET.route === ['selected', 'iran', 'all'][i] ? ' active' : '') + '" data-r="' + ['selected', 'iran', 'all'][i] + '"><b>' + tx(name) + '</b><span>' + tx(sub) + '</span></button>').join('');
+      $('m-set-body').innerHTML = '<div class="m-sec">' + esc(t.secGeneral) + '</div><div class="m-group">' + langRow + rows + '</div><div class="m-sec">' + esc(t.secRouting) + '</div><div class="m-modes">' + modes + '</div>';
+      buildSeg('m-langseg', [['fa', 'فارسی'], ['en', 'English']], currentLang, k => { if (k !== currentLang) applyLanguage(k); });
+      $('m-set-body').querySelectorAll('input[data-k]').forEach(i => i.addEventListener('change', () => { SET[i.dataset.k] = i.checked; paintUsageLive(); }));
+      $('m-set-body').querySelectorAll('.m-opt').forEach(b => b.addEventListener('click', () => {
+        SET.route = b.dataset.r;
+        $('m-set-body').querySelectorAll('.m-opt').forEach(x => x.classList.toggle('active', x === b));
+      }));
+    }
+
+    function buildAll() {
+      buildDns();
+      buildSettings();
+      if (mock.view === 'usage') renderUsage();
+    }
+
     function paintMock() {
       const t = I18N[currentLang].mock;
       const st = mock.state;
+      if (mock.lang !== currentLang) {
+        mock.lang = currentLang;
+        buildAll();
+      }
       $('mock').dataset.state = st;
       $('m-signal').classList.toggle('on', st === 'on');
       $('m-signal').classList.toggle('busy', st === 'working');
@@ -1672,6 +3400,7 @@
         mock.shown = st;
         swap($('m-status'));
         swap($('m-sub'));
+        if (mock.view === 'usage') { buildSites(); paintUsageLive(); }
       }
       const btn = $('m-btn');
       btn.textContent = st === 'on' ? t.disconnect : st === 'working' ? t.cancel : t.connect;
@@ -1689,12 +3418,24 @@
       $('m-fail-label').textContent = t.fail;
       $('m-total').textContent = t.total(fmt(mock.tested), fmt(TOTAL));
       $('m-time').textContent = clock(mock.secs);
-      $('m-down').innerHTML = bytes(mock.down, t.units);
-      $('m-up').innerHTML = bytes(mock.up, t.units);
       $('m-time-label').textContent = t.time;
       $('m-down-label').textContent = t.down;
       $('m-up-label').textContent = t.up;
+      $('m-live-title').textContent = t.liveTitle;
+      $('m-foot-name').textContent = t.title + ' · Aloy';
+      const tag = release && release.tag ? release.tag : '1.0.0';
+      $('m-ver-num').textContent = /^\d/.test(tag) ? 'v' + tag : tag;
+      $('m-ver-tag').textContent = t.upToDate;
+      [['m-b-set', t.tipSettings], ['m-b-dns', t.tipDns], ['m-b-usage', t.tipUsage]].forEach(([id, s]) => {
+        $(id).title = s;
+        $(id).setAttribute('aria-label', s);
+      });
+      document.querySelectorAll('.m-back').forEach(b => {
+        b.title = t.tipBack;
+        b.setAttribute('aria-label', t.tipBack);
+      });
       $('mock-note').textContent = t.note;
+      paintLive();
     }
 
     function stopTimer() {
@@ -1708,11 +3449,25 @@
       mock.secs = 0;
       mock.down = 0;
       mock.up = 0;
+      mock.hd = zeros();
+      mock.hu = zeros();
       mock.timer = setInterval(() => {
         mock.secs++;
-        mock.down += 120000 + (mock.secs * 37311) % 300000;
-        mock.up += 14000 + (mock.secs * 7919) % 40000;
+        const s = mock.secs;
+        const wave = 0.5 + 0.5 * Math.sin(s * 0.55) * Math.cos(s * 0.21);
+        const burst = s % 13 < 3 ? 1.8 : 1;
+        const dr = Math.round((250000 + (s * 37311) % 260000 + wave * 900000) * burst);
+        const ur = Math.round((18000 + (s * 7919) % 42000 + wave * 60000) * (burst > 1 ? 1.5 : 1));
+        mock.hd.push(dr);
+        mock.hd.shift();
+        mock.hu.push(ur);
+        mock.hu.shift();
+        mock.down += dr;
+        mock.up += ur;
         paintMock();
+        if (mock.view === 'usage') {
+          if (!$('m-sites').children.length) buildSites(); else paintSites();
+        }
       }, 1000);
       paintMock();
     }
@@ -1735,12 +3490,19 @@
     function stopAll() {
       stopTimer();
       mock.state = 'off';
+      mock.secs = 0;
+      mock.hd = zeros();
+      mock.hu = zeros();
       paintMock();
     }
 
     $('m-btn').addEventListener('click', () => {
       if (mock.state === 'off') startWorking(); else stopAll();
     });
+    $('m-b-set').addEventListener('click', () => setView('set'));
+    $('m-b-dns').addEventListener('click', () => setView('dns'));
+    $('m-b-usage').addEventListener('click', () => setView('usage'));
+    document.querySelectorAll('.m-back').forEach(b => b.addEventListener('click', () => setView('home')));
 
     let release = null;
 
