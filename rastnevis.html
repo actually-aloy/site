@@ -5,16 +5,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#070b16">
   <title>راست‌نویس — تبدیل فینگلیش به فارسی، آفلاین</title>
-  <meta name="description" content="Rastnevis: convert Finglish to Persian instantly and offline, plus offline speech to text. A free, portable Windows app.">
+  <meta name="description" content="راست‌نویس: تبدیل فینگلیش به فارسی، آنی و آفلاین، به‌علاوه‌ی تبدیل گفتار به متن آفلاین. برنامه‌ی رایگان و پرتابل ویندوز.">
   <link rel="canonical" href="https://actually-aloy.github.io/site/rastnevis">
   <meta property="og:type" content="website">
-  <meta property="og:title" content="Rastnevis — Finglish to Persian, offline">
-  <meta property="og:description" content="Type Persian in English letters and get proper Persian text. Free, offline, for Windows.">
+  <meta property="og:locale" content="fa_IR">
+  <meta property="og:title" content="راست‌نویس — تبدیل فینگلیش به فارسی، آفلاین">
+  <meta property="og:description" content="فارسی رو با حروف انگلیسی بنویس و متن درست فارسی تحویل بگیر. رایگان، آفلاین، برای ویندوز.">
   <meta property="og:url" content="https://actually-aloy.github.io/site/rastnevis">
   <meta property="og:image" content="https://actually-aloy.github.io/site/rastnevis-og.jpg">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Rastnevis — Finglish to Persian, offline">
-  <meta name="twitter:description" content="Type Persian in English letters and get proper Persian text. Free, offline, for Windows.">
+  <meta name="twitter:title" content="راست‌نویس — تبدیل فینگلیش به فارسی، آفلاین">
+  <meta name="twitter:description" content="فارسی رو با حروف انگلیسی بنویس و متن درست فارسی تحویل بگیر. رایگان، آفلاین، برای ویندوز.">
   <meta name="twitter:image" content="https://actually-aloy.github.io/site/rastnevis-og.jpg">
   <link rel="icon" href="rastnevis-logo.png" type="image/png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -764,6 +765,8 @@
       .closing { flex-direction: column; align-items: flex-start; }
     }
   </style>
+  <link rel="stylesheet" href="langfx.css">
+  <script src="langfx.js" defer></script>
 </head>
 <body>
   <main class="page">
@@ -775,7 +778,7 @@
             <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 3 5 8l5 5"/></svg>
             <span id="back-text"></span>
           </a>
-          <button type="button" class="pill-btn lang-toggle" id="lang-toggle" aria-label="Switch language">EN / فا</button>
+          <button type="button" class="pill-btn lang-toggle" id="lang-toggle" aria-label="Switch language"><span class="lt-pill"></span><span class="lt-o" data-l="en">EN</span><span class="lt-o" data-l="fa">فا</span></button>
         </div>
         <div class="brand">
           <img src="rastnevis-logo.png" alt="" width="64" height="64" draggable="false">
@@ -959,7 +962,7 @@
     const I18N = {
       en: {
         dir: 'ltr',
-        docTitle: 'Rastnevis — Finglish to Persian, offline',
+        docTitle: 'راست‌نویس — تبدیل فینگلیش به فارسی، آفلاین',
         back: 'home',
         heroTitle: 'Rastnevis',
         pitch: 'Type Persian in plain English letters and get proper Persian text back. Rastnevis converts Finglish to Persian instantly and offline, with a big dictionary and a very good conversion engine behind it, and can also turn your voice into text. No installer, no account.',

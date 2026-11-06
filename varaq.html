@@ -1330,6 +1330,8 @@
       }
     }
   </style>
+  <link rel="stylesheet" href="langfx.css">
+  <script src="langfx.js" defer></script>
 </head>
 <body>
   <main class="page">
@@ -1341,7 +1343,7 @@
             <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 3 5 8l5 5"/></svg>
             <span id="back-text"></span>
           </a>
-          <button type="button" class="pill-btn lang-toggle" id="lang-toggle" aria-label="Switch language">EN / فا</button>
+          <button type="button" class="pill-btn lang-toggle" id="lang-toggle" aria-label="Switch language"><span class="lt-pill"></span><span class="lt-o" data-l="en">EN</span><span class="lt-o" data-l="fa">فا</span></button>
         </div>
         <div class="brand">
           <img src="varaq-logo.png" alt="" width="64" height="64" draggable="false">
@@ -1599,7 +1601,7 @@
           ['Is it really free?', 'Yes. There is nothing to pay, no account to make and no ads.'],
           ['What does it run on?', 'Windows, for now. The download is a zip that you extract.'],
           ['How do I install it?', 'There is nothing to install. Extract the zip, then double-click Varaq. Keep the folder somewhere you will not delete it by accident, like Documents.'],
-          ['Does it need the internet?', 'Only the first time, to download its PDF engine once. After that you can read offline. When you are online it also lets you know if a newer version is out.'],
+          ['Does it need the internet?', 'Only the first time, to download its PDF engine once. After that you can read offline. A few PDFs that use special fonts or older character sets may only look perfect while you are online. When you are online it also lets you know if a newer version is out.'],
           ['Will it change my PDFs?', 'Not by itself. Your highlights and notes stay in Varaq until you press Ctrl+S, and only then are they written into the file. Use Ctrl+Shift+S to save a copy and leave the original alone.'],
           ['Where is my data kept?', 'In a Varaq_data folder next to the app: your reading positions, bookmarks and private copies of your marks. If that folder cannot be written to, Varaq uses a .varaq folder in your user folder instead.'],
           ['Will other PDF readers see my highlights?', 'Yes, after you save with Ctrl+S. They are stored as standard PDF annotations, which most readers can show.'],
@@ -1702,7 +1704,7 @@
           ['واقعاً رایگانه؟', 'آره. چیزی نیست که بپردازی، اکانتی لازم نیست و تبلیغی هم تو کار نیست.'],
           ['رو چی کار می‌کنه؟', 'فعلاً ویندوز. چیزی که دانلود می‌کنی یه فایل زیپه که ازش بیرون می‌آریش.'],
           ['چطوری نصبش کنم؟', 'نصبی در کار نیست. زیپ رو باز کن و روی ورق دوبار کلیک کن. پوشه‌اش رو یه جایی بذار که اشتباهی پاکش نکنی، مثلاً Documents.'],
-          ['اینترنت می‌خواد؟', 'فقط بار اول، برای دانلود یه‌باره‌ی موتور PDF. بعدش می‌تونی آفلاین بخونی. وقتی آنلاینی هم بهت خبر می‌ده اگه نسخه‌ی جدیدتری اومده باشه.'],
+          ['اینترنت می‌خواد؟', 'فقط بار اول، برای دانلود یه‌باره‌ی موتور PDF. بعدش می‌تونی آفلاین بخونی. چندتا PDF که فونت‌های خاص یا کدگذاری‌های قدیمی دارن شاید فقط وقتی آنلاینی کامل درست نشون داده بشن. وقتی آنلاینی هم بهت خبر می‌ده اگه نسخه‌ی جدیدتری اومده باشه.'],
           ['PDFهام رو تغییر می‌ده؟', 'خودش نه. هایلایت‌ها و یادداشت‌هات تو خود ورق می‌مونن تا وقتی Ctrl+S بزنی، و فقط اون‌وقت تو فایل نوشته می‌شن. با Ctrl+Shift+S یه کپی ذخیره کن تا اصل فایل دست‌نخورده بمونه.'],
           ['داده‌هام کجا نگه‌داری می‌شه؟', 'تو یه پوشه‌ی Varaq_data کنار برنامه: جای مطالعه، بوکمارک‌ها و نسخه‌ی خصوصی علامت‌هات. اگه نشه تو اون پوشه نوشت، ورق به‌جاش از یه پوشه‌ی varaq. تو پوشه‌ی کاربرت استفاده می‌کنه.'],
           ['برنامه‌های PDF دیگه هایلایت‌هام رو می‌بینن؟', 'آره، بعد از اینکه با Ctrl+S ذخیره کنی. به‌شکل حاشیه‌نویسی استاندارد PDF ذخیره می‌شن که بیشتر برنامه‌ها می‌تونن نشونشون بدن.'],

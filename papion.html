@@ -5,16 +5,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#0f0d1f">
   <title>پاپیون — دیسکورد بدون محدودیت</title>
-  <meta name="description" content="Papion: a free Windows app that opens up Discord, and more, without the hassle. It finds the fastest server by itself and keeps you connected.">
+  <meta name="description" content="پاپیون: برنامه‌ی رایگان ویندوز که دیسکورد و خیلی چیزای دیگه رو بدون دردسر باز می‌کنه. خودش سریع‌ترین سرور رو پیدا می‌کنه و وصل نگهت می‌داره.">
   <link rel="canonical" href="https://actually-aloy.github.io/site/papion">
   <meta property="og:type" content="website">
-  <meta property="og:title" content="Papion — Discord without limits">
-  <meta property="og:description" content="A free Windows app that opens up Discord, and more, without the hassle. No limits. No cost. No hassle.">
+  <meta property="og:locale" content="fa_IR">
+  <meta property="og:title" content="پاپیون — دیسکورد بدون محدودیت">
+  <meta property="og:description" content="برنامه‌ی رایگان ویندوز برای باز کردن دیسکورد و خیلی سرویس دیگه، بدون دردسر. بدون محدودیت، بدون هزینه، بدون دردسر.">
   <meta property="og:url" content="https://actually-aloy.github.io/site/papion">
   <meta property="og:image" content="https://actually-aloy.github.io/site/papion-og.jpg">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Papion — Discord without limits">
-  <meta name="twitter:description" content="A free Windows app that opens up Discord, and more, without the hassle. No limits. No cost. No hassle.">
+  <meta name="twitter:title" content="پاپیون — دیسکورد بدون محدودیت">
+  <meta name="twitter:description" content="برنامه‌ی رایگان ویندوز برای باز کردن دیسکورد و خیلی سرویس دیگه، بدون دردسر. بدون محدودیت، بدون هزینه، بدون دردسر.">
   <meta name="twitter:image" content="https://actually-aloy.github.io/site/papion-og.jpg">
   <link rel="icon" href="papion-logo-on.png" type="image/png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -2538,6 +2539,8 @@
       }
     }
   </style>
+  <link rel="stylesheet" href="langfx.css">
+  <script src="langfx.js" defer></script>
 </head>
 <body>
   <main class="page">
@@ -2549,7 +2552,7 @@
             <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 3 5 8l5 5"/></svg>
             <span id="back-text"></span>
           </a>
-          <button type="button" class="pill-btn lang-toggle" id="lang-toggle" aria-label="Switch language">EN / فا</button>
+          <button type="button" class="pill-btn lang-toggle" id="lang-toggle" aria-label="Switch language"><span class="lt-pill"></span><span class="lt-o" data-l="en">EN</span><span class="lt-o" data-l="fa">فا</span></button>
         </div>
         <div class="brand">
           <img src="papion-logo-on.png" alt="" width="64" height="64" draggable="false">
@@ -2809,12 +2812,12 @@
 
     const HEART = '<svg class="heart" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 21s-7.5-4.6-9.6-9.2C.9 8.4 2.7 5 6 5c2 0 3.4 1 4.4 2.5.5.7 1.2.7 1.7 0C13.1 6 14.5 5 16.5 5c3.3 0 5.1 3.4 3.6 6.8C19.5 16.4 12 21 12 21z"/></svg>';
 
-    const SERVICES = ['YouTube', 'Twitch', 'Instagram', 'Threads', 'X', 'WhatsApp', 'ChatGPT', 'Gemini', 'Reddit', 'Bluesky', 'Mega.nz', 'NotebookLM', 'Claude', 'Kryptex', 'Pinterest', 'DeviantArt', 'Kimi', 'LM Studio', 'Epic Games', 'GTA5-Mods', 'hCaptcha', 'Java', 'Spotify', 'Giphy', 'Tenor', 'Microsoft', 'Telegram'];
+    const SERVICES = ['YouTube', 'Twitch', 'Instagram', 'Threads', 'X', 'WhatsApp', 'ChatGPT', 'Gemini', 'Reddit', 'Bluesky', 'Mega.nz', 'NotebookLM', 'Claude', 'Kryptex', 'Pinterest', 'DeviantArt', 'Kimi', 'LM Studio', 'Epic Games', 'GTA5-Mods', 'hCaptcha', 'Java', 'Spotify', 'Giphy', 'Tenor', 'Microsoft', 'Telegram', 'Steam', 'SteamUnlocked', 'GOG Unlocked', 'Online-Fix.me', 'DODI Repacks', 'FitGirl Repacks', 'GitHub', 'Dropbox', 'MediaFire', 'Xbox', 'Nvidia'];
 
     const I18N = {
       en: {
         dir: 'ltr',
-        docTitle: 'Papion — Discord without limits',
+        docTitle: 'پاپیون — دیسکورد بدون محدودیت',
         back: 'home',
         heroTitle: 'Papion',
         pitch: 'Papion opens up Discord, and more, for free and without the hassle. It finds the fastest route by itself and keeps you connected.',
@@ -2899,6 +2902,7 @@
           ['It says Connected, but Discord will not load.', 'Discord usually only reads your proxy settings when it starts. If it was already open when Papion connected, it can keep using your normal connection and never go through the tunnel. Close Discord completely (right-click its icon next to the Windows clock and choose Quit Discord, closing the window is not enough) and open it again. Still stuck? Press Disconnect and then Connect so Papion picks another server, and turn off any other VPN or proxy that is running at the same time.'],
           ['Voice calls will not connect.', 'Turn on TUN mode: open Papion\'s Settings, switch on "TUN mode", press "Save settings", say Yes to the Windows admin prompt and connect again. Without TUN, voice calls connect directly instead of through the tunnel, and on some networks that does not work.'],
           ['Why does it ask for admin rights?', 'Only for TUN mode, which routes Discord at the network level so voice goes through the tunnel too. Without TUN, Papion does not need admin rights.'],
+          ['Why is my ping so high in games?', 'Papion runs on free public servers. Lots of people share them and they are often far from you, so every packet takes a long detour. Games need a low and steady delay (ping), and free servers simply cannot give you that, so most of the time Papion is not a good fit for online gaming. It is great for everything where speed matters more than delay: downloading games and files, streaming, watching YouTube and Instagram, browsing the web, and chatting. For competitive or real-time games, a dedicated gaming connection is a better choice.'],
           ['Is it safe? What about my privacy?', 'Papion has no accounts and does not collect or send anything about you. It connects through free public servers published by other people, so treat it like any free proxy: Discord traffic is encrypted, but do not use it for anything sensitive.'],
           ['Where do the servers come from?', 'From public subscription lists. Papion tests them and keeps the ones that work. You can add your own links in Settings (vmess, vless, trojan and ss lists work).'],
           ['What is "Connected with Papion" on my Discord profile?', 'An optional status that shows only that you use Papion, and only while you are connected. It helps other people find out Papion exists, and you can turn it off in Settings.'],
@@ -2999,6 +3003,7 @@
           ['می‌گه وصله ولی دیسکورد باز نمی‌شه.', 'دیسکورد معمولاً تنظیمات پراکسی رو فقط موقع باز شدن می‌خونه. اگه وقتی پاپیون وصل شد دیسکورد از قبل باز بوده، ممکنه همچنان از اتصال عادی خودت استفاده کنه و اصلاً از تونل رد نشه. دیسکورد رو کامل ببند (روی آیکونش کنار ساعت ویندوز راست‌کلیک کن و Quit Discord رو بزن؛ بستن پنجره کافی نیست) و دوباره بازش کن. هنوز درست نشد؟ روی «قطع اتصال» و بعد «اتصال» بزن تا پاپیون یه سرور دیگه انتخاب کنه، و اگه هم‌زمان VPN یا پراکسی دیگه‌ای روشنه خاموشش کن.'],
           ['تماس صوتی وصل نمی‌شه.', 'حالت TUN رو روشن کن: تو تنظیمات پاپیون «حالت TUN» رو فعال کن، «ذخیره‌ی تنظیمات» رو بزن، تو پنجره‌ی دسترسی ادمین ویندوز «بله» (Yes) رو انتخاب کن و دوباره وصل شو. وقتی TUN خاموشه تماس صوتی مستقیم وصل می‌شه، نه از تونل، و تو بعضی شبکه‌ها این جواب نمی‌ده.'],
           ['چرا دسترسی ادمین می‌خواد؟', 'فقط برای حالت TUN، که دیسکورد رو تو سطح شبکه مسیریابی می‌کنه تا تماس صوتی هم از تونل رد شه. بدون TUN، پاپیون به دسترسی ادمین نیازی نداره.'],
+          ['چرا تو بازی‌ها پینگم این‌قدر بالاست؟', 'پاپیون با سرورهای عمومی و رایگان کار می‌کنه. کلی آدم هم‌زمان از همون‌ها استفاده می‌کنن و معمولاً از تو دورن، برای همین هر بسته یه مسیر طولانی رو می‌ره. بازی به تأخیر (پینگ) کم و ثابت نیاز داره و با کانفیگ‌های رایگان این کیفیت ممکن نیست، پس بیشتر وقت‌ها پاپیون برای بازی آنلاین مناسب نیست. ولی برای کارهایی که سرعت مهم‌تر از تأخیره عالیه: دانلود بازی و فایل، تماشای ویدیو، یوتیوب، اینستاگرام، گشت‌وگذار تو اینترنت و چت. برای بازی‌های رقابتی و لحظه‌ای، یه اتصال مخصوص بازی انتخاب بهتریه.'],
           ['امنه؟ حریم خصوصی چی؟', 'پاپیون اکانت نداره و هیچی درباره‌ی تو جمع نمی‌کنه و نمی‌فرسته. از سرورهای عمومی رایگانی وصل می‌شه که بقیه منتشر کردن، پس مثل هر پراکسی رایگان باهاش رفتار کن: ترافیک دیسکورد رمزنگاری شده‌ست، ولی برای کارهای حساس ازش استفاده نکن.'],
           ['سرورها از کجا میان؟', 'از لیست‌های اشتراک عمومی. پاپیون آزمایششون می‌کنه و سالم‌ها رو نگه می‌داره. می‌تونی لینک‌های خودت رو هم تو تنظیمات اضافه کنی (لیست‌های vmess، vless، trojan و ss کار می‌کنن).'],
           ['«وصل با پاپیون» رو پروفایل دیسکوردم چیه؟', 'یه وضعیت اختیاریه که فقط نشون می‌ده از پاپیون استفاده می‌کنی، اونم فقط وقتی وصلی. کمک می‌کنه بقیه از وجود پاپیون باخبر شن و از تنظیمات می‌تونی خاموشش کنی.'],
@@ -3570,7 +3575,18 @@
       'Giphy': ['گیفی', 'گیف', 'gif'],
       'Tenor': ['تنور', 'gif', 'گیف'],
       'Microsoft': ['مایکروسافت', 'ms'],
-      'Telegram': ['تلگرام', 'tg']
+      'Telegram': ['تلگرام', 'tg'],
+      'Steam': ['استیم', 'valve', 'game', 'بازی'],
+      'SteamUnlocked': ['استیم آنلاکد', 'steam unlocked', 'game', 'بازی'],
+      'GOG Unlocked': ['جی او جی', 'gog', 'gogunlocked', 'game', 'بازی'],
+      'Online-Fix.me': ['آنلاین فیکس', 'onlinefix', 'online fix', 'game', 'بازی'],
+      'DODI Repacks': ['دودی', 'dodi', 'repack', 'game', 'بازی'],
+      'FitGirl Repacks': ['فیت گرل', 'fitgirl', 'repack', 'game', 'بازی'],
+      'GitHub': ['گیت هاب', 'گیتهاب', 'git'],
+      'Dropbox': ['دراپ باکس', 'دراپبکس'],
+      'MediaFire': ['مدیافایر', 'مدیا فایر', 'media fire'],
+      'Xbox': ['ایکس باکس', 'ایکسباکس', 'microsoft', 'game', 'بازی'],
+      'Nvidia': ['انویدیا', 'انوید', 'geforce', 'driver', 'درایور']
     };
 
     const norm = s => String(s).toLowerCase().replace(/ي/g, 'ی').replace(/ك/g, 'ک').replace(/[\u200c\u200d\u00a0\s._\-+]/g, '');
