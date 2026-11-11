@@ -1,0 +1,115 @@
+.pf-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 2147483000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: rgba(4, 3, 10, 0.62);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  opacity: 0;
+  transition: opacity 0.28s ease;
+}
+
+.pf-overlay.pf-in {
+  opacity: 1;
+}
+
+.pf-card {
+  --pf-ac: var(--violet, var(--orange, var(--cyan, #8b7cff)));
+  width: min(100%, 420px);
+  box-sizing: border-box;
+  padding: 28px 26px 22px;
+  border: 1px solid var(--line, rgba(255, 255, 255, 0.14));
+  border-radius: 24px;
+  background: linear-gradient(160deg, color-mix(in srgb, var(--pf-ac) 14%, var(--bg, #12101c)), var(--bg, #12101c));
+  color: var(--text, #f3f0ff);
+  font-family: inherit;
+  text-align: center;
+  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.55);
+  outline: none;
+  transform: translateY(14px) scale(0.97);
+  transition: transform 0.4s cubic-bezier(0.2, 0.9, 0.3, 1.1);
+}
+
+.pf-in .pf-card {
+  transform: none;
+}
+
+.pf-icon {
+  display: grid;
+  place-items: center;
+  width: 58px;
+  height: 58px;
+  margin: 0 auto 16px;
+  border-radius: 18px;
+  color: var(--pf-ac);
+  background: color-mix(in srgb, var(--pf-ac) 16%, transparent);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--pf-ac) 34%, transparent);
+}
+
+.pf-icon svg {
+  width: 28px;
+  height: 28px;
+}
+
+.pf-card h2 {
+  margin: 0 0 8px;
+  font-size: 20px;
+  font-weight: 800;
+  line-height: 1.35;
+}
+
+.pf-card p {
+  margin: 0 0 20px;
+  color: var(--muted, #b9b3d4);
+  font-size: 14.5px;
+  line-height: 1.85;
+}
+
+.pf-card b {
+  color: var(--text, #f3f0ff);
+  font-weight: 700;
+}
+
+.pf-ok {
+  width: 100%;
+  padding: 12px 18px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--pf-ac);
+  color: var(--ink, #14102a);
+  font-family: inherit;
+  font-size: 14.5px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: filter 0.18s ease, transform 0.18s ease;
+}
+
+.pf-ok:hover {
+  filter: brightness(1.1);
+}
+
+.pf-ok:active {
+  transform: scale(0.98);
+}
+
+.pf-ok:focus-visible {
+  outline: 2px solid var(--text, #fff);
+  outline-offset: 3px;
+}
+
+html:not([lang="fa"]) .pf-card [data-l="fa"],
+html[lang="fa"] .pf-card [data-l="en"] {
+  display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pf-overlay,
+  .pf-card,
+  .pf-ok {
+    transition: none;
+  }
+}
