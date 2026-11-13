@@ -1,0 +1,1578 @@
+<!doctype html>
+<html lang="en" data-p="green">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#020a05">
+  <title>Ironline</title>
+  <meta name="description" content="Ironline: a mining and trading tycoon on an old CRT terminal. Dig ore, refine it, and sell into a moving market.">
+  <link rel="canonical" href="https://actually-aloy.github.io/site/ironline">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Ironline">
+  <meta property="og:description" content="A mining and trading tycoon on an old CRT terminal. Dig ore, refine it, and time the market.">
+  <meta property="og:url" content="https://actually-aloy.github.io/site/ironline">
+  <meta name="twitter:card" content="summary">
+  <link rel="icon" href="favicon.svg?v=2" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #020a05;
+      --fg: #4dff8f;
+      --warn: #ffb347;
+      --dim: color-mix(in srgb, var(--fg) 55%, transparent);
+      --line: color-mix(in srgb, var(--fg) 38%, transparent);
+      --glow: 0 0 5px color-mix(in srgb, var(--fg) 60%, transparent), 0 0 16px color-mix(in srgb, var(--fg) 22%, transparent);
+      --mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    }
+
+    html[data-p="amber"] {
+      --bg: #0a0600;
+      --fg: #ffb000;
+      --warn: #ff6a3d;
+    }
+
+    html[data-p="ice"] {
+      --bg: #03080c;
+      --fg: #9fe8ff;
+      --warn: #ffb347;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    ::-webkit-scrollbar {
+      width: 12px;
+      height: 12px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: repeating-linear-gradient(to bottom, var(--bg) 0, var(--bg) 2px, color-mix(in srgb, var(--fg) 14%, var(--bg)) 2px, color-mix(in srgb, var(--fg) 14%, var(--bg)) 3px);
+      border-left: 1px solid var(--line);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: color-mix(in srgb, var(--fg) 45%, var(--bg));
+      border: 1px solid var(--fg);
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--fg);
+    }
+
+    ::-webkit-scrollbar-corner {
+      background: var(--bg);
+    }
+
+    @supports not selector(::-webkit-scrollbar) {
+      html,
+      #tout {
+        scrollbar-width: thin;
+        scrollbar-color: var(--fg) var(--bg);
+      }
+    }
+
+    html {
+      background: var(--bg);
+      -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      min-height: 100dvh;
+      background: var(--bg);
+      color: var(--fg);
+      font-family: var(--mono);
+      font-size: 14px;
+      line-height: 1.45;
+      -webkit-tap-highlight-color: transparent;
+      overscroll-behavior-y: contain;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: 50;
+      pointer-events: none;
+      background: repeating-linear-gradient(to bottom, rgba(0, 0, 0, 0.26) 0, rgba(0, 0, 0, 0.26) 1px, transparent 1px, transparent 3px);
+    }
+
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: 51;
+      pointer-events: none;
+      background: radial-gradient(ellipse at center, transparent 55%, rgba(0, 0, 0, 0.55) 100%);
+    }
+
+    .screen {
+      max-width: 1020px;
+      margin: 0 auto;
+      padding: max(14px, env(safe-area-inset-top)) max(14px, env(safe-area-inset-right)) calc(28px + env(safe-area-inset-bottom)) max(14px, env(safe-area-inset-left));
+      text-shadow: var(--glow);
+      animation: flick 7s infinite;
+    }
+
+    @keyframes flick {
+      0%, 100% { opacity: 1; }
+      46% { opacity: 1; }
+      48% { opacity: 0.955; }
+      50% { opacity: 0.99; }
+      52% { opacity: 0.965; }
+    }
+
+    button {
+      font: inherit;
+      color: inherit;
+      text-shadow: inherit;
+      touch-action: manipulation;
+      -webkit-user-select: none;
+      user-select: none;
+      -webkit-touch-callout: none;
+    }
+
+    .top {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .brand {
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      min-width: 0;
+    }
+
+    .brand small {
+      display: block;
+      color: var(--dim);
+      font-size: 11px;
+      font-weight: 400;
+      letter-spacing: 0.08em;
+    }
+
+    .cursor {
+      animation: blink 1.1s steps(1) infinite;
+    }
+
+    @keyframes blink {
+      50% { opacity: 0; }
+    }
+
+    .top-btns {
+      display: flex;
+      gap: 8px;
+      margin-left: auto;
+    }
+
+    .back {
+      min-height: 40px;
+      display: inline-flex;
+      align-items: center;
+      padding: 0 10px;
+      border: 1px solid var(--line);
+      background: transparent;
+      color: var(--fg);
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .back.on {
+      border-color: var(--fg);
+    }
+
+    #tfs[hidden] {
+      display: none;
+    }
+
+    #tfs svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    #tfs .fs-out,
+    #tfs[aria-pressed="true"] .fs-in {
+      display: none;
+    }
+
+    #tfs[aria-pressed="true"] .fs-out {
+      display: block;
+    }
+
+    .hud {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin: 12px 0 8px;
+    }
+
+    .hud div {
+      padding: 8px 10px;
+      border: 1px solid var(--line);
+      min-width: 0;
+    }
+
+    .hud span {
+      display: block;
+      color: var(--dim);
+      font-size: 11px;
+      letter-spacing: 0.1em;
+    }
+
+    .hud b {
+      display: block;
+      font-size: 18px;
+      font-weight: 600;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .status {
+      margin: 0 0 10px;
+      min-height: 2.9em;
+      color: var(--dim);
+      font-size: 12px;
+      letter-spacing: 0.06em;
+    }
+
+    .status.bad {
+      color: var(--warn);
+    }
+
+    .tabs {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .tab {
+      min-height: 46px;
+      border: 1px solid var(--line);
+      background: transparent;
+      cursor: pointer;
+      font-size: 13px;
+      letter-spacing: 0.12em;
+      color: var(--dim);
+    }
+
+    .tab[aria-selected="true"] {
+      border-color: var(--fg);
+      color: var(--bg);
+      background: var(--fg);
+      text-shadow: none;
+      font-weight: 700;
+    }
+
+    .btn {
+      min-height: 46px;
+      padding: 6px 10px;
+      border: 1px solid var(--fg);
+      background: transparent;
+      cursor: pointer;
+      font-size: 13px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      line-height: 1.25;
+    }
+
+    .btn small {
+      color: var(--dim);
+      font-size: 11px;
+      text-transform: none;
+    }
+
+    .btn:active:not(:disabled),
+    .btn.press {
+      background: var(--fg);
+      color: var(--bg);
+      text-shadow: none;
+    }
+
+    .btn:active:not(:disabled) small {
+      color: var(--bg);
+    }
+
+    .btn:disabled {
+      border-style: dashed;
+      border-color: var(--line);
+      color: var(--dim);
+      cursor: default;
+    }
+
+    .btn:focus-visible,
+    .back:focus-visible,
+    .tab:focus-visible {
+      outline: 2px solid var(--fg);
+      outline-offset: 2px;
+    }
+
+    @media (hover: hover) {
+      .btn:hover:not(:disabled),
+      .tab:hover:not([aria-selected="true"]),
+      button.back:hover {
+        background: color-mix(in srgb, var(--fg) 14%, transparent);
+      }
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+      gap: 12px;
+      align-items: start;
+    }
+
+    .cards[hidden] {
+      display: none;
+    }
+
+    .card {
+      padding: 12px;
+      border: 1px solid var(--line);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      min-width: 0;
+    }
+
+    .card h2 {
+      margin: 0;
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+    }
+
+    .card-head {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .px {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+      font-size: 13px;
+      white-space: nowrap;
+    }
+
+    .px b {
+      font-size: 20px;
+      font-weight: 600;
+    }
+
+    .dn {
+      color: var(--warn);
+    }
+
+    .tag {
+      min-width: 3ch;
+      color: var(--bg);
+      background: var(--fg);
+      padding: 0 5px;
+      font-size: 11px;
+      text-shadow: none;
+    }
+
+    .tag:empty {
+      display: none;
+    }
+
+    .tag.low {
+      background: var(--warn);
+    }
+
+    .spark {
+      overflow: hidden;
+      white-space: nowrap;
+      font-size: clamp(11px, 3.6vw, 15px);
+      line-height: 1.1;
+    }
+
+    .row {
+      display: grid;
+      grid-template-columns: 6ch 1fr auto;
+      gap: 8px;
+      align-items: center;
+      font-size: 12px;
+    }
+
+    .row span:first-child {
+      color: var(--dim);
+    }
+
+    .row span:nth-child(2) {
+      overflow: hidden;
+      white-space: pre;
+    }
+
+    .grid2,
+    .grid3 {
+      display: grid;
+      gap: 8px;
+    }
+
+    .grid2 {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .grid3 {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .lockbox {
+      display: none;
+    }
+
+    .card.locked > :not(.card-head):not(.lockbox) {
+      display: none;
+    }
+
+    .card.locked .px {
+      display: none;
+    }
+
+    .card.locked .lockbox {
+      display: block;
+    }
+
+    .card.locked {
+      border-style: dashed;
+      color: var(--dim);
+    }
+
+    .res h2 {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      font-size: 14px;
+    }
+
+    .res h2 span {
+      color: var(--dim);
+      font-weight: 400;
+      letter-spacing: 0.04em;
+    }
+
+    .res p {
+      margin: 0;
+      color: var(--dim);
+      font-size: 12.5px;
+      line-height: 1.6;
+    }
+
+    .term {
+      margin-top: 14px;
+      border: 1px solid var(--line);
+    }
+
+    .term:focus-within {
+      border-color: var(--fg);
+    }
+
+    .term h3 {
+      margin: 0;
+      padding: 6px 12px;
+      border-bottom: 1px solid var(--line);
+      color: var(--dim);
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+    }
+
+    #tout {
+      height: 240px;
+      overflow-y: auto;
+      padding: 8px 12px;
+      font-size: 13px;
+      line-height: 1.5;
+      overscroll-behavior: contain;
+    }
+
+    #tout div {
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+    }
+
+    #tout .w {
+      color: var(--warn);
+    }
+
+    #tout .t,
+    #tout .d {
+      color: var(--dim);
+    }
+
+    #tout .c {
+      font-weight: 600;
+    }
+
+    .tin {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 0 12px;
+      border-top: 1px solid var(--line);
+    }
+
+    .tin .ps {
+      white-space: nowrap;
+      font-weight: 600;
+    }
+
+    .tin input {
+      flex: 1;
+      min-width: 0;
+      height: 48px;
+      border: 0;
+      outline: 0;
+      background: transparent;
+      color: var(--fg);
+      font: inherit;
+      font-size: 16px;
+      text-shadow: inherit;
+      caret-color: var(--fg);
+    }
+
+    .tin input::placeholder {
+      color: var(--dim);
+    }
+
+    @media (min-width: 820px) {
+      .screen {
+        margin-top: 18px;
+        padding-top: 28px;
+        border-radius: 22px;
+        box-shadow: inset 0 0 90px color-mix(in srgb, var(--fg) 7%, transparent);
+      }
+
+      #tout {
+        height: 270px;
+      }
+    }
+
+    @media (max-width: 440px) {
+      .brand small {
+        display: none;
+      }
+    }
+
+    @media (max-width: 380px) {
+      body {
+        font-size: 13px;
+      }
+
+      .hud b {
+        font-size: 16px;
+      }
+
+      .brand {
+        font-size: 18px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .screen,
+      .cursor {
+        animation: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="screen" id="screen">
+    <div class="top">
+      <div class="brand">IRONLINE<span class="cursor">_</span><small>MINING &amp; TRADING TERMINAL</small></div>
+      <div class="top-btns">
+        <button type="button" class="back" id="tmus" aria-pressed="false">&#9834; OFF</button>
+        <button type="button" class="back" id="tfs" aria-label="Toggle fullscreen" aria-pressed="false" hidden>
+          <svg class="fs-in" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" aria-hidden="true"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg>
+          <svg class="fs-out" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" aria-hidden="true"><path d="M9 4v5H4M15 4v5h5M9 20v-5H4M15 20v-5h5"/></svg>
+        </button>
+        <a class="back" href="arcade.html">&lt; ARCADE</a>
+      </div>
+    </div>
+
+    <section class="hud" aria-label="Finances">
+      <div><span>CASH</span><b id="cash">$0</b></div>
+      <div><span>STOCK</span><b id="stock">$0</b></div>
+      <div><span>NET WORTH</span><b id="net">$0</b></div>
+    </section>
+
+    <p class="status" id="status">ALL SYSTEMS NOMINAL</p>
+
+    <nav class="tabs" role="tablist" aria-label="Sections">
+      <button type="button" class="tab" role="tab" id="tab-ops" data-tab="ops" aria-selected="true" aria-controls="cards">OPERATIONS</button>
+      <button type="button" class="tab" role="tab" id="tab-res" data-tab="res" aria-selected="false" aria-controls="research">RESEARCH</button>
+    </nav>
+
+    <section class="cards" id="cards" role="tabpanel" aria-labelledby="tab-ops"></section>
+    <section class="cards" id="research" role="tabpanel" aria-labelledby="tab-res" hidden></section>
+
+    <section class="term" aria-label="Terminal">
+      <h3>TERMINAL</h3>
+      <div id="tout" role="log" aria-live="off"></div>
+      <form class="tin" id="tform" autocomplete="off">
+        <label class="ps" for="tin">ironline&gt;</label>
+        <input id="tin" type="text" inputmode="text" enterkeyhint="send" autocapitalize="off" autocomplete="off" autocorrect="off" spellcheck="false" placeholder="type help">
+      </form>
+    </section>
+  </main>
+
+  <script>
+    (function () {
+      var host = location.hostname;
+      var local = host === 'localhost' || host === '127.0.0.1' || host === '';
+      if (local || !/^https?:$/.test(location.protocol)) return;
+      var clean = location.pathname.replace(/\/index\.html$/, '/').replace(/\.html$/, '');
+      if (clean !== location.pathname) history.replaceState(null, '', clean + location.search + location.hash);
+    })();
+  </script>
+
+  <script>
+    const $ = id => document.getElementById(id);
+    const store = {
+      get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } },
+      set(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
+    };
+
+    const KEY = 'ironline-save-v1';
+    const AKEY = 'ironline-audio-v1';
+    const SPARK = '▁▂▃▄▅▆▇█';
+    const HIST_LEN = 36;
+    const HIST_EVERY = 4;
+    const AWAY_MAX = 7200;
+    const BROKER_COST = 300;
+    const AUTO = [0, 1.0, 1.15, 1.3, 1.5];
+    const MILESTONES = [1e3, 1e4, 1e5, 1e6, 1e7];
+    const PHOS = ['green', 'amber', 'ice'];
+    const HINT = 'type help for a list of commands.';
+
+    const COMM = [
+      { sym: 'IRON', base: 8, unlock: 0, mine: { cost: 20, rate: 0.8 }, smelt: { cost: 30, rate: 1, base: 0.5 }, vol: 0.03, amp: 0.12, period: 150, phase: 0, liq: 150 },
+      { sym: 'COPPER', base: 22, unlock: 900, mine: { cost: 400, rate: 0.5 }, smelt: { cost: 500, rate: 0.6, base: 0.3 }, vol: 0.04, amp: 0.14, period: 190, phase: 2.1, liq: 80 },
+      { sym: 'GOLD', base: 95, unlock: 15000, mine: { cost: 6000, rate: 0.22 }, smelt: { cost: 7500, rate: 0.25, base: 0.1 }, vol: 0.05, amp: 0.16, period: 230, phase: 4.2, liq: 25 }
+    ];
+
+    const EVENTS = [
+      { i: 0, dx: 0.32, m: 'STEEL DEMAND SURGE. IRON PRICES JUMP.' },
+      { i: 0, dx: -0.3, m: 'IMPORT GLUT. IRON PRICES SLIDE.' },
+      { i: 1, dx: 0.34, m: 'STRIKE AT MAJOR COPPER MINES. SUPPLY TIGHT.' },
+      { i: 1, dx: -0.28, m: 'CHIP SLUMP. COPPER DEMAND FALLS.' },
+      { i: 2, dx: 0.3, m: 'CENTRAL BANKS ARE BUYING. GOLD RALLIES.' },
+      { i: 2, dx: -0.26, m: 'RISK APPETITE RETURNS. GOLD SOFTENS.' }
+    ];
+
+    const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
+
+    function gauss() {
+      let u = 0;
+      while (!u) u = Math.random();
+      return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * Math.random());
+    }
+
+    function fmt(n) {
+      if (n < 10) return n.toFixed(2);
+      if (n < 1000) return n.toFixed(0);
+      const u = ['K', 'M', 'B', 'T'];
+      let i = -1;
+      while (n >= 1000 && i < 3) { n /= 1000; i++; }
+      return (n < 10 ? n.toFixed(2) : n < 100 ? n.toFixed(1) : n.toFixed(0)) + u[i];
+    }
+
+    const money = n => '$' + fmt(n);
+
+    function freshComm() {
+      return { u: false, ml: 0, sl: 0, ore: 0, metal: 0, x: 0, dx: 0, auto: 0, h: new Array(HIST_LEN).fill(0) };
+    }
+
+    function fresh() {
+      const s = { cash: 0, wl: 0, broker: false, t: Date.now(), clock: 0, phos: 'green', outage: 0, boost: null, nextEvent: 25, milestone: 0, earned: 0, helped: false, c: COMM.map(freshComm) };
+      s.c[0].u = true;
+      return s;
+    }
+
+    function load() {
+      const base = fresh();
+      const raw = store.get(KEY);
+      if (!raw) return base;
+      try {
+        const d = JSON.parse(raw);
+        ['cash', 'wl', 'broker', 't', 'clock', 'phos', 'nextEvent', 'milestone', 'earned', 'helped'].forEach(k => { if (d[k] !== undefined) base[k] = d[k]; });
+        if (Array.isArray(d.c)) {
+          d.c.forEach((sc, i) => {
+            if (!base.c[i] || !sc) return;
+            ['u', 'ml', 'sl', 'ore', 'metal', 'x', 'auto'].forEach(k => { if (sc[k] !== undefined) base.c[i][k] = sc[k]; });
+            base.c[i].h = new Array(HIST_LEN).fill(base.c[i].x);
+          });
+        }
+        if (!PHOS.includes(base.phos)) base.phos = 'green';
+      } catch (e) {
+        return fresh();
+      }
+      return base;
+    }
+
+    let S = load();
+
+    const cap = () => Math.floor(100 * Math.pow(1.5, S.wl));
+    const capCost = () => Math.ceil(150 * Math.pow(1.8, S.wl));
+    const lvlCost = (d, kind, lvl) => Math.ceil(d[kind].cost * Math.pow(1.15, lvl));
+    const price = i => COMM[i].base * Math.exp(S.c[i].x);
+    const mineRate = i => S.c[i].ml * COMM[i].mine.rate * (S.boost && S.boost.i === i ? 2 : 1) * (S.outage > 0 ? 0 : 1);
+    const smeltRate = i => COMM[i].smelt.base + S.c[i].sl * COMM[i].smelt.rate;
+
+    function netWorth() {
+      let v = S.cash;
+      S.c.forEach((c, i) => { if (c.u) v += c.metal * price(i); });
+      return v;
+    }
+
+    const RESEARCH = [
+      {
+        id: 'warehouse', name: 'WAREHOUSE EXPANSION',
+        desc: 'Raises storage for every metal by 50% per level. A full warehouse stops production, and a full ore buffer stops mining.',
+        level: () => 'L' + S.wl,
+        cost: () => capCost(),
+        done: () => false,
+        label: () => 'EXPAND  ' + cap() + ' > ' + Math.floor(cap() * 1.5),
+        buy() { S.wl++; log('WAREHOUSE EXPANDED. CAPACITY ' + cap() + '.'); Snd.sfx('buy'); }
+      },
+      {
+        id: 'broker', name: 'BROKER',
+        desc: 'Unlocks AUTO-SELL on every desk. The broker sells your stock once the price passes the level you choose, so you can step away.',
+        level: () => (S.broker ? 'DONE' : 'NEW'),
+        cost: () => BROKER_COST,
+        done: () => S.broker,
+        label: () => (S.broker ? 'HIRED' : 'HIRE BROKER'),
+        buy() { S.broker = true; log('BROKER HIRED. SET A SELL PRICE WITH AUTO-SELL ON EACH DESK.'); Snd.sfx('unlock'); }
+      }
+    ];
+
+    const Snd = {
+      ctx: null, master: null, bus: null, sfxBus: null, delay: null, on: false, vol: 0.6, timer: null, nextT: 0, stepN: 0, n: 0, noise: null,
+      ROOTS: [45, 41, 48, 43],
+      QUAL: [[0, 3, 7], [0, 4, 7], [0, 4, 7], [0, 4, 7]],
+      BASS: [0, 3, 6, 8, 11, 14],
+      ARP: [0, 2, 1, 3, 2, 1, 3, 2],
+      BPM: 84,
+      freq(m) { return 440 * Math.pow(2, (m - 69) / 12); },
+      init() {
+        if (this.ctx) return true;
+        const AC = window.AudioContext || window.webkitAudioContext;
+        if (!AC) return false;
+        const ctx = new AC();
+        this.ctx = ctx;
+        const comp = ctx.createDynamicsCompressor();
+        comp.threshold.value = -16;
+        comp.ratio.value = 4;
+        this.master = ctx.createGain();
+        this.master.gain.value = 0;
+        this.master.connect(comp);
+        comp.connect(ctx.destination);
+        this.bus = ctx.createGain();
+        this.bus.connect(this.master);
+        this.sfxBus = ctx.createGain();
+        this.sfxBus.gain.value = 0.5;
+        this.sfxBus.connect(this.master);
+        const len = Math.floor(ctx.sampleRate * 2.2);
+        const ir = ctx.createBuffer(2, len, ctx.sampleRate);
+        for (let ch = 0; ch < 2; ch++) {
+          const d = ir.getChannelData(ch);
+          for (let i = 0; i < len; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / len, 2.4);
+        }
+        const conv = ctx.createConvolver();
+        conv.buffer = ir;
+        const wet = ctx.createGain();
+        wet.gain.value = 0.3;
+        this.bus.connect(conv);
+        conv.connect(wet);
+        wet.connect(this.master);
+        this.delay = ctx.createDelay(1.5);
+        this.delay.delayTime.value = 60 / this.BPM * 0.75;
+        const fb = ctx.createGain();
+        fb.gain.value = 0.34;
+        const dl = ctx.createBiquadFilter();
+        dl.type = 'lowpass';
+        dl.frequency.value = 2200;
+        this.delay.connect(dl);
+        dl.connect(fb);
+        fb.connect(this.delay);
+        const dwet = ctx.createGain();
+        dwet.gain.value = 0.5;
+        dl.connect(dwet);
+        dwet.connect(this.master);
+        const nl = ctx.sampleRate;
+        this.noise = ctx.createBuffer(1, nl, ctx.sampleRate);
+        const nd = this.noise.getChannelData(0);
+        for (let i = 0; i < nl; i++) nd[i] = Math.random() * 2 - 1;
+        return true;
+      },
+      tone(type, f, t, dur, peak, opt) {
+        const ctx = this.ctx;
+        const o = ctx.createOscillator();
+        const g = ctx.createGain();
+        o.type = type;
+        o.frequency.setValueAtTime(f, t);
+        if (opt && opt.slide) o.frequency.exponentialRampToValueAtTime(opt.slide, t + dur);
+        if (opt && opt.detune) o.detune.value = opt.detune;
+        const a = (opt && opt.a) || 0.005;
+        g.gain.setValueAtTime(0.0001, t);
+        g.gain.exponentialRampToValueAtTime(peak, t + a);
+        if (opt && opt.hold) g.gain.setValueAtTime(peak, t + dur * opt.hold);
+        g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+        let node = o;
+        if (opt && opt.lp) {
+          const f1 = ctx.createBiquadFilter();
+          f1.type = 'lowpass';
+          f1.frequency.value = opt.lp;
+          o.connect(f1);
+          node = f1;
+        }
+        node.connect(g);
+        g.connect((opt && opt.dest) || this.bus);
+        if (opt && opt.send) g.connect(this.delay);
+        o.start(t);
+        o.stop(t + dur + 0.05);
+        this.n++;
+      },
+      hit(t, dur, peak, kind) {
+        const ctx = this.ctx;
+        const s = ctx.createBufferSource();
+        s.buffer = this.noise;
+        const f = ctx.createBiquadFilter();
+        f.type = kind === 'hat' ? 'highpass' : 'bandpass';
+        f.frequency.value = kind === 'hat' ? 7000 : 1800;
+        const g = ctx.createGain();
+        g.gain.setValueAtTime(peak, t);
+        g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+        s.connect(f);
+        f.connect(g);
+        g.connect(this.bus);
+        s.start(t);
+        s.stop(t + dur + 0.02);
+        this.n++;
+      },
+      sched(step, t) {
+        const bar = Math.floor(step / 16);
+        const s = step % 16;
+        const sec = bar % 16;
+        const ci = bar % 4;
+        const root = this.ROOTS[ci];
+        const iv = this.QUAL[ci];
+        const beat = 60 / this.BPM;
+        if (s === 0) {
+          iv.forEach((x, k) => {
+            this.tone('sawtooth', this.freq(root + 12 + x), t, beat * 4.2, 0.05, { a: 0.7, hold: 0.6, lp: 900, detune: k % 2 ? 7 : -7 });
+            this.tone('triangle', this.freq(root + 24 + x), t, beat * 4.2, 0.035, { a: 0.9, hold: 0.6, lp: 1400 });
+          });
+        }
+        if (this.BASS.indexOf(s) >= 0) {
+          this.tone('sawtooth', this.freq(root + (s === 11 ? 12 : 0)), t, beat * 0.42, 0.2, { lp: 420 });
+          this.tone('sine', this.freq(root), t, beat * 0.5, 0.22);
+        }
+        if (sec >= 4 && s % 2 === 0) {
+          const tones = [root + 24 + iv[0], root + 24 + iv[1], root + 24 + iv[2], root + 36 + iv[0]];
+          const k = this.ARP[(s / 2) % 8];
+          this.tone('square', this.freq(tones[k] + (sec >= 12 ? 12 : 0)), t, beat * 0.3, s === 0 ? 0.05 : 0.032, { lp: 2400, send: true });
+        }
+        if (sec >= 8) {
+          if (s === 0 || s === 8 || (s === 14 && bar % 2)) this.tone('sine', 120, t, 0.2, 0.55, { slide: 42 });
+          if (s === 4 || s === 12) {
+            this.hit(t, 0.14, 0.18, 'snare');
+            this.tone('triangle', 190, t, 0.1, 0.1);
+          }
+          if (s % 4 === 2) this.hit(t, 0.04, 0.05, 'hat');
+        }
+      },
+      pump() {
+        const ctx = this.ctx;
+        const step = 60 / this.BPM / 4;
+        while (this.nextT < ctx.currentTime + 0.25) {
+          this.sched(this.stepN, this.nextT);
+          this.stepN++;
+          this.nextT += step;
+        }
+      },
+      apply() {
+        if (!this.ctx) return;
+        this.master.gain.setTargetAtTime(this.on ? this.vol * 0.7 : 0, this.ctx.currentTime, 0.25);
+      },
+      setOn(v) {
+        if (v && !this.init()) { this.on = false; return false; }
+        this.on = !!v;
+        if (this.on) {
+          if (this.ctx.state === 'suspended') this.ctx.resume();
+          if (!this.timer) {
+            this.nextT = this.ctx.currentTime + 0.1;
+            this.timer = setInterval(() => this.pump(), 40);
+          }
+        } else if (this.timer) {
+          clearInterval(this.timer);
+          this.timer = null;
+          const c = this.ctx;
+          setTimeout(() => { if (!this.on && c.state === 'running') c.suspend(); }, 900);
+        }
+        this.apply();
+        store.set(AKEY, JSON.stringify({ on: this.on, vol: this.vol }));
+        return true;
+      },
+      setVol(v) {
+        this.vol = clamp(v, 0, 1);
+        this.apply();
+        store.set(AKEY, JSON.stringify({ on: this.on, vol: this.vol }));
+      },
+      sfx(kind) {
+        if (!this.on || !this.ctx || this.ctx.state !== 'running') return;
+        const t = this.ctx.currentTime + 0.01;
+        const d = this.sfxBus;
+        if (kind === 'buy') {
+          this.tone('square', 440, t, 0.09, 0.07, { dest: d, lp: 3000 });
+          this.tone('square', 660, t + 0.08, 0.12, 0.07, { dest: d, lp: 3000 });
+        } else if (kind === 'sell') {
+          [880, 1175, 1568].forEach((f, k) => this.tone('triangle', f, t + k * 0.06, 0.14, 0.09, { dest: d }));
+        } else if (kind === 'unlock') {
+          [523, 659, 784, 1047].forEach((f, k) => this.tone('square', f, t + k * 0.09, 0.16, 0.06, { dest: d, lp: 3200 }));
+        } else if (kind === 'alert') {
+          this.tone('sawtooth', 130, t, 0.45, 0.1, { dest: d, slide: 70, lp: 600 });
+        } else if (kind === 'news') {
+          this.tone('sine', 988, t, 0.25, 0.07, { dest: d });
+        } else if (kind === 'err') {
+          this.tone('square', 110, t, 0.1, 0.06, { dest: d, lp: 500 });
+        }
+      }
+    };
+
+    const el = {};
+    const refs = [];
+    const rrefs = [];
+    const setT = (node, text) => { if (node._t !== text) { node._t = text; node.textContent = text; } };
+
+    function stamp() {
+      const d = new Date();
+      const p = n => String(n).padStart(2, '0');
+      return p(d.getHours()) + ':' + p(d.getMinutes()) + ':' + p(d.getSeconds());
+    }
+
+    function print(text, cls, prefix) {
+      const box = el.tout;
+      const stick = box.scrollHeight - box.scrollTop - box.clientHeight < 40;
+      String(text).split('\n').forEach(line => {
+        const d = document.createElement('div');
+        if (cls) d.className = cls;
+        if (prefix) {
+          const t = document.createElement('span');
+          t.className = 't';
+          t.textContent = prefix + ' ';
+          d.appendChild(t);
+          d.appendChild(document.createTextNode(line));
+        } else {
+          d.textContent = line === '' ? ' ' : line;
+        }
+        box.appendChild(d);
+      });
+      while (box.childNodes.length > 300) box.removeChild(box.firstChild);
+      if (stick) box.scrollTop = box.scrollHeight;
+    }
+
+    let lastNews = null;
+
+    function log(msg, cls) {
+      print(msg, cls || '', stamp());
+      if (cls === 'w' || /^NEWS|^RICH|^POWER/.test(msg)) lastNews = { m: msg, at: S.clock };
+    }
+
+    function tickProd(dt) {
+      const oc = cap() * 2;
+      const mc = cap();
+      S.c.forEach((c, i) => {
+        if (!c.u) return;
+        c.ore = Math.min(oc, c.ore + mineRate(i) * dt);
+        const s = Math.min(c.ore, smeltRate(i) * dt, Math.max(0, mc - c.metal));
+        c.ore -= s;
+        c.metal += s;
+      });
+    }
+
+    function tickMarket() {
+      S.c.forEach((c, i) => {
+        const d = COMM[i];
+        const before = c.x;
+        const tg = d.amp * Math.sin(2 * Math.PI * S.clock / d.period + d.phase);
+        c.x = clamp(c.x + 0.045 * (tg - c.x) + d.vol * gauss(), -0.8, 0.9);
+        c.dx = c.x - before;
+      });
+    }
+
+    function sell(i, frac) {
+      const c = S.c[i];
+      const n = frac >= 1 ? c.metal : Math.floor(c.metal * frac * 100) / 100;
+      if (n <= 0) return null;
+      const p = price(i);
+      const gain = n * p;
+      c.metal -= n;
+      S.cash += gain;
+      S.earned += gain;
+      c.x = Math.max(-0.8, c.x - 0.08 * n / COMM[i].liq);
+      return { n, p, gain };
+    }
+
+    function autoSell() {
+      if (!S.broker) return;
+      const floor = Math.max(5, cap() * 0.25);
+      S.c.forEach((c, i) => {
+        if (!c.u || !AUTO[c.auto]) return;
+        if (c.metal < floor || price(i) < AUTO[c.auto] * COMM[i].base) return;
+        const r = sell(i, 1);
+        if (r) {
+          log('BROKER SOLD ' + Math.floor(r.n) + ' ' + COMM[i].sym + ' @ $' + r.p.toFixed(2) + ' = ' + money(r.gain));
+          Snd.sfx('sell');
+        }
+      });
+    }
+
+    function fireEvent() {
+      S.nextEvent = S.clock + 40 + Math.random() * 40;
+      const r = Math.random();
+      const active = S.c.map((c, i) => (c.u ? i : -1)).filter(i => i >= 0);
+      if (r < 0.18) {
+        S.outage = 15;
+        log('POWER OUTAGE. ALL MINES OFFLINE FOR 15s.', 'w');
+        Snd.sfx('alert');
+        return;
+      }
+      if (r < 0.34) {
+        const pool = active.filter(i => S.c[i].ml > 0);
+        if (pool.length) {
+          const i = pool[Math.floor(Math.random() * pool.length)];
+          S.boost = { i, t: 30 };
+          log('RICH VEIN FOUND. ' + COMM[i].sym + ' ORE OUTPUT x2 FOR 30s.');
+          Snd.sfx('news');
+          return;
+        }
+      }
+      const pool = EVENTS.filter(e => S.c[e.i].u);
+      const e = pool[Math.floor(Math.random() * pool.length)];
+      S.c[e.i].x = clamp(S.c[e.i].x + e.dx, -0.8, 0.9);
+      log('NEWS: ' + e.m, e.dx < 0 ? 'w' : '');
+      Snd.sfx(e.dx < 0 ? 'alert' : 'news');
+    }
+
+    function pushHist() {
+      S.c.forEach(c => { c.h.push(c.x); if (c.h.length > HIST_LEN) c.h.shift(); });
+    }
+
+    let marketAcc = 0;
+    let histAcc = 0;
+
+    function step(dt) {
+      tickProd(dt);
+      S.clock += dt;
+      if (S.outage > 0) {
+        S.outage = Math.max(0, S.outage - dt);
+        if (S.outage === 0) log('POWER RESTORED.');
+      }
+      if (S.boost) {
+        S.boost.t -= dt;
+        if (S.boost.t <= 0) { log('RICH VEIN RAN DRY.'); S.boost = null; }
+      }
+      marketAcc += dt;
+      while (marketAcc >= 1) {
+        marketAcc -= 1;
+        tickMarket();
+        autoSell();
+        histAcc++;
+        if (histAcc >= HIST_EVERY) { histAcc = 0; pushHist(); }
+        if (S.clock >= S.nextEvent) fireEvent();
+      }
+      const nw = netWorth();
+      while (S.milestone < MILESTONES.length && nw >= MILESTONES[S.milestone]) {
+        log('MILESTONE: NET WORTH ' + money(MILESTONES[S.milestone]) + '.');
+        Snd.sfx('unlock');
+        S.milestone++;
+      }
+    }
+
+    function away(secs) {
+      const sec = Math.min(Math.floor(secs), AWAY_MAX);
+      const sum = () => S.c.reduce((a, c) => a + c.ore + c.metal, 0);
+      const before = sum();
+      S.outage = 0;
+      S.boost = null;
+      for (let k = 0; k < sec; k++) tickProd(1);
+      S.clock += sec;
+      const gained = sum() - before;
+      const m = Math.floor(sec / 60);
+      log('AWAY ' + (sec < 60 ? sec + 's' : m >= 60 ? Math.floor(m / 60) + 'h ' + (m % 60) + 'm' : m + 'm') + '. PRODUCED ' + Math.floor(gained) + ' UNITS WHILE YOU WERE GONE.');
+    }
+
+    function save() {
+      S.t = Date.now();
+      store.set(KEY, JSON.stringify({
+        cash: S.cash, wl: S.wl, broker: S.broker, t: S.t, clock: S.clock, phos: S.phos,
+        nextEvent: S.nextEvent, milestone: S.milestone, earned: S.earned, helped: S.helped,
+        c: S.c.map(c => ({ u: c.u, ml: c.ml, sl: c.sl, ore: c.ore, metal: c.metal, x: c.x, auto: c.auto }))
+      }));
+    }
+
+    function build() {
+      ['cash', 'stock', 'net', 'status', 'tout', 'tin', 'tform', 'tmus'].forEach(k => { el[k] = $(k); });
+      const host = $('cards');
+      COMM.forEach((d, i) => {
+        const a = document.createElement('article');
+        a.className = 'card';
+        a.dataset.i = i;
+        a.innerHTML =
+          '<div class="card-head"><h2>' + d.sym + '</h2><div class="px"><span class="tag" data-r="tag"></span><b data-r="price"></b><span data-r="chg"></span></div></div>' +
+          '<div class="spark" data-r="spark" aria-hidden="true"></div>' +
+          '<div class="row"><span>ORE</span><span data-r="orebar"></span><span data-r="oreval"></span></div>' +
+          '<div class="row"><span>METAL</span><span data-r="metbar"></span><span data-r="metval"></span></div>' +
+          '<div class="grid2">' +
+            '<button type="button" class="btn" data-act="mine"><span data-r="minel"></span><small data-r="minec"></small></button>' +
+            '<button type="button" class="btn" data-act="smelt"><span data-r="smeltl"></span><small data-r="smeltc"></small></button>' +
+          '</div>' +
+          '<div class="grid3">' +
+            '<button type="button" class="btn" data-act="dig">DIG</button>' +
+            '<button type="button" class="btn" data-act="half">SELL 50%</button>' +
+            '<button type="button" class="btn" data-act="all">SELL ALL</button>' +
+          '</div>' +
+          '<button type="button" class="btn" data-act="auto"><span data-r="autol"></span></button>' +
+          '<div class="lockbox"><button type="button" class="btn" style="width:100%" data-act="unlock"><span>UNLOCK</span><small data-r="unlockc"></small></button></div>';
+        host.appendChild(a);
+        const r = { card: a };
+        a.querySelectorAll('[data-r]').forEach(n => { r[n.dataset.r] = n; });
+        a.querySelectorAll('button[data-act]').forEach(b => { r['b_' + b.dataset.act] = b; });
+        refs.push(r);
+      });
+      const rh = $('research');
+      RESEARCH.forEach((d, i) => {
+        const a = document.createElement('article');
+        a.className = 'card res';
+        a.dataset.id = d.id;
+        a.innerHTML =
+          '<h2>' + d.name + '<span data-r="lvl"></span></h2>' +
+          '<p>' + d.desc + '</p>' +
+          '<button type="button" class="btn" data-act="research"><span data-r="lab"></span><small data-r="cost"></small></button>';
+        rh.appendChild(a);
+        const r = { card: a };
+        a.querySelectorAll('[data-r]').forEach(n => { r[n.dataset.r] = n; });
+        r.btn = a.querySelector('button');
+        rrefs.push(r);
+      });
+    }
+
+    const bar = (f, w) => {
+      const n = Math.round(clamp(f, 0, 1) * w);
+      return '[' + '█'.repeat(n) + '░'.repeat(w - n) + ']';
+    };
+
+    const sparkText = c => c.h.map(x => SPARK[clamp(Math.round((x + 0.3) / 0.6 * 7), 0, 7)]).join('');
+
+    function render() {
+      let stock = 0;
+      S.c.forEach((c, i) => { if (c.u) stock += c.metal * price(i); });
+      setT(el.cash, money(S.cash));
+      setT(el.stock, money(stock));
+      setT(el.net, money(S.cash + stock));
+
+      if (S.outage > 0) setT(el.status, 'POWER OUTAGE: MINES OFFLINE ' + Math.ceil(S.outage) + 's');
+      else if (S.boost) setT(el.status, 'RICH VEIN: ' + COMM[S.boost.i].sym + ' ORE x2 FOR ' + Math.ceil(S.boost.t) + 's');
+      else if (lastNews && S.clock - lastNews.at < 45) setT(el.status, lastNews.m);
+      else setT(el.status, 'ALL SYSTEMS NOMINAL');
+      el.status.classList.toggle('bad', S.outage > 0 || !!(lastNews && S.clock - lastNews.at < 45 && /OUTAGE|SLIDE|FALLS|SOFTENS/.test(lastNews.m) && !S.boost));
+
+      RESEARCH.forEach((d, i) => {
+        const r = rrefs[i];
+        const done = d.done();
+        setT(r.lvl, d.level());
+        setT(r.lab, d.label());
+        setT(r.cost, done ? 'complete' : money(d.cost()));
+        r.btn.disabled = done || S.cash < d.cost();
+      });
+
+      const mc = cap();
+      const oc = mc * 2;
+      S.c.forEach((c, i) => {
+        const r = refs[i];
+        const d = COMM[i];
+        r.card.classList.toggle('locked', !c.u);
+        if (!c.u) {
+          setT(r.unlockc, money(d.unlock));
+          r.b_unlock.disabled = S.cash < d.unlock;
+          return;
+        }
+        const pct = (Math.exp(c.x) - 1) * 100;
+        setT(r.price, '$' + price(i).toFixed(2));
+        setT(r.chg, (c.dx >= 0 ? '▲ ' : '▼ ') + (pct >= 0 ? '+' : '') + pct.toFixed(0) + '%');
+        r.chg.classList.toggle('dn', c.dx < 0);
+        setT(r.tag, pct >= 15 ? 'HIGH' : pct <= -15 ? 'LOW' : '');
+        r.tag.classList.toggle('low', pct <= -15);
+        setT(r.spark, sparkText(c));
+        setT(r.orebar, bar(c.ore / oc, 14));
+        setT(r.oreval, Math.floor(c.ore) + '/' + oc);
+        setT(r.metbar, bar(c.metal / mc, 14));
+        setT(r.metval, Math.floor(c.metal) + '/' + mc);
+        setT(r.minel, 'MINE L' + c.ml + ' +' + (c.ml * d.mine.rate).toFixed(1) + '/s');
+        setT(r.minec, money(lvlCost(d, 'mine', c.ml)));
+        r.b_mine.disabled = S.cash < lvlCost(d, 'mine', c.ml);
+        setT(r.smeltl, 'SMELT L' + c.sl + ' ' + smeltRate(i).toFixed(1) + '/s');
+        setT(r.smeltc, money(lvlCost(d, 'smelt', c.sl)));
+        r.b_smelt.disabled = S.cash < lvlCost(d, 'smelt', c.sl);
+        r.b_half.disabled = c.metal < 2;
+        r.b_all.disabled = c.metal < 1;
+        r.b_auto.disabled = !S.broker;
+        setT(r.autol, S.broker ? (AUTO[c.auto] ? 'AUTO-SELL ≥ ' + AUTO[c.auto].toFixed(2) + 'x BASE' : 'AUTO-SELL: OFF') : 'AUTO-SELL: NEEDS BROKER RESEARCH');
+      });
+
+      const musicOn = Snd.on || wakeArmed;
+      setT(el.tmus, '♪ ' + (musicOn ? 'ON' : 'OFF'));
+      el.tmus.classList.toggle('on', musicOn);
+      el.tmus.setAttribute('aria-pressed', musicOn ? 'true' : 'false');
+    }
+
+    function applyTheme() {
+      document.documentElement.dataset.p = S.phos;
+      const bg = getComputedStyle(document.documentElement).getPropertyValue('--bg').trim();
+      const m = document.querySelector('meta[name="theme-color"]');
+      if (m && bg) m.setAttribute('content', bg);
+    }
+
+    function digOnce(i) {
+      const c = S.c[i];
+      if (!c || !c.u) return 0;
+      const room = cap() * 2 - c.ore;
+      if (room <= 0) return 0;
+      c.ore += Math.min(1, room);
+      return 1;
+    }
+
+    function buyLevel(i, kind) {
+      const c = S.c[i];
+      const d = COMM[i];
+      const lvl = kind === 'mine' ? c.ml : c.sl;
+      const cost = lvlCost(d, kind, lvl);
+      if (!c.u || S.cash < cost) return 0;
+      S.cash -= cost;
+      if (kind === 'mine') c.ml++; else c.sl++;
+      return cost;
+    }
+
+    function unlockComm(i) {
+      const c = S.c[i];
+      if (c.u || S.cash < COMM[i].unlock) return false;
+      S.cash -= COMM[i].unlock;
+      c.u = true;
+      log(COMM[i].sym + ' DESK OPENED.');
+      Snd.sfx('unlock');
+      return true;
+    }
+
+    function buyResearch(id) {
+      const d = RESEARCH.find(x => x.id === id);
+      if (!d || d.done() || S.cash < d.cost()) return false;
+      S.cash -= d.cost();
+      d.buy();
+      return true;
+    }
+
+    const CMDS = {
+      help() {
+        S.helped = true;
+        print([
+          'commands:',
+          '  help               this list',
+          '  clear              clear the screen',
+          '  color [name]       green, amber, ice',
+          '  music on|off|vol <0-100>'
+        ].join('\n'), 'd');
+      },
+      color(a) {
+        const v = (a[0] || '').toLowerCase();
+        if (!v) { print('current: ' + S.phos + '. options: ' + PHOS.join(', ') + '.'); return; }
+        const p = PHOS.find(x => x.startsWith(v));
+        if (!p) { print('options: ' + PHOS.join(', ') + '.', 'd'); Snd.sfx('err'); return; }
+        S.phos = p;
+        applyTheme();
+        save();
+        print('color set to ' + p + '.');
+      },
+      music(a) {
+        const v = (a[0] || '').toLowerCase();
+        if (v === 'vol' || v === 'volume') {
+          if (a[1] === undefined || isNaN(parseInt(a[1], 10))) { print('volume: ' + Math.round(Snd.vol * 100) + '. use: music vol <0-100>'); return; }
+          Snd.setVol(clamp(parseInt(a[1], 10), 0, 100) / 100);
+          print('volume set to ' + Math.round(Snd.vol * 100) + '.');
+          return;
+        }
+        if (v === 'on') {
+          disarmWake();
+          if (!Snd.setOn(true)) { print('audio is not available in this browser.'); return; }
+          print('now playing: NIGHT SHIFT (generated live). volume ' + Math.round(Snd.vol * 100) + '.');
+          return;
+        }
+        if (v === 'off') {
+          disarmWake();
+          Snd.setOn(false);
+          print('music off.');
+          return;
+        }
+        print('music is ' + (Snd.on || wakeArmed ? 'on' : 'off') + '. use: music on|off|vol <0-100>');
+      },
+      clear() {
+        el.tout.textContent = '';
+      }
+    };
+
+    function runCommand(line) {
+      const parts = line.trim().split(/\s+/);
+      const name = parts.shift().toLowerCase();
+      const fn = Object.prototype.hasOwnProperty.call(CMDS, name) ? CMDS[name] : null;
+      if (!fn) { print('unknown command: ' + name + '. ' + HINT, 'd'); Snd.sfx('err'); return; }
+      fn(parts);
+    }
+
+    const history = [];
+    let hpos = 0;
+
+    function initTerminal() {
+      el.tform.addEventListener('submit', e => {
+        e.preventDefault();
+        const v = el.tin.value.trim();
+        el.tin.value = '';
+        if (!v) return;
+        history.push(v);
+        hpos = history.length;
+        const d = document.createElement('div');
+        d.className = 'c';
+        d.textContent = 'ironline> ' + v;
+        el.tout.appendChild(d);
+        runCommand(v);
+        el.tout.scrollTop = el.tout.scrollHeight;
+        render();
+      });
+      el.tin.addEventListener('keydown', e => {
+        if (e.key === 'ArrowUp') {
+          e.preventDefault();
+          if (hpos > 0) hpos--;
+          el.tin.value = history[hpos] || '';
+        } else if (e.key === 'ArrowDown') {
+          e.preventDefault();
+          if (hpos < history.length) hpos++;
+          el.tin.value = history[hpos] || '';
+        } else if (e.key === 'Tab') {
+          e.preventDefault();
+          const v = el.tin.value;
+          if (v && v.indexOf(' ') < 0) {
+            const m = Object.keys(CMDS).filter(k => k.startsWith(v.toLowerCase()) && k.length > 1);
+            if (m.length === 1) el.tin.value = m[0] + ' ';
+          }
+        }
+      });
+      if (window.matchMedia && window.matchMedia('(hover: hover)').matches) {
+        el.tout.addEventListener('click', () => { if (!String(window.getSelection()).length) el.tin.focus({ preventScroll: true }); });
+      }
+    }
+
+    let holdTimer = null;
+    let holdBtn = null;
+
+    function stopHold() {
+      if (holdTimer) { clearInterval(holdTimer); holdTimer = null; }
+      if (holdBtn) { holdBtn.classList.remove('press'); holdBtn = null; }
+    }
+
+    function startHold(i, btn) {
+      stopHold();
+      holdBtn = btn;
+      btn.classList.add('press');
+      digOnce(i);
+      holdTimer = setInterval(() => { digOnce(i); render(); }, 130);
+      render();
+    }
+
+    let tab = 'ops';
+
+    function setTab(t) {
+      tab = t;
+      $('cards').hidden = t !== 'ops';
+      $('research').hidden = t !== 'res';
+      ['ops', 'res'].forEach(k => $('tab-' + k).setAttribute('aria-selected', k === t ? 'true' : 'false'));
+    }
+
+    function bindUI() {
+      const cardsEl = $('cards');
+      cardsEl.addEventListener('pointerdown', e => {
+        const b = e.target.closest('button[data-act="dig"]');
+        if (!b) return;
+        startHold(Number(b.closest('.card').dataset.i), b);
+      });
+      ['pointerup', 'pointercancel', 'blur'].forEach(ev => window.addEventListener(ev, stopHold));
+      document.addEventListener('contextmenu', e => { if (e.target.closest('button')) e.preventDefault(); });
+
+      cardsEl.addEventListener('click', e => {
+        const b = e.target.closest('button[data-act]');
+        if (!b || b.disabled) return;
+        const i = Number(b.closest('.card').dataset.i);
+        const act = b.dataset.act;
+        if (act === 'dig') {
+          if (e.detail === 0) digOnce(i);
+        } else if (act === 'mine' || act === 'smelt') {
+          if (buyLevel(i, act)) Snd.sfx('buy');
+        } else if (act === 'half' || act === 'all') {
+          const r = sell(i, act === 'all' ? 1 : 0.5);
+          if (r) {
+            log('SOLD ' + Math.floor(r.n) + ' ' + COMM[i].sym + ' @ $' + r.p.toFixed(2) + ' = ' + money(r.gain));
+            Snd.sfx('sell');
+          }
+        } else if (act === 'auto') {
+          S.c[i].auto = (S.c[i].auto + 1) % AUTO.length;
+        } else if (act === 'unlock') {
+          unlockComm(i);
+        }
+        render();
+      });
+
+      $('research').addEventListener('click', e => {
+        const b = e.target.closest('button[data-act="research"]');
+        if (!b || b.disabled) return;
+        buyResearch(b.closest('.card').dataset.id);
+        render();
+      });
+
+      document.querySelectorAll('.tab').forEach(b => b.addEventListener('click', () => setTab(b.dataset.tab)));
+
+      el.tmus.addEventListener('click', () => {
+        if (Snd.on || wakeArmed) {
+          disarmWake();
+          Snd.setOn(false);
+          print('music off.');
+        } else if (Snd.setOn(true)) {
+          print('now playing: NIGHT SHIFT (generated live). volume ' + Math.round(Snd.vol * 100) + '.');
+        } else {
+          print('audio is not available in this browser.');
+        }
+        render();
+      });
+    }
+
+    let wakeArmed = false;
+    const WAKE_EVENTS = ['pointerup', 'click', 'keydown', 'touchend'];
+
+    function wake(e) {
+      if (e && e.target && e.target.closest && e.target.closest('#tmus')) return;
+      disarmWake();
+      if (!Snd.on) Snd.setOn(true);
+      render();
+    }
+
+    function armWake() {
+      if (wakeArmed) return;
+      wakeArmed = true;
+      WAKE_EVENTS.forEach(ev => window.addEventListener(ev, wake, true));
+    }
+
+    function disarmWake() {
+      if (!wakeArmed) return;
+      wakeArmed = false;
+      WAKE_EVENTS.forEach(ev => window.removeEventListener(ev, wake, true));
+    }
+
+    function bootLog() {
+      print('IRONLINE TERMINAL ONLINE.', 'c');
+      print('tap DIG on a desk to mine ore, then sell the metal when the price is HIGH.', 'd');
+      print(HINT, 'd');
+    }
+
+    let last = Date.now();
+    let renderAcc = 0;
+    let saveAcc = 0;
+    let hintAcc = 0;
+
+    function frame() {
+      const now = Date.now();
+      let dt = Math.max(0, (now - last) / 1000);
+      last = now;
+      if (dt > 5) { away(dt); dt = 0; } else step(dt);
+      renderAcc += dt;
+      saveAcc += dt;
+      hintAcc += dt;
+      if (renderAcc >= 0.2 || dt === 0) { renderAcc = 0; render(); }
+      if (saveAcc >= 5) { saveAcc = 0; save(); }
+      if (hintAcc >= 90) {
+        hintAcc = 0;
+        if (!S.helped) print(HINT, 'd');
+      }
+    }
+
+    build();
+    initTerminal();
+    bindUI();
+    applyTheme();
+
+    const pref = (() => { try { return JSON.parse(store.get(AKEY) || 'null'); } catch (e) { return null; } })();
+    if (pref && typeof pref.vol === 'number') Snd.vol = clamp(pref.vol, 0, 1);
+
+    const gap = (Date.now() - S.t) / 1000;
+    bootLog();
+    if (store.get(KEY)) {
+      print('session restored.', 'd');
+      if (gap > 5) away(gap);
+    }
+    render();
+
+    if (!pref || pref.on) {
+      armWake();
+      print('music starts on your first tap. the ♪ button turns it off.', 'd');
+    }
+
+    const fsRoot = document.documentElement;
+    const fsRequest = fsRoot.requestFullscreen || fsRoot.webkitRequestFullscreen;
+    const fsExit = document.exitFullscreen || document.webkitExitFullscreen;
+    const fsActive = () => !!(document.fullscreenElement || document.webkitFullscreenElement);
+
+    if (fsRequest && fsExit && document.fullscreenEnabled !== false) {
+      const fsBtn = $('tfs');
+      fsBtn.hidden = false;
+      const fsSync = () => fsBtn.setAttribute('aria-pressed', fsActive() ? 'true' : 'false');
+      fsBtn.addEventListener('click', () => {
+        try {
+          const r = fsActive() ? fsExit.call(document) : fsRequest.call(fsRoot);
+          if (r && r.catch) r.catch(() => {});
+        } catch (e) {}
+      });
+      document.addEventListener('fullscreenchange', fsSync);
+      document.addEventListener('webkitfullscreenchange', fsSync);
+    }
+
+    setInterval(frame, 100);
+
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) {
+        save();
+        if (Snd.on && Snd.ctx) Snd.ctx.suspend();
+      } else if (Snd.on && Snd.ctx) {
+        Snd.ctx.resume();
+      }
+    });
+    window.addEventListener('pagehide', save);
+  </script>
+</body>
+</html>

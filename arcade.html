@@ -196,7 +196,23 @@
       gap: 14px;
     }
 
+    .new-badge {
+      position: absolute;
+      top: 16px;
+      inset-inline-end: 16px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, var(--pink), var(--blue));
+      color: #141018;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      line-height: 1.4;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+    }
+
     .game-card {
+      position: relative;
       display: flex;
       flex-direction: column;
       gap: 12px;
@@ -966,6 +982,7 @@
           { name: '2048', tag: 'swipe, merge, suffer' },
           { name: 'Reaction', tag: 'how fast are your hands?' }
         ],
+        hubExtra: { badge: 'NEW', name: 'Ironline', tag: 'a mining & trading tycoon on an old CRT terminal' },
         spanBest: (f, b) => 'Best: ' + [f ? f + ' forward' : '', b ? b + ' backward' : ''].filter(Boolean).join(' · '),
         levelWord: 'level',
         seq: {
@@ -1063,6 +1080,7 @@
           { name: '۲۰۴۸', tag: 'بکش، ادغام کن، عذاب بکش' },
           { name: 'واکنش', tag: 'دستات چقدر سریعه؟' }
         ],
+        hubExtra: { badge: 'جدید', name: 'آیرونلاین', tag: 'تایکون معدن و معامله روی یه ترمینال قدیمی CRT (انگلیسی)' },
         spanBest: (f, b) => 'رکورد: ' + [f ? 'مستقیم ' + f : '', b ? 'برعکس ' + b : ''].filter(Boolean).join(' · '),
         levelWord: 'سطح',
         seq: {
@@ -2474,6 +2492,11 @@
     function renderHub() {
       const gridEl = $('hub-grid');
       gridEl.innerHTML = '';
+      const x = document.createElement('a');
+      x.className = 'card game-card';
+      x.href = 'ironline.html';
+      x.innerHTML = '<span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4M7 12l3-3 3 2 4-4"/></svg></span><span class="new-badge">' + T.hubExtra.badge + '</span><h3>' + T.hubExtra.name + '</h3><p>' + T.hubExtra.tag + '</p><span class="play">' + T.play + '</span>';
+      gridEl.appendChild(x);
       T.hubGames.forEach((g, i) => {
         const a = document.createElement('a');
         a.className = 'card game-card';
