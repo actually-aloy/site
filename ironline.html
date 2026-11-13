@@ -525,6 +525,16 @@
       font-weight: 600;
     }
 
+    .out {
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      color: var(--dim);
+    }
+
+    .out:empty {
+      display: none;
+    }
+
     .tin {
       display: flex;
       align-items: center;
@@ -660,8 +670,9 @@
     const HIST_LEN = 36;
     const HIST_EVERY = 4;
     const AWAY_MAX = 7200;
-    const BROKER_COST = 300;
-    const AUTO = [0, 1.0, 1.15, 1.3, 1.5];
+    const AUTO = [0, 0.95, 1.0, 1.1, 1.15, 1.2, 1.3, 1.4, 1.5, 1.7];
+    const AUTO_JUNIOR = [0, 2, 4, 6, 8];
+    const AUTO_OLD = [0, 2, 4, 6, 8];
     const MILESTONES = [1e3, 1e4, 1e5, 1e6, 1e7];
     const PHOS = ['green', 'amber', 'ice'];
     const HINT = 'type help for a list of commands.';
@@ -705,7 +716,7 @@
     }
 
     function fresh() {
-      const s = { cash: 0, wl: 0, broker: false, t: Date.now(), clock: 0, phos: 'green', outage: 0, boost: null, nextEvent: 25, milestone: 0, earned: 0, helped: false, c: COMM.map(freshComm) };
+      const s = { cash: 0, wl: 0, rs: {}, t: Date.now(), clock: 0, phos: 'green', outage: 0, boost: null, nextEvent: 25, milestone: 0, earned: 0, helped: false, c: COMM.map(freshComm) };
       s.c[0].u = true;
       return s;
     }
@@ -716,11 +727,17 @@
       if (!raw) return base;
       try {
         const d = JSON.parse(raw);
-        ['cash', 'wl', 'broker', 't', 'clock', 'phos', 'nextEvent', 'milestone', 'earned', 'helped'].forEach(k => { if (d[k] !== undefined) base[k] = d[k]; });
+        ['cash', 'wl', 't', 'clock', 'phos', 'nextEvent', 'milestone', 'earned', 'helped'].forEach(k => { if (d[k] !== undefined) base[k] = d[k]; });
+        if (d.rs && typeof d.rs === 'object') {
+          Object.keys(d.rs).forEach(k => { const n = parseInt(d.rs[k], 10); if (n > 0) base.rs[k] = n; });
+        }
+        if (d.broker === true && !base.rs.broker) base.rs.broker = 1;
         if (Array.isArray(d.c)) {
           d.c.forEach((sc, i) => {
             if (!base.c[i] || !sc) return;
             ['u', 'ml', 'sl', 'ore', 'metal', 'x', 'auto'].forEach(k => { if (sc[k] !== undefined) base.c[i][k] = sc[k]; });
+            if (d.ver !== 2) base.c[i].auto = AUTO_OLD[base.c[i].auto] || 0;
+            if (!(base.c[i].auto >= 0 && base.c[i].auto < AUTO.length)) base.c[i].auto = 0;
             base.c[i].h = new Array(HIST_LEN).fill(base.c[i].x);
           });
         }
@@ -737,7 +754,17 @@
     const capCost = () => Math.ceil(150 * Math.pow(1.8, S.wl));
     const lvlCost = (d, kind, lvl) => Math.ceil(d[kind].cost * Math.pow(1.15, lvl));
     const price = i => COMM[i].base * Math.exp(S.c[i].x);
-    const mineRate = i => S.c[i].ml * COMM[i].mine.rate * (S.boost && S.boost.i === i ? 2 : 1) * (S.outage > 0 ? 0 : 1);
+    const RS = id => S.rs[id] || 0;
+    let offlineMul = 1;
+    const brokerLv = () => RS('broker');
+    const digPower = () => Math.pow(2, RS('dpower'));
+    const rigRate = () => RS('rig') * digPower() * offlineMul;
+    const yieldMul = () => 1 + 0.15 * RS('refinery');
+    const impactDiv = () => 1 + 0.5 * RS('liq');
+    const outageLen = () => 15 * Math.pow(0.6, RS('generator'));
+    const veinLen = () => 30 + 10 * RS('geo');
+    const mineBase = i => S.c[i].ml * COMM[i].mine.rate + rigRate();
+    const mineRate = i => mineBase(i) * (S.boost && S.boost.i === i ? 2 : 1) * (S.outage > 0 ? 0 : 1);
     const smeltRate = i => COMM[i].smelt.base + S.c[i].sl * COMM[i].smelt.rate;
 
     function netWorth() {
@@ -746,25 +773,63 @@
       return v;
     }
 
+    const BROKER_NAMES = ['NONE', 'JUNIOR', 'SENIOR', 'TRADER'];
+
+    function mk(o) {
+      const lv = () => (o.id === 'warehouse' ? S.wl : RS(o.id));
+      const d = {
+        id: o.id, name: o.name, desc: o.desc,
+        level: () => 'L' + lv() + (isFinite(o.max) ? '/' + o.max : ''),
+        cost: () => (o.id === 'warehouse' ? capCost() : Math.ceil(o.base * Math.pow(o.growth, lv()))),
+        done: () => lv() >= o.max,
+        locked: () => !!o.req && RS(o.req.id) < o.req.lv,
+        label: () => (lv() >= o.max ? 'MAXED' : d.locked() ? 'NEEDS ' + o.req.name + ' L' + o.req.lv : o.fx(lv()) + '  >  ' + o.fx(lv() + 1)),
+        buy() {
+          if (o.id === 'warehouse') S.wl++; else S.rs[o.id] = lv() + 1;
+          log(o.msg(lv()));
+          Snd.sfx(o.id === 'broker' || o.id === 'intel' ? 'unlock' : 'buy');
+        }
+      };
+      return d;
+    }
+
     const RESEARCH = [
-      {
-        id: 'warehouse', name: 'WAREHOUSE EXPANSION',
+      mk({ id: 'warehouse', name: 'WAREHOUSE EXPANSION', max: Infinity,
         desc: 'Raises storage for every metal by 50% per level. A full warehouse stops production, and a full ore buffer stops mining.',
-        level: () => 'L' + S.wl,
-        cost: () => capCost(),
-        done: () => false,
-        label: () => 'EXPAND  ' + cap() + ' > ' + Math.floor(cap() * 1.5),
-        buy() { S.wl++; log('WAREHOUSE EXPANDED. CAPACITY ' + cap() + '.'); Snd.sfx('buy'); }
-      },
-      {
-        id: 'broker', name: 'BROKER',
-        desc: 'Unlocks AUTO-SELL on every desk. The broker sells your stock once the price passes the level you choose, so you can step away.',
-        level: () => (S.broker ? 'DONE' : 'NEW'),
-        cost: () => BROKER_COST,
-        done: () => S.broker,
-        label: () => (S.broker ? 'HIRED' : 'HIRE BROKER'),
-        buy() { S.broker = true; log('BROKER HIRED. SET A SELL PRICE WITH AUTO-SELL ON EACH DESK.'); Snd.sfx('unlock'); }
-      }
+        fx: l => String(Math.floor(100 * Math.pow(1.5, l))),
+        msg: () => 'WAREHOUSE EXPANDED. CAPACITY ' + cap() + '.' }),
+      mk({ id: 'dpower', name: 'DIG POWER', max: 4, base: 120, growth: 3,
+        desc: 'Doubles the ore you get from each DIG tap. The drill rig digs at this power too.',
+        fx: l => Math.pow(2, l) + ' PER TAP',
+        msg: () => 'DIG POWER UP. ' + digPower() + ' ORE PER TAP.' }),
+      mk({ id: 'rig', name: 'DRILL RIG', max: 5, base: 250, growth: 2.6, req: { id: 'dpower', lv: 1, name: 'DIG POWER' },
+        desc: 'Digs by itself on every open desk, one tap per second per level, at your dig power. Stops in an outage and runs at half speed while you are away.',
+        fx: l => l + ' TAP/S',
+        msg: () => 'DRILL RIG ONLINE. ' + RS('rig') + ' AUTO-TAP PER SECOND ON EVERY DESK.' }),
+      mk({ id: 'broker', name: 'BROKER', max: 3, base: 300, growth: 8,
+        desc: 'Sells your metal for you once the price passes the level you set on a desk. Senior sells in stages to cut price impact and offers finer price levels. Trader also waits for the peak.',
+        fx: l => BROKER_NAMES[l],
+        msg: l => BROKER_NAMES[l] + ' BROKER HIRED. ' + (l === 1 ? 'SET A SELL PRICE WITH AUTO-SELL ON EACH DESK.' : 'AUTO-SELL IS UPGRADED.') }),
+      mk({ id: 'refinery', name: 'REFINERY', max: 4, base: 800, growth: 3,
+        desc: 'Every smelted ore gives 15% more metal per level.',
+        fx: l => '+' + 15 * l + '% METAL',
+        msg: () => 'REFINERY UPGRADED. SMELTING YIELDS +' + 15 * RS('refinery') + '% METAL.' }),
+      mk({ id: 'liq', name: 'MARKET CONTRACTS', max: 4, base: 1200, growth: 2.8,
+        desc: 'Large sales move the price less. Each level adds 50% market depth.',
+        fx: l => 'DEPTH x' + (1 + 0.5 * l).toFixed(1),
+        msg: () => 'CONTRACTS SIGNED. MARKET DEPTH x' + impactDiv().toFixed(1) + '.' }),
+      mk({ id: 'generator', name: 'BACKUP GENERATOR', max: 3, base: 400, growth: 3,
+        desc: 'Power outages end sooner. Each level cuts outage time by 40%.',
+        fx: l => (15 * Math.pow(0.6, l)).toFixed(1) + 's OUTAGE',
+        msg: () => 'GENERATOR INSTALLED. OUTAGES NOW LAST ' + outageLen().toFixed(1) + 's.' }),
+      mk({ id: 'geo', name: 'GEOLOGIST', max: 3, base: 600, growth: 3,
+        desc: 'Rich veins turn up more often and last 10s longer per level.',
+        fx: l => (30 + 10 * l) + 's VEINS',
+        msg: () => 'GEOLOGIST HIRED. RICH VEINS LAST ' + veinLen() + 's AND ARE MORE COMMON.' }),
+      mk({ id: 'intel', name: 'MARKET INTEL', max: 1, base: 2000, growth: 1,
+        desc: 'Adds a price outlook to every desk: rising, falling or steady.',
+        fx: l => (l ? 'ON' : 'OFF'),
+        msg: () => 'MARKET INTEL ONLINE. EACH DESK NOW SHOWS AN OUTLOOK.' })
     ];
 
     const Snd = {
@@ -1006,9 +1071,10 @@
       S.c.forEach((c, i) => {
         if (!c.u) return;
         c.ore = Math.min(oc, c.ore + mineRate(i) * dt);
-        const s = Math.min(c.ore, smeltRate(i) * dt, Math.max(0, mc - c.metal));
+        const y = yieldMul();
+        const s = Math.min(c.ore, smeltRate(i) * dt, Math.max(0, mc - c.metal) / y);
         c.ore -= s;
-        c.metal += s;
+        c.metal += s * y;
       });
     }
 
@@ -1031,17 +1097,22 @@
       c.metal -= n;
       S.cash += gain;
       S.earned += gain;
-      c.x = Math.max(-0.8, c.x - 0.08 * n / COMM[i].liq);
+      c.x = Math.max(-0.8, c.x - 0.08 * n / (COMM[i].liq * impactDiv()));
       return { n, p, gain };
     }
 
     function autoSell() {
-      if (!S.broker) return;
+      const b = brokerLv();
+      if (!b) return;
       const floor = Math.max(5, cap() * 0.25);
       S.c.forEach((c, i) => {
-        if (!c.u || !AUTO[c.auto]) return;
-        if (c.metal < floor || price(i) < AUTO[c.auto] * COMM[i].base) return;
-        const r = sell(i, 1);
+        const m = AUTO[c.auto];
+        if (!c.u || !m || c.metal < floor) return;
+        const p = price(i);
+        const th = m * COMM[i].base;
+        if (p < th) return;
+        if (b >= 3 && c.dx > 0 && p < th * 1.1) return;
+        const r = sell(i, b >= 2 ? 0.4 : 1);
         if (r) {
           log('BROKER SOLD ' + Math.floor(r.n) + ' ' + COMM[i].sym + ' @ $' + r.p.toFixed(2) + ' = ' + money(r.gain));
           Snd.sfx('sell');
@@ -1054,17 +1125,17 @@
       const r = Math.random();
       const active = S.c.map((c, i) => (c.u ? i : -1)).filter(i => i >= 0);
       if (r < 0.18) {
-        S.outage = 15;
-        log('POWER OUTAGE. ALL MINES OFFLINE FOR 15s.', 'w');
+        S.outage = outageLen();
+        log('POWER OUTAGE. ALL MINES OFFLINE FOR ' + Math.ceil(S.outage) + 's.', 'w');
         Snd.sfx('alert');
         return;
       }
-      if (r < 0.34) {
+      if (r < 0.34 + 0.06 * RS('geo')) {
         const pool = active.filter(i => S.c[i].ml > 0);
         if (pool.length) {
           const i = pool[Math.floor(Math.random() * pool.length)];
-          S.boost = { i, t: 30 };
-          log('RICH VEIN FOUND. ' + COMM[i].sym + ' ORE OUTPUT x2 FOR 30s.');
+          S.boost = { i, t: veinLen() };
+          log('RICH VEIN FOUND. ' + COMM[i].sym + ' ORE OUTPUT x2 FOR ' + veinLen() + 's.');
           Snd.sfx('news');
           return;
         }
@@ -1117,7 +1188,9 @@
       const before = sum();
       S.outage = 0;
       S.boost = null;
+      offlineMul = 0.5;
       for (let k = 0; k < sec; k++) tickProd(1);
+      offlineMul = 1;
       S.clock += sec;
       const gained = sum() - before;
       const m = Math.floor(sec / 60);
@@ -1127,7 +1200,7 @@
     function save() {
       S.t = Date.now();
       store.set(KEY, JSON.stringify({
-        cash: S.cash, wl: S.wl, broker: S.broker, t: S.t, clock: S.clock, phos: S.phos,
+        ver: 2, cash: S.cash, wl: S.wl, rs: S.rs, t: S.t, clock: S.clock, phos: S.phos,
         nextEvent: S.nextEvent, milestone: S.milestone, earned: S.earned, helped: S.helped,
         c: S.c.map(c => ({ u: c.u, ml: c.ml, sl: c.sl, ore: c.ore, metal: c.metal, x: c.x, auto: c.auto }))
       }));
@@ -1143,6 +1216,7 @@
         a.innerHTML =
           '<div class="card-head"><h2>' + d.sym + '</h2><div class="px"><span class="tag" data-r="tag"></span><b data-r="price"></b><span data-r="chg"></span></div></div>' +
           '<div class="spark" data-r="spark" aria-hidden="true"></div>' +
+          '<div class="out" data-r="out"></div>' +
           '<div class="row"><span>ORE</span><span data-r="orebar"></span><span data-r="oreval"></span></div>' +
           '<div class="row"><span>METAL</span><span data-r="metbar"></span><span data-r="metval"></span></div>' +
           '<div class="grid2">' +
@@ -1202,10 +1276,11 @@
       RESEARCH.forEach((d, i) => {
         const r = rrefs[i];
         const done = d.done();
+        const lock = d.locked();
         setT(r.lvl, d.level());
         setT(r.lab, d.label());
-        setT(r.cost, done ? 'complete' : money(d.cost()));
-        r.btn.disabled = done || S.cash < d.cost();
+        setT(r.cost, done ? 'complete' : lock ? 'locked' : money(d.cost()));
+        r.btn.disabled = done || lock || S.cash < d.cost();
       });
 
       const mc = cap();
@@ -1230,7 +1305,7 @@
         setT(r.oreval, Math.floor(c.ore) + '/' + oc);
         setT(r.metbar, bar(c.metal / mc, 14));
         setT(r.metval, Math.floor(c.metal) + '/' + mc);
-        setT(r.minel, 'MINE L' + c.ml + ' +' + (c.ml * d.mine.rate).toFixed(1) + '/s');
+        setT(r.minel, 'MINE L' + c.ml + ' +' + mineBase(i).toFixed(1) + '/s');
         setT(r.minec, money(lvlCost(d, 'mine', c.ml)));
         r.b_mine.disabled = S.cash < lvlCost(d, 'mine', c.ml);
         setT(r.smeltl, 'SMELT L' + c.sl + ' ' + smeltRate(i).toFixed(1) + '/s');
@@ -1238,8 +1313,14 @@
         r.b_smelt.disabled = S.cash < lvlCost(d, 'smelt', c.sl);
         r.b_half.disabled = c.metal < 2;
         r.b_all.disabled = c.metal < 1;
-        r.b_auto.disabled = !S.broker;
-        setT(r.autol, S.broker ? (AUTO[c.auto] ? 'AUTO-SELL ≥ ' + AUTO[c.auto].toFixed(2) + 'x BASE' : 'AUTO-SELL: OFF') : 'AUTO-SELL: NEEDS BROKER RESEARCH');
+        r.b_auto.disabled = !brokerLv();
+        setT(r.autol, brokerLv() ? (AUTO[c.auto] ? 'AUTO-SELL ≥ ' + AUTO[c.auto].toFixed(2) + 'x BASE' : 'AUTO-SELL: OFF') : 'AUTO-SELL: NEEDS BROKER RESEARCH');
+        let outlook = '';
+        if (RS('intel')) {
+          const tg = d.amp * Math.sin(2 * Math.PI * S.clock / d.period + d.phase) - c.x;
+          outlook = 'OUTLOOK: ' + (tg > 0.03 ? 'RISING' : tg < -0.03 ? 'FALLING' : 'STEADY');
+        }
+        setT(r.out, outlook);
       });
 
       const musicOn = Snd.on || wakeArmed;
@@ -1260,8 +1341,9 @@
       if (!c || !c.u) return 0;
       const room = cap() * 2 - c.ore;
       if (room <= 0) return 0;
-      c.ore += Math.min(1, room);
-      return 1;
+      const n = Math.min(digPower(), room);
+      c.ore += n;
+      return n;
     }
 
     function buyLevel(i, kind) {
@@ -1443,7 +1525,9 @@
             Snd.sfx('sell');
           }
         } else if (act === 'auto') {
-          S.c[i].auto = (S.c[i].auto + 1) % AUTO.length;
+          const c = S.c[i];
+          const al = brokerLv() >= 2 ? AUTO.map((v, k) => k) : AUTO_JUNIOR;
+          c.auto = al[(al.indexOf(c.auto) + 1) % al.length];
         } else if (act === 'unlock') {
           unlockComm(i);
         }
