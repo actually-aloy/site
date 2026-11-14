@@ -222,10 +222,52 @@
       margin: 12px 0 8px;
     }
 
-    .hud div {
+    .hud > div {
+      position: relative;
       padding: 8px 10px;
       border: 1px solid var(--line);
       min-width: 0;
+      cursor: help;
+      outline: none;
+    }
+
+    .hud > div::after {
+      content: attr(data-tip);
+      position: absolute;
+      top: calc(100% + 6px);
+      left: 0;
+      z-index: 30;
+      width: max-content;
+      max-width: min(300px, 88vw);
+      padding: 8px 10px;
+      background: var(--bg);
+      border: 1px solid var(--fg);
+      font-size: 12px;
+      line-height: 1.5;
+      white-space: pre-line;
+      text-shadow: none;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.12s;
+    }
+
+    .hud > div:nth-child(2)::after {
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .hud > div:nth-child(3)::after {
+      left: auto;
+      right: 0;
+    }
+
+    .hud > div:hover::after,
+    .hud > div:focus::after {
+      opacity: 1;
+    }
+
+    .hud > div:focus {
+      border-color: var(--fg);
     }
 
     .hud span {
@@ -299,23 +341,17 @@
 
     .opsbar {
       display: flex;
-      justify-content: flex-end;
-      margin-bottom: 8px;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 10px;
+      font-size: 12px;
+      color: var(--dim);
+      letter-spacing: 0.08em;
     }
 
     .opsbar[hidden] {
       display: none;
-    }
-
-    .buyq {
-      min-height: 38px;
-      min-width: 96px;
-      border: 1px solid var(--line);
-      background: transparent;
-      cursor: pointer;
-      font-size: 13px;
-      letter-spacing: 0.08em;
-      color: var(--fg);
     }
 
     .mk {
@@ -353,6 +389,7 @@
 
     .mk-bar .rng {
       display: flex;
+      flex-wrap: wrap;
       gap: 6px;
     }
 
@@ -406,15 +443,60 @@
       line-height: 1.5;
     }
 
-    .grid5 {
+    .grid4 {
       display: grid;
-      grid-template-columns: repeat(5, 1fr);
+      grid-template-columns: repeat(4, 1fr);
       gap: 8px;
     }
 
+    .ord {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      padding-top: 10px;
+      border-top: 1px dashed var(--line);
+    }
+
+    .ord-f {
+      display: flex;
+      gap: 8px;
+    }
+
+    .ord-f input {
+      flex: 1;
+      min-width: 0;
+      min-height: 46px;
+      padding: 0 10px;
+      border: 1px solid var(--line);
+      background: transparent;
+      color: var(--fg);
+      font: inherit;
+      font-size: 14px;
+      outline: none;
+    }
+
+    .ord-f input:focus {
+      border-color: var(--fg);
+    }
+
+    .ord-f .btn {
+      flex: 0 0 auto;
+      min-width: 140px;
+    }
+
     @media (max-width: 520px) {
-      .grid5 {
-        grid-template-columns: repeat(3, 1fr);
+      .mk-bar button {
+        min-width: 44px;
+      }
+
+      .grid4 .btn,
+      .grid3 .btn {
+        padding: 6px 2px;
+        font-size: 12px;
+      }
+
+      .ord-f .btn {
+        min-width: 112px;
       }
 
       .tab {
@@ -422,6 +504,36 @@
         letter-spacing: 0.04em;
         padding: 0 2px;
       }
+    }
+
+    .btn.b3 {
+      height: 66px;
+      min-height: 66px;
+      padding: 4px 8px;
+      gap: 0;
+    }
+
+    .btn {
+      min-width: 0;
+    }
+
+    .btn > * {
+      display: block;
+      max-width: 100%;
+    }
+
+    .btn.b3 > * {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      width: 100%;
+      text-align: center;
+      line-height: 1.35;
+      min-height: 1.35em;
+    }
+
+    .btn.b3 .l2 {
+      font-size: 12px;
     }
 
     .btn {
@@ -481,7 +593,7 @@
 
     .cards {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(min(290px, 100%), 1fr));
       gap: 12px;
       align-items: start;
     }
@@ -556,19 +668,56 @@
 
     .row {
       display: grid;
-      grid-template-columns: 6ch 1fr auto;
+      grid-template-columns: 8ch 1fr auto;
       gap: 8px;
       align-items: center;
       font-size: 12px;
     }
 
-    .row span:first-child {
+    .row > span:first-child {
       color: var(--dim);
     }
 
-    .row span:nth-child(2) {
+    .row > span:nth-child(2) {
       overflow: hidden;
       white-space: pre;
+    }
+
+    .vv {
+      display: flex;
+      justify-content: flex-end;
+      align-items: baseline;
+      gap: 6px;
+      white-space: nowrap;
+    }
+
+    .tr {
+      font-style: normal;
+      font-size: 10px;
+      letter-spacing: 0.06em;
+      color: var(--dim);
+    }
+
+    .tr::before {
+      content: attr(data-g);
+    }
+
+    .tr::after {
+      content: ' ' attr(data-w);
+    }
+
+    .tr.up {
+      color: var(--fg);
+    }
+
+    .tr.dn {
+      color: var(--warn);
+    }
+
+    @media (max-width: 520px) {
+      .tr::after {
+        display: none;
+      }
     }
 
     .grid2,
@@ -578,7 +727,7 @@
     }
 
     .grid2 {
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
     }
 
     .grid3 {
@@ -619,7 +768,50 @@
       letter-spacing: 0.04em;
     }
 
+    .cards.eq {
+      grid-template-columns: repeat(2, 1fr);
+      grid-auto-rows: 1fr;
+      align-items: stretch;
+    }
+
+    .cards.col:not([hidden]) {
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .cards.eq .res .btn {
+      margin-top: auto;
+    }
+
+    @media (max-width: 700px) {
+      .cards.eq {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .seg {
+      display: flex;
+      gap: 6px;
+    }
+
+    .seg button {
+      min-height: 34px;
+      min-width: 52px;
+      border: 1px solid var(--line);
+      background: transparent;
+      color: var(--dim);
+      cursor: pointer;
+      font-size: 12px;
+    }
+
+    .seg button[aria-pressed="true"] {
+      border-color: var(--fg);
+      color: var(--fg);
+    }
+
     .res p {
+      flex: 1;
       margin: 0;
       color: var(--dim);
       font-size: 12.5px;
@@ -769,9 +961,9 @@
     </div>
 
     <section class="hud" aria-label="Finances">
-      <div><span>CASH</span><b id="cash">$0</b></div>
-      <div><span>STOCK</span><b id="stock">$0</b></div>
-      <div><span>NET WORTH</span><b id="net">$0</b></div>
+      <div tabindex="0"><span>CASH</span><b id="cash">$0</b></div>
+      <div tabindex="0"><span>STOCK</span><b id="stock">$0</b></div>
+      <div tabindex="0"><span>NET WORTH</span><b id="net">$0</b></div>
     </section>
 
     <p class="status" id="status">ALL SYSTEMS NOMINAL</p>
@@ -783,11 +975,11 @@
       <button type="button" class="tab" role="tab" id="tab-bd" data-tab="bd" aria-selected="false" aria-controls="board">BOARD</button>
     </nav>
 
-    <div class="opsbar" id="opsbar"><button type="button" class="buyq" id="tbuy" aria-label="Levels per purchase">BUY x1</button></div>
+    <div class="opsbar" id="opsbar"><span>LEVELS PER BUY</span><div class="seg" id="tbuy" role="group" aria-label="Levels per purchase"><button type="button" data-q="0" aria-pressed="true">x1</button><button type="button" data-q="1" aria-pressed="false">x10</button><button type="button" data-q="2" aria-pressed="false">x25</button><button type="button" data-q="3" aria-pressed="false">MAX</button></div></div>
     <section class="cards" id="cards" role="tabpanel" aria-labelledby="tab-ops"></section>
-    <section class="cards" id="research" role="tabpanel" aria-labelledby="tab-res" hidden></section>
+    <section class="cards eq" id="research" role="tabpanel" aria-labelledby="tab-res" hidden></section>
     <section class="cards mk" id="markets" role="tabpanel" aria-labelledby="tab-mk" hidden></section>
-    <section class="cards" id="board" role="tabpanel" aria-labelledby="tab-bd" hidden></section>
+    <section class="cards col" id="board" role="tabpanel" aria-labelledby="tab-bd" hidden></section>
 
     <section class="term" aria-label="Terminal">
       <h3>TERMINAL</h3>
@@ -879,7 +1071,7 @@
     }
 
     function fresh() {
-      const s = { cash: 0, wl: 0, rs: {}, t: Date.now(), clock: 0, phos: 'green', outage: 0, boost: null, nextEvent: 25, milestone: 0, earned: 0, run: 0, runs: 0, shares: 0, sharesTotal: 0, bd: {}, btc: { amt: 0, cost: 0, last: 0 }, helped: false, c: COMM.map(freshComm) };
+      const s = { cash: 0, wl: 0, rs: {}, t: Date.now(), clock: 0, phos: 'green', outage: 0, boost: null, nextEvent: 25, milestone: 0, earned: 0, run: 0, runs: 0, shares: 0, sharesTotal: 0, bd: {}, btc: { amt: 0, cost: 0, last: 0, ord: null }, helped: false, c: COMM.map(freshComm) };
       s.c[0].u = true;
       return s;
     }
@@ -895,6 +1087,8 @@
         if (d.run === undefined) base.run = base.earned;
         if (d.btc && typeof d.btc === 'object') {
           ['amt', 'cost', 'last'].forEach(k => { const n = Number(d.btc[k]); if (isFinite(n) && n >= 0) base.btc[k] = n; });
+          const od = d.btc.ord;
+          if (od && (od.side === 'buy' || od.side === 'sell') && od.price > 0 && od.frac > 0 && od.frac <= 1 && isFinite(od.t)) base.btc.ord = { side: od.side, price: Number(od.price), frac: Number(od.frac), t: Number(od.t) };
         }
         if (d.bd && typeof d.bd === 'object') {
           Object.keys(d.bd).forEach(k => { const n = parseInt(d.bd[k], 10); if (n > 0) base.bd[k] = n; });
@@ -947,11 +1141,31 @@
     }
 
 
-    const BTC = { ok: false, src: '', pts: [], range: '24H', price: 0, at: 0, tried: false, busy: false, hover: -1 };
+    const BTC = { ok: false, src: '', pts: [], range: '24H', type: 'line', ma: false, price: 0, at: 0, tried: false, busy: false, hover: -1 };
     const BTC_FEE = 0.0025;
-    const WINDOW = { '24H': 86400000, '7D': 604800000 };
+    const RANGES = {
+      '1H': { win: 3600000, stale: 1200000, min: 30, tm: 1, cb: 60, kr: 1, bn: '1m', bl: 60, cc: ['histominute', 1, 60], cg: 0 },
+      '24H': { win: 86400000, stale: 10800000, min: 20, tm: 1, cb: 900, kr: 15, bn: '15m', bl: 100, cc: ['histominute', 15, 100], cg: 1 },
+      '7D': { win: 604800000, stale: 18000000, min: 20, tm: 1, cb: 3600, kr: 60, bn: '1h', bl: 170, cc: ['histohour', 1, 170], cg: 7 },
+      '30D': { win: 2592000000, stale: 28800000, min: 20, tm: 1, cb: 21600, kr: 240, bn: '4h', bl: 190, cc: ['histohour', 4, 190], cg: 30 },
+      '90D': { win: 7776000000, stale: 432000000, min: 20, tm: 0, cb: 86400, kr: 1440, bn: '1d', bl: 95, cc: ['histoday', 1, 95], cg: 90 },
+      '1Y': { win: 31536000000, stale: 432000000, min: 20, tm: 0, cb: 0, kr: 1440, bn: '1d', bl: 370, cc: ['histoday', 1, 370], cg: 365 }
+    };
+    const MA_N = 20;
     const btcLive = () => BTC.ok && Date.now() - BTC.at < 180000;
     const btcValue = () => S.btc.amt * (btcLive() ? BTC.price : S.btc.last);
+    const OF = { side: 'buy', amt: 50 };
+
+    try {
+      const cp = JSON.parse(localStorage.getItem('ironline-chart-v1') || '{}');
+      if (RANGES[cp.range]) BTC.range = cp.range;
+      if (cp.type === 'candle') BTC.type = 'candle';
+      BTC.ma = cp.ma === true;
+    } catch (e) {}
+
+    function saveChartPrefs() {
+      try { localStorage.setItem('ironline-chart-v1', JSON.stringify({ range: BTC.range, type: BTC.type, ma: BTC.ma })); } catch (e) {}
+    }
 
     function getJSON(url) {
       const ctl = new AbortController();
@@ -962,30 +1176,43 @@
     }
 
     const px = v => { const x = parseFloat(v); return isFinite(x) && x > 0 ? x : NaN; };
+    const cd = (t, o, h, l, c) => [Number(t), px(o), px(h), px(l), px(c)];
+    const unsupported = () => Promise.reject(new Error('range'));
 
     const PROVIDERS = [
-      { n: 'COINBASE', get: r => getJSON('https://api.exchange.coinbase.com/products/BTC-USD/candles?granularity=' + (r === '24H' ? 900 : 3600))
-        .then(j => j.map(k => [k[0] * 1000, px(k[4])])) },
-      { n: 'KRAKEN', get: r => getJSON('https://api.kraken.com/0/public/OHLC?pair=XBTUSD&interval=' + (r === '24H' ? 15 : 60))
-        .then(j => { const key = Object.keys(j.result).find(k => k !== 'last'); return j.result[key].map(k => [k[0] * 1000, px(k[4])]); }) },
+      { n: 'COINBASE', get: r => RANGES[r].cb
+        ? getJSON('https://api.exchange.coinbase.com/products/BTC-USD/candles?granularity=' + RANGES[r].cb).then(j => j.map(k => cd(k[0] * 1000, k[3], k[2], k[1], k[4])))
+        : unsupported() },
+      { n: 'KRAKEN', get: r => getJSON('https://api.kraken.com/0/public/OHLC?pair=XBTUSD&interval=' + RANGES[r].kr)
+        .then(j => { const key = Object.keys(j.result).find(k => k !== 'last'); return j.result[key].map(k => cd(k[0] * 1000, k[1], k[2], k[3], k[4])); }) },
       { n: 'BINANCE', get: r => {
-        const q = '/api/v3/klines?symbol=BTCUSDT&interval=' + (r === '24H' ? '15m&limit=100' : '1h&limit=170');
-        const m = j => j.map(k => [k[0], px(k[4])]);
+        const q = '/api/v3/klines?symbol=BTCUSDT&interval=' + RANGES[r].bn + '&limit=' + RANGES[r].bl;
+        const m = j => j.map(k => cd(k[0], k[1], k[2], k[3], k[4]));
         return getJSON('https://data-api.binance.vision' + q).then(m).catch(() => getJSON('https://api.binance.com' + q).then(m));
       } },
-      { n: 'CRYPTOCOMPARE', get: r => getJSON('https://min-api.cryptocompare.com/data/v2/' + (r === '24H' ? 'histominute?fsym=BTC&tsym=USD&aggregate=15&limit=100' : 'histohour?fsym=BTC&tsym=USD&limit=170'))
-        .then(j => j.Data.Data.map(k => [k.time * 1000, px(k.close)])) },
-      { n: 'COINGECKO', get: r => getJSON('https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=usd&days=' + (r === '24H' ? 1 : 7))
-        .then(j => j.prices.map(k => [k[0], px(k[1])])) }
+      { n: 'CRYPTOCOMPARE', get: r => {
+        const c = RANGES[r].cc;
+        return getJSON('https://min-api.cryptocompare.com/data/v2/' + c[0] + '?fsym=BTC&tsym=USD&aggregate=' + c[1] + '&limit=' + c[2])
+          .then(j => j.Data.Data.map(k => cd(k.time * 1000, k.open, k.high, k.low, k.close)));
+      } },
+      { n: 'COINGECKO', get: r => RANGES[r].cg
+        ? getJSON('https://api.coingecko.com/api/v3/coins/bitcoin/ohlc?vs_currency=usd&days=' + RANGES[r].cg).then(j => j.map(k => cd(k[0], k[1], k[2], k[3], k[4])))
+        : unsupported() }
     ];
 
     function cleanSeries(raw, range) {
       if (!Array.isArray(raw)) throw new Error('bad data');
-      const pts = raw.filter(k => isFinite(k[0]) && isFinite(k[1])).sort((a, b) => a[0] - b[0]);
-      if (pts.length < 20) throw new Error('too short');
+      const x = RANGES[range];
+      const pts = raw.filter(k => k.every(Number.isFinite))
+        .map(k => [k[0], k[1], Math.max(k[1], k[2], k[3], k[4]), Math.min(k[1], k[2], k[3], k[4]), k[4]])
+        .sort((a, b) => a[0] - b[0]);
+      if (!pts.length) throw new Error('empty');
       const last = pts[pts.length - 1][0];
-      if (Date.now() - last > 3 * 3600000 || last - Date.now() > 600000) throw new Error('stale');
-      return pts.filter(k => k[0] >= last - WINDOW[range]);
+      if (Date.now() - last > x.stale || last - Date.now() > 600000) throw new Error('stale');
+      const out = pts.filter(k => k[0] >= last - x.win);
+      if (out.length < x.min) throw new Error('too short');
+      if (out[0][0] > last - x.win * 0.8) throw new Error('short coverage');
+      return out;
     }
 
     async function btcRefresh() {
@@ -1000,7 +1227,7 @@
           if (range !== BTC.range) { done = true; break; }
           BTC.pts = pts;
           BTC.src = pv.n;
-          BTC.price = pts[pts.length - 1][1];
+          BTC.price = pts[pts.length - 1][4];
           BTC.at = Date.now();
           BTC.ok = true;
           S.btc.last = BTC.price;
@@ -1011,35 +1238,68 @@
       if (!done && Date.now() - BTC.at > 180000) BTC.ok = false;
       BTC.tried = true;
       BTC.busy = false;
+      if (done) checkOrder();
       renderMarkets();
       drawChart();
+      render();
     }
 
     const fmtPx = v => v.toLocaleString('en-US', { maximumFractionDigits: v < 100 ? 2 : 0 });
 
-    function btcBuy(frac) {
-      if (!btcLive()) return;
+    function btcBuy(frac, at, tag) {
+      if (!at && !btcLive()) return;
+      const p = at || BTC.price;
       const spend = S.cash * frac;
-      if (spend < 1) return;
-      const amt = spend * (1 - BTC_FEE) / BTC.price;
+      if (spend < 1) { if (tag) log('LIMIT BUY CANCELLED: NOT ENOUGH CASH.'); return; }
+      const amt = spend * (1 - BTC_FEE) / p;
       S.cash -= spend;
       S.btc.amt += amt;
       S.btc.cost += spend;
-      log('BOUGHT ' + amt.toFixed(6) + ' BTC @ $' + fmtPx(BTC.price) + ' = ' + money(spend) + ' (INCL. FEE)');
+      log((tag || '') + 'BOUGHT ' + amt.toFixed(6) + ' BTC @ $' + fmtPx(p) + ' = ' + money(spend) + ' (INCL. FEE)');
       Snd.sfx('buy');
     }
 
-    function btcSell(frac) {
-      if (!btcLive() || S.btc.amt <= 0) return;
+    function btcSell(frac, at, tag) {
+      if (!at && !btcLive()) return;
+      if (S.btc.amt <= 0) { if (tag) log('LIMIT SELL CANCELLED: NO BITCOIN LEFT.'); return; }
+      const p = at || BTC.price;
       const amt = frac >= 1 ? S.btc.amt : S.btc.amt * frac;
-      const proceeds = amt * BTC.price * (1 - BTC_FEE);
+      const proceeds = amt * p * (1 - BTC_FEE);
       const basis = S.btc.cost * (amt / S.btc.amt);
       S.btc.amt = frac >= 1 ? 0 : S.btc.amt - amt;
       S.btc.cost = frac >= 1 ? 0 : S.btc.cost - basis;
       S.cash += proceeds;
       const pl = proceeds - basis;
-      log('SOLD ' + amt.toFixed(6) + ' BTC @ $' + fmtPx(BTC.price) + ' = ' + money(proceeds) + ' (' + (pl >= 0 ? '+' : '-') + money(Math.abs(pl)) + ')');
+      log((tag || '') + 'SOLD ' + amt.toFixed(6) + ' BTC @ $' + fmtPx(p) + ' = ' + money(proceeds) + ' (' + (pl >= 0 ? '+' : '-') + money(Math.abs(pl)) + ')');
       Snd.sfx('sell');
+    }
+
+    function placeOrder() {
+      if (!btcLive()) return;
+      const p = parseFloat(String(mref.oprice.value).replace(/,/g, ''));
+      if (!isFinite(p) || p <= 0) { log('ENTER A LIMIT PRICE.'); return; }
+      if (OF.side === 'buy' && p >= BTC.price) { log('A BUY LIMIT MUST BE BELOW THE MARKET PRICE. USE BUY FOR AN INSTANT FILL.'); return; }
+      if (OF.side === 'sell' && p <= BTC.price) { log('A SELL LIMIT MUST BE ABOVE THE MARKET PRICE. USE SELL FOR AN INSTANT FILL.'); return; }
+      S.btc.ord = { side: OF.side, price: p, frac: OF.amt / 100, t: Date.now() };
+      log('LIMIT ORDER PLACED: ' + OF.side.toUpperCase() + ' ' + OF.amt + '% @ $' + fmtPx(p) + '. IT FILLS WHILE THIS PAGE IS OPEN.');
+    }
+
+    function checkOrder() {
+      const o = S.btc.ord;
+      if (!o || !btcLive()) return;
+      const cur = BTC.price;
+      let at = 0;
+      if (o.side === 'buy') {
+        if (cur <= o.price) at = cur;
+        else if (BTC.pts.some(k => k[0] > o.t && k[3] <= o.price)) at = o.price;
+      } else if (cur >= o.price) {
+        at = cur;
+      } else if (BTC.pts.some(k => k[0] > o.t && k[2] >= o.price)) {
+        at = o.price;
+      }
+      if (!at) return;
+      S.btc.ord = null;
+      if (o.side === 'buy') btcBuy(o.frac, at, 'LIMIT '); else btcSell(o.frac, at, 'LIMIT ');
     }
 
     const mref = {};
@@ -1047,35 +1307,53 @@
     function buildMarkets() {
       const a = document.createElement('article');
       a.className = 'card';
+      const rb = Object.keys(RANGES).map(k => '<button type="button" data-rng="' + k + '" aria-pressed="false">' + k + '</button>').join('');
       a.innerHTML =
         '<div class="mk-head"><h2>BTC / USD</h2><span class="mk-px"><span data-r="price">--</span><small data-r="chg"></small></span></div>' +
-        '<div class="mk-bar"><span class="rng"><button type="button" data-rng="24H" aria-pressed="true">24H</button><button type="button" data-rng="7D" aria-pressed="false">7D</button></span><span data-r="stat"></span></div>' +
+        '<div class="mk-bar"><span class="rng">' + rb + '</span><span data-r="stat"></span></div>' +
+        '<div class="mk-bar"><span class="rng"><button type="button" data-ct="line" aria-pressed="true">LINE</button><button type="button" data-ct="candle" aria-pressed="false">CANDLES</button><button type="button" data-ma="1" aria-pressed="false">MA ' + MA_N + '</button></span></div>' +
         '<div class="mk-chart"><canvas data-r="cv"></canvas><div class="mk-msg" data-r="msg"></div></div>' +
         '<div class="mk-bar"><span data-r="hover"></span><span data-r="range"></span></div>' +
         '<div class="kv"><span>HOLDING</span><span data-r="amt"></span></div>' +
+        '<div class="kv"><span>AVG ENTRY</span><span data-r="avg"></span></div>' +
         '<div class="kv"><span>VALUE</span><span data-r="val"></span></div>' +
         '<div class="kv"><span>PROFIT / LOSS</span><span data-r="pl"></span></div>' +
         '<div class="kv"><span>CASH</span><span data-r="cash"></span></div>' +
-        '<div class="grid5">' +
+        '<div class="grid4">' +
           '<button type="button" class="btn" data-mk="b10">BUY 10%</button>' +
+          '<button type="button" class="btn" data-mk="b25">BUY 25%</button>' +
           '<button type="button" class="btn" data-mk="b50">BUY 50%</button>' +
           '<button type="button" class="btn" data-mk="b100">BUY MAX</button>' +
+        '</div>' +
+        '<div class="grid3">' +
+          '<button type="button" class="btn" data-mk="s25">SELL 25%</button>' +
           '<button type="button" class="btn" data-mk="s50">SELL 50%</button>' +
           '<button type="button" class="btn" data-mk="s100">SELL ALL</button>' +
         '</div>' +
-        '<p class="mk-note">Real bitcoin price from public exchange feeds, traded with game cash. Trades fill at the latest price with a 0.25% fee. Trading closes if the live feed is down. This is a game, not financial advice.</p>';
+        '<div class="ord">' +
+          '<div class="mk-bar"><span>LIMIT ORDER</span><span data-r="oinfo"></span></div>' +
+          '<div class="mk-bar"><span class="seg"><button type="button" data-os="buy" aria-pressed="true">BUY</button><button type="button" data-os="sell" aria-pressed="false">SELL</button></span>' +
+          '<span class="seg"><button type="button" data-oa="25" aria-pressed="false">25%</button><button type="button" data-oa="50" aria-pressed="true">50%</button><button type="button" data-oa="100" aria-pressed="false">ALL</button></span></div>' +
+          '<div class="ord-f"><input data-r="oprice" inputmode="decimal" autocomplete="off" placeholder="LIMIT PRICE" aria-label="Limit price"><button type="button" class="btn" data-mk="place" data-r="ordb">PLACE ORDER</button></div>' +
+        '</div>' +
+        '<p class="mk-note">Real bitcoin price from public exchange feeds, traded with game cash. Trades fill at the latest price with a 0.25% fee. A limit order fills at your price or better, only while this page is open. Trading closes if the live feed is down. This is a game, not financial advice.</p>';
       $('markets').appendChild(a);
       a.querySelectorAll('[data-r]').forEach(n => { mref[n.dataset.r] = n; });
       mref.btns = {};
       a.querySelectorAll('[data-mk]').forEach(b => { mref.btns[b.dataset.mk] = b; });
       mref.rng = a.querySelectorAll('[data-rng]');
+      mref.ct = a.querySelectorAll('[data-ct]');
+      mref.maB = a.querySelector('[data-ma]');
+      mref.os = a.querySelectorAll('[data-os]');
+      mref.oa = a.querySelectorAll('[data-oa]');
     }
+
+    const pressed = (list, key, val) => list.forEach(b => b.setAttribute('aria-pressed', b.dataset[key] === String(val) ? 'true' : 'false'));
 
     function renderMarkets() {
       if (!mref.price) return;
       const live = btcLive();
       const pts = BTC.pts;
-      const shown = live || S.btc.last;
       setT(mref.price, live ? '$' + fmtPx(BTC.price) : S.btc.last ? '$' + fmtPx(S.btc.last) : '--');
       if (live && pts.length > 1) {
         const ch = (BTC.price / pts[0][1] - 1) * 100;
@@ -1086,24 +1364,46 @@
       }
       setT(mref.stat, !BTC.tried ? 'CONNECTING...' : live ? 'LIVE  /  ' + BTC.src : 'OFFLINE');
       mref.msg.hidden = live && pts.length > 1;
-      setT(mref.msg, !BTC.tried ? 'CONNECTING TO MARKET FEED...' : 'LIVE MARKET FEED UNAVAILABLE. TRADING IS CLOSED. RETRYING EVERY 30s.');
+      setT(mref.msg, !BTC.tried ? 'CONNECTING TO MARKET FEED...' : 'LIVE MARKET FEED UNAVAILABLE FOR THIS RANGE. TRADING IS CLOSED. RETRYING EVERY 30s.');
       if (live && pts.length > 1) {
         let lo = Infinity;
         let hi = 0;
-        pts.forEach(k => { if (k[1] < lo) lo = k[1]; if (k[1] > hi) hi = k[1]; });
-        setT(mref.range, 'LOW $' + fmtPx(lo) + '  HIGH $' + fmtPx(hi));
+        pts.forEach(k => { if (k[3] < lo) lo = k[3]; if (k[2] > hi) hi = k[2]; });
+        setT(mref.range, 'OPEN $' + fmtPx(pts[0][1]) + '  HIGH $' + fmtPx(hi) + '  LOW $' + fmtPx(lo));
       } else {
         setT(mref.range, '');
       }
       const val = btcValue();
       setT(mref.amt, S.btc.amt.toFixed(6) + ' BTC');
+      setT(mref.avg, S.btc.amt > 0 ? '$' + fmtPx(S.btc.cost / S.btc.amt) : '--');
       setT(mref.val, S.btc.amt ? money(val) + (live ? '' : ' (LAST KNOWN)') : '$0');
       const pl = val - S.btc.cost;
       setT(mref.pl, S.btc.amt ? (pl >= 0 ? '+' : '-') + money(Math.abs(pl)) + ' (' + (S.btc.cost ? (pl / S.btc.cost * 100).toFixed(2) : '0.00') + '%)' : '$0');
       setT(mref.cash, money(S.cash));
-      mref.btns.b10.disabled = mref.btns.b50.disabled = mref.btns.b100.disabled = !live || S.cash < 1;
-      mref.btns.s50.disabled = mref.btns.s100.disabled = !live || S.btc.amt <= 0;
-      mref.rng.forEach(b => b.setAttribute('aria-pressed', b.dataset.rng === BTC.range ? 'true' : 'false'));
+      mref.btns.b10.disabled = mref.btns.b25.disabled = mref.btns.b50.disabled = mref.btns.b100.disabled = !live || S.cash < 1;
+      mref.btns.s25.disabled = mref.btns.s50.disabled = mref.btns.s100.disabled = !live || S.btc.amt <= 0;
+      const o = S.btc.ord;
+      setT(mref.oinfo, o ? o.side.toUpperCase() + ' ' + Math.round(o.frac * 100) + '% @ $' + fmtPx(o.price) : 'NO OPEN ORDER');
+      setT(mref.ordb, o ? 'CANCEL ORDER' : 'PLACE ORDER');
+      mref.ordb.dataset.mk = o ? 'cancel' : 'place';
+      mref.ordb.disabled = !o && !live;
+      if (live && !mref.oprice.value && document.activeElement !== mref.oprice) mref.oprice.value = Math.round(BTC.price);
+      pressed(mref.rng, 'rng', BTC.range);
+      pressed(mref.ct, 'ct', BTC.type);
+      mref.maB.setAttribute('aria-pressed', BTC.ma ? 'true' : 'false');
+      pressed(mref.os, 'os', OF.side);
+      pressed(mref.oa, 'oa', OF.amt);
+    }
+
+    function smaOf(pts, n) {
+      const out = new Array(pts.length).fill(NaN);
+      let s = 0;
+      for (let i = 0; i < pts.length; i++) {
+        s += pts[i][4];
+        if (i >= n) s -= pts[i - n][4];
+        if (i >= n - 1) out[i] = s / n;
+      }
+      return out;
     }
 
     function drawChart() {
@@ -1124,9 +1424,18 @@
       const fg = cs.getPropertyValue('--fg').trim() || '#4dff8f';
       const dim = cs.getPropertyValue('--dim').trim() || '#2f9a5a';
       const line = cs.getPropertyValue('--line').trim() || '#14532d';
+      const warn = cs.getPropertyValue('--warn').trim() || '#ffb347';
+      const n = pts.length;
+      const candle = BTC.type === 'candle';
+      const ma = BTC.ma ? smaOf(pts, MA_N) : null;
       let lo = Infinity;
       let hi = 0;
-      pts.forEach(k => { if (k[1] < lo) lo = k[1]; if (k[1] > hi) hi = k[1]; });
+      pts.forEach(k => {
+        const a = candle ? k[3] : k[4];
+        const b = candle ? k[2] : k[4];
+        if (a < lo) lo = a;
+        if (b > hi) hi = b;
+      });
       const padv = (hi - lo) * 0.08 || hi * 0.001;
       lo -= padv;
       hi += padv;
@@ -1134,7 +1443,8 @@
       const R = 62;
       const T = 10;
       const B = 22;
-      const X = i => L + (pts[i][0] - pts[0][0]) / (pts[pts.length - 1][0] - pts[0][0]) * (w - L - R);
+      const pw = w - L - R;
+      const X = i => L + (i + 0.5) / n * pw;
       const Y = v => T + (1 - (v - lo) / (hi - lo)) * (h - T - B);
       g.font = '11px "IBM Plex Mono", ui-monospace, monospace';
       g.textBaseline = 'middle';
@@ -1153,53 +1463,98 @@
         g.textAlign = 'left';
         g.fillText(fmtPx(v), w - R + 6, y);
       }
-      const grad = g.createLinearGradient(0, T, 0, h - B);
-      grad.addColorStop(0, fg + '44');
-      grad.addColorStop(1, fg + '00');
-      g.beginPath();
-      pts.forEach((k, i) => { if (i) g.lineTo(X(i), Y(k[1])); else g.moveTo(X(i), Y(k[1])); });
-      g.lineTo(X(pts.length - 1), h - B);
-      g.lineTo(X(0), h - B);
-      g.closePath();
-      g.fillStyle = grad;
-      g.fill();
-      g.beginPath();
-      pts.forEach((k, i) => { if (i) g.lineTo(X(i), Y(k[1])); else g.moveTo(X(i), Y(k[1])); });
-      g.strokeStyle = fg;
-      g.lineWidth = 1.6;
-      g.lineJoin = 'round';
-      g.shadowColor = fg;
-      g.shadowBlur = 6;
-      g.stroke();
-      g.shadowBlur = 0;
-      const lastI = pts.length - 1;
-      g.fillStyle = fg;
-      g.beginPath();
-      g.arc(X(lastI), Y(pts[lastI][1]), 3, 0, Math.PI * 2);
-      g.fill();
+      if (candle) {
+        const bw = clamp(Math.floor(pw / n * 0.7), 1, 14);
+        pts.forEach((k, i) => {
+          const x = Math.round(X(i));
+          const up = k[4] >= k[1];
+          g.strokeStyle = g.fillStyle = up ? fg : warn;
+          g.lineWidth = 1;
+          g.beginPath();
+          g.moveTo(x + 0.5, Y(k[2]));
+          g.lineTo(x + 0.5, Y(k[3]));
+          g.stroke();
+          const top = Y(Math.max(k[1], k[4]));
+          g.fillRect(Math.round(x - bw / 2), top, bw, Math.max(1, Y(Math.min(k[1], k[4])) - top));
+        });
+      } else {
+        const grad = g.createLinearGradient(0, T, 0, h - B);
+        grad.addColorStop(0, fg + '44');
+        grad.addColorStop(1, fg + '00');
+        g.beginPath();
+        pts.forEach((k, i) => { if (i) g.lineTo(X(i), Y(k[4])); else g.moveTo(X(i), Y(k[4])); });
+        g.lineTo(X(n - 1), h - B);
+        g.lineTo(X(0), h - B);
+        g.closePath();
+        g.fillStyle = grad;
+        g.fill();
+        g.beginPath();
+        pts.forEach((k, i) => { if (i) g.lineTo(X(i), Y(k[4])); else g.moveTo(X(i), Y(k[4])); });
+        g.strokeStyle = fg;
+        g.lineWidth = 1.6;
+        g.lineJoin = 'round';
+        g.shadowColor = fg;
+        g.shadowBlur = 6;
+        g.stroke();
+        g.shadowBlur = 0;
+        g.fillStyle = fg;
+        g.beginPath();
+        g.arc(X(n - 1), Y(pts[n - 1][4]), 3, 0, Math.PI * 2);
+        g.fill();
+      }
+      if (ma) {
+        g.beginPath();
+        let started = false;
+        ma.forEach((v, i) => {
+          if (!isFinite(v)) return;
+          if (started) g.lineTo(X(i), Y(v)); else { g.moveTo(X(i), Y(v)); started = true; }
+        });
+        g.strokeStyle = warn;
+        g.lineWidth = 1.4;
+        g.setLineDash([]);
+        g.stroke();
+      }
+      const o = S.btc.ord;
+      if (o && o.price > lo && o.price < hi) {
+        const y = Math.round(Y(o.price)) + 0.5;
+        g.strokeStyle = warn;
+        g.setLineDash([6, 4]);
+        g.lineWidth = 1;
+        g.beginPath();
+        g.moveTo(L, y);
+        g.lineTo(w - R, y);
+        g.stroke();
+        g.setLineDash([]);
+        g.fillStyle = warn;
+        g.textAlign = 'left';
+        g.fillText(o.side.toUpperCase(), L + 4, y - 7);
+      }
       const fmtT = ts => {
         const d = new Date(ts);
-        return BTC.range === '24H'
-          ? String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0')
-          : d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+        if (BTC.range === '1H' || BTC.range === '24H') return String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0');
+        if (BTC.range === '1Y') return d.toLocaleDateString('en-US', { month: 'short', year: '2-digit' });
+        return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
       };
       g.fillStyle = dim;
       g.textBaseline = 'alphabetic';
-      [[0, 'left'], [Math.floor(lastI / 2), 'center'], [lastI, 'right']].forEach(([i, al]) => {
+      [[0, 'left'], [Math.floor((n - 1) / 2), 'center'], [n - 1, 'right']].forEach(([i, al]) => {
         g.textAlign = al;
         g.fillText(fmtT(pts[i][0]), al === 'left' ? L : al === 'right' ? w - R : (L + w - R) / 2, h - 6);
       });
-      if (BTC.hover >= 0 && BTC.hover <= lastI) {
-        const hx = X(BTC.hover);
+      if (BTC.hover >= 0 && BTC.hover < n) {
+        const hx = Math.round(X(BTC.hover));
         g.strokeStyle = dim;
+        g.lineWidth = 1;
         g.beginPath();
         g.moveTo(hx + 0.5, T);
         g.lineTo(hx + 0.5, h - B);
         g.stroke();
-        g.fillStyle = fg;
-        g.beginPath();
-        g.arc(hx, Y(pts[BTC.hover][1]), 3.5, 0, Math.PI * 2);
-        g.fill();
+        if (!candle) {
+          g.fillStyle = fg;
+          g.beginPath();
+          g.arc(hx, Y(pts[BTC.hover][4]), 3.5, 0, Math.PI * 2);
+          g.fill();
+        }
       }
     }
 
@@ -1210,12 +1565,17 @@
       const L = 8;
       const R = 62;
       const f = (clientX - rect.left - L) / (rect.width - L - R);
-      const t = pts[0][0] + clamp(f, 0, 1) * (pts[pts.length - 1][0] - pts[0][0]);
-      let best = 0;
-      pts.forEach((k, i) => { if (Math.abs(k[0] - t) < Math.abs(pts[best][0] - t)) best = i; });
+      const best = clamp(Math.floor(f * pts.length), 0, pts.length - 1);
       BTC.hover = best;
-      const d = new Date(pts[best][0]);
-      setT(mref.hover, d.toLocaleString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit', hour12: false }) + '  $' + fmtPx(pts[best][1]));
+      const k = pts[best];
+      const d = new Date(k[0]);
+      const opt = RANGES[BTC.range].tm
+        ? { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit', hour12: false }
+        : { month: 'short', day: 'numeric', year: 'numeric' };
+      const t = d.toLocaleString('en-US', opt);
+      setT(mref.hover, BTC.type === 'candle'
+        ? t + '  O ' + fmtPx(k[1]) + '  H ' + fmtPx(k[2]) + '  L ' + fmtPx(k[3]) + '  C ' + fmtPx(k[4])
+        : t + '  $' + fmtPx(k[4]));
       drawChart();
     }
 
@@ -1250,7 +1610,8 @@
         cost: () => (o.id === 'warehouse' ? capCost() : Math.ceil(o.base * Math.pow(o.growth, lv()))),
         done: () => lv() >= o.max,
         locked: () => !!o.req && RS(o.req.id) < o.req.lv,
-        label: () => (lv() >= o.max ? 'MAXED' : d.locked() ? 'NEEDS ' + o.req.name + ' L' + o.req.lv : o.fx(lv()) + '  >  ' + o.fx(lv() + 1)),
+        l1: () => (lv() >= o.max ? 'MAXED' : d.locked() ? 'LOCKED' : o.fx(lv())),
+        l2: () => (lv() >= o.max ? '' : d.locked() ? 'NEEDS ' + o.req.name + ' L' + o.req.lv : '> ' + o.fx(lv() + 1)),
         buy() {
           if (o.id === 'warehouse') S.wl++; else S.rs[o.id] = lv() + 1;
           log(o.msg(lv()));
@@ -1288,26 +1649,41 @@
     ];
 
     const Snd = {
-      ctx: null, master: null, bus: null, sfxBus: null, delay: null, on: false, vol: 0.6, timer: null, nextT: 0, stepN: 0, n: 0, noise: null,
-      ROOTS: [45, 41, 48, 43],
-      QUAL: [[0, 3, 7], [0, 4, 7], [0, 4, 7], [0, 4, 7]],
-      BASS: [0, 3, 6, 8, 11, 14],
-      ARP: [0, 2, 1, 3, 2, 1, 3, 2],
-      BPM: 84,
+      ctx: null, master: null, bus: null, sfxBus: null, delay: null, on: false, vol: 0.8, timer: null, nextT: 0, stepN: 0, n: 0, noise: null, keep: null, ti: -1, tr: null,
+      TRACKS: [
+        { name: 'NIGHT SHIFT', bpm: 84, roots: [45, 41, 48, 43], q: [0, 1, 1, 1], bass: [0, 3, 6, 8, 11, 14], arp: [0, 2, 1, 3, 2, 1, 3, 2], pent: [0, 3, 5, 7, 10], arpAt: 4, drumAt: 8 },
+        { name: 'COLD IRON', bpm: 96, roots: [38, 34, 41, 36], q: [0, 1, 1, 1], bass: [0, 3, 4, 7, 8, 11, 12, 14], arp: [0, 1, 2, 3, 2, 1, 2, 3], pent: [0, 3, 5, 7, 10], arpAt: 3, drumAt: 6 },
+        { name: 'DEEP SHAFT', bpm: 72, roots: [40, 36, 43, 38], q: [0, 1, 1, 1], bass: [0, 6, 10], arp: [0, 2, 3, 2, 1, 2, 3, 1], pent: [0, 3, 7, 10, 12], arpAt: 6, drumAt: 12 },
+        { name: 'BOOM TOWN', bpm: 104, roots: [48, 44, 51, 46], q: [0, 1, 1, 1], bass: [0, 2, 4, 6, 8, 10, 12, 14], arp: [0, 0, 2, 1, 3, 2, 1, 3], pent: [0, 3, 5, 7, 10], arpAt: 2, drumAt: 4 },
+        { name: 'LAST SHIFT', bpm: 78, roots: [41, 48, 50, 46], q: [1, 1, 0, 1], bass: [0, 4, 6, 10, 12], arp: [0, 1, 2, 1, 3, 2, 1, 0], pent: [0, 2, 4, 7, 9], arpAt: 4, drumAt: 8 }
+      ],
+      QUAL: [[0, 3, 7], [0, 4, 7]],
       freq(m) { return 440 * Math.pow(2, (m - 69) / 12); },
+      rnd(n) { const x = Math.sin(n * 12.9898 + 78.233) * 43758.5453; return x - Math.floor(x); },
+      pick() {
+        let i = this.ti;
+        while (i === this.ti) i = Math.floor(Math.random() * this.TRACKS.length);
+        this.ti = i;
+        this.tr = this.TRACKS[i];
+        if (this.delay) this.delay.delayTime.setValueAtTime(60 / this.tr.bpm * 0.75, this.ctx.currentTime);
+      },
       init() {
         if (this.ctx) return true;
         const AC = window.AudioContext || window.webkitAudioContext;
         if (!AC) return false;
         const ctx = new AC();
         this.ctx = ctx;
+        ctx.onstatechange = () => { if (this.on && ctx.state !== 'running' && !document.hidden) armWake(); };
         const comp = ctx.createDynamicsCompressor();
         comp.threshold.value = -16;
         comp.ratio.value = 4;
         this.master = ctx.createGain();
         this.master.gain.value = 0;
         this.master.connect(comp);
-        comp.connect(ctx.destination);
+        const mk = ctx.createGain();
+        mk.gain.value = 1.5;
+        comp.connect(mk);
+        mk.connect(ctx.destination);
         this.bus = ctx.createGain();
         this.bus.connect(this.master);
         this.sfxBus = ctx.createGain();
@@ -1327,7 +1703,7 @@
         conv.connect(wet);
         wet.connect(this.master);
         this.delay = ctx.createDelay(1.5);
-        this.delay.delayTime.value = 60 / this.BPM * 0.75;
+        this.delay.delayTime.value = 60 / 84 * 0.75;
         const fb = ctx.createGain();
         fb.gain.value = 0.34;
         const dl = ctx.createBiquadFilter();
@@ -1392,30 +1768,42 @@
         this.n++;
       },
       sched(step, t) {
+        if (step % 256 === 0 || !this.tr) this.pick();
+        const tr = this.tr;
         const bar = Math.floor(step / 16);
         const s = step % 16;
-        const sec = bar % 16;
+        const sec = Math.floor(step / 16) % 16;
         const ci = bar % 4;
-        const root = this.ROOTS[ci];
-        const iv = this.QUAL[ci];
-        const beat = 60 / this.BPM;
+        const root = tr.roots[ci];
+        const iv = this.QUAL[tr.q[ci]];
+        const beat = 60 / tr.bpm;
         if (s === 0) {
           iv.forEach((x, k) => {
-            this.tone('sawtooth', this.freq(root + 12 + x), t, beat * 4.2, 0.05, { a: 0.7, hold: 0.6, lp: 900, detune: k % 2 ? 7 : -7 });
-            this.tone('triangle', this.freq(root + 24 + x), t, beat * 4.2, 0.035, { a: 0.9, hold: 0.6, lp: 1400 });
+            this.tone('sawtooth', this.freq(root + 12 + x), t, beat * 4.2, 0.06, { a: 0.7, hold: 0.6, lp: 1100, detune: k % 2 ? 7 : -7 });
+            this.tone('triangle', this.freq(root + 24 + x), t, beat * 4.2, 0.05, { a: 0.9, hold: 0.6, lp: 1800 });
           });
         }
-        if (this.BASS.indexOf(s) >= 0) {
-          this.tone('sawtooth', this.freq(root + (s === 11 ? 12 : 0)), t, beat * 0.42, 0.2, { lp: 420 });
+        if (tr.bass.indexOf(s) >= 0) {
+          const bn = root + (s === 11 || s === 14 ? 12 : 0);
+          this.tone('sawtooth', this.freq(bn), t, beat * 0.42, 0.2, { lp: 520 });
           this.tone('sine', this.freq(root), t, beat * 0.5, 0.22);
+          this.tone('triangle', this.freq(bn + 12), t, beat * 0.4, 0.1, { lp: 1400 });
         }
-        if (sec >= 4 && s % 2 === 0) {
+        if (sec >= tr.arpAt && s % 2 === 0) {
           const tones = [root + 24 + iv[0], root + 24 + iv[1], root + 24 + iv[2], root + 36 + iv[0]];
-          const k = this.ARP[(s / 2) % 8];
-          this.tone('square', this.freq(tones[k] + (sec >= 12 ? 12 : 0)), t, beat * 0.3, s === 0 ? 0.05 : 0.032, { lp: 2400, send: true });
+          const k = tr.arp[(s / 2) % 8];
+          this.tone('square', this.freq(tones[k] + (sec >= 12 ? 12 : 0)), t, beat * 0.3, s === 0 ? 0.06 : 0.04, { lp: 2600, send: true });
         }
-        if (sec >= 8) {
-          if (s === 0 || s === 8 || (s === 14 && bar % 2)) this.tone('sine', 120, t, 0.2, 0.55, { slide: 42 });
+        if (sec >= 2 && s % 2 === 0 && this.rnd(bar * 131 + s * 17 + this.ti * 7) < (sec >= 8 ? 0.55 : 0.35)) {
+          const d = Math.floor(this.rnd(bar * 53 + s * 29 + this.ti) * tr.pent.length);
+          const m = root + 36 + tr.pent[d] + (this.rnd(bar + s) < 0.25 ? 12 : 0);
+          this.tone('triangle', this.freq(m), t, beat * (0.5 + this.rnd(s + bar * 3) * 0.9), 0.075, { a: 0.012, lp: 3200, send: true });
+        }
+        if (sec >= tr.drumAt) {
+          if (s === 0 || s === 8 || (s === 14 && bar % 2)) {
+            this.tone('sine', 120, t, 0.2, 0.6, { slide: 42 });
+            this.tone('triangle', 260, t, 0.05, 0.2, { slide: 90 });
+          }
           if (s === 4 || s === 12) {
             this.hit(t, 0.14, 0.18, 'snare');
             this.tone('triangle', 190, t, 0.1, 0.1);
@@ -1425,22 +1813,68 @@
       },
       pump() {
         const ctx = this.ctx;
-        const step = 60 / this.BPM / 4;
         while (this.nextT < ctx.currentTime + 0.25) {
           this.sched(this.stepN, this.nextT);
           this.stepN++;
-          this.nextT += step;
+          this.nextT += 60 / this.tr.bpm / 4;
         }
+      },
+      next() {
+        if (!this.on) return;
+        this.stepN = (Math.floor(this.stepN / 256) + 1) * 256;
+        this.nextT = this.ctx.currentTime + 0.1;
+      },
+      unlock() {
+        const ctx = this.ctx;
+        try {
+          const src = ctx.createBufferSource();
+          src.buffer = ctx.createBuffer(1, 1, 22050);
+          src.connect(ctx.destination);
+          src.start(0);
+        } catch (e) {}
+        try { if (navigator.audioSession) navigator.audioSession.type = 'playback'; } catch (e) {}
+        try {
+          if (!this.keep) {
+            const n = 8000;
+            const buf = new ArrayBuffer(44 + n * 2);
+            const v = new DataView(buf);
+            const w = (o, t) => { for (let i = 0; i < t.length; i++) v.setUint8(o + i, t.charCodeAt(i)); };
+            w(0, 'RIFF');
+            v.setUint32(4, 36 + n * 2, true);
+            w(8, 'WAVEfmt ');
+            v.setUint32(16, 16, true);
+            v.setUint16(20, 1, true);
+            v.setUint16(22, 1, true);
+            v.setUint32(24, 8000, true);
+            v.setUint32(28, 16000, true);
+            v.setUint16(32, 2, true);
+            v.setUint16(34, 16, true);
+            w(36, 'data');
+            v.setUint32(40, n * 2, true);
+            const a = new Audio(URL.createObjectURL(new Blob([buf], { type: 'audio/wav' })));
+            a.loop = true;
+            a.setAttribute('playsinline', '');
+            this.keep = a;
+          }
+          const pr = this.keep.play();
+          if (pr && pr.catch) pr.catch(() => {});
+        } catch (e) {}
+      },
+      kick() {
+        if (!this.ctx) return;
+        this.unlock();
+        if (this.ctx.state !== 'running') this.ctx.resume();
       },
       apply() {
         if (!this.ctx) return;
-        this.master.gain.setTargetAtTime(this.on ? this.vol * 0.7 : 0, this.ctx.currentTime, 0.25);
+        this.master.gain.setTargetAtTime(this.on ? this.vol : 0, this.ctx.currentTime, 0.25);
       },
       setOn(v) {
         if (v && !this.init()) { this.on = false; return false; }
         this.on = !!v;
         if (this.on) {
-          if (this.ctx.state === 'suspended') this.ctx.resume();
+          this.unlock();
+          if (this.ctx.state !== 'running') this.ctx.resume();
           if (!this.timer) {
             this.nextT = this.ctx.currentTime + 0.1;
             this.timer = setInterval(() => this.pump(), 40);
@@ -1448,6 +1882,7 @@
         } else if (this.timer) {
           clearInterval(this.timer);
           this.timer = null;
+          if (this.keep) this.keep.pause();
           const c = this.ctx;
           setTimeout(() => { if (!this.on && c.state === 'running') c.suspend(); }, 900);
         }
@@ -1565,8 +2000,8 @@
       const floor = Math.max(5, cap() * 0.25);
       S.c.forEach((c, i) => {
         if (!c.u) return;
-        if (c.ovf && c.metal >= cap() * 0.9) {
-          const r = sell(i, (c.metal - cap() * 0.6) / c.metal);
+        if (c.ovf && c.metal >= cap() * 0.995) {
+          const r = sell(i, (c.metal - cap() * 0.85) / c.metal);
           if (r) {
             log('STORAGE FULL. BROKER SOLD ' + Math.floor(r.n) + ' ' + COMM[i].sym + ' @ $' + r.p.toFixed(2) + ' = ' + money(r.gain));
             Snd.sfx('sell');
@@ -1687,11 +2122,11 @@
           '<div class="card-head"><h2>' + d.sym + '</h2><div class="px"><span class="tag" data-r="tag"></span><b data-r="price"></b><span data-r="chg"></span></div></div>' +
           '<div class="spark" data-r="spark" aria-hidden="true"></div>' +
           '<div class="out" data-r="out"></div>' +
-          '<div class="row"><span>' + d.raw + '</span><span data-r="orebar"></span><span data-r="oreval"></span></div>' +
-          '<div class="row"><span>' + d.out + '</span><span data-r="metbar"></span><span data-r="metval"></span></div>' +
+          '<div class="row"><span>' + d.raw + '</span><span data-r="orebar"></span><span class="vv"><i class="tr" data-r="oretr"></i><span data-r="oreval"></span></span></div>' +
+          '<div class="row"><span>' + d.out + '</span><span data-r="metbar"></span><span class="vv"><i class="tr" data-r="mettr"></i><span data-r="metval"></span></span></div>' +
           '<div class="grid2">' +
-            '<button type="button" class="btn" data-act="mine"><span data-r="minel"></span><small data-r="minec"></small></button>' +
-            '<button type="button" class="btn" data-act="smelt"><span data-r="smeltl"></span><small data-r="smeltc"></small></button>' +
+            '<button type="button" class="btn b3" data-act="mine"><span data-r="minel"></span><span class="l2" data-r="miner"></span><small data-r="minec"></small></button>' +
+            '<button type="button" class="btn b3" data-act="smelt"><span data-r="smeltl"></span><span class="l2" data-r="smeltr"></span><small data-r="smeltc"></small></button>' +
           '</div>' +
           '<div class="grid3">' +
             '<button type="button" class="btn" data-act="dig">' + d.act + '</button>' +
@@ -1720,11 +2155,14 @@
         '<div class="kv"><span>THIS RUN</span><span data-r="run"></span></div>' +
         '<div class="kv"><span>SHARES</span><span data-r="sh"></span></div>' +
         '<div class="kv"><span>NOW GIVES</span><span data-r="gain"></span></div>' +
-        '<button type="button" class="btn" data-act="restructure"><span data-r="lab"></span><small data-r="cost"></small></button>';
+        '<button type="button" class="btn b3" data-act="restructure"><span data-r="lab"></span><span class="l2" data-r="lab2"></span><small data-r="cost"></small></button>';
       bh.appendChild(ra);
       bref.card = ra;
       ra.querySelectorAll('[data-r]').forEach(n => { bref[n.dataset.r] = n; });
       bref.btn = ra.querySelector('button');
+      const bp = document.createElement('div');
+      bp.className = 'cards eq';
+      bh.appendChild(bp);
       BOARD.forEach(d => {
         const a = document.createElement('article');
         a.className = 'card res';
@@ -1732,8 +2170,8 @@
         a.innerHTML =
           '<h2>' + d.name + '<span data-r="lvl"></span></h2>' +
           '<p>' + d.desc + '</p>' +
-          '<button type="button" class="btn" data-act="board"><span data-r="lab"></span><small data-r="cost"></small></button>';
-        bh.appendChild(a);
+          '<button type="button" class="btn b3" data-act="board"><span data-r="lab"></span><span class="l2" data-r="lab2"></span><small data-r="cost"></small></button>';
+        bp.appendChild(a);
         const r = { card: a };
         a.querySelectorAll('[data-r]').forEach(n => { r[n.dataset.r] = n; });
         r.btn = a.querySelector('button');
@@ -1747,7 +2185,7 @@
         a.innerHTML =
           '<h2>' + d.name + '<span data-r="lvl"></span></h2>' +
           '<p>' + d.desc + '</p>' +
-          '<button type="button" class="btn" data-act="research"><span data-r="lab"></span><small data-r="cost"></small></button>';
+          '<button type="button" class="btn b3" data-act="research"><span data-r="lab"></span><span class="l2" data-r="lab2"></span><small data-r="cost"></small></button>';
         rh.appendChild(a);
         const r = { card: a };
         a.querySelectorAll('[data-r]').forEach(n => { r[n.dataset.r] = n; });
@@ -1761,6 +2199,60 @@
       return '[' + '█'.repeat(n) + '░'.repeat(w - n) + ']';
     };
 
+    const TREND = { up: ['▲', 'RISING'], dn: ['▼', 'FALLING'], flat: ['■', 'STEADY'] };
+
+    function setTrend(node, rate, capacity) {
+      const lim = Math.max(0.05, capacity * 0.004);
+      const k = !rate || Math.abs(rate) < lim ? 'flat' : rate > 0 ? 'up' : 'dn';
+      if (node._k === k) return;
+      node._k = k;
+      node.dataset.g = TREND[k][0];
+      node.dataset.w = TREND[k][1];
+      node.className = 'tr ' + k;
+    }
+
+    function trackTrend(dt) {
+      if (dt <= 0 || dt > 1) {
+        S.c.forEach(c => { c.po = c.ore; c.pm = c.metal; });
+        return;
+      }
+      const ao = 1 - Math.exp(-dt / 3);
+      const am = 1 - Math.exp(-dt / 4);
+      S.c.forEach(c => {
+        if (c.po === undefined) { c.po = c.ore; c.pm = c.metal; c.eo = 0; c.em = 0; }
+        c.eo += ((c.ore - c.po) / dt - c.eo) * ao;
+        c.em += ((c.metal - c.pm) / dt - c.em) * am;
+        c.po = c.ore;
+        c.pm = c.metal;
+      });
+    }
+
+    const incHist = [];
+    let incAcc = 0;
+
+    function trackIncome(dt) {
+      incAcc += dt;
+      if (incAcc < 1) return;
+      incAcc = 0;
+      incHist.push(S.run);
+      if (incHist.length > 61) incHist.shift();
+    }
+
+    const incomeRate = () => (incHist.length > 1 ? Math.max(0, (incHist[incHist.length - 1] - incHist[0]) / (incHist.length - 1)) : 0);
+
+    function setTip(node, text) {
+      const p = node.parentNode;
+      if (p._tip !== text) { p._tip = text; p.dataset.tip = text; }
+    }
+
+    function updateTips(stock) {
+      const lines = [];
+      S.c.forEach((c, i) => { if (c.u && c.metal >= 1) lines.push(COMM[i].sym + '  ' + Math.floor(c.metal) + ' x $' + fmt(price(i)) + ' = ' + money(c.metal * price(i))); });
+      setTip(el.cash, 'CASH\nMoney you can spend on levels, research and unlocks. You earn it by selling what you produce.\nINCOME (LAST MINUTE): ' + money(incomeRate()) + '/s\nEARNED THIS RUN: ' + money(S.run));
+      setTip(el.stock, 'STOCK\nUnsold goods in your warehouse, valued at current market prices.\n' + (lines.length ? lines.join('\n') : 'NOTHING IN STORAGE.'));
+      setTip(el.net, 'NET WORTH\nCash + stock + bitcoin.\nCASH  ' + money(S.cash) + '\nSTOCK  ' + money(stock) + '\nBITCOIN  ' + money(btcValue()) + '\nSHARE BONUS  +' + 10 * S.sharesTotal + '%');
+    }
+
     const sparkText = c => c.h.map(x => SPARK[clamp(Math.round((x + 0.3) / 0.6 * 7), 0, 7)]).join('');
 
     function render() {
@@ -1769,6 +2261,7 @@
       setT(el.cash, money(S.cash));
       setT(el.stock, money(stock));
       setT(el.net, money(S.cash + stock + btcValue()));
+      updateTips(stock);
 
       if (S.outage > 0) setT(el.status, 'POWER OUTAGE: MINES OFFLINE ' + Math.ceil(S.outage) + 's');
       else if (S.boost) setT(el.status, 'RICH VEIN: ' + COMM[S.boost.i].sym + ' ORE x2 FOR ' + Math.ceil(S.boost.t) + 's');
@@ -1781,7 +2274,8 @@
         const done = d.done();
         const lock = d.locked();
         setT(r.lvl, d.level());
-        setT(r.lab, d.label());
+        setT(r.lab, d.l1());
+        setT(r.lab2, d.l2());
         setT(r.cost, done ? 'complete' : lock ? 'locked' : money(d.cost()));
         r.btn.disabled = done || lock || S.cash < d.cost();
       });
@@ -1793,15 +2287,17 @@
       setT(bref.run, money(S.run));
       setT(bref.sh, S.shares + ' SPARE / ' + S.sharesTotal + ' EARNED (+' + 10 * S.sharesTotal + '%)');
       setT(bref.gain, sg + (sg === 1 ? ' SHARE' : ' SHARES'));
-      setT(bref.lab, confirming ? 'CONFIRM: RESET THIS RUN' : 'RESTRUCTURE');
-      setT(bref.cost, sg < 1 ? 'NEEDS $5M THIS RUN' : '');
+      setT(bref.lab, confirming ? 'CONFIRM RESET' : 'RESTRUCTURE');
+      setT(bref.lab2, confirming ? 'CLICK AGAIN' : '+' + sg + (sg === 1 ? ' SHARE' : ' SHARES'));
+      setT(bref.cost, sg < 1 ? 'NEEDS $5M THIS RUN' : 'SELLS EVERYTHING');
       bref.btn.disabled = sg < 1;
       BOARD.forEach((d, i) => {
         const r = brefs[i];
         const l = BD(d.id);
         const done = l >= d.max;
         setT(r.lvl, 'L' + l + '/' + d.max);
-        setT(r.lab, done ? 'MAXED' : d.fx(l) + '  >  ' + d.fx(l + 1));
+        setT(r.lab, done ? 'MAXED' : d.fx(l));
+        setT(r.lab2, done ? '' : '> ' + d.fx(l + 1));
         setT(r.cost, done ? 'complete' : d.cost(l) + ' SHARES');
         r.btn.disabled = done || S.shares < d.cost(l);
       });
@@ -1826,16 +2322,20 @@
         setT(r.spark, sparkText(c));
         setT(r.orebar, bar(c.ore / oc, 14));
         setT(r.oreval, Math.floor(c.ore) + '/' + oc);
+        setTrend(r.oretr, c.eo, oc);
+        setTrend(r.mettr, c.em, mc);
         setT(r.metbar, bar(c.metal / mc, 14));
         setT(r.metval, c.metal >= mc - 0.01 ? 'FULL' : Math.floor(c.metal) + '/' + mc);
         const pm = plan(i, 'mine');
         const ps = plan(i, 'smelt');
         const mm = lvlMult(c.ml);
         const sm = lvlMult(c.sl);
-        setT(r.minel, d.mn + ' L' + c.ml + (mm > 1 ? ' x' + mm : '') + ' +' + fmt(mineBase(i) + rigOre(i)) + '/s');
+        setT(r.minel, d.mn + ' L' + c.ml + (mm > 1 ? ' x' + mm : ''));
+        setT(r.miner, '+' + fmt(mineBase(i) + rigOre(i)) + '/s');
         setT(r.minec, (pm.n > 1 ? '+' + pm.n + ' ' : '') + money(pm.cost));
         r.b_mine.disabled = S.cash < pm.cost;
-        setT(r.smeltl, d.pr + ' L' + c.sl + (sm > 1 ? ' x' + sm : '') + ' ' + fmt(smeltRate(i)) + '/s');
+        setT(r.smeltl, d.pr + ' L' + c.sl + (sm > 1 ? ' x' + sm : ''));
+        setT(r.smeltr, fmt(smeltRate(i)) + '/s');
         setT(r.smeltc, (ps.n > 1 ? '+' + ps.n + ' ' : '') + money(ps.cost));
         r.b_smelt.disabled = S.cash < ps.cost;
         r.b_half.disabled = c.metal < 2;
@@ -1856,6 +2356,8 @@
       setT(el.tmus, '♪ ' + (musicOn ? 'ON' : 'OFF'));
       el.tmus.classList.toggle('on', musicOn);
       el.tmus.setAttribute('aria-pressed', musicOn ? 'true' : 'false');
+      const ttl = Snd.on && Snd.tr ? 'NOW PLAYING: ' + Snd.tr.name : '';
+      if (el.tmus.title !== ttl) el.tmus.title = ttl;
     }
 
     function applyTheme() {
@@ -1919,8 +2421,10 @@
       S.wl = 0;
       S.rs = BD('foreman') ? { broker: 1 } : {};
       S.run = 0;
+      incHist.length = 0;
       S.btc.amt = 0;
       S.btc.cost = 0;
+      S.btc.ord = null;
       S.outage = 0;
       S.boost = null;
       S.nextEvent = S.clock + 25;
@@ -1959,7 +2463,7 @@
           '  help               this list',
           '  clear              clear the screen',
           '  color [name]       green, amber, ice',
-          '  music on|off|vol <0-100>',
+          '  music on|off|next|vol <0-100>',
           '  reset              permanently delete all game data'
         ].join('\n'), 'd');
       },
@@ -1984,7 +2488,13 @@
         if (v === 'on') {
           disarmWake();
           if (!Snd.setOn(true)) { print('audio is not available in this browser.'); return; }
-          print('now playing: NIGHT SHIFT (generated live). volume ' + Math.round(Snd.vol * 100) + '.');
+          print('music on. volume ' + Math.round(Snd.vol * 100) + '.');
+          return;
+        }
+        if (v === 'next' || v === 'skip') {
+          if (!Snd.on) { print('music is off. use: music on'); return; }
+          Snd.next();
+          print('switching track.');
           return;
         }
         if (v === 'off') {
@@ -1993,7 +2503,7 @@
           print('music off.');
           return;
         }
-        print('music is ' + (Snd.on || wakeArmed ? 'on' : 'off') + '. use: music on|off|vol <0-100>');
+        print('music is ' + (Snd.on || wakeArmed ? 'on' : 'off') + (Snd.on && Snd.tr ? ', playing ' + Snd.tr.name : '') + '. use: music on|off|next|vol <0-100>');
       },
       clear() {
         el.tout.textContent = '';
@@ -2183,25 +2693,47 @@
           BTC.range = r.dataset.rng;
           BTC.pts = [];
           BTC.hover = -1;
+          saveChartPrefs();
           renderMarkets();
+          drawChart();
           btcRefresh();
           return;
         }
+        const ct = e.target.closest('[data-ct]');
+        if (ct) { BTC.type = ct.dataset.ct; saveChartPrefs(); renderMarkets(); drawChart(); return; }
+        if (e.target.closest('[data-ma]')) { BTC.ma = !BTC.ma; saveChartPrefs(); renderMarkets(); drawChart(); return; }
+        const os = e.target.closest('[data-os]');
+        if (os) { OF.side = os.dataset.os; renderMarkets(); return; }
+        const oa = e.target.closest('[data-oa]');
+        if (oa) { OF.amt = Number(oa.dataset.oa); renderMarkets(); return; }
         const b = e.target.closest('[data-mk]');
         if (!b || b.disabled) return;
         const k = b.dataset.mk;
-        if (k[0] === 'b') btcBuy(Number(k.slice(1)) / 100); else btcSell(Number(k.slice(1)) / 100);
+        if (k === 'place') {
+          placeOrder();
+        } else if (k === 'cancel') {
+          S.btc.ord = null;
+          log('LIMIT ORDER CANCELLED.');
+        } else if (k[0] === 'b') {
+          btcBuy(Number(k.slice(1)) / 100);
+        } else {
+          btcSell(Number(k.slice(1)) / 100);
+        }
         render();
+        renderMarkets();
+        drawChart();
       });
       mref.cv.addEventListener('pointermove', e => hoverAt(e.clientX));
       mref.cv.addEventListener('pointerdown', e => hoverAt(e.clientX));
       mref.cv.addEventListener('pointerleave', hoverEnd);
       window.addEventListener('resize', drawChart);
-      setInterval(() => { if (!document.hidden && (tab === 'mk' || S.btc.amt > 0)) btcRefresh(); }, 30000);
+      setInterval(() => { if (!document.hidden && (tab === 'mk' || S.btc.amt > 0 || S.btc.ord)) btcRefresh(); }, 30000);
 
-      $('tbuy').addEventListener('click', () => {
-        buyQ = (buyQ + 1) % BUYQ.length;
-        setT($('tbuy'), 'BUY x' + (BUYQ[buyQ] === 'max' ? 'MAX' : BUYQ[buyQ]));
+      $('tbuy').addEventListener('click', e => {
+        const b = e.target.closest('button[data-q]');
+        if (!b) return;
+        buyQ = Number(b.dataset.q);
+        $('tbuy').querySelectorAll('button').forEach(x => x.setAttribute('aria-pressed', x === b ? 'true' : 'false'));
         render();
       });
 
@@ -2213,7 +2745,7 @@
           Snd.setOn(false);
           print('music off.');
         } else if (Snd.setOn(true)) {
-          print('now playing: NIGHT SHIFT (generated live). volume ' + Math.round(Snd.vol * 100) + '.');
+          print('music on. volume ' + Math.round(Snd.vol * 100) + '.');
         } else {
           print('audio is not available in this browser.');
         }
@@ -2226,9 +2758,12 @@
 
     function wake(e) {
       if (e && e.target && e.target.closest && e.target.closest('#tmus')) return;
-      disarmWake();
-      if (!Snd.on) Snd.setOn(true);
+      if (!Snd.on) Snd.setOn(true); else Snd.kick();
       render();
+      setTimeout(() => {
+        if (Snd.ctx && Snd.ctx.state === 'running') disarmWake();
+        render();
+      }, 400);
     }
 
     function armWake() {
@@ -2259,6 +2794,8 @@
       let dt = Math.max(0, (now - last) / 1000);
       last = now;
       if (dt > 5) { away(dt); dt = 0; } else step(dt);
+      trackTrend(dt);
+      trackIncome(dt);
       renderAcc += dt;
       saveAcc += dt;
       hintAcc += dt;
@@ -2318,8 +2855,11 @@
       if (document.hidden) {
         save();
         if (Snd.on && Snd.ctx) Snd.ctx.suspend();
+        if (Snd.keep) Snd.keep.pause();
       } else if (Snd.on && Snd.ctx) {
         Snd.ctx.resume();
+        if (Snd.keep) { const pr = Snd.keep.play(); if (pr && pr.catch) pr.catch(() => {}); }
+        setTimeout(() => { if (Snd.on && Snd.ctx.state !== 'running') armWake(); }, 400);
       }
     });
     window.addEventListener('pagehide', save);
