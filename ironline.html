@@ -258,7 +258,7 @@
 
     .tabs {
       display: grid;
-      grid-template-columns: repeat(3, 1fr) auto;
+      grid-template-columns: repeat(4, 1fr);
       gap: 8px;
       margin-bottom: 12px;
     }
@@ -281,10 +281,6 @@
       font-weight: 700;
     }
 
-    .tabs:has(.buyq[hidden]) {
-      grid-template-columns: repeat(3, 1fr);
-    }
-
     .kv {
       display: flex;
       justify-content: space-between;
@@ -301,9 +297,19 @@
       text-align: right;
     }
 
-    .tabs .buyq {
-      min-height: 46px;
-      min-width: 78px;
+    .opsbar {
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 8px;
+    }
+
+    .opsbar[hidden] {
+      display: none;
+    }
+
+    .buyq {
+      min-height: 38px;
+      min-width: 96px;
       border: 1px solid var(--line);
       background: transparent;
       cursor: pointer;
@@ -312,8 +318,110 @@
       color: var(--fg);
     }
 
-    .tabs .buyq[hidden] {
+    .mk {
+      grid-template-columns: 1fr;
+    }
+
+    .mk-head {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .mk-px {
+      font-size: 26px;
+      font-weight: 700;
+    }
+
+    .mk-px small {
+      font-size: 13px;
+      font-weight: 400;
+      margin-left: 8px;
+    }
+
+    .mk-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      font-size: 12px;
+      color: var(--dim);
+      flex-wrap: wrap;
+    }
+
+    .mk-bar .rng {
+      display: flex;
+      gap: 6px;
+    }
+
+    .mk-bar button {
+      min-height: 34px;
+      min-width: 52px;
+      border: 1px solid var(--line);
+      background: transparent;
+      color: var(--dim);
+      cursor: pointer;
+      font-size: 12px;
+    }
+
+    .mk-bar button[aria-pressed="true"] {
+      border-color: var(--fg);
+      color: var(--fg);
+    }
+
+    .mk-chart {
+      position: relative;
+      height: 230px;
+      border: 1px solid var(--line);
+    }
+
+    .mk-chart canvas {
+      display: block;
+      width: 100%;
+      height: 100%;
+      touch-action: pan-y;
+    }
+
+    .mk-msg {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      padding: 16px;
+      text-align: center;
+      font-size: 13px;
+      letter-spacing: 0.06em;
+      color: var(--dim);
+    }
+
+    .mk-msg[hidden] {
       display: none;
+    }
+
+    .mk-note {
+      font-size: 11px;
+      color: var(--dim);
+      line-height: 1.5;
+    }
+
+    .grid5 {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 8px;
+    }
+
+    @media (max-width: 520px) {
+      .grid5 {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      .tab {
+        font-size: 11px;
+        letter-spacing: 0.04em;
+        padding: 0 2px;
+      }
     }
 
     .btn {
@@ -671,12 +779,14 @@
     <nav class="tabs" role="tablist" aria-label="Sections">
       <button type="button" class="tab" role="tab" id="tab-ops" data-tab="ops" aria-selected="true" aria-controls="cards">OPERATIONS</button>
       <button type="button" class="tab" role="tab" id="tab-res" data-tab="res" aria-selected="false" aria-controls="research">RESEARCH</button>
+      <button type="button" class="tab" role="tab" id="tab-mk" data-tab="mk" aria-selected="false" aria-controls="markets">MARKETS</button>
       <button type="button" class="tab" role="tab" id="tab-bd" data-tab="bd" aria-selected="false" aria-controls="board">BOARD</button>
-      <button type="button" class="buyq" id="tbuy" aria-label="Levels per purchase">BUY x1</button>
     </nav>
 
+    <div class="opsbar" id="opsbar"><button type="button" class="buyq" id="tbuy" aria-label="Levels per purchase">BUY x1</button></div>
     <section class="cards" id="cards" role="tabpanel" aria-labelledby="tab-ops"></section>
     <section class="cards" id="research" role="tabpanel" aria-labelledby="tab-res" hidden></section>
+    <section class="cards mk" id="markets" role="tabpanel" aria-labelledby="tab-mk" hidden></section>
     <section class="cards" id="board" role="tabpanel" aria-labelledby="tab-bd" hidden></section>
 
     <section class="term" aria-label="Terminal">
@@ -703,7 +813,8 @@
     const $ = id => document.getElementById(id);
     const store = {
       get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } },
-      set(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
+      set(k, v) { try { localStorage.setItem(k, v); } catch (e) {} },
+      remove(k) { try { localStorage.removeItem(k); } catch (e) {} }
     };
 
     const KEY = 'ironline-save-v1';
@@ -713,17 +824,18 @@
     const HIST_EVERY = 4;
         const AUTO = [0, 0.95, 1.0, 1.1, 1.15, 1.2, 1.3, 1.4, 1.5, 1.7];
     const AUTO_JUNIOR = [0, 2, 4, 6, 8];
-    const AUTO_OLD = [0, 2, 4, 6, 8];
     const MILESTONES = [1e3, 1e4, 1e5, 1e6, 1e7, 1e8, 1e9, 1e10, 1e11, 1e12];
     const PHOS = ['green', 'amber', 'ice'];
     const HINT = 'type help for a list of commands.';
 
     const COMM = [
-      { sym: 'IRON', base: 8, unlock: 0, mine: { cost: 20, rate: 0.8 }, smelt: { cost: 30, rate: 1, base: 0.5 }, vol: 0.03, amp: 0.12, period: 150, phase: 0, liq: 150 },
-      { sym: 'COPPER', base: 22, unlock: 900, mine: { cost: 400, rate: 0.5 }, smelt: { cost: 500, rate: 0.6, base: 0.3 }, vol: 0.04, amp: 0.14, period: 190, phase: 2.1, liq: 80 },
-      { sym: 'GOLD', base: 95, unlock: 15000, mine: { cost: 6000, rate: 0.22 }, smelt: { cost: 7500, rate: 0.25, base: 0.1 }, vol: 0.05, amp: 0.16, period: 230, phase: 4.2, liq: 25 },
-      { sym: 'PLATINUM', base: 420, unlock: 400000, mine: { cost: 150000, rate: 0.1 }, smelt: { cost: 180000, rate: 0.1, base: 0.04 }, vol: 0.055, amp: 0.17, period: 270, phase: 1.3, liq: 12 },
-      { sym: 'URANIUM', base: 2400, unlock: 40000000, mine: { cost: 14000000, rate: 0.05 }, smelt: { cost: 17000000, rate: 0.05, base: 0.02 }, vol: 0.06, amp: 0.18, period: 310, phase: 3.3, liq: 6 }
+      { sym: 'IRON', raw: 'ORE', out: 'METAL', mn: 'MINE', pr: 'SMELT', act: 'DIG', base: 8, unlock: 0, mine: { cost: 20, rate: 0.8 }, smelt: { cost: 30, rate: 1, base: 0.5 }, vol: 0.03, amp: 0.12, period: 150, phase: 0, liq: 150 },
+      { sym: 'COPPER', raw: 'ORE', out: 'METAL', mn: 'MINE', pr: 'SMELT', act: 'DIG', base: 30, unlock: 10000, mine: { cost: 3500, rate: 0.6 }, smelt: { cost: 4500, rate: 0.7, base: 0.3 }, vol: 0.04, amp: 0.14, period: 190, phase: 2.1, liq: 110 },
+      { sym: 'SILVER', raw: 'ORE', out: 'METAL', mn: 'MINE', pr: 'SMELT', act: 'DIG', base: 110, unlock: 150000, mine: { cost: 50000, rate: 0.5 }, smelt: { cost: 60000, rate: 0.55, base: 0.2 }, vol: 0.045, amp: 0.15, period: 220, phase: 4.2, liq: 90 },
+      { sym: 'OIL', raw: 'CRUDE', out: 'FUEL', mn: 'WELLS', pr: 'REFINE', act: 'PUMP', base: 380, unlock: 3000000, mine: { cost: 1000000, rate: 0.45 }, smelt: { cost: 1200000, rate: 0.5, base: 0.15 }, vol: 0.06, amp: 0.2, period: 260, phase: 1.3, liq: 90 },
+      { sym: 'RUBBER', raw: 'LATEX', out: 'RUBBER', mn: 'PLANTATION', pr: 'PROCESS', act: 'TAP', base: 1300, unlock: 60000000, mine: { cost: 20000000, rate: 0.4 }, smelt: { cost: 24000000, rate: 0.45, base: 0.12 }, vol: 0.05, amp: 0.16, period: 300, phase: 3.3, liq: 80 },
+      { sym: 'GOLD', raw: 'ORE', out: 'METAL', mn: 'MINE', pr: 'SMELT', act: 'DIG', base: 4200, unlock: 1200000000, mine: { cost: 400000000, rate: 0.35 }, smelt: { cost: 480000000, rate: 0.4, base: 0.1 }, vol: 0.045, amp: 0.14, period: 340, phase: 5.2, liq: 70 },
+      { sym: 'LITHIUM', raw: 'BRINE', out: 'LITHIUM', mn: 'PONDS', pr: 'EXTRACT', act: 'PUMP', base: 14000, unlock: 25000000000, mine: { cost: 8000000000, rate: 0.3 }, smelt: { cost: 10000000000, rate: 0.35, base: 0.08 }, vol: 0.07, amp: 0.22, period: 380, phase: 0.7, liq: 60 }
     ];
 
     const EVENTS = [
@@ -731,12 +843,16 @@
       { i: 0, dx: -0.3, m: 'IMPORT GLUT. IRON PRICES SLIDE.' },
       { i: 1, dx: 0.34, m: 'STRIKE AT MAJOR COPPER MINES. SUPPLY TIGHT.' },
       { i: 1, dx: -0.28, m: 'CHIP SLUMP. COPPER DEMAND FALLS.' },
-      { i: 2, dx: 0.3, m: 'CENTRAL BANKS ARE BUYING. GOLD RALLIES.' },
-      { i: 2, dx: -0.26, m: 'RISK APPETITE RETURNS. GOLD SOFTENS.' },
-      { i: 3, dx: 0.3, m: 'AUTOMAKERS STOCK UP. PLATINUM CLIMBS.' },
-      { i: 3, dx: -0.28, m: 'CATALYST DEMAND DROPS. PLATINUM SLIPS.' },
-      { i: 4, dx: 0.34, m: 'REACTOR ORDERS PILE UP. URANIUM SURGES.' },
-      { i: 4, dx: -0.3, m: 'A PLANT SHUTDOWN CUTS DEMAND. URANIUM FALLS.' }
+      { i: 2, dx: 0.3, m: 'SOLAR PANEL BOOM. SILVER DEMAND RISES.' },
+      { i: 2, dx: -0.27, m: 'FILM AND ELECTRONICS CUT BACK. SILVER SLIPS.' },
+      { i: 3, dx: 0.34, m: 'OPEC CUTS OUTPUT. OIL SURGES.' },
+      { i: 3, dx: -0.3, m: 'STORAGE TANKS ARE FULL. OIL SLIDES.' },
+      { i: 4, dx: 0.3, m: 'TIRE MAKERS STOCK UP. RUBBER CLIMBS.' },
+      { i: 4, dx: -0.27, m: 'SYNTHETIC RUBBER FLOODS THE MARKET. RUBBER FALLS.' },
+      { i: 5, dx: 0.3, m: 'CENTRAL BANKS ARE BUYING. GOLD RALLIES.' },
+      { i: 5, dx: -0.26, m: 'RISK APPETITE RETURNS. GOLD SOFTENS.' },
+      { i: 6, dx: 0.36, m: 'BATTERY PLANT ANNOUNCED. LITHIUM SURGES.' },
+      { i: 6, dx: -0.32, m: 'NEW BRINE FIELDS OPEN. LITHIUM FALLS.' }
     ];
 
     const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
@@ -759,11 +875,11 @@
     const money = n => '$' + fmt(n);
 
     function freshComm() {
-      return { u: false, ml: 0, sl: 0, ore: 0, metal: 0, x: 0, dx: 0, auto: 0, h: new Array(HIST_LEN).fill(0) };
+      return { u: false, ml: 0, sl: 0, ore: 0, metal: 0, x: 0, dx: 0, auto: 0, ovf: true, h: new Array(HIST_LEN).fill(0) };
     }
 
     function fresh() {
-      const s = { cash: 0, wl: 0, rs: {}, t: Date.now(), clock: 0, phos: 'green', outage: 0, boost: null, nextEvent: 25, milestone: 0, earned: 0, run: 0, runs: 0, shares: 0, sharesTotal: 0, bd: {}, helped: false, c: COMM.map(freshComm) };
+      const s = { cash: 0, wl: 0, rs: {}, t: Date.now(), clock: 0, phos: 'green', outage: 0, boost: null, nextEvent: 25, milestone: 0, earned: 0, run: 0, runs: 0, shares: 0, sharesTotal: 0, bd: {}, btc: { amt: 0, cost: 0, last: 0 }, helped: false, c: COMM.map(freshComm) };
       s.c[0].u = true;
       return s;
     }
@@ -774,20 +890,22 @@
       if (!raw) return base;
       try {
         const d = JSON.parse(raw);
+        if (d.ver !== 4) { base.resetNote = true; return base; }
         ['cash', 'wl', 't', 'clock', 'phos', 'nextEvent', 'milestone', 'earned', 'run', 'runs', 'shares', 'sharesTotal', 'helped'].forEach(k => { if (d[k] !== undefined) base[k] = d[k]; });
         if (d.run === undefined) base.run = base.earned;
+        if (d.btc && typeof d.btc === 'object') {
+          ['amt', 'cost', 'last'].forEach(k => { const n = Number(d.btc[k]); if (isFinite(n) && n >= 0) base.btc[k] = n; });
+        }
         if (d.bd && typeof d.bd === 'object') {
           Object.keys(d.bd).forEach(k => { const n = parseInt(d.bd[k], 10); if (n > 0) base.bd[k] = n; });
         }
         if (d.rs && typeof d.rs === 'object') {
           Object.keys(d.rs).forEach(k => { const n = parseInt(d.rs[k], 10); if (n > 0) base.rs[k] = n; });
         }
-        if (d.broker === true && !base.rs.broker) base.rs.broker = 1;
         if (Array.isArray(d.c)) {
           d.c.forEach((sc, i) => {
             if (!base.c[i] || !sc) return;
-            ['u', 'ml', 'sl', 'ore', 'metal', 'x', 'auto'].forEach(k => { if (sc[k] !== undefined) base.c[i][k] = sc[k]; });
-            if (!d.ver) base.c[i].auto = AUTO_OLD[base.c[i].auto] || 0;
+            ['u', 'ml', 'sl', 'ore', 'metal', 'x', 'auto', 'ovf'].forEach(k => { if (sc[k] !== undefined) base.c[i][k] = sc[k]; });
             if (!(base.c[i].auto >= 0 && base.c[i].auto < AUTO.length)) base.c[i].auto = 0;
             base.c[i].h = new Array(HIST_LEN).fill(base.c[i].x);
           });
@@ -808,25 +926,303 @@
     const RS = id => S.rs[id] || 0;
     let offlineMul = 1;
     const brokerLv = () => RS('broker');
-    const digPower = () => Math.pow(2, RS('dpower'));
-    const rigRate = () => RS('rig') * digPower() * offlineMul;
-    const yieldMul = () => 1 + 0.15 * RS('refinery');
     const impactDiv = () => 1 + 0.5 * RS('liq');
     const outageLen = () => 15 * Math.pow(0.6, RS('generator'));
-    const veinLen = () => 30 + 10 * RS('geo');
+    const VEIN_LEN = 30;
     const lvlMult = l => Math.pow(2, Math.floor(l / 25));
     const BD = id => S.bd[id] || 0;
     const awayMax = () => 7200 + 7200 * BD('watch');
-    const shareMult = () => 1 + 0.05 * S.sharesTotal;
-    const sharesGain = () => Math.floor(Math.sqrt(S.run / 1000000));
-    const mineBase = i => (S.c[i].ml + rigRate()) * COMM[i].mine.rate * lvlMult(S.c[i].ml);
-    const mineRate = i => mineBase(i) * (S.boost && S.boost.i === i ? 2 : 1) * (S.outage > 0 ? 0 : 1);
+    const shareMult = () => 1 + 0.1 * S.sharesTotal;
+    const sharesGain = () => Math.floor(Math.sqrt(S.run / 5000000));
+    const mineBase = i => S.c[i].ml * COMM[i].mine.rate * lvlMult(S.c[i].ml);
+    const tapYield = i => Math.max(1, mineBase(i) * 0.1);
+    const rigOre = i => 2 * RS('rig') * offlineMul * tapYield(i);
+    const mineRate = i => (mineBase(i) + rigOre(i)) * (S.boost && S.boost.i === i ? 2 : 1) * (S.outage > 0 ? 0 : 1);
     const smeltRate = i => (COMM[i].smelt.base + S.c[i].sl * COMM[i].smelt.rate) * lvlMult(S.c[i].sl);
 
     function netWorth() {
       let v = S.cash;
       S.c.forEach((c, i) => { if (c.u) v += c.metal * price(i); });
-      return v;
+      return v + btcValue();
+    }
+
+
+    const BTC = { ok: false, src: '', pts: [], range: '24H', price: 0, at: 0, tried: false, busy: false, hover: -1 };
+    const BTC_FEE = 0.0025;
+    const WINDOW = { '24H': 86400000, '7D': 604800000 };
+    const btcLive = () => BTC.ok && Date.now() - BTC.at < 180000;
+    const btcValue = () => S.btc.amt * (btcLive() ? BTC.price : S.btc.last);
+
+    function getJSON(url) {
+      const ctl = new AbortController();
+      const t = setTimeout(() => ctl.abort(), 8000);
+      return fetch(url, { signal: ctl.signal, cache: 'no-store' })
+        .then(r => { if (!r.ok) throw new Error('http ' + r.status); return r.json(); })
+        .finally(() => clearTimeout(t));
+    }
+
+    const px = v => { const x = parseFloat(v); return isFinite(x) && x > 0 ? x : NaN; };
+
+    const PROVIDERS = [
+      { n: 'COINBASE', get: r => getJSON('https://api.exchange.coinbase.com/products/BTC-USD/candles?granularity=' + (r === '24H' ? 900 : 3600))
+        .then(j => j.map(k => [k[0] * 1000, px(k[4])])) },
+      { n: 'KRAKEN', get: r => getJSON('https://api.kraken.com/0/public/OHLC?pair=XBTUSD&interval=' + (r === '24H' ? 15 : 60))
+        .then(j => { const key = Object.keys(j.result).find(k => k !== 'last'); return j.result[key].map(k => [k[0] * 1000, px(k[4])]); }) },
+      { n: 'BINANCE', get: r => {
+        const q = '/api/v3/klines?symbol=BTCUSDT&interval=' + (r === '24H' ? '15m&limit=100' : '1h&limit=170');
+        const m = j => j.map(k => [k[0], px(k[4])]);
+        return getJSON('https://data-api.binance.vision' + q).then(m).catch(() => getJSON('https://api.binance.com' + q).then(m));
+      } },
+      { n: 'CRYPTOCOMPARE', get: r => getJSON('https://min-api.cryptocompare.com/data/v2/' + (r === '24H' ? 'histominute?fsym=BTC&tsym=USD&aggregate=15&limit=100' : 'histohour?fsym=BTC&tsym=USD&limit=170'))
+        .then(j => j.Data.Data.map(k => [k.time * 1000, px(k.close)])) },
+      { n: 'COINGECKO', get: r => getJSON('https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=usd&days=' + (r === '24H' ? 1 : 7))
+        .then(j => j.prices.map(k => [k[0], px(k[1])])) }
+    ];
+
+    function cleanSeries(raw, range) {
+      if (!Array.isArray(raw)) throw new Error('bad data');
+      const pts = raw.filter(k => isFinite(k[0]) && isFinite(k[1])).sort((a, b) => a[0] - b[0]);
+      if (pts.length < 20) throw new Error('too short');
+      const last = pts[pts.length - 1][0];
+      if (Date.now() - last > 3 * 3600000 || last - Date.now() > 600000) throw new Error('stale');
+      return pts.filter(k => k[0] >= last - WINDOW[range]);
+    }
+
+    async function btcRefresh() {
+      if (BTC.busy) return;
+      BTC.busy = true;
+      const range = BTC.range;
+      const order = PROVIDERS.slice().sort((a, b) => (b.n === BTC.src) - (a.n === BTC.src));
+      let done = false;
+      for (const pv of order) {
+        try {
+          const pts = cleanSeries(await pv.get(range), range);
+          if (range !== BTC.range) { done = true; break; }
+          BTC.pts = pts;
+          BTC.src = pv.n;
+          BTC.price = pts[pts.length - 1][1];
+          BTC.at = Date.now();
+          BTC.ok = true;
+          S.btc.last = BTC.price;
+          done = true;
+          break;
+        } catch (e) {}
+      }
+      if (!done && Date.now() - BTC.at > 180000) BTC.ok = false;
+      BTC.tried = true;
+      BTC.busy = false;
+      renderMarkets();
+      drawChart();
+    }
+
+    const fmtPx = v => v.toLocaleString('en-US', { maximumFractionDigits: v < 100 ? 2 : 0 });
+
+    function btcBuy(frac) {
+      if (!btcLive()) return;
+      const spend = S.cash * frac;
+      if (spend < 1) return;
+      const amt = spend * (1 - BTC_FEE) / BTC.price;
+      S.cash -= spend;
+      S.btc.amt += amt;
+      S.btc.cost += spend;
+      log('BOUGHT ' + amt.toFixed(6) + ' BTC @ $' + fmtPx(BTC.price) + ' = ' + money(spend) + ' (INCL. FEE)');
+      Snd.sfx('buy');
+    }
+
+    function btcSell(frac) {
+      if (!btcLive() || S.btc.amt <= 0) return;
+      const amt = frac >= 1 ? S.btc.amt : S.btc.amt * frac;
+      const proceeds = amt * BTC.price * (1 - BTC_FEE);
+      const basis = S.btc.cost * (amt / S.btc.amt);
+      S.btc.amt = frac >= 1 ? 0 : S.btc.amt - amt;
+      S.btc.cost = frac >= 1 ? 0 : S.btc.cost - basis;
+      S.cash += proceeds;
+      const pl = proceeds - basis;
+      log('SOLD ' + amt.toFixed(6) + ' BTC @ $' + fmtPx(BTC.price) + ' = ' + money(proceeds) + ' (' + (pl >= 0 ? '+' : '-') + money(Math.abs(pl)) + ')');
+      Snd.sfx('sell');
+    }
+
+    const mref = {};
+
+    function buildMarkets() {
+      const a = document.createElement('article');
+      a.className = 'card';
+      a.innerHTML =
+        '<div class="mk-head"><h2>BTC / USD</h2><span class="mk-px"><span data-r="price">--</span><small data-r="chg"></small></span></div>' +
+        '<div class="mk-bar"><span class="rng"><button type="button" data-rng="24H" aria-pressed="true">24H</button><button type="button" data-rng="7D" aria-pressed="false">7D</button></span><span data-r="stat"></span></div>' +
+        '<div class="mk-chart"><canvas data-r="cv"></canvas><div class="mk-msg" data-r="msg"></div></div>' +
+        '<div class="mk-bar"><span data-r="hover"></span><span data-r="range"></span></div>' +
+        '<div class="kv"><span>HOLDING</span><span data-r="amt"></span></div>' +
+        '<div class="kv"><span>VALUE</span><span data-r="val"></span></div>' +
+        '<div class="kv"><span>PROFIT / LOSS</span><span data-r="pl"></span></div>' +
+        '<div class="kv"><span>CASH</span><span data-r="cash"></span></div>' +
+        '<div class="grid5">' +
+          '<button type="button" class="btn" data-mk="b10">BUY 10%</button>' +
+          '<button type="button" class="btn" data-mk="b50">BUY 50%</button>' +
+          '<button type="button" class="btn" data-mk="b100">BUY MAX</button>' +
+          '<button type="button" class="btn" data-mk="s50">SELL 50%</button>' +
+          '<button type="button" class="btn" data-mk="s100">SELL ALL</button>' +
+        '</div>' +
+        '<p class="mk-note">Real bitcoin price from public exchange feeds, traded with game cash. Trades fill at the latest price with a 0.25% fee. Trading closes if the live feed is down. This is a game, not financial advice.</p>';
+      $('markets').appendChild(a);
+      a.querySelectorAll('[data-r]').forEach(n => { mref[n.dataset.r] = n; });
+      mref.btns = {};
+      a.querySelectorAll('[data-mk]').forEach(b => { mref.btns[b.dataset.mk] = b; });
+      mref.rng = a.querySelectorAll('[data-rng]');
+    }
+
+    function renderMarkets() {
+      if (!mref.price) return;
+      const live = btcLive();
+      const pts = BTC.pts;
+      const shown = live || S.btc.last;
+      setT(mref.price, live ? '$' + fmtPx(BTC.price) : S.btc.last ? '$' + fmtPx(S.btc.last) : '--');
+      if (live && pts.length > 1) {
+        const ch = (BTC.price / pts[0][1] - 1) * 100;
+        setT(mref.chg, (ch >= 0 ? '+' : '') + ch.toFixed(2) + '% ' + BTC.range);
+        mref.chg.style.color = ch >= 0 ? '' : 'var(--warn)';
+      } else {
+        setT(mref.chg, '');
+      }
+      setT(mref.stat, !BTC.tried ? 'CONNECTING...' : live ? 'LIVE  /  ' + BTC.src : 'OFFLINE');
+      mref.msg.hidden = live && pts.length > 1;
+      setT(mref.msg, !BTC.tried ? 'CONNECTING TO MARKET FEED...' : 'LIVE MARKET FEED UNAVAILABLE. TRADING IS CLOSED. RETRYING EVERY 30s.');
+      if (live && pts.length > 1) {
+        let lo = Infinity;
+        let hi = 0;
+        pts.forEach(k => { if (k[1] < lo) lo = k[1]; if (k[1] > hi) hi = k[1]; });
+        setT(mref.range, 'LOW $' + fmtPx(lo) + '  HIGH $' + fmtPx(hi));
+      } else {
+        setT(mref.range, '');
+      }
+      const val = btcValue();
+      setT(mref.amt, S.btc.amt.toFixed(6) + ' BTC');
+      setT(mref.val, S.btc.amt ? money(val) + (live ? '' : ' (LAST KNOWN)') : '$0');
+      const pl = val - S.btc.cost;
+      setT(mref.pl, S.btc.amt ? (pl >= 0 ? '+' : '-') + money(Math.abs(pl)) + ' (' + (S.btc.cost ? (pl / S.btc.cost * 100).toFixed(2) : '0.00') + '%)' : '$0');
+      setT(mref.cash, money(S.cash));
+      mref.btns.b10.disabled = mref.btns.b50.disabled = mref.btns.b100.disabled = !live || S.cash < 1;
+      mref.btns.s50.disabled = mref.btns.s100.disabled = !live || S.btc.amt <= 0;
+      mref.rng.forEach(b => b.setAttribute('aria-pressed', b.dataset.rng === BTC.range ? 'true' : 'false'));
+    }
+
+    function drawChart() {
+      const cv = mref.cv;
+      if (!cv || $('markets').hidden) return;
+      const pts = BTC.pts;
+      const w = cv.clientWidth;
+      const h = cv.clientHeight;
+      if (!w || !h) return;
+      const dpr = window.devicePixelRatio || 1;
+      cv.width = Math.round(w * dpr);
+      cv.height = Math.round(h * dpr);
+      const g = cv.getContext('2d');
+      g.setTransform(dpr, 0, 0, dpr, 0, 0);
+      g.clearRect(0, 0, w, h);
+      if (!btcLive() || pts.length < 2) return;
+      const cs = getComputedStyle(document.documentElement);
+      const fg = cs.getPropertyValue('--fg').trim() || '#4dff8f';
+      const dim = cs.getPropertyValue('--dim').trim() || '#2f9a5a';
+      const line = cs.getPropertyValue('--line').trim() || '#14532d';
+      let lo = Infinity;
+      let hi = 0;
+      pts.forEach(k => { if (k[1] < lo) lo = k[1]; if (k[1] > hi) hi = k[1]; });
+      const padv = (hi - lo) * 0.08 || hi * 0.001;
+      lo -= padv;
+      hi += padv;
+      const L = 8;
+      const R = 62;
+      const T = 10;
+      const B = 22;
+      const X = i => L + (pts[i][0] - pts[0][0]) / (pts[pts.length - 1][0] - pts[0][0]) * (w - L - R);
+      const Y = v => T + (1 - (v - lo) / (hi - lo)) * (h - T - B);
+      g.font = '11px "IBM Plex Mono", ui-monospace, monospace';
+      g.textBaseline = 'middle';
+      g.lineWidth = 1;
+      for (let k = 0; k <= 4; k++) {
+        const v = lo + (hi - lo) * k / 4;
+        const y = Math.round(Y(v)) + 0.5;
+        g.strokeStyle = line;
+        g.setLineDash([3, 5]);
+        g.beginPath();
+        g.moveTo(L, y);
+        g.lineTo(w - R, y);
+        g.stroke();
+        g.setLineDash([]);
+        g.fillStyle = dim;
+        g.textAlign = 'left';
+        g.fillText(fmtPx(v), w - R + 6, y);
+      }
+      const grad = g.createLinearGradient(0, T, 0, h - B);
+      grad.addColorStop(0, fg + '44');
+      grad.addColorStop(1, fg + '00');
+      g.beginPath();
+      pts.forEach((k, i) => { if (i) g.lineTo(X(i), Y(k[1])); else g.moveTo(X(i), Y(k[1])); });
+      g.lineTo(X(pts.length - 1), h - B);
+      g.lineTo(X(0), h - B);
+      g.closePath();
+      g.fillStyle = grad;
+      g.fill();
+      g.beginPath();
+      pts.forEach((k, i) => { if (i) g.lineTo(X(i), Y(k[1])); else g.moveTo(X(i), Y(k[1])); });
+      g.strokeStyle = fg;
+      g.lineWidth = 1.6;
+      g.lineJoin = 'round';
+      g.shadowColor = fg;
+      g.shadowBlur = 6;
+      g.stroke();
+      g.shadowBlur = 0;
+      const lastI = pts.length - 1;
+      g.fillStyle = fg;
+      g.beginPath();
+      g.arc(X(lastI), Y(pts[lastI][1]), 3, 0, Math.PI * 2);
+      g.fill();
+      const fmtT = ts => {
+        const d = new Date(ts);
+        return BTC.range === '24H'
+          ? String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0')
+          : d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+      };
+      g.fillStyle = dim;
+      g.textBaseline = 'alphabetic';
+      [[0, 'left'], [Math.floor(lastI / 2), 'center'], [lastI, 'right']].forEach(([i, al]) => {
+        g.textAlign = al;
+        g.fillText(fmtT(pts[i][0]), al === 'left' ? L : al === 'right' ? w - R : (L + w - R) / 2, h - 6);
+      });
+      if (BTC.hover >= 0 && BTC.hover <= lastI) {
+        const hx = X(BTC.hover);
+        g.strokeStyle = dim;
+        g.beginPath();
+        g.moveTo(hx + 0.5, T);
+        g.lineTo(hx + 0.5, h - B);
+        g.stroke();
+        g.fillStyle = fg;
+        g.beginPath();
+        g.arc(hx, Y(pts[BTC.hover][1]), 3.5, 0, Math.PI * 2);
+        g.fill();
+      }
+    }
+
+    function hoverAt(clientX) {
+      const pts = BTC.pts;
+      if (!btcLive() || pts.length < 2) return;
+      const rect = mref.cv.getBoundingClientRect();
+      const L = 8;
+      const R = 62;
+      const f = (clientX - rect.left - L) / (rect.width - L - R);
+      const t = pts[0][0] + clamp(f, 0, 1) * (pts[pts.length - 1][0] - pts[0][0]);
+      let best = 0;
+      pts.forEach((k, i) => { if (Math.abs(k[0] - t) < Math.abs(pts[best][0] - t)) best = i; });
+      BTC.hover = best;
+      const d = new Date(pts[best][0]);
+      setT(mref.hover, d.toLocaleString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit', hour12: false }) + '  $' + fmtPx(pts[best][1]));
+      drawChart();
+    }
+
+    function hoverEnd() {
+      BTC.hover = -1;
+      setT(mref.hover, '');
+      drawChart();
     }
 
     const BROKER_NAMES = ['NONE', 'JUNIOR', 'SENIOR', 'TRADER'];
@@ -834,13 +1230,13 @@
     const BOARD = [
       { id: 'seed', name: 'SEED CAPITAL', max: 5, cost: l => [1, 2, 4, 8, 16][l],
         desc: 'Start every run with extra cash.',
-        fx: l => (l ? money(1000 * Math.pow(5, l - 1)) : 'NONE') },
+        fx: l => (l ? money(2000 * Math.pow(5, l - 1)) : 'NONE') },
       { id: 'foreman', name: 'FOREMAN', max: 1, cost: () => 3,
         desc: 'Start every run with a Junior broker already hired.',
         fx: l => (l ? 'JUNIOR BROKER' : 'NONE') },
       { id: 'fast', name: 'FAST TRACK', max: 3, cost: l => [5, 15, 40][l],
         desc: 'Start every run with more desks already open.',
-        fx: l => ['NONE', 'COPPER', 'COPPER, GOLD', 'COPPER, GOLD, PLATINUM'][l] },
+        fx: l => ['NONE', 'COPPER', 'COPPER, SILVER', 'COPPER, SILVER, OIL'][l] },
       { id: 'watch', name: 'NIGHT WATCH', max: 5, cost: l => [2, 4, 8, 16, 32][l],
         desc: 'Your mines keep producing for longer while you are away.',
         fx: l => (2 + 2 * l) + 'h AWAY' }
@@ -866,38 +1262,26 @@
 
     const RESEARCH = [
       mk({ id: 'warehouse', name: 'WAREHOUSE EXPANSION', max: Infinity,
-        desc: 'Raises storage for every metal by 50% per level. A full warehouse stops production, and a full ore buffer stops mining.',
+        desc: 'Raises storage for every resource by 50% per level. A full warehouse stops production, and a full raw buffer stops extraction.',
         fx: l => String(Math.floor(100 * Math.pow(1.5, l))),
         msg: () => 'WAREHOUSE EXPANDED. CAPACITY ' + cap() + '.' }),
-      mk({ id: 'dpower', name: 'DIG POWER', max: 4, base: 3000, growth: 4,
-        desc: 'Doubles the ore you get from each DIG tap, and multiplies the free levels your drill rig gives.',
-        fx: l => Math.pow(2, l) + ' PER TAP',
-        msg: () => 'DIG POWER UP. ' + digPower() + ' ORE PER TAP.' }),
-      mk({ id: 'rig', name: 'DRILL RIG', max: 5, base: 40000, growth: 3.5, req: { id: 'dpower', lv: 1, name: 'DIG POWER' },
-        desc: 'Gives every open desk free mine levels: rig level times dig power. Stops in an outage and works at half strength while you are away.',
-        fx: l => '+' + l * digPower() + ' FREE LEVELS',
-        msg: () => 'DRILL RIG ONLINE. +' + RS('rig') * digPower() + ' FREE MINE LEVELS ON EVERY DESK.' }),
-      mk({ id: 'broker', name: 'BROKER', max: 3, base: 1500, growth: 40,
-        desc: 'Sells your metal for you once the price passes the level you set on a desk. Senior sells in stages to cut price impact and offers finer price levels. Trader also waits for the peak.',
+      mk({ id: 'broker', name: 'BROKER', max: 3, base: 1500, growth: 80,
+        desc: 'Sells for you at the price you set on each desk, and dumps stock when the warehouse is nearly full. Senior sells in stages to cut price impact and offers finer price levels. Trader also waits for the peak.',
         fx: l => BROKER_NAMES[l],
-        msg: l => BROKER_NAMES[l] + ' BROKER HIRED. ' + (l === 1 ? 'SET A SELL PRICE WITH AUTO-SELL ON EACH DESK.' : 'AUTO-SELL IS UPGRADED.') }),
-      mk({ id: 'refinery', name: 'REFINERY', max: 4, base: 20000, growth: 5,
-        desc: 'Every smelted ore gives 15% more metal per level.',
-        fx: l => '+' + 15 * l + '% METAL',
-        msg: () => 'REFINERY UPGRADED. SMELTING YIELDS +' + 15 * RS('refinery') + '% METAL.' }),
-      mk({ id: 'liq', name: 'MARKET CONTRACTS', max: 4, base: 15000, growth: 4.5,
+        msg: l => BROKER_NAMES[l] + ' BROKER HIRED. ' + (l === 1 ? 'SET A SELL PRICE ON EACH DESK. FULL WAREHOUSES ARE SOLD AUTOMATICALLY.' : 'AUTO-SELL IS UPGRADED.') }),
+      mk({ id: 'rig', name: 'DRILL RIG', max: 4, base: 15000, growth: 17,
+        desc: 'Taps every open desk for you, 2 taps per second per level. A tap gives 10% of that desk\'s output. Stops in an outage and works at half speed while you are away.',
+        fx: l => 2 * l + ' TAPS/S',
+        msg: () => 'DRILL RIG ONLINE. ' + 2 * RS('rig') + ' AUTO-TAPS PER SECOND ON EVERY DESK.' }),
+      mk({ id: 'liq', name: 'MARKET CONTRACTS', max: 4, base: 20000, growth: 20,
         desc: 'Large sales move the price less. Each level adds 50% market depth.',
         fx: l => 'DEPTH x' + (1 + 0.5 * l).toFixed(1),
         msg: () => 'CONTRACTS SIGNED. MARKET DEPTH x' + impactDiv().toFixed(1) + '.' }),
-      mk({ id: 'generator', name: 'BACKUP GENERATOR', max: 3, base: 5000, growth: 6,
+      mk({ id: 'generator', name: 'BACKUP GENERATOR', max: 3, base: 8000, growth: 19,
         desc: 'Power outages end sooner. Each level cuts outage time by 40%.',
         fx: l => (15 * Math.pow(0.6, l)).toFixed(1) + 's OUTAGE',
         msg: () => 'GENERATOR INSTALLED. OUTAGES NOW LAST ' + outageLen().toFixed(1) + 's.' }),
-      mk({ id: 'geo', name: 'GEOLOGIST', max: 3, base: 8000, growth: 6,
-        desc: 'Rich veins turn up more often and last 10s longer per level.',
-        fx: l => (30 + 10 * l) + 's VEINS',
-        msg: () => 'GEOLOGIST HIRED. RICH VEINS LAST ' + veinLen() + 's AND ARE MORE COMMON.' }),
-      mk({ id: 'intel', name: 'MARKET INTEL', max: 1, base: 25000, growth: 1,
+      mk({ id: 'intel', name: 'MARKET INTEL', max: 1, base: 100000, growth: 1,
         desc: 'Adds a price outlook to every desk: rising, falling or steady.',
         fx: l => (l ? 'ON' : 'OFF'),
         msg: () => 'MARKET INTEL ONLINE. EACH DESK NOW SHOWS AN OUTLOOK.' })
@@ -1145,10 +1529,9 @@
       S.c.forEach((c, i) => {
         if (!c.u) return;
         c.ore = Math.min(oc, c.ore + mineRate(i) * dt);
-        const y = yieldMul();
-        const s = Math.min(c.ore, smeltRate(i) * dt, Math.max(0, mc - c.metal) / y);
+        const s = Math.min(c.ore, smeltRate(i) * dt, Math.max(0, mc - c.metal));
         c.ore -= s;
-        c.metal += s * y;
+        c.metal += s;
       });
     }
 
@@ -1181,8 +1564,17 @@
       if (!b) return;
       const floor = Math.max(5, cap() * 0.25);
       S.c.forEach((c, i) => {
+        if (!c.u) return;
+        if (c.ovf && c.metal >= cap() * 0.9) {
+          const r = sell(i, (c.metal - cap() * 0.6) / c.metal);
+          if (r) {
+            log('STORAGE FULL. BROKER SOLD ' + Math.floor(r.n) + ' ' + COMM[i].sym + ' @ $' + r.p.toFixed(2) + ' = ' + money(r.gain));
+            Snd.sfx('sell');
+          }
+          return;
+        }
         const m = AUTO[c.auto];
-        if (!c.u || !m || c.metal < floor) return;
+        if (!m || c.metal < floor) return;
         const p = price(i);
         const th = m * COMM[i].base;
         if (p < th) return;
@@ -1205,12 +1597,12 @@
         Snd.sfx('alert');
         return;
       }
-      if (r < 0.34 + 0.06 * RS('geo')) {
+      if (r < 0.34) {
         const pool = active.filter(i => S.c[i].ml > 0);
         if (pool.length) {
           const i = pool[Math.floor(Math.random() * pool.length)];
-          S.boost = { i, t: veinLen() };
-          log('RICH VEIN FOUND. ' + COMM[i].sym + ' ORE OUTPUT x2 FOR ' + veinLen() + 's.');
+          S.boost = { i, t: VEIN_LEN };
+          log('RICH VEIN FOUND. ' + COMM[i].sym + ' OUTPUT x2 FOR ' + VEIN_LEN + 's.');
           Snd.sfx('news');
           return;
         }
@@ -1272,12 +1664,15 @@
       log('AWAY ' + (sec < 60 ? sec + 's' : m >= 60 ? Math.floor(m / 60) + 'h ' + (m % 60) + 'm' : m + 'm') + '. PRODUCED ' + Math.floor(gained) + ' UNITS WHILE YOU WERE GONE.');
     }
 
+    let wiped = false;
+
     function save() {
+      if (wiped) return;
       S.t = Date.now();
       store.set(KEY, JSON.stringify({
-        ver: 3, run: S.run, runs: S.runs, shares: S.shares, sharesTotal: S.sharesTotal, bd: S.bd, cash: S.cash, wl: S.wl, rs: S.rs, t: S.t, clock: S.clock, phos: S.phos,
+        ver: 4, run: S.run, runs: S.runs, shares: S.shares, sharesTotal: S.sharesTotal, bd: S.bd, btc: S.btc, cash: S.cash, wl: S.wl, rs: S.rs, t: S.t, clock: S.clock, phos: S.phos,
         nextEvent: S.nextEvent, milestone: S.milestone, earned: S.earned, helped: S.helped,
-        c: S.c.map(c => ({ u: c.u, ml: c.ml, sl: c.sl, ore: c.ore, metal: c.metal, x: c.x, auto: c.auto }))
+        c: S.c.map(c => ({ u: c.u, ml: c.ml, sl: c.sl, ore: c.ore, metal: c.metal, x: c.x, auto: c.auto, ovf: c.ovf }))
       }));
     }
 
@@ -1292,18 +1687,21 @@
           '<div class="card-head"><h2>' + d.sym + '</h2><div class="px"><span class="tag" data-r="tag"></span><b data-r="price"></b><span data-r="chg"></span></div></div>' +
           '<div class="spark" data-r="spark" aria-hidden="true"></div>' +
           '<div class="out" data-r="out"></div>' +
-          '<div class="row"><span>ORE</span><span data-r="orebar"></span><span data-r="oreval"></span></div>' +
-          '<div class="row"><span>METAL</span><span data-r="metbar"></span><span data-r="metval"></span></div>' +
+          '<div class="row"><span>' + d.raw + '</span><span data-r="orebar"></span><span data-r="oreval"></span></div>' +
+          '<div class="row"><span>' + d.out + '</span><span data-r="metbar"></span><span data-r="metval"></span></div>' +
           '<div class="grid2">' +
             '<button type="button" class="btn" data-act="mine"><span data-r="minel"></span><small data-r="minec"></small></button>' +
             '<button type="button" class="btn" data-act="smelt"><span data-r="smeltl"></span><small data-r="smeltc"></small></button>' +
           '</div>' +
           '<div class="grid3">' +
-            '<button type="button" class="btn" data-act="dig">DIG</button>' +
+            '<button type="button" class="btn" data-act="dig">' + d.act + '</button>' +
             '<button type="button" class="btn" data-act="half">SELL 50%</button>' +
             '<button type="button" class="btn" data-act="all">SELL ALL</button>' +
           '</div>' +
-          '<button type="button" class="btn" data-act="auto"><span data-r="autol"></span></button>' +
+          '<div class="grid2">' +
+            '<button type="button" class="btn" data-act="auto"><span data-r="autol"></span></button>' +
+            '<button type="button" class="btn" data-act="ovf"><span data-r="ovfl"></span></button>' +
+          '</div>' +
           '<div class="lockbox"><button type="button" class="btn" style="width:100%" data-act="unlock"><span>UNLOCK</span><small data-r="unlockc"></small></button></div>';
         host.appendChild(a);
         const r = { card: a };
@@ -1311,13 +1709,14 @@
         a.querySelectorAll('button[data-act]').forEach(b => { r['b_' + b.dataset.act] = b; });
         refs.push(r);
       });
+      buildMarkets();
       const bh = $('board');
       const ra = document.createElement('article');
       ra.className = 'card res';
       ra.id = 'restruct';
       ra.innerHTML =
         '<h2>RESTRUCTURE<span data-r="lvl"></span></h2>' +
-        '<p>Sell the company and start again with nothing but shares. Every share you have earned adds 5% to everything you sell, forever, and you can spend shares below on permanent perks. You get more shares the more this run earned.</p>' +
+        '<p>Sell the company, and your bitcoin, and start again with nothing but shares. Every share you have earned adds 10% to everything you sell, forever, and you can spend shares below on permanent perks. You get more shares the more this run earned.</p>' +
         '<div class="kv"><span>THIS RUN</span><span data-r="run"></span></div>' +
         '<div class="kv"><span>SHARES</span><span data-r="sh"></span></div>' +
         '<div class="kv"><span>NOW GIVES</span><span data-r="gain"></span></div>' +
@@ -1369,13 +1768,13 @@
       S.c.forEach((c, i) => { if (c.u) stock += c.metal * price(i); });
       setT(el.cash, money(S.cash));
       setT(el.stock, money(stock));
-      setT(el.net, money(S.cash + stock));
+      setT(el.net, money(S.cash + stock + btcValue()));
 
       if (S.outage > 0) setT(el.status, 'POWER OUTAGE: MINES OFFLINE ' + Math.ceil(S.outage) + 's');
       else if (S.boost) setT(el.status, 'RICH VEIN: ' + COMM[S.boost.i].sym + ' ORE x2 FOR ' + Math.ceil(S.boost.t) + 's');
       else if (lastNews && S.clock - lastNews.at < 45) setT(el.status, lastNews.m);
       else setT(el.status, 'ALL SYSTEMS NOMINAL');
-      el.status.classList.toggle('bad', S.outage > 0 || !!(lastNews && S.clock - lastNews.at < 45 && /OUTAGE|SLIDE|FALLS|SOFTENS|SLIPS|DROPS/.test(lastNews.m) && !S.boost));
+      el.status.classList.toggle('bad', S.outage > 0 || !!(lastNews && S.clock - lastNews.at < 45 && /OUTAGE|SLIDE|FALLS|SOFTENS|SLIPS|DROPS|FALL\./.test(lastNews.m) && !S.boost));
 
       RESEARCH.forEach((d, i) => {
         const r = rrefs[i];
@@ -1387,14 +1786,15 @@
         r.btn.disabled = done || lock || S.cash < d.cost();
       });
 
+      renderMarkets();
       const sg = sharesGain();
       const confirming = performance.now() < confirmUntil;
       setT(bref.lvl, 'RUN ' + (S.runs + 1));
       setT(bref.run, money(S.run));
-      setT(bref.sh, S.shares + ' SPARE / ' + S.sharesTotal + ' EARNED (+' + 5 * S.sharesTotal + '%)');
+      setT(bref.sh, S.shares + ' SPARE / ' + S.sharesTotal + ' EARNED (+' + 10 * S.sharesTotal + '%)');
       setT(bref.gain, sg + (sg === 1 ? ' SHARE' : ' SHARES'));
       setT(bref.lab, confirming ? 'CONFIRM: RESET THIS RUN' : 'RESTRUCTURE');
-      setT(bref.cost, sg < 1 ? 'NEEDS $1M THIS RUN' : '');
+      setT(bref.cost, sg < 1 ? 'NEEDS $5M THIS RUN' : '');
       bref.btn.disabled = sg < 1;
       BOARD.forEach((d, i) => {
         const r = brefs[i];
@@ -1427,21 +1827,23 @@
         setT(r.orebar, bar(c.ore / oc, 14));
         setT(r.oreval, Math.floor(c.ore) + '/' + oc);
         setT(r.metbar, bar(c.metal / mc, 14));
-        setT(r.metval, Math.floor(c.metal) + '/' + mc);
+        setT(r.metval, c.metal >= mc - 0.01 ? 'FULL' : Math.floor(c.metal) + '/' + mc);
         const pm = plan(i, 'mine');
         const ps = plan(i, 'smelt');
         const mm = lvlMult(c.ml);
         const sm = lvlMult(c.sl);
-        setT(r.minel, 'MINE L' + c.ml + (mm > 1 ? ' x' + mm : '') + ' +' + fmt(mineBase(i)) + '/s');
+        setT(r.minel, d.mn + ' L' + c.ml + (mm > 1 ? ' x' + mm : '') + ' +' + fmt(mineBase(i) + rigOre(i)) + '/s');
         setT(r.minec, (pm.n > 1 ? '+' + pm.n + ' ' : '') + money(pm.cost));
         r.b_mine.disabled = S.cash < pm.cost;
-        setT(r.smeltl, 'SMELT L' + c.sl + (sm > 1 ? ' x' + sm : '') + ' ' + fmt(smeltRate(i)) + '/s');
+        setT(r.smeltl, d.pr + ' L' + c.sl + (sm > 1 ? ' x' + sm : '') + ' ' + fmt(smeltRate(i)) + '/s');
         setT(r.smeltc, (ps.n > 1 ? '+' + ps.n + ' ' : '') + money(ps.cost));
         r.b_smelt.disabled = S.cash < ps.cost;
         r.b_half.disabled = c.metal < 2;
         r.b_all.disabled = c.metal < 1;
         r.b_auto.disabled = !brokerLv();
-        setT(r.autol, brokerLv() ? (AUTO[c.auto] ? 'AUTO-SELL ≥ ' + AUTO[c.auto].toFixed(2) + 'x BASE' : 'AUTO-SELL: OFF') : 'AUTO-SELL: NEEDS BROKER RESEARCH');
+        r.b_ovf.disabled = !brokerLv();
+        setT(r.ovfl, brokerLv() ? (c.ovf ? 'WHEN FULL: SELL' : 'WHEN FULL: HOLD') : 'WHEN FULL: STOPS');
+        setT(r.autol, brokerLv() ? (AUTO[c.auto] ? 'SELL ≥ ' + AUTO[c.auto].toFixed(2) + 'x BASE' : 'AUTO-SELL: OFF') : 'AUTO-SELL: NEEDS BROKER');
         let outlook = '';
         if (RS('intel')) {
           const tg = d.amp * Math.sin(2 * Math.PI * S.clock / d.period + d.phase) - c.x;
@@ -1468,7 +1870,7 @@
       if (!c || !c.u) return 0;
       const room = cap() * 2 - c.ore;
       if (room <= 0) return 0;
-      const n = Math.min(digPower(), room);
+      const n = Math.min(tapYield(i), room);
       c.ore += n;
       return n;
     }
@@ -1513,10 +1915,12 @@
       S.shares += g;
       S.sharesTotal += g;
       S.runs++;
-      S.cash = 1000 * (BD('seed') ? Math.pow(5, BD('seed') - 1) : 0);
+      S.cash = BD('seed') ? 2000 * Math.pow(5, BD('seed') - 1) : 0;
       S.wl = 0;
       S.rs = BD('foreman') ? { broker: 1 } : {};
       S.run = 0;
+      S.btc.amt = 0;
+      S.btc.cost = 0;
       S.outage = 0;
       S.boost = null;
       S.nextEvent = S.clock + 25;
@@ -1524,7 +1928,7 @@
       S.c = COMM.map(freshComm);
       S.c[0].u = true;
       for (let i = 1; i <= BD('fast') && i < COMM.length; i++) S.c[i].u = true;
-      log('RESTRUCTURED. +' + g + (g === 1 ? ' SHARE' : ' SHARES') + '. ALL INCOME IS NOW +' + 5 * S.sharesTotal + '%.');
+      log('RESTRUCTURED. +' + g + (g === 1 ? ' SHARE' : ' SHARES') + '. ALL INCOME IS NOW +' + 10 * S.sharesTotal + '%.');
       Snd.sfx('unlock');
       save();
     }
@@ -1555,7 +1959,8 @@
           '  help               this list',
           '  clear              clear the screen',
           '  color [name]       green, amber, ice',
-          '  music on|off|vol <0-100>'
+          '  music on|off|vol <0-100>',
+          '  reset              permanently delete all game data'
         ].join('\n'), 'd');
       },
       color(a) {
@@ -1592,10 +1997,35 @@
       },
       clear() {
         el.tout.textContent = '';
+      },
+      reset() {
+        resetStage = true;
+        print([
+          'WARNING: this permanently deletes ALL game data:',
+          'cash, desks, research, shares, board perks and your bitcoin position.',
+          'there is no undo.',
+          'to continue, type exactly: ' + RESET_PHRASE,
+          'anything else cancels.'
+        ].join('\n'), 'w');
       }
     };
+    const RESET_PHRASE = 'DELETE ALL MY GAME DATA';
+    let resetStage = false;
+
+    function wipeData() {
+      wiped = true;
+      store.remove(KEY);
+      print('all game data deleted. restarting...', 'w');
+      setTimeout(() => location.reload(), 900);
+    }
 
     function runCommand(line) {
+      if (resetStage) {
+        resetStage = false;
+        if (line.trim().toUpperCase().replace(/\s+/g, ' ') === RESET_PHRASE) wipeData();
+        else print('reset cancelled. nothing was deleted.');
+        return;
+      }
       const parts = line.trim().split(/\s+/);
       const name = parts.shift().toLowerCase();
       const fn = Object.prototype.hasOwnProperty.call(CMDS, name) ? CMDS[name] : null;
@@ -1668,9 +2098,15 @@
       tab = t;
       $('cards').hidden = t !== 'ops';
       $('research').hidden = t !== 'res';
+      $('markets').hidden = t !== 'mk';
       $('board').hidden = t !== 'bd';
-      $('tbuy').hidden = t !== 'ops';
-      ['ops', 'res', 'bd'].forEach(k => $('tab-' + k).setAttribute('aria-selected', k === t ? 'true' : 'false'));
+      $('opsbar').hidden = t !== 'ops';
+      if (t === 'mk') {
+        renderMarkets();
+        drawChart();
+        if (!BTC.busy && Date.now() - BTC.at > 20000) btcRefresh();
+      }
+      ['ops', 'res', 'mk', 'bd'].forEach(k => $('tab-' + k).setAttribute('aria-selected', k === t ? 'true' : 'false'));
     }
 
     function bindUI() {
@@ -1702,6 +2138,8 @@
           const c = S.c[i];
           const al = brokerLv() >= 2 ? AUTO.map((v, k) => k) : AUTO_JUNIOR;
           c.auto = al[(al.indexOf(c.auto) + 1) % al.length];
+        } else if (act === 'ovf') {
+          S.c[i].ovf = !S.c[i].ovf;
         } else if (act === 'unlock') {
           unlockComm(i);
         }
@@ -1738,6 +2176,28 @@
         }
         render();
       });
+
+      $('markets').addEventListener('click', e => {
+        const r = e.target.closest('[data-rng]');
+        if (r) {
+          BTC.range = r.dataset.rng;
+          BTC.pts = [];
+          BTC.hover = -1;
+          renderMarkets();
+          btcRefresh();
+          return;
+        }
+        const b = e.target.closest('[data-mk]');
+        if (!b || b.disabled) return;
+        const k = b.dataset.mk;
+        if (k[0] === 'b') btcBuy(Number(k.slice(1)) / 100); else btcSell(Number(k.slice(1)) / 100);
+        render();
+      });
+      mref.cv.addEventListener('pointermove', e => hoverAt(e.clientX));
+      mref.cv.addEventListener('pointerdown', e => hoverAt(e.clientX));
+      mref.cv.addEventListener('pointerleave', hoverEnd);
+      window.addEventListener('resize', drawChart);
+      setInterval(() => { if (!document.hidden && (tab === 'mk' || S.btc.amt > 0)) btcRefresh(); }, 30000);
 
       $('tbuy').addEventListener('click', () => {
         buyQ = (buyQ + 1) % BUYQ.length;
@@ -1820,7 +2280,9 @@
 
     const gap = (Date.now() - S.t) / 1000;
     bootLog();
-    if (store.get(KEY)) {
+    if (S.resetNote) {
+      print('your old save was from an earlier version and has been reset because the economy was rebalanced.', 'w');
+    } else if (store.get(KEY)) {
       print('session restored.', 'd');
       if (gap > 5) away(gap);
     }
