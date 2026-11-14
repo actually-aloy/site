@@ -1655,11 +1655,11 @@
         freelanceChips: ['Websites', 'Bots', 'Apps', 'Scripts'],
         freelanceMeta: ['Payment in USDT', '50% upfront'],
         arcadeTitle: "Aloy's Arcade",
-        arcadeStatus: '7 games · free to play',
+        arcadeStatus: '8 games · free to play',
         arcadeSubtitle: 'tiny games',
-        arcadeCta: 'Snake, 2048, a reaction test and memory games. No installs, no accounts.',
+        arcadeCta: 'A CRT mining tycoon, Snake, 2048, a reaction test and memory games. No installs, no accounts.',
         arcadeGo: 'Play now',
-        arcadeGames: ['Snake', 'Memory', 'Sequence', 'Number Span', 'N-Back', '2048', 'Reaction'],
+        arcadeGames: ['Ironline', 'Snake', 'Memory', 'Sequence', 'Number Span', 'N-Back', '2048', 'Reaction'],
         discordTitle: 'Discord',
         discordSubtitle: 'come say hi',
         discordCta: 'Come hang out, chat, and vibe with everyone.',
@@ -1694,11 +1694,11 @@
         freelanceChips: ['وب‌سایت', 'بات', 'اپ', 'اسکریپت'],
         freelanceMeta: ['پرداخت با USDT', '۵۰ درصد پیش‌پرداخت'],
         arcadeTitle: 'آرکید آلوی',
-        arcadeStatus: '۷ بازی · رایگان',
+        arcadeStatus: '۸ بازی · رایگان',
         arcadeSubtitle: 'بازی‌های کوچیک',
-        arcadeCta: 'مار، ۲۰۴۸، تست واکنش و بازی‌های حافظه. بدون نصب، بدون اکانت.',
+        arcadeCta: 'تایکون معدن CRT، مار، ۲۰۴۸، تست واکنش و بازی‌های حافظه. بدون نصب، بدون اکانت.',
         arcadeGo: 'بازی کن',
-        arcadeGames: ['مار', 'حافظه', 'دنباله', 'حافظه‌ی عددی', 'ان‌بک', '۲۰۴۸', 'واکنش'],
+        arcadeGames: ['آیرونلاین', 'مار', 'حافظه', 'دنباله', 'حافظه‌ی عددی', 'ان‌بک', '۲۰۴۸', 'واکنش'],
         discordTitle: 'دیسکورد',
         discordSubtitle: 'بیا یه سر بزن',
         discordCta: 'بیا با بقیه گپ بزنیم و یکم وقت بگذرونیم.',
@@ -1742,8 +1742,9 @@
       document.getElementById('freelance-meta').innerHTML = t.freelanceMeta.map(r => `<div class="freelance-meta-row"><span>${bidi(r)}</span></div>`).join('');
     }
 
-    const ARCADE_SLUGS = ['snake', 'memory', 'sequence', 'numbers', 'nback', '2048', 'reaction'];
+    const ARCADE_HREFS = ['ironline.html', 'snake', 'memory', 'sequence', 'numbers', 'nback', '2048', 'reaction'];
     const ARCADE_ICONS = [
+      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4M7 12l3-3 3 2 4-4"/></svg>',
       '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 5H8.5a3.5 3.5 0 0 0 0 7h7a3.5 3.5 0 0 1 0 7H6"/><circle cx="18.5" cy="5" r="2.3" fill="currentColor" stroke="none"/></svg>',
       '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="3.5" width="7" height="7" rx="2" fill="currentColor"/><rect x="13.5" y="3.5" width="7" height="7" rx="2"/><rect x="3.5" y="13.5" width="7" height="7" rx="2"/><rect x="13.5" y="13.5" width="7" height="7" rx="2" fill="currentColor"/></svg>',
       '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 17l6-10 6 10"/><circle cx="6" cy="17" r="2.2" fill="currentColor"/><circle cx="12" cy="7" r="2.2" fill="currentColor"/><circle cx="18" cy="17" r="2.2" fill="currentColor"/></svg>',
@@ -1760,7 +1761,7 @@
       document.getElementById('arcade-status-text').textContent = t.arcadeStatus;
       document.getElementById('arcade-go-label').textContent = t.arcadeGo;
       document.getElementById('arcade-grid').innerHTML = t.arcadeGames.map((name, i) =>
-        `<a class="arcade-tile" href="arcade.html#${ARCADE_SLUGS[i]}"><span class="arcade-tile-icon">${ARCADE_ICONS[i]}</span><span class="arcade-tile-name">${name}</span></a>`
+        `<a class="arcade-tile" href="${ARCADE_HREFS[i].endsWith('.html') ? ARCADE_HREFS[i] : 'arcade.html#' + ARCADE_HREFS[i]}"><span class="arcade-tile-icon">${ARCADE_ICONS[i]}</span><span class="arcade-tile-name">${name}</span></a>`
       ).join('');
     }
 

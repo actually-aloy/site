@@ -11,7 +11,11 @@
   <meta property="og:title" content="Ironline">
   <meta property="og:description" content="A mining and trading tycoon on an old CRT terminal. Dig ore, refine it, and time the market.">
   <meta property="og:url" content="https://actually-aloy.github.io/site/ironline">
-  <meta name="twitter:card" content="summary">
+  <meta property="og:image" content="https://actually-aloy.github.io/site/ironline-og.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Ironline">
+  <meta name="twitter:description" content="A mining and trading tycoon on an old CRT terminal. Dig ore, refine it, and time the market.">
+  <meta name="twitter:image" content="https://actually-aloy.github.io/site/ironline-og.jpg">
   <link rel="icon" href="favicon.svg?v=2" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -254,7 +258,7 @@
 
     .tabs {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: repeat(3, 1fr) auto;
       gap: 8px;
       margin-bottom: 12px;
     }
@@ -275,6 +279,41 @@
       background: var(--fg);
       text-shadow: none;
       font-weight: 700;
+    }
+
+    .tabs:has(.buyq[hidden]) {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .kv {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      font-size: 13px;
+    }
+
+    .kv span:first-child {
+      color: var(--dim);
+      white-space: nowrap;
+    }
+
+    .kv span:last-child {
+      text-align: right;
+    }
+
+    .tabs .buyq {
+      min-height: 46px;
+      min-width: 78px;
+      border: 1px solid var(--line);
+      background: transparent;
+      cursor: pointer;
+      font-size: 13px;
+      letter-spacing: 0.08em;
+      color: var(--fg);
+    }
+
+    .tabs .buyq[hidden] {
+      display: none;
     }
 
     .btn {
@@ -632,10 +671,13 @@
     <nav class="tabs" role="tablist" aria-label="Sections">
       <button type="button" class="tab" role="tab" id="tab-ops" data-tab="ops" aria-selected="true" aria-controls="cards">OPERATIONS</button>
       <button type="button" class="tab" role="tab" id="tab-res" data-tab="res" aria-selected="false" aria-controls="research">RESEARCH</button>
+      <button type="button" class="tab" role="tab" id="tab-bd" data-tab="bd" aria-selected="false" aria-controls="board">BOARD</button>
+      <button type="button" class="buyq" id="tbuy" aria-label="Levels per purchase">BUY x1</button>
     </nav>
 
     <section class="cards" id="cards" role="tabpanel" aria-labelledby="tab-ops"></section>
     <section class="cards" id="research" role="tabpanel" aria-labelledby="tab-res" hidden></section>
+    <section class="cards" id="board" role="tabpanel" aria-labelledby="tab-bd" hidden></section>
 
     <section class="term" aria-label="Terminal">
       <h3>TERMINAL</h3>
@@ -669,18 +711,19 @@
     const SPARK = '▁▂▃▄▅▆▇█';
     const HIST_LEN = 36;
     const HIST_EVERY = 4;
-    const AWAY_MAX = 7200;
-    const AUTO = [0, 0.95, 1.0, 1.1, 1.15, 1.2, 1.3, 1.4, 1.5, 1.7];
+        const AUTO = [0, 0.95, 1.0, 1.1, 1.15, 1.2, 1.3, 1.4, 1.5, 1.7];
     const AUTO_JUNIOR = [0, 2, 4, 6, 8];
     const AUTO_OLD = [0, 2, 4, 6, 8];
-    const MILESTONES = [1e3, 1e4, 1e5, 1e6, 1e7];
+    const MILESTONES = [1e3, 1e4, 1e5, 1e6, 1e7, 1e8, 1e9, 1e10, 1e11, 1e12];
     const PHOS = ['green', 'amber', 'ice'];
     const HINT = 'type help for a list of commands.';
 
     const COMM = [
       { sym: 'IRON', base: 8, unlock: 0, mine: { cost: 20, rate: 0.8 }, smelt: { cost: 30, rate: 1, base: 0.5 }, vol: 0.03, amp: 0.12, period: 150, phase: 0, liq: 150 },
       { sym: 'COPPER', base: 22, unlock: 900, mine: { cost: 400, rate: 0.5 }, smelt: { cost: 500, rate: 0.6, base: 0.3 }, vol: 0.04, amp: 0.14, period: 190, phase: 2.1, liq: 80 },
-      { sym: 'GOLD', base: 95, unlock: 15000, mine: { cost: 6000, rate: 0.22 }, smelt: { cost: 7500, rate: 0.25, base: 0.1 }, vol: 0.05, amp: 0.16, period: 230, phase: 4.2, liq: 25 }
+      { sym: 'GOLD', base: 95, unlock: 15000, mine: { cost: 6000, rate: 0.22 }, smelt: { cost: 7500, rate: 0.25, base: 0.1 }, vol: 0.05, amp: 0.16, period: 230, phase: 4.2, liq: 25 },
+      { sym: 'PLATINUM', base: 420, unlock: 400000, mine: { cost: 150000, rate: 0.1 }, smelt: { cost: 180000, rate: 0.1, base: 0.04 }, vol: 0.055, amp: 0.17, period: 270, phase: 1.3, liq: 12 },
+      { sym: 'URANIUM', base: 2400, unlock: 40000000, mine: { cost: 14000000, rate: 0.05 }, smelt: { cost: 17000000, rate: 0.05, base: 0.02 }, vol: 0.06, amp: 0.18, period: 310, phase: 3.3, liq: 6 }
     ];
 
     const EVENTS = [
@@ -689,7 +732,11 @@
       { i: 1, dx: 0.34, m: 'STRIKE AT MAJOR COPPER MINES. SUPPLY TIGHT.' },
       { i: 1, dx: -0.28, m: 'CHIP SLUMP. COPPER DEMAND FALLS.' },
       { i: 2, dx: 0.3, m: 'CENTRAL BANKS ARE BUYING. GOLD RALLIES.' },
-      { i: 2, dx: -0.26, m: 'RISK APPETITE RETURNS. GOLD SOFTENS.' }
+      { i: 2, dx: -0.26, m: 'RISK APPETITE RETURNS. GOLD SOFTENS.' },
+      { i: 3, dx: 0.3, m: 'AUTOMAKERS STOCK UP. PLATINUM CLIMBS.' },
+      { i: 3, dx: -0.28, m: 'CATALYST DEMAND DROPS. PLATINUM SLIPS.' },
+      { i: 4, dx: 0.34, m: 'REACTOR ORDERS PILE UP. URANIUM SURGES.' },
+      { i: 4, dx: -0.3, m: 'A PLANT SHUTDOWN CUTS DEMAND. URANIUM FALLS.' }
     ];
 
     const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
@@ -716,7 +763,7 @@
     }
 
     function fresh() {
-      const s = { cash: 0, wl: 0, rs: {}, t: Date.now(), clock: 0, phos: 'green', outage: 0, boost: null, nextEvent: 25, milestone: 0, earned: 0, helped: false, c: COMM.map(freshComm) };
+      const s = { cash: 0, wl: 0, rs: {}, t: Date.now(), clock: 0, phos: 'green', outage: 0, boost: null, nextEvent: 25, milestone: 0, earned: 0, run: 0, runs: 0, shares: 0, sharesTotal: 0, bd: {}, helped: false, c: COMM.map(freshComm) };
       s.c[0].u = true;
       return s;
     }
@@ -727,7 +774,11 @@
       if (!raw) return base;
       try {
         const d = JSON.parse(raw);
-        ['cash', 'wl', 't', 'clock', 'phos', 'nextEvent', 'milestone', 'earned', 'helped'].forEach(k => { if (d[k] !== undefined) base[k] = d[k]; });
+        ['cash', 'wl', 't', 'clock', 'phos', 'nextEvent', 'milestone', 'earned', 'run', 'runs', 'shares', 'sharesTotal', 'helped'].forEach(k => { if (d[k] !== undefined) base[k] = d[k]; });
+        if (d.run === undefined) base.run = base.earned;
+        if (d.bd && typeof d.bd === 'object') {
+          Object.keys(d.bd).forEach(k => { const n = parseInt(d.bd[k], 10); if (n > 0) base.bd[k] = n; });
+        }
         if (d.rs && typeof d.rs === 'object') {
           Object.keys(d.rs).forEach(k => { const n = parseInt(d.rs[k], 10); if (n > 0) base.rs[k] = n; });
         }
@@ -736,7 +787,7 @@
           d.c.forEach((sc, i) => {
             if (!base.c[i] || !sc) return;
             ['u', 'ml', 'sl', 'ore', 'metal', 'x', 'auto'].forEach(k => { if (sc[k] !== undefined) base.c[i][k] = sc[k]; });
-            if (d.ver !== 2) base.c[i].auto = AUTO_OLD[base.c[i].auto] || 0;
+            if (!d.ver) base.c[i].auto = AUTO_OLD[base.c[i].auto] || 0;
             if (!(base.c[i].auto >= 0 && base.c[i].auto < AUTO.length)) base.c[i].auto = 0;
             base.c[i].h = new Array(HIST_LEN).fill(base.c[i].x);
           });
@@ -751,7 +802,7 @@
     let S = load();
 
     const cap = () => Math.floor(100 * Math.pow(1.5, S.wl));
-    const capCost = () => Math.ceil(150 * Math.pow(1.8, S.wl));
+    const capCost = () => Math.ceil(400 * Math.pow(1.8, S.wl));
     const lvlCost = (d, kind, lvl) => Math.ceil(d[kind].cost * Math.pow(1.15, lvl));
     const price = i => COMM[i].base * Math.exp(S.c[i].x);
     const RS = id => S.rs[id] || 0;
@@ -763,9 +814,14 @@
     const impactDiv = () => 1 + 0.5 * RS('liq');
     const outageLen = () => 15 * Math.pow(0.6, RS('generator'));
     const veinLen = () => 30 + 10 * RS('geo');
-    const mineBase = i => S.c[i].ml * COMM[i].mine.rate + rigRate();
+    const lvlMult = l => Math.pow(2, Math.floor(l / 25));
+    const BD = id => S.bd[id] || 0;
+    const awayMax = () => 7200 + 7200 * BD('watch');
+    const shareMult = () => 1 + 0.05 * S.sharesTotal;
+    const sharesGain = () => Math.floor(Math.sqrt(S.run / 1000000));
+    const mineBase = i => (S.c[i].ml + rigRate()) * COMM[i].mine.rate * lvlMult(S.c[i].ml);
     const mineRate = i => mineBase(i) * (S.boost && S.boost.i === i ? 2 : 1) * (S.outage > 0 ? 0 : 1);
-    const smeltRate = i => COMM[i].smelt.base + S.c[i].sl * COMM[i].smelt.rate;
+    const smeltRate = i => (COMM[i].smelt.base + S.c[i].sl * COMM[i].smelt.rate) * lvlMult(S.c[i].sl);
 
     function netWorth() {
       let v = S.cash;
@@ -774,6 +830,21 @@
     }
 
     const BROKER_NAMES = ['NONE', 'JUNIOR', 'SENIOR', 'TRADER'];
+
+    const BOARD = [
+      { id: 'seed', name: 'SEED CAPITAL', max: 5, cost: l => [1, 2, 4, 8, 16][l],
+        desc: 'Start every run with extra cash.',
+        fx: l => (l ? money(1000 * Math.pow(5, l - 1)) : 'NONE') },
+      { id: 'foreman', name: 'FOREMAN', max: 1, cost: () => 3,
+        desc: 'Start every run with a Junior broker already hired.',
+        fx: l => (l ? 'JUNIOR BROKER' : 'NONE') },
+      { id: 'fast', name: 'FAST TRACK', max: 3, cost: l => [5, 15, 40][l],
+        desc: 'Start every run with more desks already open.',
+        fx: l => ['NONE', 'COPPER', 'COPPER, GOLD', 'COPPER, GOLD, PLATINUM'][l] },
+      { id: 'watch', name: 'NIGHT WATCH', max: 5, cost: l => [2, 4, 8, 16, 32][l],
+        desc: 'Your mines keep producing for longer while you are away.',
+        fx: l => (2 + 2 * l) + 'h AWAY' }
+    ];
 
     function mk(o) {
       const lv = () => (o.id === 'warehouse' ? S.wl : RS(o.id));
@@ -798,35 +869,35 @@
         desc: 'Raises storage for every metal by 50% per level. A full warehouse stops production, and a full ore buffer stops mining.',
         fx: l => String(Math.floor(100 * Math.pow(1.5, l))),
         msg: () => 'WAREHOUSE EXPANDED. CAPACITY ' + cap() + '.' }),
-      mk({ id: 'dpower', name: 'DIG POWER', max: 4, base: 120, growth: 3,
-        desc: 'Doubles the ore you get from each DIG tap. The drill rig digs at this power too.',
+      mk({ id: 'dpower', name: 'DIG POWER', max: 4, base: 3000, growth: 4,
+        desc: 'Doubles the ore you get from each DIG tap, and multiplies the free levels your drill rig gives.',
         fx: l => Math.pow(2, l) + ' PER TAP',
         msg: () => 'DIG POWER UP. ' + digPower() + ' ORE PER TAP.' }),
-      mk({ id: 'rig', name: 'DRILL RIG', max: 5, base: 250, growth: 2.6, req: { id: 'dpower', lv: 1, name: 'DIG POWER' },
-        desc: 'Digs by itself on every open desk, one tap per second per level, at your dig power. Stops in an outage and runs at half speed while you are away.',
-        fx: l => l + ' TAP/S',
-        msg: () => 'DRILL RIG ONLINE. ' + RS('rig') + ' AUTO-TAP PER SECOND ON EVERY DESK.' }),
-      mk({ id: 'broker', name: 'BROKER', max: 3, base: 300, growth: 8,
+      mk({ id: 'rig', name: 'DRILL RIG', max: 5, base: 40000, growth: 3.5, req: { id: 'dpower', lv: 1, name: 'DIG POWER' },
+        desc: 'Gives every open desk free mine levels: rig level times dig power. Stops in an outage and works at half strength while you are away.',
+        fx: l => '+' + l * digPower() + ' FREE LEVELS',
+        msg: () => 'DRILL RIG ONLINE. +' + RS('rig') * digPower() + ' FREE MINE LEVELS ON EVERY DESK.' }),
+      mk({ id: 'broker', name: 'BROKER', max: 3, base: 1500, growth: 40,
         desc: 'Sells your metal for you once the price passes the level you set on a desk. Senior sells in stages to cut price impact and offers finer price levels. Trader also waits for the peak.',
         fx: l => BROKER_NAMES[l],
         msg: l => BROKER_NAMES[l] + ' BROKER HIRED. ' + (l === 1 ? 'SET A SELL PRICE WITH AUTO-SELL ON EACH DESK.' : 'AUTO-SELL IS UPGRADED.') }),
-      mk({ id: 'refinery', name: 'REFINERY', max: 4, base: 800, growth: 3,
+      mk({ id: 'refinery', name: 'REFINERY', max: 4, base: 20000, growth: 5,
         desc: 'Every smelted ore gives 15% more metal per level.',
         fx: l => '+' + 15 * l + '% METAL',
         msg: () => 'REFINERY UPGRADED. SMELTING YIELDS +' + 15 * RS('refinery') + '% METAL.' }),
-      mk({ id: 'liq', name: 'MARKET CONTRACTS', max: 4, base: 1200, growth: 2.8,
+      mk({ id: 'liq', name: 'MARKET CONTRACTS', max: 4, base: 15000, growth: 4.5,
         desc: 'Large sales move the price less. Each level adds 50% market depth.',
         fx: l => 'DEPTH x' + (1 + 0.5 * l).toFixed(1),
         msg: () => 'CONTRACTS SIGNED. MARKET DEPTH x' + impactDiv().toFixed(1) + '.' }),
-      mk({ id: 'generator', name: 'BACKUP GENERATOR', max: 3, base: 400, growth: 3,
+      mk({ id: 'generator', name: 'BACKUP GENERATOR', max: 3, base: 5000, growth: 6,
         desc: 'Power outages end sooner. Each level cuts outage time by 40%.',
         fx: l => (15 * Math.pow(0.6, l)).toFixed(1) + 's OUTAGE',
         msg: () => 'GENERATOR INSTALLED. OUTAGES NOW LAST ' + outageLen().toFixed(1) + 's.' }),
-      mk({ id: 'geo', name: 'GEOLOGIST', max: 3, base: 600, growth: 3,
+      mk({ id: 'geo', name: 'GEOLOGIST', max: 3, base: 8000, growth: 6,
         desc: 'Rich veins turn up more often and last 10s longer per level.',
         fx: l => (30 + 10 * l) + 's VEINS',
         msg: () => 'GEOLOGIST HIRED. RICH VEINS LAST ' + veinLen() + 's AND ARE MORE COMMON.' }),
-      mk({ id: 'intel', name: 'MARKET INTEL', max: 1, base: 2000, growth: 1,
+      mk({ id: 'intel', name: 'MARKET INTEL', max: 1, base: 25000, growth: 1,
         desc: 'Adds a price outlook to every desk: rising, falling or steady.',
         fx: l => (l ? 'ON' : 'OFF'),
         msg: () => 'MARKET INTEL ONLINE. EACH DESK NOW SHOWS AN OUTLOOK.' })
@@ -1029,6 +1100,9 @@
     const el = {};
     const refs = [];
     const rrefs = [];
+    const brefs = [];
+    const bref = {};
+    let confirmUntil = 0;
     const setT = (node, text) => { if (node._t !== text) { node._t = text; node.textContent = text; } };
 
     function stamp() {
@@ -1093,10 +1167,11 @@
       const n = frac >= 1 ? c.metal : Math.floor(c.metal * frac * 100) / 100;
       if (n <= 0) return null;
       const p = price(i);
-      const gain = n * p;
+      const gain = n * p * shareMult();
       c.metal -= n;
       S.cash += gain;
       S.earned += gain;
+      S.run += gain;
       c.x = Math.max(-0.8, c.x - 0.08 * n / (COMM[i].liq * impactDiv()));
       return { n, p, gain };
     }
@@ -1183,7 +1258,7 @@
     }
 
     function away(secs) {
-      const sec = Math.min(Math.floor(secs), AWAY_MAX);
+      const sec = Math.min(Math.floor(secs), awayMax());
       const sum = () => S.c.reduce((a, c) => a + c.ore + c.metal, 0);
       const before = sum();
       S.outage = 0;
@@ -1200,7 +1275,7 @@
     function save() {
       S.t = Date.now();
       store.set(KEY, JSON.stringify({
-        ver: 2, cash: S.cash, wl: S.wl, rs: S.rs, t: S.t, clock: S.clock, phos: S.phos,
+        ver: 3, run: S.run, runs: S.runs, shares: S.shares, sharesTotal: S.sharesTotal, bd: S.bd, cash: S.cash, wl: S.wl, rs: S.rs, t: S.t, clock: S.clock, phos: S.phos,
         nextEvent: S.nextEvent, milestone: S.milestone, earned: S.earned, helped: S.helped,
         c: S.c.map(c => ({ u: c.u, ml: c.ml, sl: c.sl, ore: c.ore, metal: c.metal, x: c.x, auto: c.auto }))
       }));
@@ -1235,6 +1310,35 @@
         a.querySelectorAll('[data-r]').forEach(n => { r[n.dataset.r] = n; });
         a.querySelectorAll('button[data-act]').forEach(b => { r['b_' + b.dataset.act] = b; });
         refs.push(r);
+      });
+      const bh = $('board');
+      const ra = document.createElement('article');
+      ra.className = 'card res';
+      ra.id = 'restruct';
+      ra.innerHTML =
+        '<h2>RESTRUCTURE<span data-r="lvl"></span></h2>' +
+        '<p>Sell the company and start again with nothing but shares. Every share you have earned adds 5% to everything you sell, forever, and you can spend shares below on permanent perks. You get more shares the more this run earned.</p>' +
+        '<div class="kv"><span>THIS RUN</span><span data-r="run"></span></div>' +
+        '<div class="kv"><span>SHARES</span><span data-r="sh"></span></div>' +
+        '<div class="kv"><span>NOW GIVES</span><span data-r="gain"></span></div>' +
+        '<button type="button" class="btn" data-act="restructure"><span data-r="lab"></span><small data-r="cost"></small></button>';
+      bh.appendChild(ra);
+      bref.card = ra;
+      ra.querySelectorAll('[data-r]').forEach(n => { bref[n.dataset.r] = n; });
+      bref.btn = ra.querySelector('button');
+      BOARD.forEach(d => {
+        const a = document.createElement('article');
+        a.className = 'card res';
+        a.dataset.id = d.id;
+        a.innerHTML =
+          '<h2>' + d.name + '<span data-r="lvl"></span></h2>' +
+          '<p>' + d.desc + '</p>' +
+          '<button type="button" class="btn" data-act="board"><span data-r="lab"></span><small data-r="cost"></small></button>';
+        bh.appendChild(a);
+        const r = { card: a };
+        a.querySelectorAll('[data-r]').forEach(n => { r[n.dataset.r] = n; });
+        r.btn = a.querySelector('button');
+        brefs.push(r);
       });
       const rh = $('research');
       RESEARCH.forEach((d, i) => {
@@ -1271,7 +1375,7 @@
       else if (S.boost) setT(el.status, 'RICH VEIN: ' + COMM[S.boost.i].sym + ' ORE x2 FOR ' + Math.ceil(S.boost.t) + 's');
       else if (lastNews && S.clock - lastNews.at < 45) setT(el.status, lastNews.m);
       else setT(el.status, 'ALL SYSTEMS NOMINAL');
-      el.status.classList.toggle('bad', S.outage > 0 || !!(lastNews && S.clock - lastNews.at < 45 && /OUTAGE|SLIDE|FALLS|SOFTENS/.test(lastNews.m) && !S.boost));
+      el.status.classList.toggle('bad', S.outage > 0 || !!(lastNews && S.clock - lastNews.at < 45 && /OUTAGE|SLIDE|FALLS|SOFTENS|SLIPS|DROPS/.test(lastNews.m) && !S.boost));
 
       RESEARCH.forEach((d, i) => {
         const r = rrefs[i];
@@ -1281,6 +1385,25 @@
         setT(r.lab, d.label());
         setT(r.cost, done ? 'complete' : lock ? 'locked' : money(d.cost()));
         r.btn.disabled = done || lock || S.cash < d.cost();
+      });
+
+      const sg = sharesGain();
+      const confirming = performance.now() < confirmUntil;
+      setT(bref.lvl, 'RUN ' + (S.runs + 1));
+      setT(bref.run, money(S.run));
+      setT(bref.sh, S.shares + ' SPARE / ' + S.sharesTotal + ' EARNED (+' + 5 * S.sharesTotal + '%)');
+      setT(bref.gain, sg + (sg === 1 ? ' SHARE' : ' SHARES'));
+      setT(bref.lab, confirming ? 'CONFIRM: RESET THIS RUN' : 'RESTRUCTURE');
+      setT(bref.cost, sg < 1 ? 'NEEDS $1M THIS RUN' : '');
+      bref.btn.disabled = sg < 1;
+      BOARD.forEach((d, i) => {
+        const r = brefs[i];
+        const l = BD(d.id);
+        const done = l >= d.max;
+        setT(r.lvl, 'L' + l + '/' + d.max);
+        setT(r.lab, done ? 'MAXED' : d.fx(l) + '  >  ' + d.fx(l + 1));
+        setT(r.cost, done ? 'complete' : d.cost(l) + ' SHARES');
+        r.btn.disabled = done || S.shares < d.cost(l);
       });
 
       const mc = cap();
@@ -1305,12 +1428,16 @@
         setT(r.oreval, Math.floor(c.ore) + '/' + oc);
         setT(r.metbar, bar(c.metal / mc, 14));
         setT(r.metval, Math.floor(c.metal) + '/' + mc);
-        setT(r.minel, 'MINE L' + c.ml + ' +' + mineBase(i).toFixed(1) + '/s');
-        setT(r.minec, money(lvlCost(d, 'mine', c.ml)));
-        r.b_mine.disabled = S.cash < lvlCost(d, 'mine', c.ml);
-        setT(r.smeltl, 'SMELT L' + c.sl + ' ' + smeltRate(i).toFixed(1) + '/s');
-        setT(r.smeltc, money(lvlCost(d, 'smelt', c.sl)));
-        r.b_smelt.disabled = S.cash < lvlCost(d, 'smelt', c.sl);
+        const pm = plan(i, 'mine');
+        const ps = plan(i, 'smelt');
+        const mm = lvlMult(c.ml);
+        const sm = lvlMult(c.sl);
+        setT(r.minel, 'MINE L' + c.ml + (mm > 1 ? ' x' + mm : '') + ' +' + fmt(mineBase(i)) + '/s');
+        setT(r.minec, (pm.n > 1 ? '+' + pm.n + ' ' : '') + money(pm.cost));
+        r.b_mine.disabled = S.cash < pm.cost;
+        setT(r.smeltl, 'SMELT L' + c.sl + (sm > 1 ? ' x' + sm : '') + ' ' + fmt(smeltRate(i)) + '/s');
+        setT(r.smeltc, (ps.n > 1 ? '+' + ps.n + ' ' : '') + money(ps.cost));
+        r.b_smelt.disabled = S.cash < ps.cost;
         r.b_half.disabled = c.metal < 2;
         r.b_all.disabled = c.metal < 1;
         r.b_auto.disabled = !brokerLv();
@@ -1346,15 +1473,60 @@
       return n;
     }
 
-    function buyLevel(i, kind) {
+    const BUYQ = [1, 10, 25, 'max'];
+    let buyQ = 0;
+
+    function plan(i, kind) {
       const c = S.c[i];
       const d = COMM[i];
-      const lvl = kind === 'mine' ? c.ml : c.sl;
-      const cost = lvlCost(d, kind, lvl);
-      if (!c.u || S.cash < cost) return 0;
-      S.cash -= cost;
-      if (kind === 'mine') c.ml++; else c.sl++;
-      return cost;
+      const l = kind === 'mine' ? c.ml : c.sl;
+      const q = BUYQ[buyQ];
+      let cost = 0;
+      let n = 0;
+      if (q === 'max') {
+        while (n < 1000) {
+          const k = lvlCost(d, kind, l + n);
+          if (cost + k > S.cash) break;
+          cost += k;
+          n++;
+        }
+        if (n === 0) { cost = lvlCost(d, kind, l); n = 1; }
+      } else {
+        for (; n < q; n++) cost += lvlCost(d, kind, l + n);
+      }
+      return { n, cost };
+    }
+
+    function buyLevel(i, kind) {
+      const c = S.c[i];
+      if (!c.u) return 0;
+      const pl = plan(i, kind);
+      if (S.cash < pl.cost) return 0;
+      S.cash -= pl.cost;
+      if (kind === 'mine') c.ml += pl.n; else c.sl += pl.n;
+      return pl.cost;
+    }
+
+    function restructure() {
+      const g = sharesGain();
+      if (g < 1) return;
+      S.shares += g;
+      S.sharesTotal += g;
+      S.runs++;
+      S.cash = 1000 * (BD('seed') ? Math.pow(5, BD('seed') - 1) : 0);
+      S.wl = 0;
+      S.rs = BD('foreman') ? { broker: 1 } : {};
+      S.run = 0;
+      S.outage = 0;
+      S.boost = null;
+      S.nextEvent = S.clock + 25;
+      S.milestone = 0;
+      S.c = COMM.map(freshComm);
+      S.c[0].u = true;
+      for (let i = 1; i <= BD('fast') && i < COMM.length; i++) S.c[i].u = true;
+      log('RESTRUCTURED. +' + g + (g === 1 ? ' SHARE' : ' SHARES') + '. ALL INCOME IS NOW +' + 5 * S.sharesTotal + '%.');
+      Snd.sfx('unlock');
+      save();
     }
 
     function unlockComm(i) {
@@ -1496,7 +1668,9 @@
       tab = t;
       $('cards').hidden = t !== 'ops';
       $('research').hidden = t !== 'res';
-      ['ops', 'res'].forEach(k => $('tab-' + k).setAttribute('aria-selected', k === t ? 'true' : 'false'));
+      $('board').hidden = t !== 'bd';
+      $('tbuy').hidden = t !== 'ops';
+      ['ops', 'res', 'bd'].forEach(k => $('tab-' + k).setAttribute('aria-selected', k === t ? 'true' : 'false'));
     }
 
     function bindUI() {
@@ -1538,6 +1712,36 @@
         const b = e.target.closest('button[data-act="research"]');
         if (!b || b.disabled) return;
         buyResearch(b.closest('.card').dataset.id);
+        render();
+      });
+
+      $('board').addEventListener('click', e => {
+        const b = e.target.closest('button[data-act]');
+        if (!b || b.disabled) return;
+        if (b.dataset.act === 'restructure') {
+          if (performance.now() < confirmUntil) {
+            confirmUntil = 0;
+            restructure();
+          } else {
+            confirmUntil = performance.now() + 5000;
+          }
+        } else {
+          const id = b.closest('.card').dataset.id;
+          const d = BOARD.find(x => x.id === id);
+          const l = BD(id);
+          if (d && l < d.max && S.shares >= d.cost(l)) {
+            S.shares -= d.cost(l);
+            S.bd[id] = l + 1;
+            log(d.name + ' UPGRADED TO L' + (l + 1) + '.');
+            Snd.sfx('unlock');
+          }
+        }
+        render();
+      });
+
+      $('tbuy').addEventListener('click', () => {
+        buyQ = (buyQ + 1) % BUYQ.length;
+        setT($('tbuy'), 'BUY x' + (BUYQ[buyQ] === 'max' ? 'MAX' : BUYQ[buyQ]));
         render();
       });
 
