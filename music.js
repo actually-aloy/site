@@ -27,8 +27,8 @@
   const M = {
     ctx: null, master: null, bus: null, delay: null, rev: null, noise: null, keep: null,
     on: false, armed: false, vol: 0.1, timer: null, nextT: 0, stepN: 0, ti: -1, tr: null,
-    style: 'play', key: '', text: { label: 'Music', hint: 'Tap anywhere to start the music' },
-    pill: null, btn: null, range: null, slider: null, hint: null, labelEl: null, hintTimer: 0,
+    style: 'play', key: '', text: { label: 'Music' },
+    pill: null, btn: null, range: null, slider: null, labelEl: null,
 
     init() {
       if (this.ctx) return true;
@@ -357,8 +357,6 @@
       if (document.activeElement !== this.range && Number(this.range.value) !== pv) this.range.value = pv;
       this.range.setAttribute('aria-valuetext', this.range.value + '%');
       this.slider.style.setProperty('--v', this.range.value);
-      this.hint.textContent = this.text.hint;
-      this.hint.classList.toggle('show', on && !run && this.hintOn);
     },
 
     build(mount, before) {
@@ -368,17 +366,11 @@
         '<button type="button" class="mu-btn" aria-pressed="false"><span class="mu-eq" aria-hidden="true"><i></i><i></i><i></i></span><span class="mu-label"></span></button>' +
         '<div class="mu-vol"><div class="mu-slider"><div class="mu-fill"></div><input class="mu-range" type="range" min="0" max="100" step="1" value="10" aria-label="Volume"></div></div>';
       mount.insertBefore(pill, before || null);
-      const hint = document.createElement('div');
-      hint.className = 'mu-hint';
-      hint.setAttribute('role', 'status');
-      document.body.appendChild(hint);
       this.pill = pill;
-      this.hint = hint;
       this.btn = pill.querySelector('.mu-btn');
       this.labelEl = pill.querySelector('.mu-label');
       this.range = pill.querySelector('.mu-range');
       this.slider = pill.querySelector('.mu-slider');
-      this.hintOn = false;
       this.btn.addEventListener('click', () => {
         if (this.on && this.ctx && this.ctx.state !== 'running') {
           this.kick();
@@ -424,9 +416,7 @@
         M.arm();
         setTimeout(() => {
           if (M.ctx && M.ctx.state === 'running') M.disarm();
-          M.hintOn = true;
           M.paint();
-          setTimeout(() => { M.hintOn = false; M.paint(); }, 9000);
         }, 700);
       }
       M.paint();

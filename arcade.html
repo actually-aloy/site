@@ -965,7 +965,6 @@
         dir: 'ltr',
         backHome: 'home',
         music: 'Music',
-        musicHint: 'Tap anywhere to start the music',
         backArcade: 'arcade',
         play: 'Play',
         bestLabel: 'Best',
@@ -1065,7 +1064,6 @@
         dir: 'rtl',
         backHome: 'خانه',
         music: 'موزیک',
-        musicHint: 'برای پخش موزیک هر جایی بزن',
         backArcade: 'بازی‌ها',
         play: 'بازی کن',
         bestLabel: 'رکورد',
@@ -2550,7 +2548,7 @@
       T = I18N[lang];
       document.documentElement.lang = lang;
       document.documentElement.dir = T.dir;
-      Music.setText({ label: T.music, hint: T.musicHint });
+      Music.setText({ label: T.music });
       snakeGame.paint();
       memoryGame.paint();
       seqGame.paint();
@@ -2566,7 +2564,7 @@
       style: 'play',
       mount: document.querySelector('.topbar'),
       before: $('lang-toggle'),
-      text: { label: T.music, hint: T.musicHint }
+      text: { label: T.music }
     });
 
     $('lang-toggle').addEventListener('click', () => {

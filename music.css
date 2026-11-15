@@ -200,31 +200,6 @@
   border-radius: 8px;
 }
 
-.mu-hint {
-  position: fixed;
-  left: 50%;
-  bottom: 22px;
-  z-index: 60;
-  max-width: calc(100vw - 32px);
-  padding: 10px 18px;
-  border: 1px solid rgba(255, 209, 231, 0.4);
-  border-radius: 999px;
-  background: rgba(20, 16, 24, 0.9);
-  color: var(--pink-soft);
-  font-size: 13px;
-  font-weight: 600;
-  text-align: center;
-  transform: translate(-50%, 16px);
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 400ms ease, transform 400ms ease;
-}
-
-.mu-hint.show {
-  transform: translate(-50%, 0);
-  opacity: 1;
-}
-
 @media (max-width: 520px) {
   .mu-label {
     display: none;
