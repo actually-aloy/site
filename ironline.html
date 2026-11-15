@@ -197,21 +197,25 @@
       border-color: var(--fg);
     }
 
-    .mbar {
-      flex: 1 0 100%;
+    .mpill {
+      position: relative;
       display: flex;
       align-items: center;
-      gap: 14px;
+      border: 1px solid var(--line);
+      transition: border-color 0.2s;
     }
 
-    .mbar .back {
-      flex: 0 0 auto;
-      gap: 8px;
-      min-width: 128px;
+    .mpill.on {
+      border-color: var(--fg);
+    }
+
+    .mpill .back {
+      min-width: 40px;
       justify-content: center;
+      border: 0;
     }
 
-    .eq {
+    .meq {
       display: inline-flex;
       align-items: flex-end;
       gap: 2px;
@@ -219,7 +223,7 @@
       height: 12px;
     }
 
-    .eq i {
+    .meq i {
       flex: 1;
       height: 100%;
       background: currentColor;
@@ -228,46 +232,53 @@
       transition: transform 0.25s;
     }
 
-    .back.on .eq i {
-      animation: eq 0.9s ease-in-out infinite;
+    .mpill.on .meq i {
+      animation: meq 0.9s ease-in-out infinite;
     }
 
-    .back.on .eq i:nth-child(2) {
+    .mpill.on .meq i:nth-child(2) {
       animation-duration: 0.7s;
       animation-delay: -0.3s;
     }
 
-    .back.on .eq i:nth-child(3) {
+    .mpill.on .meq i:nth-child(3) {
       animation-duration: 1.1s;
       animation-delay: -0.6s;
     }
 
-    @keyframes eq {
+    @keyframes meq {
       0%, 100% { transform: scaleY(0.25); }
       50% { transform: scaleY(1); }
     }
 
+    .mpill .more {
+      display: none;
+      min-width: 26px;
+      padding: 0;
+      border-left: 1px solid var(--line);
+      place-items: center;
+    }
+
+    .more svg {
+      width: 14px;
+      height: 14px;
+      transition: transform 0.2s;
+    }
+
+    .mpill.open .more svg {
+      transform: rotate(180deg);
+    }
+
     .vol {
-      flex: 1;
-      max-width: 360px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      min-width: 0;
-      opacity: 0.4;
-      transition: opacity 0.3s;
+      max-width: 0;
+      overflow: hidden;
+      opacity: 0;
+      transition: max-width 0.35s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.25s;
     }
 
-    .mbar.on .vol {
+    .mpill.on .vol {
+      max-width: 96px;
       opacity: 1;
-    }
-
-    .vol output {
-      width: 4ch;
-      text-align: right;
-      font-size: 12px;
-      color: var(--dim);
-      font-variant-numeric: tabular-nums;
     }
 
     @property --p {
@@ -276,13 +287,16 @@
       initial-value: 0%;
     }
 
-    .vol input {
+    .vol .slide {
+      width: 72px;
+      margin: 0 12px 0 0;
+    }
+
+    .slide {
       -webkit-appearance: none;
       appearance: none;
-      flex: 1;
-      min-width: 0;
-      height: 30px;
-      margin: 0;
+      display: block;
+      height: 38px;
       background: transparent;
       cursor: pointer;
       touch-action: pan-y;
@@ -290,11 +304,11 @@
       transition: --p 0.3s ease;
     }
 
-    .vol input.drag {
+    .slide.drag {
       transition: none;
     }
 
-    .mbar.on .vol input {
+    .mpill.on .slide {
       animation: vglow 2.6s ease-in-out infinite;
     }
 
@@ -303,21 +317,21 @@
       50% { filter: drop-shadow(0 0 5px var(--fg)); }
     }
 
-    .vol input::-webkit-slider-runnable-track {
-      height: 6px;
+    .slide::-webkit-slider-runnable-track {
+      height: 5px;
       background: linear-gradient(90deg, var(--fg) var(--p), var(--line) var(--p));
     }
 
-    .vol input::-moz-range-track {
-      height: 6px;
+    .slide::-moz-range-track {
+      height: 5px;
       background: linear-gradient(90deg, var(--fg) var(--p), var(--line) var(--p));
     }
 
-    .vol input::-webkit-slider-thumb {
+    .slide::-webkit-slider-thumb {
       -webkit-appearance: none;
-      width: 12px;
-      height: 20px;
-      margin-top: -7px;
+      width: 10px;
+      height: 18px;
+      margin-top: -6.5px;
       border: 0;
       border-radius: 0;
       background: var(--fg);
@@ -325,9 +339,9 @@
       transition: transform 0.15s;
     }
 
-    .vol input::-moz-range-thumb {
-      width: 12px;
-      height: 20px;
+    .slide::-moz-range-thumb {
+      width: 10px;
+      height: 18px;
       border: 0;
       border-radius: 0;
       background: var(--fg);
@@ -335,30 +349,57 @@
       transition: transform 0.15s;
     }
 
-    .vol input:hover::-webkit-slider-thumb {
+    .slide:hover::-webkit-slider-thumb,
+    .slide:hover::-moz-range-thumb {
       transform: scale(1.2);
     }
 
-    .vol input:active::-webkit-slider-thumb {
+    .slide:active::-webkit-slider-thumb,
+    .slide:active::-moz-range-thumb {
       transform: scale(1.4);
     }
 
-    .vol input:hover::-moz-range-thumb {
-      transform: scale(1.2);
-    }
-
-    .vol input:active::-moz-range-thumb {
-      transform: scale(1.4);
-    }
-
-    .vol input:focus-visible {
+    .slide:focus-visible {
       outline: 1px solid var(--fg);
-      outline-offset: 4px;
+      outline-offset: -3px;
+    }
+
+    @media (max-width: 520px) {
+      .mpill.on .more {
+        display: grid;
+      }
+
+      .mpill .vol,
+      .mpill.on .vol {
+        position: absolute;
+        top: calc(100% + 6px);
+        right: 0;
+        z-index: 70;
+        max-width: none;
+        border: 1px solid var(--fg);
+        background: var(--bg);
+        opacity: 0;
+        pointer-events: none;
+        transform: translateY(-4px);
+        transition: opacity 0.2s, transform 0.2s;
+      }
+
+      .mpill.open .vol {
+        opacity: 1;
+        pointer-events: auto;
+        transform: none;
+      }
+
+      .vol .slide,
+      .mpill .vol .slide {
+        width: 140px;
+        margin: 0 12px;
+      }
     }
 
     @media (prefers-reduced-motion: reduce) {
-      .back.on .eq i,
-      .mbar.on .vol input,
+      .mpill.on .meq i,
+      .mpill.on .slide,
       .dots {
         animation: none;
       }
@@ -559,43 +600,124 @@
       display: none;
     }
 
-    .mk {
-      grid-template-columns: 1fr;
+    .mk-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: 16px;
+    }
+
+    .mk-main,
+    .mk-side {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      min-width: 0;
     }
 
     .mk-head {
       display: flex;
-      align-items: baseline;
+      align-items: flex-end;
       justify-content: space-between;
       gap: 8px;
-      flex-wrap: wrap;
+    }
+
+    .mk-sym {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      min-width: 0;
+    }
+
+    .mk-sym small {
+      font-size: 11px;
+      letter-spacing: 0.06em;
+      color: var(--dim);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .mk-px {
       font-size: 26px;
       font-weight: 700;
+      line-height: 1.1;
+      text-align: right;
+      white-space: nowrap;
     }
 
     .mk-px small {
-      font-size: 13px;
+      display: block;
+      font-size: 12px;
       font-weight: 400;
-      margin-left: 8px;
+      line-height: 1.3;
+      min-height: 1.3em;
     }
 
-    .mk-bar {
+    .tf {
       display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 8px;
+      align-items: stretch;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .tf .t {
+      flex: 1 1 0;
+      min-width: 0;
       min-height: 34px;
-      font-size: 12px;
+      padding: 0;
+      border: 0;
+      background: transparent;
       color: var(--dim);
-      flex-wrap: wrap;
+      font-size: 12px;
+      letter-spacing: 0.04em;
+      cursor: pointer;
+      transition: color 0.15s, background 0.15s;
+    }
+
+    .tf .t:hover {
+      color: var(--fg);
+    }
+
+    .tf .t[aria-pressed="true"] {
+      color: var(--fg);
+      background: color-mix(in srgb, var(--fg) 12%, transparent);
+      box-shadow: inset 0 -2px 0 var(--fg);
+    }
+
+    .tf .ic {
+      flex: 0 0 40px;
+      display: grid;
+      place-items: center;
+      min-height: 34px;
+      padding: 0;
+      border: 0;
+      border-left: 1px solid var(--line);
+      background: transparent;
+      color: var(--fg);
+      cursor: pointer;
+    }
+
+    .tf .ic:hover {
+      background: color-mix(in srgb, var(--fg) 14%, transparent);
+    }
+
+    .tf .ic svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    .tf .ic[data-s="line"] .i-c,
+    .tf .ic[data-s="candle"] .i-l {
+      display: none;
+    }
+
+    .tf.ot .t {
+      font-size: 12px;
+      letter-spacing: 0.08em;
     }
 
     .mk-chart {
       position: relative;
-      height: 230px;
+      height: 280px;
       border: 1px solid var(--line);
     }
 
@@ -606,45 +728,29 @@
       touch-action: pan-y;
     }
 
-    .mk-msg {
+    .mk-leg {
       position: absolute;
-      inset: 0;
-      display: grid;
-      place-items: center;
-      padding: 16px;
-      text-align: center;
-      font-size: 13px;
-      letter-spacing: 0.06em;
+      top: 6px;
+      left: 8px;
+      right: 84px;
+      height: 16px;
+      font-size: 10px;
+      line-height: 16px;
       color: var(--dim);
-      pointer-events: none;
-    }
-
-    .mk-msg[hidden] {
-      display: none;
-    }
-
-    .dots {
-      display: inline-block;
-      width: 1.4em;
+      white-space: nowrap;
       overflow: hidden;
-      vertical-align: bottom;
-      text-align: left;
-      animation: dots 1.2s steps(4) infinite;
-    }
-
-    @keyframes dots {
-      from { width: 0; }
-      to { width: 1.4em; }
+      text-overflow: ellipsis;
+      pointer-events: none;
     }
 
     .mk-chip {
       position: absolute;
-      top: 8px;
-      left: 8px;
+      top: 4px;
+      right: 8px;
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      min-height: 26px;
+      min-height: 22px;
       padding: 0 8px;
       border: 1px solid var(--line);
       background: color-mix(in srgb, var(--bg) 80%, transparent);
@@ -673,18 +779,93 @@
       opacity: 1;
     }
 
+    .mk-msg {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      padding: 16px;
+      text-align: center;
+      font-size: 13px;
+      line-height: 1.6;
+      letter-spacing: 0.06em;
+      color: var(--dim);
+      pointer-events: none;
+    }
+
+    .mk-msg[hidden],
+    .mk-msg [hidden] {
+      display: none;
+    }
+
+    .mk-msg a {
+      color: var(--fg);
+      pointer-events: auto;
+      text-decoration: underline;
+    }
+
+    .dots {
+      display: inline-block;
+      width: 1.4em;
+      overflow: hidden;
+      vertical-align: bottom;
+      text-align: left;
+      animation: dots 1.2s steps(4) infinite;
+    }
+
+    @keyframes dots {
+      from { width: 0; }
+      to { width: 1.4em; }
+    }
+
+    .mk-pos {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1px;
+      border: 1px solid var(--line);
+      background: var(--line);
+    }
+
+    .mk-pos > div {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      min-width: 0;
+      padding: 7px 10px;
+      background: var(--bg);
+    }
+
+    .mk-pos span {
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      color: var(--dim);
+    }
+
+    .mk-pos b {
+      font-size: 13px;
+      font-weight: 600;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
     .mk-note {
+      grid-column: 1 / -1;
+      margin: 0;
       font-size: 11px;
       color: var(--dim);
       line-height: 1.5;
     }
 
-    .trade {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      padding-top: 12px;
-      border-top: 1px dashed var(--line);
+    .sd button[data-os="sell"][aria-pressed="true"] {
+      color: var(--warn);
+      background: color-mix(in srgb, var(--warn) 14%, transparent);
+      box-shadow: inset 0 -2px 0 var(--warn);
+    }
+
+    .btn.sell {
+      border-color: var(--warn);
+      color: var(--warn);
     }
 
     .kv.ctl {
@@ -696,7 +877,7 @@
       margin-left: auto;
     }
 
-    .kv input {
+    .kv input:not(.slide) {
       width: 160px;
       min-height: 34px;
       padding: 0 10px;
@@ -710,13 +891,35 @@
       transition: border-color 0.15s, opacity 0.15s;
     }
 
-    .kv input:focus {
+    .kv input:not(.slide):focus {
       border-color: var(--fg);
     }
 
     .kv input[readonly] {
       border-style: dashed;
       opacity: 0.6;
+    }
+
+    .mk-side .slide {
+      width: 100%;
+      margin: 0;
+    }
+
+    @container (min-width: 440px) {
+      .mk-pos {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+      }
+    }
+
+    @container (min-width: 760px) {
+      .mk-grid {
+        grid-template-columns: minmax(0, 1fr) 300px;
+        gap: 20px;
+      }
+
+      .mk-chart {
+        height: 340px;
+      }
     }
 
     .mini {
@@ -1206,6 +1409,220 @@
         animation: none;
       }
     }
+    .btn.danger {
+      border-color: var(--warn);
+      color: var(--warn);
+    }
+
+    .dlg {
+      position: fixed;
+      inset: 0;
+      z-index: 80;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      background: rgba(0, 0, 0, 0.82);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s;
+    }
+
+    .dlg.show {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .dbox {
+      width: min(460px, 100%);
+      max-height: 100%;
+      overflow: auto;
+      border: 2px solid var(--warn);
+      background: var(--bg);
+      color: var(--warn);
+      box-shadow: 0 0 24px color-mix(in srgb, var(--warn) 40%, transparent);
+      animation: dpulse 1.6s ease-in-out infinite;
+    }
+
+    @keyframes dpulse {
+      0%, 100% { box-shadow: 0 0 10px color-mix(in srgb, var(--warn) 25%, transparent); }
+      50% { box-shadow: 0 0 30px color-mix(in srgb, var(--warn) 55%, transparent); }
+    }
+
+    .dhaz {
+      height: 10px;
+      background: repeating-linear-gradient(135deg, var(--warn) 0, var(--warn) 10px, var(--bg) 10px, var(--bg) 20px);
+    }
+
+    .dbody {
+      padding: 14px 16px 16px;
+    }
+
+    .dbody h2 {
+      margin: 0 0 8px;
+      font-size: 17px;
+      letter-spacing: 0.08em;
+    }
+
+    .dbody p {
+      margin: 0 0 12px;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .dcols {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .dcols > div {
+      border: 1px solid var(--line);
+      padding: 8px 10px;
+      font-size: 12px;
+      line-height: 1.6;
+    }
+
+    .dcols h3 {
+      margin: 0 0 4px;
+      font-size: 12px;
+      letter-spacing: 0.1em;
+    }
+
+    .dcols .lose h3,
+    .dcols .lose {
+      color: var(--warn);
+    }
+
+    .dcols .keep,
+    .dcols .keep h3 {
+      color: var(--fg);
+    }
+
+    .dcols ul {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .dgain {
+      margin-bottom: 14px;
+      color: var(--fg);
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .dbtns {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: 10px;
+    }
+
+    .dbtns button {
+      min-height: 46px;
+      padding: 8px 10px;
+      border: 1px solid var(--fg);
+      background: transparent;
+      color: var(--fg);
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .dbtns button.go {
+      border-color: var(--warn);
+      color: var(--warn);
+    }
+
+    .dbtns button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .dbtns button:not(:disabled):hover,
+    .dbtns button:focus-visible {
+      background: color-mix(in srgb, currentColor 18%, transparent);
+      outline: 0;
+    }
+
+    .crt {
+      position: fixed;
+      inset: 0;
+      z-index: 90;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      background: #000;
+      cursor: wait;
+    }
+
+    .crt.show {
+      display: flex;
+    }
+
+    .crt i {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--fg);
+      box-shadow: 0 0 14px 4px var(--fg);
+      animation: dot 1.2s ease-out forwards;
+    }
+
+    @keyframes dot {
+      0% { opacity: 1; transform: scale(1); }
+      100% { opacity: 0; transform: scale(0.2); }
+    }
+
+    .screen.pwroff {
+      animation: crtoff 0.6s cubic-bezier(0.55, 0, 0.9, 0.4) forwards;
+    }
+
+    .screen.pwron {
+      animation: crton 0.8s cubic-bezier(0.2, 0.7, 0.3, 1) both;
+    }
+
+    @keyframes crtoff {
+      0% { transform: scale(1, 1); filter: brightness(1); }
+      55% { transform: scale(1, 0.008); filter: brightness(3); }
+      85% { transform: scale(0.02, 0.008); filter: brightness(4); }
+      100% { transform: scale(0, 0); filter: brightness(0); }
+    }
+
+    @keyframes crton {
+      0% { transform: scale(0.02, 0.006); filter: brightness(5); }
+      30% { transform: scale(1, 0.006); filter: brightness(5); }
+      70% { transform: scale(1, 1.03); filter: brightness(2); }
+      100% { transform: scale(1, 1); filter: brightness(1); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .dbox {
+        animation: none;
+      }
+
+      .screen.pwroff {
+        animation: rmoff 0.5s forwards;
+      }
+
+      .screen.pwron {
+        animation: rmon 0.6s both;
+      }
+
+      .crt i {
+        animation: none;
+        opacity: 0;
+      }
+
+      @keyframes rmoff {
+        to { opacity: 0; }
+      }
+
+      @keyframes rmon {
+        from { opacity: 0; }
+        to { opacity: 1; }
+      }
+    }
   </style>
 </head>
 <body>
@@ -1213,15 +1630,16 @@
     <div class="top">
       <div class="brand">IRONLINE<span class="cursor">_</span><small>MINING &amp; TRADING TERMINAL</small></div>
       <div class="top-btns">
+        <div class="mpill" id="mbar">
+          <button type="button" class="back" id="tmus" aria-pressed="false" aria-label="Music"><span class="meq" aria-hidden="true"><i></i><i></i><i></i></span></button>
+          <button type="button" class="back more" id="tmore" aria-label="Volume" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>
+          <div class="vol"><input type="range" class="slide" id="tvol" min="0" max="100" step="1" value="10" aria-label="Music volume"></div>
+        </div>
         <button type="button" class="back" id="tfs" aria-label="Toggle fullscreen" aria-pressed="false" hidden>
           <svg class="fs-in" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" aria-hidden="true"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg>
           <svg class="fs-out" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" aria-hidden="true"><path d="M9 4v5H4M15 4v5h5M9 20v-5H4M15 20v-5h5"/></svg>
         </button>
         <a class="back" href="arcade.html">&lt; ARCADE</a>
-      </div>
-      <div class="mbar" id="mbar">
-        <button type="button" class="back" id="tmus" aria-pressed="false"><span class="eq" aria-hidden="true"><i></i><i></i><i></i></span><span id="tmust">MUSIC OFF</span></button>
-        <div class="vol"><input type="range" id="tvol" min="0" max="100" step="1" value="80" aria-label="Music volume"><output id="tvolv" for="tvol">80%</output></div>
       </div>
     </div>
 
@@ -1275,7 +1693,7 @@
     };
 
     const KEY = 'ironline-save-v1';
-    const AKEY = 'ironline-audio-v1';
+    const AKEY = 'ironline-audio-v2';
     const SPARK = '▁▂▃▄▅▆▇█';
     const HIST_LEN = 36;
     const HIST_EVERY = 4;
@@ -1332,7 +1750,7 @@
     const money = n => '$' + fmt(n);
 
     function freshComm() {
-      return { u: false, ml: 0, sl: 0, ore: 0, metal: 0, x: 0, dx: 0, auto: 0, ovf: true, h: new Array(HIST_LEN).fill(0) };
+      return { u: false, ml: 0, sl: 0, ore: 0, metal: 0, x: 0, dx: 0, auto: 0, ovf: 2, h: new Array(HIST_LEN).fill(0) };
     }
 
     function fresh() {
@@ -1364,7 +1782,8 @@
         if (Array.isArray(d.c)) {
           d.c.forEach((sc, i) => {
             if (!base.c[i] || !sc) return;
-            ['u', 'ml', 'sl', 'ore', 'metal', 'x', 'auto', 'ovf'].forEach(k => { if (sc[k] !== undefined) base.c[i][k] = sc[k]; });
+            ['u', 'ml', 'sl', 'ore', 'metal', 'x', 'auto'].forEach(k => { if (sc[k] !== undefined) base.c[i][k] = sc[k]; });
+            base.c[i].ovf = typeof sc.ovf === 'boolean' ? (sc.ovf ? 2 : 0) : clamp(Math.floor(Number(sc.ovf)) || 0, 0, OVF.length - 1);
             if (!(base.c[i].auto >= 0 && base.c[i].auto < AUTO.length)) base.c[i].auto = 0;
             base.c[i].h = new Array(HIST_LEN).fill(base.c[i].x);
           });
@@ -1406,19 +1825,18 @@
     }
 
 
-    const BTC = { ok: false, src: '', pts: [], range: '1D', type: 'line', ma: false, price: 0, at: 0, tried: false, busy: false, again: false, err: false, hover: -1, cache: {}, rt: 0 };
+    const BTC = { ok: false, src: '', pts: [], range: '15m', type: 'line', ma: false, price: 0, at: 0, tried: false, busy: false, again: false, err: false, hover: -1, cache: {}, rt: 0 };
     const BTC_FEE = 0.0025;
     const HOUR = 3600000;
     const DAY = 86400000;
     const RANGES = {
-      '1H': { win: HOUR, stale: 1200000, min: 30, tm: 1, cb: 60, kr: 1, bn: '1m', bl: 60, cc: ['histominute', 1, 60], cg: 0 },
-      '4H': { win: 4 * HOUR, stale: 1800000, min: 30, tm: 1, cb: 300, kr: 5, bn: '5m', bl: 50, cc: ['histominute', 5, 50], cg: 0 },
-      '1D': { win: DAY, stale: 3 * HOUR, min: 20, tm: 1, cb: 900, kr: 15, bn: '15m', bl: 100, cc: ['histominute', 15, 100], cg: 1 },
-      '1W': { win: 7 * DAY, stale: 5 * HOUR, min: 20, tm: 1, cb: 3600, kr: 60, bn: '1h', bl: 170, cc: ['histohour', 1, 170], cg: 7 },
-      '1M': { win: 30 * DAY, stale: 8 * HOUR, min: 20, tm: 1, cb: 21600, kr: 240, bn: '4h', bl: 190, cc: ['histohour', 4, 190], cg: 30 },
-      '3M': { win: 90 * DAY, stale: 5 * DAY, min: 20, tm: 0, cb: 86400, kr: 1440, bn: '1d', bl: 95, cc: ['histoday', 1, 95], cg: 90 },
-      '1Y': { win: 365 * DAY, stale: 5 * DAY, min: 20, tm: 0, cb: 0, kr: 1440, bn: '1d', bl: 370, cc: ['histoday', 1, 370], cg: 365 },
-      '5Y': { win: 1826 * DAY, stale: 8 * DAY, min: 100, tm: 0, cb: 0, kr: 10080, bn: '1w', bl: 270, cc: ['histoday', 7, 270], cg: 0 }
+      '1m': { win: 2 * HOUR, stale: 900000, min: 80, tm: 1, ax: 'h', lab: '2H', cb: 60, kr: 1, bn: '1m', bl: 120, cc: ['histominute', 1, 120], cg: 0 },
+      '5m': { win: 10 * HOUR, stale: 1800000, min: 80, tm: 1, ax: 'h', lab: '10H', cb: 300, kr: 5, bn: '5m', bl: 120, cc: ['histominute', 5, 120], cg: 0 },
+      '15m': { win: 30 * HOUR, stale: 3600000, min: 80, tm: 1, ax: 'h', lab: '30H', cb: 900, kr: 15, bn: '15m', bl: 120, cc: ['histominute', 15, 120], cg: 0 },
+      '1H': { win: 7 * DAY, stale: 3 * HOUR, min: 100, tm: 1, ax: 'd', lab: '7D', cb: 3600, kr: 60, bn: '1h', bl: 170, cc: ['histohour', 1, 170], cg: 0 },
+      '4H': { win: 30 * DAY, stale: 8 * HOUR, min: 100, tm: 1, ax: 'd', lab: '30D', cb: 0, kr: 240, bn: '4h', bl: 190, cc: ['histohour', 4, 190], cg: 30 },
+      '1D': { win: 180 * DAY, stale: 3 * DAY, min: 100, tm: 0, ax: 'd', lab: '180D', cb: 86400, kr: 1440, bn: '1d', bl: 190, cc: ['histoday', 1, 190], cg: 0 },
+      '1W': { win: 1826 * DAY, stale: 8 * DAY, min: 100, tm: 0, ax: 'y', lab: '5Y', cb: 0, kr: 10080, bn: '1w', bl: 270, cc: ['histoday', 7, 270], cg: 0 }
     };
     const MA_N = 20;
     const btcLive = () => BTC.ok && Date.now() - BTC.at < 180000;
@@ -1426,14 +1844,14 @@
     const TR = { side: 'buy', type: 'market', amt: 25 };
 
     try {
-      const cp = JSON.parse(localStorage.getItem('ironline-chart-v1') || '{}');
+      const cp = JSON.parse(localStorage.getItem('ironline-chart-v2') || '{}');
       if (RANGES[cp.range]) BTC.range = cp.range;
       if (cp.type === 'candle') BTC.type = 'candle';
       BTC.ma = cp.ma === true;
     } catch (e) {}
 
     function saveChartPrefs() {
-      try { localStorage.setItem('ironline-chart-v1', JSON.stringify({ range: BTC.range, type: BTC.type, ma: BTC.ma })); } catch (e) {}
+      try { localStorage.setItem('ironline-chart-v2', JSON.stringify({ range: BTC.range, type: BTC.type, ma: BTC.ma })); } catch (e) {}
     }
 
     function getJSON(url) {
@@ -1594,35 +2012,32 @@
     function buildMarkets() {
       const a = document.createElement('article');
       a.className = 'card';
-      const rb = Object.keys(RANGES).map(k => '<button type="button" data-rng="' + k + '" aria-pressed="false">' + k + '</button>').join('');
+      const tf = Object.keys(RANGES).map(k => '<button type="button" class="t" data-rng="' + k + '" aria-pressed="false">' + k + '</button>').join('');
       a.innerHTML =
-        '<div class="mk-head"><h2>BTC / USD</h2><span class="mk-px"><span data-r="price">--</span><small data-r="chg"></small></span></div>' +
-        '<div class="seg wide">' + rb + '</div>' +
-        '<div class="mk-bar"><span class="seg"><button type="button" data-ct="line" aria-pressed="true">LINE</button><button type="button" data-ct="candle" aria-pressed="false">CANDLES</button></span><span data-r="stat"></span></div>' +
-        '<div class="mk-chart"><canvas data-r="cv"></canvas><button type="button" class="mk-chip" data-ma="1" aria-pressed="false">MA ' + MA_N + '</button><div class="mk-msg" data-r="msg"><span><span data-r="msgt"></span><span class="dots" data-r="msgd">...</span></span></div></div>' +
-        '<div class="mk-bar"><span data-r="hover"></span><span data-r="range"></span></div>' +
-        '<div class="kv"><span>HOLDING</span><span data-r="amt"></span></div>' +
-        '<div class="kv"><span>AVG ENTRY</span><span data-r="avg"></span></div>' +
-        '<div class="kv"><span>VALUE</span><span data-r="val"></span></div>' +
-        '<div class="kv"><span>PROFIT / LOSS</span><span data-r="pl"></span></div>' +
-        '<div class="trade">' +
-          '<div class="mk-bar"><span class="seg"><button type="button" data-os="buy" aria-pressed="true">BUY</button><button type="button" data-os="sell" aria-pressed="false">SELL</button></span><span class="seg"><button type="button" data-ot="market" aria-pressed="true">MARKET</button><button type="button" data-ot="limit" aria-pressed="false">LIMIT</button></span></div>' +
-          '<div class="seg wide"><button type="button" data-oa="25" aria-pressed="true">25%</button><button type="button" data-oa="50" aria-pressed="false">50%</button><button type="button" data-oa="75" aria-pressed="false">75%</button><button type="button" data-oa="100" aria-pressed="false">MAX</button></div>' +
-          '<div class="kv ctl"><span data-r="availl">AVAILABLE</span><span data-r="avail"></span></div>' +
-          '<div class="kv ctl"><span>PRICE</span><input data-r="oprice" inputmode="decimal" autocomplete="off" aria-label="Price" readonly></div>' +
-          '<div class="kv ctl"><span>ESTIMATE</span><span data-r="est"></span></div>' +
-          '<button type="button" class="btn" data-mk="go" data-r="go">BUY BTC</button>' +
-          '<div class="kv ctl"><span>OPEN ORDER</span><span data-r="oinfo"></span><button type="button" class="mini" data-mk="cancel" data-r="cancel">CANCEL</button></div>' +
-        '</div>' +
-        '<p class="mk-note">Real bitcoin price from public exchange feeds, traded with game cash. Every trade costs a 0.25% fee. A limit order fills at your price or better, only while this page is open. Trading closes if the live feed is down. This is a game, not financial advice.</p>';
+        '<div class="mk-grid"><div class="mk-main">' +
+        '<div class="mk-head"><div class="mk-sym"><h2>BTC / USD</h2><small data-r="stat"></small></div><div class="mk-px"><span data-r="price">--</span><small data-r="chg"></small></div></div>' +
+        '<div class="tf">' + tf + '<button type="button" class="ic" data-ct="1" data-s="line" aria-label="Chart style" title="Chart style"><svg class="i-l" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" aria-hidden="true"><path d="M3 17l5-6 4 3 8-9"/></svg><svg class="i-c" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" aria-hidden="true"><path d="M8 3v3M8 14v4M16 6v3M16 17v3"/><rect x="6" y="6" width="4" height="8"/><rect x="14" y="9" width="4" height="8"/></svg></button></div>' +
+        '<div class="mk-chart"><canvas data-r="cv"></canvas><div class="mk-leg" data-r="leg"></div><button type="button" class="mk-chip" data-ma="1" aria-pressed="false">MA ' + MA_N + '</button>' +
+        '<div class="mk-msg" data-r="msg"><span><span data-r="msgt"></span><span class="dots" data-r="msgd">...</span><span data-r="msgp" hidden><br>IN IRAN? <a href="papion.html" target="_blank" rel="noopener">PAPION</a> MAY HELP YOU CONNECT.</span></span></div></div>' +
+        '<div class="mk-pos"><div><span>HOLDING</span><b data-r="amt"></b></div><div><span>AVG ENTRY</span><b data-r="avg"></b></div><div><span>VALUE</span><b data-r="val"></b></div><div><span>PROFIT / LOSS</span><b data-r="pl"></b></div></div>' +
+        '</div><div class="mk-side">' +
+        '<div class="seg wide sd"><button type="button" data-os="buy" aria-pressed="true">BUY</button><button type="button" data-os="sell" aria-pressed="false">SELL</button></div>' +
+        '<div class="tf ot"><button type="button" class="t" data-ot="market" aria-pressed="true">MARKET</button><button type="button" class="t" data-ot="limit" aria-pressed="false">LIMIT</button></div>' +
+        '<div class="kv"><span data-r="availl">CASH</span><span data-r="avail"></span></div>' +
+        '<div class="kv"><span>AMOUNT</span><span data-r="amtv"></span></div>' +
+        '<input type="range" class="slide" data-r="slider" min="5" max="100" step="5" value="25" aria-label="Amount percent">' +
+        '<div class="kv ctl"><span>PRICE</span><input data-r="oprice" inputmode="decimal" autocomplete="off" aria-label="Price" readonly></div>' +
+        '<div class="kv"><span>ESTIMATE</span><span data-r="est"></span></div>' +
+        '<button type="button" class="btn" data-mk="go" data-r="go">BUY BTC</button>' +
+        '<div class="kv ctl"><span>ORDER</span><span data-r="oinfo"></span><button type="button" class="mini" data-mk="cancel" data-r="cancel">CANCEL</button></div>' +
+        '</div><p class="mk-note">Real bitcoin prices from public exchange feeds (api.exchange.coinbase.com, then api.kraken.com, data-api.binance.vision, min-api.cryptocompare.com and api.coingecko.com if one is down), traded with game cash. Every trade costs a 0.25% fee. A limit order fills at your price or better, only while this page is open. Trading closes if the feeds are down. This is a game, not financial advice.</p></div>';
       $('markets').appendChild(a);
       a.querySelectorAll('[data-r]').forEach(n => { mref[n.dataset.r] = n; });
       mref.rng = a.querySelectorAll('[data-rng]');
-      mref.ct = a.querySelectorAll('[data-ct]');
+      mref.ctB = a.querySelector('[data-ct]');
       mref.maB = a.querySelector('[data-ma]');
       mref.os = a.querySelectorAll('[data-os]');
       mref.ot = a.querySelectorAll('[data-ot]');
-      mref.oa = a.querySelectorAll('[data-oa]');
     }
 
     const pressed = (list, key, val) => list.forEach(b => b.setAttribute('aria-pressed', b.dataset[key] === String(val) ? 'true' : 'false'));
@@ -1637,22 +2052,23 @@
       setT(mref.price, live ? '$' + fmtPx(BTC.price) : S.btc.last ? '$' + fmtPx(S.btc.last) : '--');
       if (chart) {
         const ch = (BTC.price / pts[0][1] - 1) * 100;
-        setT(mref.chg, (ch >= 0 ? '+' : '') + ch.toFixed(2) + '% ' + BTC.range);
+        setT(mref.chg, (ch >= 0 ? '+' : '') + ch.toFixed(2) + '%  ' + RANGES[BTC.range].lab);
         mref.chg.style.color = ch >= 0 ? '' : 'var(--warn)';
       } else {
         setT(mref.chg, '');
       }
-      setT(mref.stat, !BTC.tried ? 'CONNECTING...' : live ? 'LIVE  /  ' + BTC.src : 'OFFLINE');
+      setT(mref.stat, !BTC.tried ? 'CONNECTING' : live ? 'LIVE  /  ' + BTC.src : 'OFFLINE');
       mref.msg.hidden = chart;
       const loading = !BTC.tried || BTC.busy;
-      setT(mref.msgt, loading ? 'LOADING ' + BTC.range + ' CHART' : live ? 'THE ' + BTC.range + ' CHART COULD NOT BE LOADED. TRYING AGAIN' : 'LIVE MARKET FEED UNAVAILABLE. TRADING IS CLOSED. TRYING AGAIN');
+      setT(mref.msgt, loading ? 'LOADING ' + BTC.range + ' CHART' : live ? 'THE ' + BTC.range + ' CHART COULD NOT BE LOADED. TRYING AGAIN' : 'COULD NOT REACH ANY MARKET FEED. TRADING IS CLOSED. TRYING AGAIN');
+      mref.msgp.hidden = loading || live;
       if (chart) {
-        let lo = Infinity;
-        let hi = 0;
-        pts.forEach(k => { if (k[3] < lo) lo = k[3]; if (k[2] > hi) hi = k[2]; });
-        setT(mref.range, 'OPEN $' + fmtPx(pts[0][1]) + '  HIGH $' + fmtPx(hi) + '  LOW $' + fmtPx(lo));
+      }
+      if (chart) {
+        const k = pts[BTC.hover >= 0 && BTC.hover < pts.length ? BTC.hover : pts.length - 1];
+        setT(mref.leg, 'O ' + fmtPx(k[1]) + ' H ' + fmtPx(k[2]) + ' L ' + fmtPx(k[3]) + ' C ' + fmtPx(k[4]));
       } else {
-        setT(mref.range, '');
+        setT(mref.leg, '');
       }
       const val = btcValue();
       setT(mref.amt, S.btc.amt.toFixed(6) + ' BTC');
@@ -1662,6 +2078,9 @@
       setT(mref.pl, S.btc.amt ? (pl >= 0 ? '+' : '-') + money(Math.abs(pl)) + ' (' + (S.btc.cost ? (pl / S.btc.cost * 100).toFixed(2) : '0.00') + '%)' : '$0');
       setT(mref.availl, buy ? 'CASH' : 'BITCOIN');
       setT(mref.avail, buy ? money(S.cash) : S.btc.amt.toFixed(6) + ' BTC');
+      setT(mref.amtv, TR.amt + '%');
+      if (Number(mref.slider.value) !== TR.amt) mref.slider.value = TR.amt;
+      mref.slider.style.setProperty('--p', ((TR.amt - 5) / 95 * 100) + '%');
       mref.oprice.readOnly = !limit;
       if (!limit && document.activeElement !== mref.oprice) {
         const t = live ? fmtPx(BTC.price) : '--';
@@ -1681,15 +2100,15 @@
       setT(mref.est, est);
       const o = S.btc.ord;
       setT(mref.go, limit ? (o ? 'ORDER OPEN' : 'PLACE ' + TR.side.toUpperCase() + ' ORDER') : TR.side.toUpperCase() + ' BTC');
+      mref.go.classList.toggle('sell', !buy);
       mref.go.disabled = !live || (buy ? S.cash < 1 : S.btc.amt <= 0) || (limit && !!o);
       setT(mref.oinfo, o ? o.side.toUpperCase() + ' ' + Math.round(o.frac * 100) + '% @ $' + fmtPx(o.price) : 'NONE');
       mref.cancel.disabled = !o;
       pressed(mref.rng, 'rng', BTC.range);
-      pressed(mref.ct, 'ct', BTC.type);
+      mref.ctB.dataset.s = BTC.type;
       mref.maB.setAttribute('aria-pressed', BTC.ma ? 'true' : 'false');
       pressed(mref.os, 'os', TR.side);
       pressed(mref.ot, 'ot', TR.type);
-      pressed(mref.oa, 'oa', TR.amt);
     }
 
     function smaOf(pts, n) {
@@ -1738,7 +2157,7 @@
       hi += padv;
       const L = 8;
       const R = 62;
-      const T = 10;
+      const T = 32;
       const B = 22;
       const pw = w - L - R;
       const X = i => L + (i + 0.5) / n * pw;
@@ -1826,12 +2245,37 @@
         g.textAlign = 'left';
         g.fillText(o.side.toUpperCase(), L + 4, y - 7);
       }
+      const ax = RANGES[BTC.range].ax;
       const fmtT = ts => {
         const d = new Date(ts);
-        if (BTC.range === '1H' || BTC.range === '4H' || BTC.range === '1D') return String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0');
-        if (BTC.range === '1Y' || BTC.range === '5Y') return d.toLocaleDateString('en-US', { month: 'short', year: '2-digit' });
+        if (ax === 'h') return String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0');
+        if (ax === 'y') return d.toLocaleDateString('en-US', { month: 'short', year: '2-digit' });
         return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
       };
+      const tag = (txt, x, y, al, bg, fgc) => {
+        const tw = g.measureText(txt).width + 10;
+        const tx = al === 'center' ? x - tw / 2 : x;
+        g.fillStyle = bg;
+        g.fillRect(tx, y - 9, tw, 18);
+        g.fillStyle = fgc;
+        g.textAlign = 'left';
+        g.textBaseline = 'middle';
+        g.fillText(txt, tx + 5, y);
+      };
+      {
+        const lp = pts[n - 1][4];
+        const ly = clamp(Y(lp), T + 9, h - B - 9);
+        g.strokeStyle = fg;
+        g.globalAlpha = 0.4;
+        g.setLineDash([2, 4]);
+        g.beginPath();
+        g.moveTo(L, Math.round(ly) + 0.5);
+        g.lineTo(w - R, Math.round(ly) + 0.5);
+        g.stroke();
+        g.setLineDash([]);
+        g.globalAlpha = 1;
+        tag(fmtPx(lp), w - R + 2, ly, 'left', fg, cs.getPropertyValue('--bg').trim() || '#000');
+      }
       g.fillStyle = dim;
       g.textBaseline = 'alphabetic';
       [[0, 'left'], [Math.floor((n - 1) / 2), 'center'], [n - 1, 'right']].forEach(([i, al]) => {
@@ -1852,6 +2296,13 @@
           g.arc(hx, Y(pts[BTC.hover][4]), 3.5, 0, Math.PI * 2);
           g.fill();
         }
+        const hk = pts[BTC.hover];
+        const tt = new Date(hk[0]);
+        const lbl = RANGES[BTC.range].tm
+          ? tt.toLocaleString('en-US', { month: 'short', day: 'numeric' }) + ' ' + String(tt.getHours()).padStart(2, '0') + ':' + String(tt.getMinutes()).padStart(2, '0')
+          : tt.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+        const lw = g.measureText(lbl).width + 10;
+        tag(lbl, clamp(hx, L + lw / 2, w - R - lw / 2), h - 10, 'center', dim, cs.getPropertyValue('--bg').trim() || '#000');
       }
     }
 
@@ -1862,23 +2313,14 @@
       const L = 8;
       const R = 62;
       const f = (clientX - rect.left - L) / (rect.width - L - R);
-      const best = clamp(Math.floor(f * pts.length), 0, pts.length - 1);
-      BTC.hover = best;
-      const k = pts[best];
-      const d = new Date(k[0]);
-      const opt = RANGES[BTC.range].tm
-        ? { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit', hour12: false }
-        : { month: 'short', day: 'numeric', year: 'numeric' };
-      const t = d.toLocaleString('en-US', opt);
-      setT(mref.hover, BTC.type === 'candle'
-        ? t + '  O ' + fmtPx(k[1]) + '  H ' + fmtPx(k[2]) + '  L ' + fmtPx(k[3]) + '  C ' + fmtPx(k[4])
-        : t + '  $' + fmtPx(k[4]));
+      BTC.hover = clamp(Math.floor(f * pts.length), 0, pts.length - 1);
+      renderMarkets();
       drawChart();
     }
 
     function hoverEnd() {
       BTC.hover = -1;
-      setT(mref.hover, '');
+      renderMarkets();
       drawChart();
     }
 
@@ -1946,7 +2388,7 @@
     ];
 
     const Snd = {
-      ctx: null, master: null, bus: null, sfxBus: null, delay: null, on: false, vol: 0.8, timer: null, nextT: 0, stepN: 0, n: 0, noise: null, keep: null, ti: -1, tr: null,
+      ctx: null, master: null, bus: null, sfxBus: null, delay: null, on: false, vol: 0.1, timer: null, nextT: 0, stepN: 0, n: 0, noise: null, keep: null, ti: -1, tr: null,
       TRACKS: [
         { name: 'NIGHT SHIFT', bpm: 84, roots: [45, 41, 48, 43], q: [0, 1, 1, 1], bass: [0, 3, 6, 8, 11, 14], arp: [0, 2, 1, 3, 2, 1, 3, 2], pent: [0, 3, 5, 7, 10], arpAt: 4, drumAt: 8 },
         { name: 'COLD IRON', bpm: 96, roots: [38, 34, 41, 36], q: [0, 1, 1, 1], bass: [0, 3, 4, 7, 8, 11, 12, 14], arp: [0, 1, 2, 3, 2, 1, 2, 3], pent: [0, 3, 5, 7, 10], arpAt: 3, drumAt: 6 },
@@ -2187,6 +2629,11 @@
         store.set(AKEY, JSON.stringify({ on: this.on, vol: this.vol }));
         return true;
       },
+      duck(v) {
+        if (!this.ctx) return;
+        this.bus.gain.cancelScheduledValues(this.ctx.currentTime);
+        this.bus.gain.setTargetAtTime(v ? 0 : 1, this.ctx.currentTime, v ? 0.04 : 0.6);
+      },
       setVol(v) {
         this.vol = clamp(v, 0, 1);
         this.apply();
@@ -2207,6 +2654,14 @@
           this.tone('sawtooth', 130, t, 0.45, 0.1, { dest: d, slide: 70, lp: 600 });
         } else if (kind === 'news') {
           this.tone('sine', 988, t, 0.25, 0.07, { dest: d });
+        } else if (kind === 'off') {
+          this.tone('sawtooth', 1800, t, 0.55, 0.12, { dest: d, slide: 50, lp: 2600 });
+          this.tone('square', 60, t + 0.5, 0.12, 0.12, { dest: d, lp: 300 });
+        } else if (kind === 'beep') {
+          this.tone('square', 1046, t, 0.18, 0.09, { dest: d, lp: 3500, hold: 0.8 });
+        } else if (kind === 'on') {
+          this.tone('sawtooth', 60, t, 0.5, 0.1, { dest: d, slide: 1500, lp: 2400 });
+          this.tone('square', 1568, t + 0.5, 0.14, 0.08, { dest: d, lp: 3500 });
         } else if (kind === 'err') {
           this.tone('square', 110, t, 0.1, 0.06, { dest: d, lp: 500 });
         }
@@ -2218,7 +2673,8 @@
     const rrefs = [];
     const brefs = [];
     const bref = {};
-    let confirmUntil = 0;
+    let seq = false;
+    let dlgTimer = 0;
     const setT = (node, text) => { if (node._t !== text) { node._t = text; node.textContent = text; } };
 
     function stamp() {
@@ -2291,6 +2747,8 @@
       return { n, p, gain };
     }
 
+    const OVF = [0, 0.25, 0.5, 0.75, 1];
+
     function autoSell() {
       const b = brokerLv();
       if (!b) return;
@@ -2298,7 +2756,7 @@
       S.c.forEach((c, i) => {
         if (!c.u) return;
         if (c.ovf && c.metal >= cap() * 0.995) {
-          const r = sell(i, (c.metal - cap() * 0.85) / c.metal);
+          const r = sell(i, OVF[c.ovf]);
           if (r) {
             log('STORAGE FULL. BROKER SOLD ' + Math.floor(r.n) + ' ' + COMM[i].sym + ' @ $' + r.p.toFixed(2) + ' = ' + money(r.gain));
             Snd.sfx('sell');
@@ -2409,7 +2867,7 @@
     }
 
     function build() {
-      ['cash', 'stock', 'net', 'status', 'tout', 'tin', 'tform', 'tmus', 'tmust', 'tvol', 'tvolv', 'mbar'].forEach(k => { el[k] = $(k); });
+      ['cash', 'stock', 'net', 'status', 'tout', 'tin', 'tform', 'tmus', 'tmore', 'tvol', 'mbar'].forEach(k => { el[k] = $(k); });
       const host = $('cards');
       COMM.forEach((d, i) => {
         const a = document.createElement('article');
@@ -2442,6 +2900,7 @@
         refs.push(r);
       });
       buildMarkets();
+      buildDlg();
       const bh = $('board');
       const ra = document.createElement('article');
       ra.className = 'card res';
@@ -2452,7 +2911,7 @@
         '<div class="kv"><span>THIS RUN</span><span data-r="run"></span></div>' +
         '<div class="kv"><span>SHARES</span><span data-r="sh"></span></div>' +
         '<div class="kv"><span>NOW GIVES</span><span data-r="gain"></span></div>' +
-        '<button type="button" class="btn b3" data-act="restructure"><span data-r="lab"></span><span class="l2" data-r="lab2"></span><small data-r="cost"></small></button>';
+        '<button type="button" class="btn b3 danger" data-act="restructure"><span data-r="lab"></span><span class="l2" data-r="lab2"></span><small data-r="cost"></small></button>';
       bh.appendChild(ra);
       bref.card = ra;
       ra.querySelectorAll('[data-r]').forEach(n => { bref[n.dataset.r] = n; });
@@ -2581,15 +3040,15 @@
 
       renderMarkets();
       const sg = sharesGain();
-      const confirming = performance.now() < confirmUntil;
       setT(bref.lvl, 'RUN ' + (S.runs + 1));
       setT(bref.run, money(S.run));
       setT(bref.sh, S.shares + ' SPARE / ' + S.sharesTotal + ' EARNED (+' + 10 * S.sharesTotal + '%)');
       setT(bref.gain, sg + (sg === 1 ? ' SHARE' : ' SHARES'));
-      setT(bref.lab, confirming ? 'CONFIRM RESET' : 'RESTRUCTURE');
-      setT(bref.lab2, confirming ? 'CLICK AGAIN' : '+' + sg + (sg === 1 ? ' SHARE' : ' SHARES'));
+      setT(bref.lab, 'RESTRUCTURE');
+      setT(bref.lab2, '+' + sg + (sg === 1 ? ' SHARE' : ' SHARES'));
       setT(bref.cost, sg < 1 ? 'NEEDS $5M THIS RUN' : 'SELLS EVERYTHING');
-      bref.btn.disabled = sg < 1;
+      bref.btn.disabled = sg < 1 || seq;
+      if (dlg.on) fillDlg();
       BOARD.forEach((d, i) => {
         const r = brefs[i];
         const l = BD(d.id);
@@ -2641,7 +3100,7 @@
         r.b_all.disabled = c.metal < 1;
         r.b_auto.disabled = !brokerLv();
         r.b_ovf.disabled = !brokerLv();
-        setT(r.ovfl, brokerLv() ? (c.ovf ? 'WHEN FULL: SELL' : 'WHEN FULL: HOLD') : 'WHEN FULL: STOPS');
+        setT(r.ovfl, brokerLv() ? (c.ovf ? 'AT FULL: SELL ' + (OVF[c.ovf] === 1 ? 'ALL' : OVF[c.ovf] * 100 + '%') : 'AT FULL: HOLD') : 'AT FULL: STOPS');
         setT(r.autol, brokerLv() ? (AUTO[c.auto] ? 'SELL ≥ ' + AUTO[c.auto].toFixed(2) + 'x BASE' : 'AUTO-SELL: OFF') : 'AUTO-SELL: NEEDS BROKER');
         let outlook = '';
         if (RS('intel')) {
@@ -2652,9 +3111,12 @@
       });
 
       const musicOn = Snd.on || wakeArmed;
-      setT(el.tmust, musicOn ? 'MUSIC ON' : 'MUSIC OFF');
       el.tmus.classList.toggle('on', musicOn);
       el.mbar.classList.toggle('on', musicOn);
+      if (!musicOn && el.mbar.classList.contains('open')) {
+        el.mbar.classList.remove('open');
+        el.tmore.setAttribute('aria-expanded', 'false');
+      }
       syncVol();
       el.tmus.setAttribute('aria-pressed', musicOn ? 'true' : 'false');
       const ttl = Snd.on && Snd.tr ? 'NOW PLAYING: ' + Snd.tr.name : '';
@@ -2663,7 +3125,8 @@
 
     function paintVol() {
       el.tvol.style.setProperty('--p', el.tvol.value + '%');
-      setT(el.tvolv, el.tvol.value + '%');
+      const t = 'Volume ' + el.tvol.value + '%';
+      if (el.tvol.title !== t) el.tvol.title = t;
     }
 
     function syncVol() {
@@ -2745,9 +3208,140 @@
       S.c[0].u = true;
       for (let i = 1; i <= BD('fast') && i < COMM.length; i++) S.c[i].u = true;
       log('RESTRUCTURED. +' + g + (g === 1 ? ' SHARE' : ' SHARES') + '. ALL INCOME IS NOW +' + 10 * S.sharesTotal + '%.');
-      Snd.sfx('unlock');
       save();
     }
+
+    const dlg = { on: false, root: null, go: null, cancel: null, lose: null, gain: null, until: 0 };
+
+    function buildDlg() {
+      const d = document.createElement('div');
+      d.className = 'dlg';
+      d.id = 'rdlg';
+      d.setAttribute('role', 'alertdialog');
+      d.setAttribute('aria-modal', 'true');
+      d.setAttribute('aria-labelledby', 'rdt');
+      d.innerHTML =
+        '<div class="dbox"><div class="dhaz"></div><div class="dbody">' +
+        '<h2 id="rdt">! DANGER: RESTRUCTURE</h2>' +
+        '<p>This sells your whole company and cannot be undone. The terminal will power down and restart.</p>' +
+        '<div class="dcols"><div class="lose"><h3>YOU LOSE</h3><ul><li data-d="cash"></li><li data-d="btc"></li><li>ALL DESKS, LEVELS, STOCK</li><li>ALL RESEARCH</li></ul></div>' +
+        '<div class="keep"><h3>YOU KEEP</h3><ul><li data-d="sh"></li><li>SHARE PERKS</li><li>THE INCOME BONUS</li></ul></div></div>' +
+        '<div class="dgain" data-d="gain"></div>' +
+        '<div class="dbtns"><button type="button" class="cancel">CANCEL</button><button type="button" class="go" disabled></button></div>' +
+        '</div></div>';
+      const c = document.createElement('div');
+      c.className = 'crt';
+      c.id = 'crt';
+      c.innerHTML = '<i></i>';
+      document.body.appendChild(d);
+      document.body.appendChild(c);
+      dlg.root = d;
+      dlg.crt = c;
+      dlg.go = d.querySelector('.go');
+      dlg.cancel = d.querySelector('.cancel');
+      d.querySelectorAll('[data-d]').forEach(n => { dlg[n.dataset.d] = n; });
+      dlg.cancel.addEventListener('click', closeDlg);
+      dlg.go.addEventListener('click', () => { if (!dlg.go.disabled) runSeq(); });
+      d.addEventListener('pointerdown', e => { if (e.target === d) closeDlg(); });
+    }
+
+    function fillDlg() {
+      const g = sharesGain();
+      setT(dlg.cash, money(S.cash) + ' CASH');
+      setT(dlg.btc, S.btc.amt > 0 ? 'ALL BITCOIN (' + money(btcValue()) + ')' : 'NO BITCOIN HELD');
+      setT(dlg.sh, S.sharesTotal + ' SHARES EARNED');
+      setT(dlg.gain, 'YOU GET: +' + g + (g === 1 ? ' SHARE' : ' SHARES') + '  >  INCOME +' + 10 * (S.sharesTotal + g) + '%');
+    }
+
+    function tickDlg() {
+      const left = Math.ceil((dlg.until - performance.now()) / 1000);
+      if (left > 0) {
+        setT(dlg.go, 'WAIT ' + left);
+        dlg.go.disabled = true;
+      } else {
+        setT(dlg.go, 'RESTRUCTURE NOW');
+        dlg.go.disabled = false;
+        clearInterval(dlgTimer);
+        dlgTimer = 0;
+      }
+    }
+
+    function openDlg() {
+      if (seq || dlg.on || sharesGain() < 1) return;
+      dlg.on = true;
+      fillDlg();
+      dlg.until = performance.now() + 3000;
+      dlg.root.classList.add('show');
+      tickDlg();
+      dlgTimer = setInterval(tickDlg, 200);
+      Snd.sfx('alert');
+      dlg.cancel.focus();
+    }
+
+    function closeDlg() {
+      if (!dlg.on) return;
+      dlg.on = false;
+      clearInterval(dlgTimer);
+      dlgTimer = 0;
+      dlg.root.classList.remove('show');
+      bref.btn.focus();
+    }
+
+    function runSeq() {
+      if (seq || !dlg.on) return;
+      seq = true;
+      dlg.on = false;
+      clearInterval(dlgTimer);
+      dlgTimer = 0;
+      dlg.root.classList.remove('show');
+      const scr = $('screen');
+      scr.style.transformOrigin = '50% ' + Math.round(window.scrollY + window.innerHeight / 2) + 'px';
+      Snd.duck(true);
+      Snd.sfx('off');
+      scr.classList.add('pwroff');
+      setTimeout(() => {
+        dlg.crt.classList.add('show');
+        scr.classList.remove('pwroff');
+        scr.style.visibility = 'hidden';
+        restructure();
+        window.scrollTo(0, 0);
+        setTab('ops');
+        render();
+        [0, 0.45, 0.9].forEach(t => setTimeout(() => Snd.sfx('beep'), t * 1000 + 150));
+        setTimeout(() => {
+          dlg.crt.classList.remove('show');
+          scr.style.visibility = '';
+          scr.style.transformOrigin = '50% 0';
+          scr.classList.add('pwron');
+          Snd.sfx('on');
+          setTimeout(() => {
+            scr.classList.remove('pwron');
+            scr.style.transformOrigin = '';
+            Snd.duck(false);
+            seq = false;
+            render();
+          }, 850);
+        }, 1500);
+      }, 650);
+    }
+
+    document.addEventListener('keydown', e => {
+      if (seq) {
+        e.preventDefault();
+        e.stopPropagation();
+        return;
+      }
+      if (!dlg.on) return;
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        closeDlg();
+      } else if (e.key === 'Tab') {
+        const b = [dlg.cancel, dlg.go].filter(x => !x.disabled);
+        const i = b.indexOf(document.activeElement);
+        e.preventDefault();
+        b[(i + (e.shiftKey ? b.length - 1 : 1)) % b.length].focus();
+      }
+    }, true);
 
     function unlockComm(i) {
       const c = S.c[i];
@@ -2775,7 +3369,6 @@
           '  help               this list',
           '  clear              clear the screen',
           '  color [name]       green, amber, ice',
-          '  music on|off|next|vol <0-100>',
           '  reset              permanently delete all game data'
         ].join('\n'), 'd');
       },
@@ -2788,34 +3381,6 @@
         applyTheme();
         save();
         print('color set to ' + p + '.');
-      },
-      music(a) {
-        const v = (a[0] || '').toLowerCase();
-        if (v === 'vol' || v === 'volume') {
-          if (a[1] === undefined || isNaN(parseInt(a[1], 10))) { print('volume: ' + Math.round(Snd.vol * 100) + '. use: music vol <0-100>'); return; }
-          Snd.setVol(clamp(parseInt(a[1], 10), 0, 100) / 100);
-          print('volume set to ' + Math.round(Snd.vol * 100) + '.');
-          return;
-        }
-        if (v === 'on') {
-          disarmWake();
-          if (!Snd.setOn(true)) { print('audio is not available in this browser.'); return; }
-          print('music on. volume ' + Math.round(Snd.vol * 100) + '.');
-          return;
-        }
-        if (v === 'next' || v === 'skip') {
-          if (!Snd.on) { print('music is off. use: music on'); return; }
-          Snd.next();
-          print('switching track.');
-          return;
-        }
-        if (v === 'off') {
-          disarmWake();
-          Snd.setOn(false);
-          print('music off.');
-          return;
-        }
-        print('music is ' + (Snd.on || wakeArmed ? 'on' : 'off') + (Snd.on && Snd.tr ? ', playing ' + Snd.tr.name : '') + '. use: music on|off|next|vol <0-100>');
       },
       clear() {
         el.tout.textContent = '';
@@ -2961,7 +3526,7 @@
           const al = brokerLv() >= 2 ? AUTO.map((v, k) => k) : AUTO_JUNIOR;
           c.auto = al[(al.indexOf(c.auto) + 1) % al.length];
         } else if (act === 'ovf') {
-          S.c[i].ovf = !S.c[i].ovf;
+          S.c[i].ovf = (S.c[i].ovf + 1) % OVF.length;
         } else if (act === 'unlock') {
           unlockComm(i);
         }
@@ -2979,12 +3544,7 @@
         const b = e.target.closest('button[data-act]');
         if (!b || b.disabled) return;
         if (b.dataset.act === 'restructure') {
-          if (performance.now() < confirmUntil) {
-            confirmUntil = 0;
-            restructure();
-          } else {
-            confirmUntil = performance.now() + 5000;
-          }
+          openDlg();
         } else {
           const id = b.closest('.card').dataset.id;
           const d = BOARD.find(x => x.id === id);
@@ -3007,15 +3567,13 @@
           BTC.pts = c && Date.now() - c.t < 300000 ? c.pts : [];
           BTC.err = false;
           BTC.hover = -1;
-          setT(mref.hover, '');
           saveChartPrefs();
           renderMarkets();
           drawChart();
           btcRefresh();
           return;
         }
-        const ct = e.target.closest('[data-ct]');
-        if (ct) { BTC.type = ct.dataset.ct; saveChartPrefs(); renderMarkets(); drawChart(); return; }
+        if (e.target.closest('[data-ct]')) { BTC.type = BTC.type === 'candle' ? 'line' : 'candle'; saveChartPrefs(); renderMarkets(); drawChart(); return; }
         if (e.target.closest('[data-ma]')) { BTC.ma = !BTC.ma; saveChartPrefs(); renderMarkets(); drawChart(); return; }
         const os = e.target.closest('[data-os]');
         if (os) { TR.side = os.dataset.os; renderMarkets(); return; }
@@ -3026,8 +3584,6 @@
           renderMarkets();
           return;
         }
-        const oa = e.target.closest('[data-oa]');
-        if (oa) { TR.amt = Number(oa.dataset.oa); renderMarkets(); return; }
         const b = e.target.closest('[data-mk]');
         if (!b || b.disabled) return;
         if (b.dataset.mk === 'cancel') {
@@ -3040,11 +3596,12 @@
         renderMarkets();
         drawChart();
       });
+      mref.slider.addEventListener('input', () => { TR.amt = Number(mref.slider.value); renderMarkets(); });
       mref.cv.addEventListener('pointermove', e => hoverAt(e.clientX));
       mref.cv.addEventListener('pointerdown', e => hoverAt(e.clientX));
       mref.cv.addEventListener('pointerleave', hoverEnd);
       window.addEventListener('resize', drawChart);
-      setInterval(() => { if (!document.hidden && (tab === 'mk' || S.btc.amt > 0 || S.btc.ord)) btcRefresh(); }, 30000);
+      setInterval(() => { if (!document.hidden && !BTC.busy && (tab === 'mk' || ((S.btc.amt > 0 || S.btc.ord) && Date.now() - BTC.at > 28000))) btcRefresh(); }, 10000);
 
       $('tbuy').addEventListener('click', e => {
         const b = e.target.closest('button[data-q]');
@@ -3063,14 +3620,30 @@
       el.tvol.addEventListener('pointerdown', () => el.tvol.classList.add('drag'));
       ['pointerup', 'pointercancel', 'blur'].forEach(ev => el.tvol.addEventListener(ev, () => el.tvol.classList.remove('drag')));
 
+      el.tmore.addEventListener('click', () => {
+        const o = el.mbar.classList.toggle('open');
+        el.tmore.setAttribute('aria-expanded', o ? 'true' : 'false');
+      });
+      document.addEventListener('pointerdown', e => {
+        if (el.mbar.classList.contains('open') && !e.target.closest('#mbar')) {
+          el.mbar.classList.remove('open');
+          el.tmore.setAttribute('aria-expanded', 'false');
+        }
+      });
+
       el.tmus.addEventListener('click', () => {
+        if (Snd.on && Snd.ctx && Snd.ctx.state !== 'running') {
+          Snd.kick();
+          setTimeout(() => {
+            if (Snd.ctx.state === 'running') disarmWake();
+            render();
+          }, 400);
+          return;
+        }
         if (Snd.on || wakeArmed) {
           disarmWake();
           Snd.setOn(false);
-          print('music off.');
-        } else if (Snd.setOn(true)) {
-          print('music on. volume ' + Math.round(Snd.vol * 100) + '.');
-        } else {
+        } else if (!Snd.setOn(true)) {
           print('audio is not available in this browser.');
         }
         render();
@@ -3078,10 +3651,10 @@
     }
 
     let wakeArmed = false;
-    const WAKE_EVENTS = ['pointerup', 'click', 'keydown', 'touchend'];
+    const WAKE_EVENTS = ['pointerdown', 'pointerup', 'mousedown', 'click', 'keydown', 'touchend'];
 
     function wake(e) {
-      if (e && e.target && e.target.closest && e.target.closest('#tmus')) return;
+      if (e && e.target && e.target.closest && e.target.closest('#mbar')) return;
       if (!Snd.on) Snd.setOn(true); else Snd.kick();
       render();
       setTimeout(() => {
@@ -3150,8 +3723,16 @@
     render();
 
     if (!pref || pref.on) {
+      Snd.setOn(true);
       armWake();
-      print('music starts on your first tap. the ♪ button turns it off.', 'd');
+      setTimeout(() => {
+        if (Snd.ctx && Snd.ctx.state === 'running') {
+          disarmWake();
+        } else {
+          print('tap anywhere to start the music.', 'd');
+        }
+        render();
+      }, 700);
     }
 
     const fsRoot = document.documentElement;

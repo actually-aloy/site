@@ -1324,7 +1324,9 @@
     }
   </style>
   <link rel="stylesheet" href="langfx.css">
+  <link rel="stylesheet" href="music.css">
   <script src="langfx.js" defer></script>
+  <script src="music.js"></script>
 </head>
 <body>
   <main class="page">
@@ -1644,6 +1646,8 @@
         bio: 'Gamer. Vibe coding. Cat & bird lover.',
         vibeLoading: 'loading vibe…',
         navLabel: 'Links',
+        music: 'Music',
+        musicHint: 'Tap anywhere to start the music',
         appsTitle: 'Apps',
         appsSubtitle: 'built by me, for me, shared anyway',
         freelanceTitle: 'Freelance',
@@ -1683,6 +1687,8 @@
         bio: 'گیمر. وایب‌کدینگ. عاشق گربه و پرنده.',
         vibeLoading: 'در حال گرفتن وایب…',
         navLabel: 'لینک‌ها',
+        music: 'موزیک',
+        musicHint: 'برای پخش موزیک هر جایی بزن',
         appsTitle: 'اپلیکیشن‌ها',
         appsSubtitle: 'زدم واسه خودم، ولی گفتم بدمشون به همه',
         freelanceTitle: 'فریلنس',
@@ -1771,6 +1777,7 @@
       const t = I18N[lang];
       document.documentElement.lang = lang;
       document.documentElement.dir = t.dir;
+      if (window.Music) Music.setText({ label: t.music, hint: t.musicHint });
       document.getElementById('bio-text').textContent = t.bio;
       document.getElementById('vibe-text').textContent = VIBES[lang][vibeIndex];
       document.getElementById('socials-nav').setAttribute('aria-label', t.navLabel);
@@ -1935,6 +1942,13 @@
     }
 
     loadDiscordWidget();
+    Music.init({
+      key: 'home-music-v2',
+      style: 'calm',
+      mount: document.querySelector('.topline'),
+      before: langToggle,
+      text: { label: I18N[currentLang].music, hint: I18N[currentLang].musicHint }
+    });
     applyLanguage(currentLang);
   </script>
 </body>

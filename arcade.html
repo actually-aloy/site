@@ -149,203 +149,6 @@
       transform: scaleX(-1);
     }
 
-    .music-pill {
-      margin-inline-start: auto;
-      display: inline-flex;
-      align-items: center;
-      border: 1px solid var(--line);
-      border-radius: 999px;
-      background: rgba(255, 244, 249, 0.06);
-      transition: background 180ms ease, border-color 180ms ease;
-    }
-
-    .music-pill:hover {
-      background: rgba(255, 244, 249, 0.12);
-      border-color: rgba(255, 209, 231, 0.4);
-    }
-
-    .music-pill.on {
-      border-color: rgba(255, 209, 231, 0.5);
-    }
-
-    .music-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 7px 14px;
-      border: 0;
-      border-radius: 999px;
-      background: transparent;
-      color: var(--muted);
-      font-family: inherit;
-      font-size: 13px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: color 180ms ease;
-    }
-
-    .music-pill.on .music-btn {
-      color: var(--pink-soft);
-    }
-
-    .eqb {
-      display: inline-flex;
-      align-items: flex-end;
-      gap: 2px;
-      width: 14px;
-      height: 14px;
-    }
-
-    .eqb i {
-      flex: 1;
-      height: 100%;
-      border-radius: 2px;
-      background: currentColor;
-      transform: scaleY(0.3);
-      transform-origin: bottom;
-      transition: transform 300ms ease;
-    }
-
-    .music-pill.on .eqb i {
-      animation: eqb 0.9s ease-in-out infinite;
-    }
-
-    .music-pill.on .eqb i:nth-child(2) {
-      animation-duration: 0.65s;
-      animation-delay: -0.25s;
-    }
-
-    .music-pill.on .eqb i:nth-child(3) {
-      animation-duration: 1.15s;
-      animation-delay: -0.5s;
-    }
-
-    @keyframes eqb {
-      0%, 100% { transform: scaleY(0.3); }
-      50% { transform: scaleY(1); }
-    }
-
-    .vol-wrap {
-      max-width: 0;
-      padding-inline-end: 0;
-      overflow: hidden;
-      opacity: 0;
-      transition: max-width 380ms cubic-bezier(0.22, 1, 0.36, 1), opacity 260ms ease, padding 380ms cubic-bezier(0.22, 1, 0.36, 1);
-    }
-
-    .music-pill.on .vol-wrap {
-      max-width: 110px;
-      padding-inline-end: 14px;
-      opacity: 1;
-    }
-
-    @property --vp {
-      syntax: "<percentage>";
-      inherits: true;
-      initial-value: 0%;
-    }
-
-    .vol-wrap input {
-      -webkit-appearance: none;
-      appearance: none;
-      display: block;
-      width: 96px;
-      height: 24px;
-      margin: 0;
-      background: transparent;
-      cursor: pointer;
-      direction: ltr;
-      touch-action: pan-y;
-      --vp: 0%;
-      transition: --vp 300ms ease;
-    }
-
-    .vol-wrap input.drag {
-      transition: none;
-    }
-
-    .vol-wrap input::-webkit-slider-runnable-track {
-      height: 6px;
-      border-radius: 999px;
-      background: linear-gradient(90deg, var(--pink) var(--vp), rgba(255, 239, 247, 0.18) var(--vp));
-    }
-
-    .vol-wrap input::-moz-range-track {
-      height: 6px;
-      border-radius: 999px;
-      background: linear-gradient(90deg, var(--pink) var(--vp), rgba(255, 239, 247, 0.18) var(--vp));
-    }
-
-    .vol-wrap input::-webkit-slider-thumb {
-      -webkit-appearance: none;
-      width: 16px;
-      height: 16px;
-      margin-top: -5px;
-      border: 0;
-      border-radius: 50%;
-      background: var(--text);
-      box-shadow: 0 0 0 3px rgba(255, 122, 182, 0.35), 0 2px 6px rgba(0, 0, 0, 0.4);
-      transition: transform 160ms ease, box-shadow 160ms ease;
-    }
-
-    .vol-wrap input::-moz-range-thumb {
-      width: 16px;
-      height: 16px;
-      border: 0;
-      border-radius: 50%;
-      background: var(--text);
-      box-shadow: 0 0 0 3px rgba(255, 122, 182, 0.35), 0 2px 6px rgba(0, 0, 0, 0.4);
-      transition: transform 160ms ease, box-shadow 160ms ease;
-    }
-
-    .vol-wrap input:hover::-webkit-slider-thumb {
-      transform: scale(1.15);
-    }
-
-    .vol-wrap input:active::-webkit-slider-thumb {
-      transform: scale(1.3);
-      box-shadow: 0 0 0 6px rgba(255, 122, 182, 0.3), 0 2px 6px rgba(0, 0, 0, 0.4);
-    }
-
-    .vol-wrap input:hover::-moz-range-thumb {
-      transform: scale(1.15);
-    }
-
-    .vol-wrap input:active::-moz-range-thumb {
-      transform: scale(1.3);
-      box-shadow: 0 0 0 6px rgba(255, 122, 182, 0.3), 0 2px 6px rgba(0, 0, 0, 0.4);
-    }
-
-    .vol-wrap input:focus-visible {
-      outline: 2px solid var(--pink-soft);
-      outline-offset: 4px;
-      border-radius: 6px;
-    }
-
-    @media (max-width: 520px) {
-      #music-label {
-        display: none;
-      }
-
-      .music-btn {
-        padding: 7px 12px;
-      }
-
-      .vol-wrap input {
-        width: 76px;
-      }
-
-      .music-pill.on .vol-wrap {
-        max-width: 92px;
-      }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      .music-pill.on .eqb i {
-        animation: none;
-      }
-    }
-
     .head {
       margin: 6px 4px 20px;
     }
@@ -932,7 +735,9 @@
     }
   </style>
   <link rel="stylesheet" href="langfx.css">
+  <link rel="stylesheet" href="music.css">
   <script src="langfx.js" defer></script>
+  <script src="music.js"></script>
 </head>
 <body>
   <main class="page">
@@ -941,10 +746,6 @@
         <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 3 5 8l5 5"/></svg>
         <span id="back-label"></span>
       </a>
-      <div class="music-pill" id="music-pill">
-        <button type="button" class="music-btn" id="music-toggle" aria-pressed="false"><span class="eqb" aria-hidden="true"><i></i><i></i><i></i></span><span id="music-label"></span></button>
-        <div class="vol-wrap"><input type="range" id="music-vol" min="0" max="100" step="1" value="85" aria-label="Volume"></div>
-      </div>
       <button type="button" class="pill-btn lang-toggle" id="lang-toggle" aria-label="Switch language"><span class="lt-pill"></span><span class="lt-o" data-l="en">EN</span><span class="lt-o" data-l="fa">فا</span></button>
     </div>
 
@@ -1164,6 +965,7 @@
         dir: 'ltr',
         backHome: 'home',
         music: 'Music',
+        musicHint: 'Tap anywhere to start the music',
         backArcade: 'arcade',
         play: 'Play',
         bestLabel: 'Best',
@@ -1263,6 +1065,7 @@
         dir: 'rtl',
         backHome: 'خانه',
         music: 'موزیک',
+        musicHint: 'برای پخش موزیک هر جایی بزن',
         backArcade: 'بازی‌ها',
         play: 'بازی کن',
         bestLabel: 'رکورد',
@@ -2747,7 +2550,7 @@
       T = I18N[lang];
       document.documentElement.lang = lang;
       document.documentElement.dir = T.dir;
-      Mus.paint();
+      Music.setText({ label: T.music, hint: T.musicHint });
       snakeGame.paint();
       memoryGame.paint();
       seqGame.paint();
@@ -2758,293 +2561,13 @@
       route();
     }
 
-    const MKEY = 'arcade-music-v1';
-
-    const Mus = {
-      ctx: null, master: null, bus: null, delay: null, noise: null, keep: null, on: false, armed: false, vol: 0.85, timer: null, nextT: 0, stepN: 0, ti: -1, tr: null,
-      QUAL: [[0, 4, 7], [0, 3, 7]],
-      TRACKS: [
-        { bpm: 116, roots: [36, 43, 45, 41], q: [0, 0, 1, 0], pent: [0, 2, 4, 7, 9], bass: [0, 3, 6, 8, 10, 14], dens: 0.55 },
-        { bpm: 124, roots: [43, 38, 40, 36], q: [0, 0, 1, 0], pent: [0, 2, 4, 7, 9], bass: [0, 4, 8, 12, 14], dens: 0.5 },
-        { bpm: 132, roots: [38, 45, 47, 43], q: [0, 0, 1, 0], pent: [0, 2, 4, 7, 9], bass: [0, 2, 3, 6, 8, 10, 11, 14], dens: 0.6 },
-        { bpm: 108, roots: [45, 41, 36, 43], q: [1, 0, 0, 0], pent: [0, 3, 5, 7, 10], bass: [0, 3, 6, 10, 12], dens: 0.5 },
-        { bpm: 96, roots: [41, 36, 38, 46], q: [0, 0, 1, 0], pent: [0, 2, 4, 7, 9], bass: [0, 6, 8, 14], dens: 0.45 }
-      ],
-      freq(m) { return 440 * Math.pow(2, (m - 69) / 12); },
-      rnd(n) { const x = Math.sin(n * 12.9898 + 78.233) * 43758.5453; return x - Math.floor(x); },
-      init() {
-        if (this.ctx) return true;
-        const AC = window.AudioContext || window.webkitAudioContext;
-        if (!AC) return false;
-        const ctx = new AC();
-        this.ctx = ctx;
-        ctx.onstatechange = () => { if (this.on && ctx.state !== 'running' && !document.hidden) this.arm(); };
-        const comp = ctx.createDynamicsCompressor();
-        comp.threshold.value = -14;
-        comp.ratio.value = 4;
-        this.master = ctx.createGain();
-        this.master.gain.value = 0;
-        this.master.connect(comp);
-        const mk = ctx.createGain();
-        mk.gain.value = 1.5;
-        comp.connect(mk);
-        mk.connect(ctx.destination);
-        this.bus = ctx.createGain();
-        this.bus.connect(this.master);
-        this.delay = ctx.createDelay(1.5);
-        this.delay.delayTime.value = 0.2;
-        const fb = ctx.createGain();
-        fb.gain.value = 0.3;
-        const dl = ctx.createBiquadFilter();
-        dl.type = 'lowpass';
-        dl.frequency.value = 2600;
-        const dw = ctx.createGain();
-        dw.gain.value = 0.45;
-        this.delay.connect(dl);
-        dl.connect(fb);
-        fb.connect(this.delay);
-        dl.connect(dw);
-        dw.connect(this.master);
-        this.noise = ctx.createBuffer(1, ctx.sampleRate, ctx.sampleRate);
-        const nd = this.noise.getChannelData(0);
-        for (let i = 0; i < nd.length; i++) nd[i] = Math.random() * 2 - 1;
-        return true;
-      },
-      tone(type, f, t, dur, peak, opt) {
-        const ctx = this.ctx;
-        const o = ctx.createOscillator();
-        const g = ctx.createGain();
-        o.type = type;
-        o.frequency.setValueAtTime(f, t);
-        if (opt && opt.slide) o.frequency.exponentialRampToValueAtTime(opt.slide, t + dur);
-        const a = (opt && opt.a) || 0.004;
-        g.gain.setValueAtTime(0.0001, t);
-        g.gain.exponentialRampToValueAtTime(peak, t + a);
-        if (opt && opt.hold) g.gain.setValueAtTime(peak, t + dur * opt.hold);
-        g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
-        let node = o;
-        if (opt && opt.lp) {
-          const f1 = ctx.createBiquadFilter();
-          f1.type = 'lowpass';
-          f1.frequency.value = opt.lp;
-          o.connect(f1);
-          node = f1;
-        }
-        node.connect(g);
-        g.connect(this.bus);
-        if (opt && opt.send) g.connect(this.delay);
-        o.start(t);
-        o.stop(t + dur + 0.05);
-      },
-      hit(t, dur, peak, hat) {
-        const ctx = this.ctx;
-        const s = ctx.createBufferSource();
-        s.buffer = this.noise;
-        const f = ctx.createBiquadFilter();
-        f.type = hat ? 'highpass' : 'bandpass';
-        f.frequency.value = hat ? 7500 : 1900;
-        const g = ctx.createGain();
-        g.gain.setValueAtTime(peak, t);
-        g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
-        s.connect(f);
-        f.connect(g);
-        g.connect(this.bus);
-        s.start(t);
-        s.stop(t + dur + 0.02);
-      },
-      pick() {
-        let i = this.ti;
-        while (i === this.ti) i = Math.floor(Math.random() * this.TRACKS.length);
-        this.ti = i;
-        this.tr = this.TRACKS[i];
-        this.delay.delayTime.setValueAtTime(60 / this.tr.bpm * 0.75, this.ctx.currentTime);
-      },
-      sched(step, t) {
-        if (step % 256 === 0 || !this.tr) this.pick();
-        const tr = this.tr;
-        const bar = Math.floor(step / 16);
-        const s = step % 16;
-        const sec = bar % 16;
-        const ci = bar % 4;
-        const root = tr.roots[ci];
-        const iv = this.QUAL[tr.q[ci]];
-        const beat = 60 / tr.bpm;
-        if (s === 0) iv.forEach(x => this.tone('triangle', this.freq(root + 24 + x), t, beat * 4, 0.09, { a: 0.05, hold: 0.85, lp: 2200 }));
-        if (s % 4 === 2) this.tone('square', this.freq(root + 36 + iv[(s >> 2) % 3]), t, beat * 0.22, 0.035, { lp: 2400, send: true });
-        if (tr.bass.indexOf(s) >= 0) {
-          this.tone('square', this.freq(root + (s === 10 || s === 14 ? 12 : 0)), t, beat * 0.4, 0.09, { lp: 700 });
-          this.tone('sine', this.freq(root), t, beat * 0.5, 0.22);
-          this.tone('triangle', this.freq(root + 12), t, beat * 0.35, 0.1, { lp: 1500 });
-        }
-        if (sec >= 2 && s % 2 === 0) {
-          const ph = Math.floor(bar / 2) * 97 + s * 13 + this.ti * 5;
-          if (this.rnd(ph) < tr.dens) {
-            const d = Math.floor(this.rnd(ph + 1) * tr.pent.length);
-            const m = root + 36 + tr.pent[d] + (this.rnd(ph + 2) < 0.3 ? 12 : 0);
-            this.tone('square', this.freq(m), t, beat * (0.4 + this.rnd(ph + 3) * 0.7), 0.045, { a: 0.006, lp: 3400, send: true });
-          }
-        }
-        if (sec >= 3) {
-          if (s === 0 || s === 8 || (s === 10 && bar % 2)) {
-            this.tone('sine', 130, t, 0.18, 0.55, { slide: 45 });
-            this.tone('triangle', 280, t, 0.05, 0.18, { slide: 90 });
-          }
-          if (s === 4 || s === 12) this.hit(t, 0.12, 0.16, false);
-          if (s % 2 === 0) this.hit(t, 0.03, s % 4 === 2 ? 0.06 : 0.035, true);
-        }
-      },
-      pump() {
-        while (this.nextT < this.ctx.currentTime + 0.25) {
-          this.sched(this.stepN, this.nextT);
-          this.stepN++;
-          this.nextT += 60 / this.tr.bpm / 4;
-        }
-      },
-      unlock() {
-        const ctx = this.ctx;
-        try {
-          const src = ctx.createBufferSource();
-          src.buffer = ctx.createBuffer(1, 1, 22050);
-          src.connect(ctx.destination);
-          src.start(0);
-        } catch (e) {}
-        try { if (navigator.audioSession) navigator.audioSession.type = 'playback'; } catch (e) {}
-        try {
-          if (!this.keep) {
-            const n = 8000;
-            const buf = new ArrayBuffer(44 + n * 2);
-            const v = new DataView(buf);
-            const w = (o, t) => { for (let i = 0; i < t.length; i++) v.setUint8(o + i, t.charCodeAt(i)); };
-            w(0, 'RIFF');
-            v.setUint32(4, 36 + n * 2, true);
-            w(8, 'WAVEfmt ');
-            v.setUint32(16, 16, true);
-            v.setUint16(20, 1, true);
-            v.setUint16(22, 1, true);
-            v.setUint32(24, 8000, true);
-            v.setUint32(28, 16000, true);
-            v.setUint16(32, 2, true);
-            v.setUint16(34, 16, true);
-            w(36, 'data');
-            v.setUint32(40, n * 2, true);
-            const a = new Audio(URL.createObjectURL(new Blob([buf], { type: 'audio/wav' })));
-            a.loop = true;
-            a.setAttribute('playsinline', '');
-            this.keep = a;
-          }
-          const pr = this.keep.play();
-          if (pr && pr.catch) pr.catch(() => {});
-        } catch (e) {}
-      },
-      kick() {
-        if (!this.ctx) return;
-        this.unlock();
-        if (this.ctx.state !== 'running') this.ctx.resume();
-      },
-      apply() {
-        if (this.ctx) this.master.gain.setTargetAtTime(this.on ? this.vol : 0, this.ctx.currentTime, 0.25);
-      },
-      setOn(v) {
-        if (v && !this.init()) { this.on = false; this.paint(); return false; }
-        this.on = !!v;
-        if (this.on) {
-          this.unlock();
-          if (this.ctx.state !== 'running') this.ctx.resume();
-          if (!this.timer) {
-            this.nextT = this.ctx.currentTime + 0.1;
-            this.timer = setInterval(() => this.pump(), 40);
-          }
-        } else if (this.timer) {
-          clearInterval(this.timer);
-          this.timer = null;
-          if (this.keep) this.keep.pause();
-          const c = this.ctx;
-          setTimeout(() => { if (!this.on && c.state === 'running') c.suspend(); }, 900);
-        }
-        this.apply();
-        this.save();
-        this.paint();
-        return true;
-      },
-      save() {
-        store.set(MKEY, JSON.stringify({ on: this.on, vol: this.vol }));
-      },
-      setVol(v) {
-        this.vol = Math.min(1, Math.max(0, v));
-        this.apply();
-        this.save();
-        this.paint();
-      },
-      onWake(e) {
-        if (e && e.target && e.target.closest && e.target.closest('#music-pill')) return;
-        if (!Mus.on) Mus.setOn(true); else Mus.kick();
-        setTimeout(() => {
-          if (Mus.ctx && Mus.ctx.state === 'running') Mus.disarm();
-          Mus.paint();
-        }, 400);
-      },
-      arm() {
-        if (this.armed) return;
-        this.armed = true;
-        ['pointerup', 'click', 'keydown', 'touchend'].forEach(ev => window.addEventListener(ev, this.onWake, true));
-        this.paint();
-      },
-      disarm() {
-        if (!this.armed) return;
-        this.armed = false;
-        ['pointerup', 'click', 'keydown', 'touchend'].forEach(ev => window.removeEventListener(ev, this.onWake, true));
-        this.paint();
-      },
-      paint() {
-        const b = $('music-toggle');
-        if (!b) return;
-        const on = this.on || this.armed;
-        b.setAttribute('aria-pressed', on ? 'true' : 'false');
-        $('music-pill').classList.toggle('on', on);
-        const vi = $('music-vol');
-        const pv = Math.round(this.vol * 100);
-        if (document.activeElement !== vi && Number(vi.value) !== pv) vi.value = pv;
-        vi.style.setProperty('--vp', vi.value + '%');
-        $('music-label').textContent = T.music;
-        b.setAttribute('aria-label', T.music + (on ? ' ✓' : ''));
-      }
-    };
-
-    $('music-toggle').addEventListener('click', () => {
-      if (Mus.on || Mus.armed) {
-        Mus.disarm();
-        Mus.setOn(false);
-      } else {
-        Mus.setOn(true);
-      }
+    Music.init({
+      key: 'arcade-music-v2',
+      style: 'play',
+      mount: document.querySelector('.topbar'),
+      before: $('lang-toggle'),
+      text: { label: T.music, hint: T.musicHint }
     });
-
-    (() => {
-      const vi = $('music-vol');
-      vi.addEventListener('input', () => Mus.setVol(Number(vi.value) / 100));
-      vi.addEventListener('pointerdown', () => vi.classList.add('drag'));
-      ['pointerup', 'pointercancel', 'blur'].forEach(ev => vi.addEventListener(ev, () => vi.classList.remove('drag')));
-    })();
-
-    document.addEventListener('visibilitychange', () => {
-      if (!Mus.on || !Mus.ctx) return;
-      if (document.hidden) {
-        Mus.ctx.suspend();
-        if (Mus.keep) Mus.keep.pause();
-      } else {
-        Mus.ctx.resume();
-        if (Mus.keep) { const pr = Mus.keep.play(); if (pr && pr.catch) pr.catch(() => {}); }
-        setTimeout(() => { if (Mus.on && Mus.ctx.state !== 'running') Mus.arm(); }, 400);
-      }
-    });
-
-    (() => {
-      let pref = null;
-      try { pref = JSON.parse(store.get(MKEY) || 'null'); } catch (e) {}
-      if (pref && pref.vol >= 0 && pref.vol <= 1) Mus.vol = pref.vol;
-      if (!pref || pref.on) Mus.arm();
-      Mus.paint();
-    })();
 
     $('lang-toggle').addEventListener('click', () => {
       $('lang-toggle').blur();

@@ -8,8 +8,8 @@ Static site on GitHub Pages: https://actually-aloy.github.io/site/
 | --- | --- |
 | index.html | Home |
 | freelance.html | Freelance page |
-| arcade.html | Aloy's Arcade (hub and games in one page, includes the arcade music) |
-| ironline.html | Ironline, the mining and trading game (has its own music) |
+| arcade.html | Aloy's Arcade (hub and games in one page) |
+| ironline.html | Ironline, the mining and trading game (has its own CRT-style music player) |
 | papion.html, papion-app.html | Papion page and its embedded app view |
 | varaq.html, multitool.html, mcportal.html, rastnevis.html, questlog.html, ytdownloader.html | Project pages |
 | 404.html | Not-found page |
@@ -20,6 +20,7 @@ Static site on GitHub Pages: https://actually-aloy.github.io/site/
 | --- | --- |
 | langfx.css, langfx.js | Every page: language switch effect |
 | platform.css, platform.js | Project pages |
+| music.css, music.js | index.html (relaxing music) and arcade.html (arcade music): the music player, its volume slider and the saved settings |
 | releases.js | Pages with a download button: finds the latest GitHub release |
 | freelance-config.js | index.html and freelance.html: set `status` to `'open'` or `'busy'` |
 
