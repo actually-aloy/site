@@ -1801,7 +1801,7 @@
     const AUTO = [0, 1.0, 1.05, 1.1, 1.15, 1.2, 1.3];
     const AUTO_JUNIOR = [0, 1, 3, 4];
     const AUTO_OLD = [0, 0.95, 1.0, 1.1, 1.15, 1.2, 1.3, 1.4, 1.5, 1.7];
-    const AUTO_STAGE = [1, 1, 0.4, 0.2];
+    const AUTO_STAGE = [1, 1, 0.4, 0.4];
     const OVF = [0, 0.25, 0.5, 0.75, 1];
     const MILESTONES = [1e3, 1e4, 1e5, 1e6, 1e7, 1e8, 1e9, 1e10, 1e11, 1e12];
     const PHOS = ['green', 'amber', 'ice'];
@@ -2658,7 +2658,7 @@
         fx: l => String(Math.floor(100 * Math.pow(1.5, l))),
         msg: () => 'WAREHOUSE EXPANDED. CAPACITY ' + cap() + '.' }),
       mk({ id: 'broker', name: 'BROKER', max: 3, base: 1500, growth: 80,
-        desc: 'Sells for you while a desk\'s price is above the % you set on it (the same % shown on the desk: +0% is the normal price). Big sales push the price down, so smaller stages get better prices. Junior sells everything at once, Senior sells 40% at a time and has finer levels, Trader sells 20% at a time. It can also sell when storage is full.',
+        desc: 'Sells for you while a desk\'s price is above the % you set on it (the same % shown on the desk: +0% is the normal price). Every level also sells when storage is full, as set on each desk. JUNIOR sells everything at once. SENIOR sells 40% at a time, which gets better prices because big sales push the price down, and has finer levels. TRADER sells like Senior and also waits for the peak: it holds off while the price is still climbing.',
         fx: l => BROKER_NAMES[l],
         msg: l => BROKER_NAMES[l] + ' BROKER HIRED. ' + (l === 1 ? 'SET A SELL PRICE ON EACH DESK. FULL WAREHOUSES ARE SOLD AUTOMATICALLY.' : 'AUTO-SELL IS UPGRADED.') }),
       mk({ id: 'rig', name: 'DRILL RIG', max: 4, base: 15000, growth: 17,
@@ -3042,44 +3042,34 @@
       return { n, p, gain };
     }
 
-    const autoAcc = COMM.map(() => ({ n: 0, g: 0 }));
-    let autoFlushAt = 0;
+    const autoFloor = () => Math.max(1, Math.ceil(cap() * 0.1));
 
     function autoSell() {
       const b = brokerLv();
       if (!b) return;
+      const floor = autoFloor();
       S.c.forEach((c, i) => {
         if (!c.u) return;
-        let r = null;
-        let full = false;
         if (c.ovf && c.metal >= cap() * 0.995) {
-          r = sell(i, OVF[c.ovf]);
-          full = true;
-        } else if (AUTO[c.auto] && c.metal >= 1 && price(i) >= AUTO[c.auto] * COMM[i].base) {
-          r = sell(i, AUTO_STAGE[b]);
+          const r = sell(i, OVF[c.ovf]);
+          if (r) {
+            log('STORAGE FULL. BROKER SOLD ' + Math.floor(r.n) + ' ' + COMM[i].sym + ' @ $' + r.p.toFixed(2) + ' = ' + money(r.gain));
+            Snd.sfx('sell');
+          }
+          return;
         }
-        if (!r) return;
-        if (full) {
-          log('STORAGE FULL. BROKER SOLD ' + Math.floor(r.n) + ' ' + COMM[i].sym + ' @ $' + r.p.toFixed(2) + ' = ' + money(r.gain));
+        const m = AUTO[c.auto];
+        if (!m || c.metal < floor) return;
+        const p = price(i);
+        const th = m * COMM[i].base;
+        if (p < th) return;
+        if (b >= 3 && c.dx > 0 && p < th * 1.1) return;
+        const r = sell(i, AUTO_STAGE[b]);
+        if (r) {
+          log('BROKER SOLD ' + Math.floor(r.n) + ' ' + COMM[i].sym + ' @ $' + r.p.toFixed(2) + ' = ' + money(r.gain));
           Snd.sfx('sell');
-        } else {
-          autoAcc[i].n += r.n;
-          autoAcc[i].g += r.gain;
         }
       });
-      if (S.clock >= autoFlushAt) {
-        autoFlushAt = S.clock + 15;
-        let any = false;
-        autoAcc.forEach((a, i) => {
-          if (a.n >= 1) {
-            log('BROKER SOLD ' + Math.floor(a.n) + ' ' + COMM[i].sym + ' = ' + money(a.g));
-            any = true;
-          }
-          a.n = 0;
-          a.g = 0;
-        });
-        if (any) Snd.sfx('sell');
-      }
     }
 
     function fireEvent() {
@@ -3421,8 +3411,11 @@
             al = 'AUTO-SELL: OFF';
           } else {
             const pc = Math.round((AUTO[c.auto] - 1) * 100);
-            const on = price(i) >= AUTO[c.auto] * d.base && c.metal >= 1;
-            al = (on ? 'SELLING ABOVE +' : 'SELL ABOVE +') + pc + '%';
+            const th = AUTO[c.auto] * d.base;
+            const hit = price(i) >= th;
+            if (hit && brokerLv() >= 3 && c.dx > 0 && price(i) < th * 1.1) al = 'WAITING FOR THE PEAK';
+            else if (hit && c.metal < autoFloor()) al = 'SELLS AT ' + autoFloor() + ' STOCK';
+            else al = (hit ? 'SELLING ABOVE +' : 'SELL ABOVE +') + pc + '%';
           }
         }
         setT(r.autol, al);
@@ -3955,7 +3948,6 @@
         el.savebtn.classList.remove('flash');
         void el.savebtn.offsetWidth;
         el.savebtn.classList.add('flash');
-        print(ok ? 'game saved.' : 'could not save. your browser may be blocking storage.', ok ? 'd' : 'w');
         render();
       });
 
