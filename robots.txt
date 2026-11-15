@@ -1,3 +1,0 @@
-User-agent: *
-Allow: /
-Sitemap: https://actually-aloy.github.io/site/sitemap.xml
