@@ -16,7 +16,9 @@
   <meta name="twitter:title" content="Ironline">
   <meta name="twitter:description" content="A mining and trading tycoon on an old CRT terminal. Dig ore, refine it, and time the market.">
   <meta name="twitter:image" content="https://actually-aloy.github.io/site/ironline-og.jpg">
-  <link rel="icon" href="favicon.svg?v=2" type="image/svg+xml">
+  <link rel="icon" href="ironline-icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="ironline-180.png">
+  <link rel="manifest" href="ironline.webmanifest">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -1721,6 +1723,661 @@
         to { opacity: 1; }
       }
     }
+    .tabs {
+      grid-template-columns: repeat(6, 1fr);
+    }
+
+    @media (max-width: 700px) {
+      .tabs {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    .tut {
+      margin: 0 0 12px;
+      padding: 10px 12px;
+      border: 1px solid var(--fg);
+      background: color-mix(in srgb, var(--fg) 7%, var(--bg));
+      display: grid;
+      gap: 6px;
+      align-content: start;
+      min-height: 104px;
+    }
+
+    .tut[hidden] {
+      display: none;
+    }
+
+    .tut-h {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      color: var(--dim);
+    }
+
+    .tut p {
+      margin: 0;
+      font-size: 14px;
+      line-height: 1.45;
+      min-height: 2.9em;
+    }
+
+    .tut-p {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 12px;
+      white-space: nowrap;
+      min-height: 1.4em;
+    }
+
+    .tut-p span:first-child {
+      white-space: pre;
+    }
+
+    .tut button {
+      min-height: 30px;
+      padding: 0 12px;
+      border: 1px solid var(--line);
+      background: transparent;
+      color: var(--fg);
+      font: inherit;
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      cursor: pointer;
+    }
+
+    .tut button:hover {
+      border-color: var(--fg);
+    }
+
+    .tut-hi {
+      outline: 2px dashed var(--fg);
+      outline-offset: 3px;
+      animation: tuthi 1.2s ease-in-out infinite;
+    }
+
+    @keyframes tuthi {
+      50% { outline-color: transparent; }
+    }
+
+    .pane {
+      display: block;
+    }
+
+    .pane[hidden] {
+      display: none;
+    }
+
+    .sstrip {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .sbox {
+      border: 1px solid var(--line);
+      padding: 8px 12px;
+      display: grid;
+      gap: 2px;
+      min-width: 0;
+    }
+
+    .sbox span {
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      color: var(--dim);
+    }
+
+    .sbox b {
+      font-size: 18px;
+      font-weight: 600;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .ghead {
+      margin: 20px 0 8px;
+      font-size: 12px;
+      letter-spacing: 0.16em;
+      color: var(--dim);
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .ghead::after {
+      content: "";
+      flex: 1;
+      border-top: 1px solid var(--line);
+    }
+
+    .prow {
+      border: 1px solid var(--line);
+      margin-bottom: 6px;
+      min-width: 0;
+    }
+
+    .prow.sel {
+      border-color: var(--fg);
+    }
+
+    .prow.locked {
+      border-style: dashed;
+      color: var(--dim);
+    }
+
+    .phd {
+      display: grid;
+      grid-template-columns: minmax(0, 1.5fr) minmax(0, 1.2fr) minmax(0, 1.3fr) minmax(0, 0.9fr) 124px;
+      gap: 12px;
+      align-items: center;
+      padding: 8px 12px;
+      min-height: 58px;
+      cursor: pointer;
+    }
+
+    .phd:hover {
+      background: color-mix(in srgb, var(--fg) 6%, transparent);
+    }
+
+    .phd:focus-visible {
+      outline: 2px solid var(--fg);
+      outline-offset: -2px;
+    }
+
+    .pn {
+      display: grid;
+      gap: 2px;
+      min-width: 0;
+    }
+
+    .pn b {
+      font-size: 14px;
+      letter-spacing: 0.1em;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .pg {
+      font-size: 11px;
+      color: var(--dim);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .ppx {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+      font-size: 12px;
+      white-space: nowrap;
+      min-width: 0;
+    }
+
+    .ppx b {
+      font-size: 16px;
+      font-weight: 600;
+    }
+
+    .pst {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      white-space: nowrap;
+    }
+
+    .pbar {
+      white-space: pre;
+    }
+
+    .pinc {
+      font-size: 13px;
+      text-align: right;
+      white-space: nowrap;
+    }
+
+    .pchip {
+      font-size: 11px;
+      letter-spacing: 0.06em;
+      text-align: center;
+      border: 1px solid var(--line);
+      padding: 3px 4px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .pchip.ok {
+      border-color: var(--fg);
+    }
+
+    .pchip.warn {
+      color: var(--warn);
+      border-color: var(--warn);
+    }
+
+    .plock {
+      display: none;
+    }
+
+    .prow.locked .ppx,
+    .prow.locked .pst,
+    .prow.locked .pinc,
+    .prow.locked .pchip {
+      display: none;
+    }
+
+    .prow.locked .plock {
+      display: flex;
+      grid-column: 2 / -1;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 12px;
+    }
+
+    .prow.locked .pg {
+      white-space: normal;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2;
+    }
+
+    .out.need {
+      color: var(--warn);
+    }
+
+    .pneed {
+      color: var(--warn);
+      font-size: 11px;
+      letter-spacing: 0.06em;
+      text-align: right;
+    }
+
+    .plock .btn {
+      min-height: 40px;
+      padding: 4px 14px;
+      flex: none;
+    }
+
+    .pbd {
+      display: none;
+      border-top: 1px solid var(--line);
+      padding: 12px;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: 20px;
+    }
+
+    .prow.sel .pbd {
+      display: grid;
+    }
+
+    .pcol,
+    .pmarket {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      min-width: 0;
+    }
+
+    .prow.locked .pctl,
+    .prow.locked .pmarket {
+      display: none;
+    }
+
+    .pt {
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      color: var(--dim);
+    }
+
+    .irow {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      font-size: 12px;
+    }
+
+    .irow span:last-child {
+      color: var(--dim);
+    }
+
+    .irow.short span:last-child {
+      color: var(--warn);
+    }
+
+    .pbd .sd,
+    .pbd .kv {
+      margin: 0;
+      font-size: 12px;
+    }
+
+    .pbd .sd {
+      line-height: 1.55;
+      color: var(--dim);
+    }
+
+    .pbd .out:empty {
+      display: none;
+    }
+
+    .sgrid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(270px, 100%), 1fr));
+      gap: 12px;
+      margin-top: 14px;
+      align-items: stretch;
+    }
+
+    .scard {
+      padding: 12px;
+      border: 1px solid var(--line);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      min-width: 0;
+    }
+
+    .scard h2 {
+      margin: 0;
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+    }
+
+    .scard .card-head {
+      align-items: center;
+    }
+
+    .lv {
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      padding: 1px 8px;
+      border: 1px solid var(--fg);
+      white-space: nowrap;
+    }
+
+    .scard.locked {
+      border-style: dashed;
+      color: var(--dim);
+    }
+
+    .scard.locked .lv {
+      border-color: var(--line);
+    }
+
+    .tagl {
+      margin: 0;
+      font-size: 12px;
+      color: var(--dim);
+    }
+
+    .kvs {
+      display: grid;
+      gap: 5px;
+      border-top: 1px solid var(--line);
+      padding-top: 8px;
+      font-size: 12px;
+    }
+
+    .kvs .kv {
+      font-size: 12px;
+    }
+
+    .kvs .kv span:last-child {
+      min-width: 0;
+      overflow-wrap: anywhere;
+    }
+
+    .sact {
+      display: grid;
+      gap: 8px;
+      margin-top: auto;
+    }
+
+    .scard.locked [data-act="buy"],
+    .scard.locked [data-act="camp"],
+    .scard:not(.locked) [data-act="unlock"] {
+      display: none;
+    }
+
+    .amodels {
+      margin-top: 14px;
+      border: 1px solid var(--line);
+      padding: 12px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .amodels .pt span {
+      color: var(--warn);
+    }
+
+    .grid4 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(150px, 100%), 1fr));
+      gap: 8px;
+    }
+
+    .btn.dn {
+      color: var(--warn);
+      border-color: var(--warn);
+    }
+
+    .btn.b3 {
+      height: auto;
+      min-height: 66px;
+      justify-content: center;
+    }
+
+    .btn.b3 > * {
+      letter-spacing: 0.02em;
+    }
+
+    .btn.b3 > :first-child {
+      font-size: 12px;
+      overflow: visible;
+      text-overflow: clip;
+    }
+
+    .btn.b3 .l2 {
+      font-size: 11px;
+      white-space: normal;
+      overflow: visible;
+      text-overflow: clip;
+      line-height: 1.2;
+      min-height: 2.4em;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .btn.b3 .l2:empty {
+      display: none;
+    }
+
+    .dbox.calm {
+      width: min(500px, 100%);
+      border-color: var(--fg);
+      color: var(--fg);
+      animation: none;
+      box-shadow: 0 0 18px color-mix(in srgb, var(--fg) 30%, transparent);
+    }
+
+    .dbox.calm .dhaz {
+      height: 6px;
+      background: var(--fg);
+    }
+
+    .ahead {
+      display: grid;
+      gap: 2px;
+      margin-bottom: 14px;
+      padding: 6px 0 12px;
+      text-align: center;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .alabel {
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      color: var(--dim);
+    }
+
+    .abig {
+      font-size: 30px;
+      font-weight: 700;
+      text-shadow: var(--glow);
+    }
+
+    .asub {
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      color: var(--dim);
+    }
+
+    .asec {
+      margin: 0 0 12px;
+    }
+
+    .asec h3 {
+      margin: 0 0 4px;
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      color: var(--dim);
+      font-weight: 600;
+    }
+
+    .asec.dn h3 {
+      color: var(--warn);
+    }
+
+    .asec.up h3 {
+      color: var(--fg);
+    }
+
+    .arow {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto auto;
+      gap: 12px;
+      font-size: 12px;
+      padding: 2px 0;
+    }
+
+    .arow.one {
+      display: block;
+      line-height: 1.5;
+    }
+
+    .arow .m {
+      color: var(--dim);
+      text-align: right;
+    }
+
+    .arow .r {
+      text-align: right;
+      min-width: 7ch;
+    }
+
+    .asec.dn .arow .r,
+    .asec.dn .arow .m {
+      color: var(--warn);
+    }
+
+    .amore {
+      font-size: 11px;
+      color: var(--dim);
+    }
+
+    .anote {
+      margin: 4px 0 0;
+      font-size: 11px;
+      line-height: 1.5;
+      color: var(--dim);
+    }
+
+    .dbody .anote {
+      font-size: 11px;
+      margin: 0 0 12px;
+    }
+
+    .dbtns.one {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .dbox.calm .dbtns button.go {
+      border-color: var(--fg);
+      color: var(--fg);
+    }
+
+    @media (max-width: 760px) {
+      .sstrip {
+        gap: 6px;
+      }
+
+      .sbox {
+        padding: 6px 8px;
+      }
+
+      .sbox b {
+        font-size: 14px;
+      }
+
+      .phd {
+        grid-template-columns: minmax(0, 1fr) auto;
+        grid-template-areas: "n c" "p i" "s s";
+        gap: 6px 10px;
+      }
+
+      .pn { grid-area: n; }
+      .pchip { grid-area: c; }
+      .ppx { grid-area: p; }
+      .pinc { grid-area: i; }
+      .pst { grid-area: s; }
+
+      .prow.locked .phd {
+        grid-template-areas: "n n" "l l";
+      }
+
+      .prow.locked .plock {
+        grid-area: l;
+        grid-column: auto;
+        justify-content: space-between;
+      }
+
+      .prow.locked .pg {
+      white-space: normal;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2;
+    }
+
+    .out.need {
+      color: var(--warn);
+    }
+
+    .pneed {
+        text-align: left;
+      }
+
+      .pbd {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .tut-hi {
+        animation: none;
+      }
+    }
   </style>
 </head>
 <body>
@@ -1752,8 +2409,16 @@
 
     <p class="status" id="status">ALL SYSTEMS NOMINAL</p>
 
+    <div class="tut" id="tut" role="region" aria-label="Tutorial" hidden>
+      <div class="tut-h"><span id="tutn"></span><button type="button" id="tutskip">HIDE</button></div>
+      <p id="tutt"></p>
+      <div class="tut-p" id="tutp"><span id="tutbar"></span><span id="tutv"></span></div>
+    </div>
+
     <nav class="tabs" role="tablist" aria-label="Sections">
       <button type="button" class="tab" role="tab" id="tab-ops" data-tab="ops" aria-selected="true" aria-controls="cards">OPERATIONS</button>
+      <button type="button" class="tab" role="tab" id="tab-pr" data-tab="pr" aria-selected="false" aria-controls="prod">PRODUCTION</button>
+      <button type="button" class="tab" role="tab" id="tab-sv" data-tab="sv" aria-selected="false" aria-controls="serv">SERVICES</button>
       <button type="button" class="tab" role="tab" id="tab-res" data-tab="res" aria-selected="false" aria-controls="research">RESEARCH</button>
       <button type="button" class="tab" role="tab" id="tab-mk" data-tab="mk" aria-selected="false" aria-controls="markets">MARKETS</button>
       <button type="button" class="tab" role="tab" id="tab-bd" data-tab="bd" aria-selected="false" aria-controls="board">BOARD</button>
@@ -1761,6 +2426,8 @@
 
     <div class="opsbar" id="opsbar"><span>LEVELS PER BUY</span><div class="seg" id="tbuy" role="group" aria-label="Levels per purchase"><button type="button" data-q="0" aria-pressed="true">x1</button><button type="button" data-q="1" aria-pressed="false">x10</button><button type="button" data-q="2" aria-pressed="false">x25</button><button type="button" data-q="3" aria-pressed="false">MAX</button></div></div>
     <section class="cards" id="cards" role="tabpanel" aria-labelledby="tab-ops"></section>
+    <section class="pane" id="prod" role="tabpanel" aria-labelledby="tab-pr" hidden></section>
+    <section class="pane" id="serv" role="tabpanel" aria-labelledby="tab-sv" hidden></section>
     <section class="cards eq" id="research" role="tabpanel" aria-labelledby="tab-res" hidden></section>
     <section class="cards mk" id="markets" role="tabpanel" aria-labelledby="tab-mk" hidden></section>
     <section class="cards col" id="board" role="tabpanel" aria-labelledby="tab-bd" hidden></section>
@@ -1834,6 +2501,133 @@
       { i: 6, dx: -0.32, m: 'NEW BRINE FIELDS OPEN. LITHIUM FALLS.' }
     ];
 
+    const PTIER = [1, 1.12, 1.28, 1.5];
+    const PTC = [0, 0.3, 1.2, 4];
+    const PNAME = ['T0', 'T1', 'T2', 'T3'];
+    const PROD = [
+      { id: 'STEEL', name: 'STEEL', cin: [[0,3]], pin: [], base: 38, unlock: 25000, line: { cost: 3100, rate: 0.27 }, liq: 38, sz: 1, grp: 0, vol: 0.03, amp: 0.1, period: 170, phase: 1,
+        desc: 'Iron smelted into steel. Almost everything heavy is built from it.',
+        tiers: [['BLAST FURNACE','CARBON STEEL'],['BASIC OXYGEN FURNACE','ALLOY STEEL'],['ELECTRIC ARC FURNACE','STAINLESS STEEL'],['VACUUM ALLOY MILL','TOOL STEEL']] },
+      { id: 'WIRE', name: 'WIRE & CABLE', cin: [[1,2]], pin: [], base: 87, unlock: 100000, line: { cost: 11000, rate: 0.32 }, liq: 46, sz: 1, grp: 0, vol: 0.035, amp: 0.11, period: 200, phase: 2.5,
+        desc: 'Copper drawn into wire and cable. Cheap, steady and in demand everywhere.',
+        tiers: [['DRAWING BENCH','BARE WIRE'],['ENAMEL WIRE LINE','BUILDING WIRE'],['XLPE CABLE EXTRUDER','POWER CABLE'],['SUBSEA CABLE PLANT','HV SUBSEA CABLE']] },
+      { id: 'SILVERWARE', name: 'SILVERWARE & JEWELRY', cin: [[2,2]], pin: [], base: 485, unlock: 500000, line: { cost: 49000, rate: 0.17 }, liq: 24, sz: 1, grp: 0, vol: 0.04, amp: 0.12, period: 240, phase: 4,
+        desc: 'Silver crafted into cutlery and jewelry. Brand and craft make the margin.',
+        tiers: [['HAND BENCH','PLAIN SILVERWARE'],['CASTING STUDIO','STERLING SETS'],['CNC ENGRAVING SHOP','DESIGNER JEWELRY'],['ATELIER','HAUTE JOAILLERIE']] },
+      { id: 'ASPHALT', name: 'ASPHALT', cin: [[3,1]], pin: [], base: 475, unlock: 6000000, line: { cost: 190000, rate: 0.56 }, liq: 79, sz: 1, grp: 1, vol: 0.025, amp: 0.09, period: 310, phase: 0.5,
+        desc: 'Road asphalt. Thin margin, but a huge market that barely reacts to big sales.',
+        tiers: [['BITUMEN BLENDER','ROAD ASPHALT'],['POLYMER MIXER','POLYMER ASPHALT'],['WARM-MIX PLANT','WARM-MIX ASPHALT'],['AIRFIELD LAB','AIRPORT GRADE']] },
+      { id: 'PLASTICS', name: 'PLASTICS & POLYMERS', cin: [[3,1]], pin: [], base: 685, unlock: 8000000, line: { cost: 140000, rate: 0.35 }, liq: 50, sz: 1, grp: 1, vol: 0.035, amp: 0.12, period: 230, phase: 3,
+        desc: 'Oil cracked into polymers. Packaging, casings and insulation all need them.',
+        tiers: [['STEAM CRACKER','COMMODITY PLASTICS'],['POLYETHYLENE REACTOR','HDPE AND PP'],['ENGINEERING COMPOUNDER','ENGINEERING PLASTICS'],['SPECIALTY POLYMER LAB','HIGH-PERFORMANCE POLYMERS']] },
+      { id: 'LUBES', name: 'LUBRICANTS & WAXES', cin: [[3,2]], pin: [], base: 1520, unlock: 10000000, line: { cost: 120000, rate: 0.13 }, liq: 18, sz: 1, grp: 1, vol: 0.03, amp: 0.1, period: 260, phase: 5,
+        desc: 'Refined oil blended into lubricants. Fat margin, small market.',
+        tiers: [['BLENDING TANKS','MINERAL OIL'],['HYDROCRACKER','SEMI-SYNTHETIC'],['PAO SYNTHESIS PLANT','FULL SYNTHETIC'],['ESTER LAB','SPECIALTY ESTERS AND WAXES']] },
+      { id: 'MACHINERY', name: 'HEAVY MACHINERY', cin: [], pin: [[0,800],[1,160],[5,40]], base: 147150, unlock: 40000000, line: { cost: 100000, rate: 0.00077 }, liq: 0.11, sz: 0.1, grp: 3, vol: 0.03, amp: 0.12, period: 330, phase: 4.4,
+        desc: 'Steel, cable and lubricants assembled into excavators and rigs. Slow, but pays big.',
+        tiers: [['ASSEMBLY BAY','TRACTORS AND LOADERS'],['CNC MACHINING CELL','EXCAVATORS'],['ROBOTIC WELDING LINE','MINING TRUCKS'],['SMART FACTORY','AUTONOMOUS RIGS']] },
+      { id: 'TIRES', name: 'TIRES', cin: [[4,0.5]], pin: [[0,0.5]], base: 1140, unlock: 150000000, line: { cost: 650000, rate: 0.63 }, liq: 89, sz: 1, grp: 1, vol: 0.04, amp: 0.12, period: 280, phase: 1.7,
+        desc: 'Rubber and steel cord, cured into tires.',
+        tiers: [['CURING PRESS','BIAS TIRES'],['RADIAL LINE','RADIAL TIRES'],['SILICA COMPOUNDER','PREMIUM ALL-SEASON'],['MOTORSPORT LAB','PERFORMANCE TIRES']] },
+      { id: 'CHIPS', name: 'SEMICONDUCTORS', cin: [[5,0.05],[1,0.5]], pin: [[4,0.2]], base: 1090, unlock: 2000000000, line: { cost: 1700000, rate: 1.3 }, liq: 185, sz: 1, grp: 2, vol: 0.06, amp: 0.2, period: 300, phase: 0.4,
+        desc: 'Gold, copper and plastic packaging turned into chips. The biggest markup in the game.',
+        tiers: [['180 NM FAB','LEGACY CHIPS'],['28 NM FAB','MID-RANGE CHIPS'],['7 NM FAB','FLAGSHIP CHIPS'],['EUV FAB','AI ACCELERATORS']] },
+      { id: 'COMPUTERS', name: 'COMPUTERS', cin: [], pin: [[8,2],[0,2],[1,1],[4,1]], base: 3940, unlock: 3000000000, line: { cost: 1400000, rate: 0.3 }, liq: 43, sz: 1, grp: 2, vol: 0.045, amp: 0.14, period: 290, phase: 5.5,
+        desc: 'Chips, steel, cable and plastic cases built into computers.',
+        tiers: [['KITTING LINE','DESKTOP PCS'],['MOTHERBOARD LINE','LAPTOPS'],['SERVER LINE','WORKSTATIONS'],['SUPERCOMPUTER HALL','DATA-CENTER SERVERS']] },
+      { id: 'BATTERIES', name: 'BATTERIES', cin: [[6,0.12],[1,1]], pin: [[4,0.3],[0,0.5]], base: 4260, unlock: 40000000000, line: { cost: 9600000, rate: 1.5 }, liq: 207, sz: 1, grp: 2, vol: 0.06, amp: 0.18, period: 360, phase: 2.2,
+        desc: 'Lithium cells packed into battery modules.',
+        tiers: [['CELL PILOT LINE','BASIC LI-ION PACKS'],['ELECTRODE COATER','NMC CELLS'],['GIGAFACTORY','LFP AND NMC PACKS'],['SOLID-STATE LAB','SOLID-STATE CELLS']] },
+      { id: 'PHONES', name: 'SMARTPHONES', cin: [], pin: [[8,1],[10,0.05],[4,0.4]], base: 2050, unlock: 60000000000, line: { cost: 3400000, rate: 1.1 }, liq: 155, sz: 1, grp: 2, vol: 0.05, amp: 0.15, period: 250, phase: 3.6,
+        desc: 'A chip, a small battery and a plastic shell. Sells in huge numbers.',
+        tiers: [['ASSEMBLY HALL','BASIC PHONES'],['SMT LINE','MIDRANGE PHONES'],['ROBOT ASSEMBLY','FLAGSHIP PHONES'],['PREMIUM CLEANROOM','FOLDABLE FLAGSHIPS']] },
+      { id: 'AUTO', name: 'AUTOMOTIVE', cin: [], pin: [[0,8],[7,1],[10,1],[1,2],[8,2],[4,2]], base: 12250, unlock: 120000000000, line: { cost: 5900000, rate: 0.32 }, liq: 45, sz: 1, grp: 4, vol: 0.035, amp: 0.13, period: 350, phase: 2.9,
+        desc: 'Cars from steel, tires, a battery pack, cable, chips and plastic. The top of the chain.',
+        tiers: [['ASSEMBLY LINE','ECONOMY CARS'],['ROBOTIC BODY SHOP','FAMILY CARS'],['FLEXIBLE PLATFORM PLANT','PREMIUM CARS'],['GIGA CASTING PLANT','ELECTRIC FLAGSHIPS']] },
+      { id: 'AK', name: 'AK-47 RIFLES', cin: [], pin: [[0,4],[4,0.5],[5,0.2]], base: 1040, unlock: 250000000, line: { cost: 160000, rate: 0.17 }, liq: 24, sz: 1, grp: 4, vol: 0.04, amp: 0.12, period: 270, phase: 1.2,
+        desc: 'Stamped receivers, polymer furniture and a film of oil. Cheap, rugged and always in demand.',
+        tiers: [['MILLED RECEIVER SHOP','TYPE 2 RIFLES'],['STAMPING PRESS LINE','AKM RIFLES'],['CHROME BARREL LINE','AK-74M RIFLES'],['CNC ARMORY','AK-12 RIFLES']] },
+      { id: 'DRONES', name: 'DRONES', cin: [], pin: [[8,1],[10,0.15],[4,0.6],[1,0.3]], base: 2920, unlock: 80000000000, line: { cost: 4300000, rate: 0.98 }, liq: 139, sz: 1, grp: 4, vol: 0.05, amp: 0.16, period: 260, phase: 0.9,
+        desc: 'A flight chip, a battery, motors and a plastic frame. From hobby quadcopters to long-range UAVs.',
+        tiers: [['BENCH ASSEMBLY','HOBBY QUADCOPTERS'],['CAMERA DRONE LINE','CAMERA DRONES'],['SURVEY DRONE LINE','SURVEY AND FARM DRONES'],['UAV HANGAR','LONG-RANGE UAVS']] },
+      { id: 'TRAINS', name: 'TRAINS', cin: [], pin: [[0,500],[6,8],[1,60],[9,4],[5,6]], base: 1532900, unlock: 150000000000, line: { cost: 13000000, rate: 0.0046 }, liq: 0.65, sz: 0.05, grp: 3, vol: 0.03, amp: 0.11, period: 380, phase: 3.3,
+        desc: 'Locomotives and trainsets. Railways order in rare, huge batches.',
+        tiers: [['RAIL YARD SHOP','DIESEL SWITCHERS'],['LOCOMOTIVE WORKS','FREIGHT LOCOMOTIVES'],['TRACTION LINE','ELECTRIC LOCOMOTIVES'],['HIGH-SPEED PLANT','HIGH-SPEED TRAINSETS']] },
+      { id: 'SHIPS', name: 'SHIPS', cin: [], pin: [[0,6000],[6,100],[1,750],[9,40],[5,200]], base: 19337300, unlock: 250000000000, line: { cost: 14000000, rate: 0.00035 }, liq: 0.05, sz: 0.03, grp: 3, vol: 0.03, amp: 0.11, period: 420, phase: 5.1,
+        desc: 'Bulk carriers and container ships. Years of steel, engines and cable in one hull.',
+        tiers: [['SLIPWAY','COASTAL FREIGHTERS'],['DRY DOCK','BULK CARRIERS'],['MODULAR SHIPYARD','CONTAINER SHIPS'],['LNG YARD','LNG CARRIERS']] },
+      { id: 'AIRPLANES', name: 'AIRPLANES', cin: [], pin: [[0,3500],[6,70],[1,1000],[8,1500],[9,400],[10,260],[4,1000],[5,400]], base: 20971750, unlock: 400000000000, line: { cost: 17000000, rate: 0.00034 }, liq: 0.048, sz: 0.03, grp: 4, vol: 0.035, amp: 0.12, period: 400, phase: 2,
+        desc: 'Airliners. The most valuable thing you can build, and the slowest.',
+        tiers: [['HANGAR','LIGHT AIRCRAFT'],['TURBOPROP LINE','REGIONAL TURBOPROPS'],['JET ASSEMBLY','NARROWBODY AIRLINERS'],['WIDEBODY HALL','WIDEBODY AIRLINERS']] }
+    ];
+
+    const PEVENTS = [
+      { p: 0, dx: 0.28, m: 'INFRASTRUCTURE BILL PASSES. STEEL DEMAND SURGES.' },
+      { p: 0, dx: -0.25, m: 'CHEAP IMPORTS FLOOD THE STEEL MARKET. STEEL FALLS.' },
+      { p: 1, dx: 0.26, m: 'GRID UPGRADE PROGRAM. CABLE ORDERS CLIMB.' },
+      { p: 1, dx: -0.24, m: 'HOUSING STARTS FALL. CABLE ORDERS SLIP.' },
+      { p: 2, dx: 0.3, m: 'WEDDING SEASON. JEWELRY SELLS OUT.' },
+      { p: 2, dx: -0.26, m: 'LUXURY SPENDING COOLS. JEWELRY SLIPS.' },
+      { p: 3, dx: 0.24, m: 'ROAD REPAIR SEASON. ASPHALT DEMAND RISES.' },
+      { p: 3, dx: -0.2, m: 'RAINY SEASON STALLS PAVING JOBS. ASPHALT SLIPS.' },
+      { p: 4, dx: 0.28, m: 'PACKAGING DEMAND JUMPS. PLASTICS CLIMB.' },
+      { p: 4, dx: -0.25, m: 'PLASTIC BAN HEADLINES. PLASTICS SLIP.' },
+      { p: 5, dx: 0.26, m: 'FLEET MAINTENANCE SEASON. LUBRICANT ORDERS RISE.' },
+      { p: 5, dx: -0.24, m: 'EV SHIFT CUTS LUBRICANT DEMAND. PRICES FALL.' },
+      { p: 6, dx: 0.3, m: 'MINING BOOM. MACHINERY ORDERS POUR IN.' },
+      { p: 6, dx: -0.26, m: 'CONSTRUCTION SLOWDOWN. MACHINERY ORDERS FALL.' },
+      { p: 7, dx: 0.27, m: 'ROAD TRIP SEASON. TIRE SALES SPIKE.' },
+      { p: 7, dx: -0.25, m: 'CAR SALES SLUMP. TIRE ORDERS FALL.' },
+      { p: 8, dx: 0.36, m: 'CHIP SHORTAGE. FABS CANNOT KEEP UP. CHIPS SURGE.' },
+      { p: 8, dx: -0.3, m: 'CHIP INVENTORY GLUT. CHIP PRICES FALL.' },
+      { p: 9, dx: 0.3, m: 'AI BOOM. SERVER ORDERS SURGE. COMPUTERS CLIMB.' },
+      { p: 9, dx: -0.26, m: 'PC MARKET COOLS. COMPUTERS SLIP.' },
+      { p: 10, dx: 0.34, m: 'GRID STORAGE BOOM. BATTERIES SURGE.' },
+      { p: 10, dx: -0.3, m: 'BATTERY OVERSUPPLY. PACK PRICES SLIDE.' },
+      { p: 11, dx: 0.3, m: 'NEW PHONE LAUNCH SEASON. DEMAND SURGES.' },
+      { p: 11, dx: -0.26, m: 'UPGRADE CYCLES STRETCH. PHONE SALES SLIP.' },
+      { p: 12, dx: 0.28, m: 'AUTO SHOW SEASON. CAR SALES CLIMB.' },
+      { p: 12, dx: -0.25, m: 'RECESSION FEARS. DEALERS CUT CAR ORDERS.' },
+      { p: 13, dx: 0.3, m: 'A REGIONAL CONFLICT FLARES UP. RIFLE ORDERS SURGE.' },
+      { p: 13, dx: -0.26, m: 'CEASEFIRE HOLDS. ARMS ORDERS DRY UP.' },
+      { p: 14, dx: 0.32, m: 'FARM AND DELIVERY CONTRACTS DRIVE DRONE ORDERS.' },
+      { p: 14, dx: -0.28, m: 'NEW FLIGHT RULES GROUND HOBBY DRONES.' },
+      { p: 15, dx: 0.28, m: 'A HIGH-SPEED RAIL LINE IS FUNDED. TRAIN ORDERS CLIMB.' },
+      { p: 15, dx: -0.24, m: 'RAIL PROJECT DELAYED. TRAIN ORDERS PAUSE.' },
+      { p: 16, dx: 0.3, m: 'FREIGHT RATES SOAR. SHIPYARDS FILL UP.' },
+      { p: 16, dx: -0.26, m: 'FREIGHT RATES COLLAPSE. SHIP ORDERS DRY UP.' },
+      { p: 17, dx: 0.3, m: 'AIRLINES PLACE A RECORD AIRCRAFT ORDER.' },
+      { p: 17, dx: -0.26, m: 'AIR TRAVEL SLUMP. DELIVERIES PUSHED BACK.' }
+    ];
+
+    const PGRP = ['METALS AND CABLE', 'OIL AND CHEMICALS', 'ELECTRONICS', 'HEAVY INDUSTRY', 'VEHICLES AND ARMS'];
+
+    const SVC = { cloud: 0, cyber: 1, mkt: 2, logi: 3, fin: 4, ai: 5, sec: 6 };
+
+    const SERV = [
+      { id: 'cloud', name: 'CLOUD HOSTING', unit: 'DATA CENTERS', unlock: 1500000, cost: 2000, rev: 7,
+        tag: 'Rent out server space.', perk: 'Supplies COMPUTE to the AI lab.' },
+      { id: 'cyber', name: 'CYBERSECURITY', unit: 'SECURITY TEAMS', unlock: 3000000, cost: 2500, rev: 8,
+        tag: 'Guard networks, sell protection.', perk: 'Blocks hackers.' },
+      { id: 'mkt', name: 'DIGITAL MARKETING', unit: 'AD TEAMS', unlock: 8000000, cost: 2700, rev: 9,
+        tag: 'Build a brand, run campaigns.', perk: 'Raises product prices.' },
+      { id: 'logi', name: 'LOGISTICS AND FREIGHT', unit: 'FLEET', unlock: 20000000, cost: 4400, rev: 15,
+        tag: 'Trucks, ships and warehouses.', perk: 'Sales move prices less.' },
+      { id: 'fin', name: 'FINANCE AND CAPITAL', unit: 'FINANCE DESKS', unlock: 50000000, cost: 10000, rev: 33,
+        tag: 'Lend, invest and trade.', perk: 'Cheaper levels and lines.' },
+      { id: 'ai', name: 'AI LAB', unit: 'GPU CLUSTERS', unlock: 150000000, cost: 27000, rev: 90,
+        tag: 'Train models, sell access.', perk: 'Models upgrade the company.' },
+      { id: 'sec', name: 'PRIVATE SECURITY', unit: 'GUARD TEAMS', unlock: 400000000, cost: 12, rev: 100, ak: true,
+        tag: 'Guards for sites and convoys. Upgraded with AK-47s.', perk: 'Blocks raids. Boosts output.' }
+    ];
+
+    const AIM = [
+      { id: 'fore', name: 'FORECAST NET', lv: 6, f: 0.05, fx: 'OUTLOOK ON PRODUCTS', desc: 'Shows a price outlook on every product.' },
+      { id: 'sentinel', name: 'SENTINEL AI', lv: 10, f: 0.12, fx: '+20% BLOCKS, -50% LOSSES', desc: 'Blocks more attacks and halves what a breach costs.' },
+      { id: 'copilot', name: 'OPS COPILOT', lv: 14, f: 0.25, fx: '+10% OUTPUT', desc: 'Raises output on every mine and factory line by 10%.' },
+      { id: 'price', name: 'PRICING ENGINE', lv: 20, f: 0.5, fx: '+5% PRICES', desc: 'Raises the price you get for everything you sell by 5%.' }
+    ];
+
     const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
 
     function gauss() {
@@ -1857,8 +2651,16 @@
       return { u: false, ml: 0, sl: 0, ore: 0, metal: 0, x: 0, dx: 0, auto: 0, ovf: 2, h: new Array(HIST_LEN).fill(0) };
     }
 
+    function freshProd() {
+      return { u: false, ln: 0, tk: 0, stock: 0, x: 0, dx: 0, auto: 0, ovf: 2, on: true, arm: 0, st: 'IDLE', why: '', fl: 0, h: new Array(HIST_LEN).fill(0) };
+    }
+
+    function freshSv() {
+      return { u: false, l: 0 };
+    }
+
     function fresh() {
-      const s = { cash: 0, wl: 0, rs: {}, t: Date.now(), clock: 0, phos: 'green', outage: 0, boost: null, nextEvent: 25, milestone: 0, earned: 0, run: 0, runs: 0, shares: 0, sharesTotal: 0, bd: {}, btc: { amt: 0, cost: 0, last: 0, ord: null }, helped: false, c: COMM.map(freshComm) };
+      const s = { cash: 0, wl: 0, rs: {}, t: Date.now(), clock: 0, phos: 'green', outage: 0, boost: null, nextEvent: 25, milestone: 0, earned: 0, run: 0, runs: 0, shares: 0, sharesTotal: 0, bd: {}, btc: { amt: 0, cost: 0, last: 0, ord: null }, helped: false, p: PROD.map(freshProd), sv: SERV.map(freshSv), ai: {}, camp: { t: 0, cd: 0 }, sec: { hit: 0, block: 0, lost: 0, ddos: 0 }, tut: 0, tutOff: false, c: COMM.map(freshComm) };
       s.c[0].u = true;
       return s;
     }
@@ -1923,6 +2725,38 @@
           c.h = new Array(HIST_LEN).fill(c.x);
         });
       });
+      const num = (v, lo, hi, dflt) => { const n = Number(v); return isFinite(n) ? clamp(n, lo, hi) : dflt; };
+      sect(() => {
+        if (!Array.isArray(d.p)) return;
+        d.p.forEach((sp, i) => {
+          if (!base.p[i] || !sp) return;
+          const p = base.p[i];
+          p.u = sp.u === true;
+          p.ln = Math.floor(num(sp.ln, 0, 100000, 0));
+          p.tk = Math.floor(num(sp.tk, 0, 3, 0));
+          p.stock = num(sp.stock, 0, 1e15, 0);
+          p.x = num(sp.x, -0.8, 0.9, 0);
+          p.on = sp.on !== false;
+          p.ovf = Math.floor(num(sp.ovf, 0, OVF.length - 1, 2));
+          p.auto = Math.floor(num(sp.auto, 0, AUTO.length - 1, 0));
+          p.h = new Array(HIST_LEN).fill(p.x);
+        });
+      });
+      sect(() => {
+        if (!Array.isArray(d.sv)) return;
+        d.sv.forEach((ss, i) => {
+          if (!base.sv[i] || !ss) return;
+          base.sv[i].u = ss.u === true;
+          base.sv[i].l = Math.floor(num(ss.l, 0, 100000, 0));
+        });
+      });
+      sect(() => {
+        if (d.ai && typeof d.ai === 'object') Object.keys(d.ai).forEach(k => { if (d.ai[k]) base.ai[k] = 1; });
+        if (d.camp) { base.camp.t = num(d.camp.t, 0, 1000, 0); base.camp.cd = num(d.camp.cd, 0, 1000, 0); }
+        if (d.sec) ['hit', 'block', 'lost'].forEach(k => { base.sec[k] = num(d.sec[k], 0, 1e18, 0); });
+        if (d.tut !== undefined) base.tut = Math.floor(num(d.tut, 0, 99, 0));
+        base.tutOff = d.tut === undefined ? base.earned > 0 : d.tutOff === true;
+      });
       if (!PHOS.includes(base.phos)) base.phos = 'green';
       return base;
     }
@@ -1931,12 +2765,12 @@
 
     const cap = () => Math.floor(100 * Math.pow(1.5, S.wl));
     const capCost = () => Math.ceil(400 * Math.pow(1.8, S.wl));
-    const lvlCost = (d, kind, lvl) => Math.ceil(d[kind].cost * Math.pow(1.15, lvl));
-    const price = i => COMM[i].base * Math.exp(S.c[i].x);
+    const lvlCost = (d, kind, lvl) => Math.ceil(d[kind].cost * Math.pow(1.15, lvl) * discount());
+    const price = i => COMM[i].base * Math.exp(S.c[i].x) * priceMult();
     const RS = id => S.rs[id] || 0;
     let offlineMul = 1;
     const brokerLv = () => RS('broker');
-    const impactDiv = () => 1 + 0.5 * RS('liq');
+    const impactDiv = () => (1 + 0.5 * RS('liq')) * logiMult();
     const outageLen = () => 15 * Math.pow(0.6, RS('generator'));
     const VEIN_LEN = 30;
     const lvlMult = l => Math.pow(2, Math.floor(l / 25));
@@ -1947,13 +2781,11 @@
     const mineBase = i => S.c[i].ml * COMM[i].mine.rate * lvlMult(S.c[i].ml);
     const tapYield = i => Math.max(1, mineBase(i) * 0.1);
     const rigOre = i => 2 * RS('rig') * offlineMul * tapYield(i);
-    const mineRate = i => (mineBase(i) + rigOre(i)) * (S.boost && S.boost.i === i ? 2 : 1) * (S.outage > 0 ? 0 : 1);
+    const mineRate = i => (mineBase(i) + rigOre(i)) * (S.boost && S.boost.i === i ? 2 : 1) * (S.outage > 0 ? 0 : 1) * opsMult();
     const smeltRate = i => (COMM[i].smelt.base + S.c[i].sl * COMM[i].smelt.rate) * lvlMult(S.c[i].sl);
 
     function netWorth() {
-      let v = S.cash;
-      S.c.forEach((c, i) => { if (c.u) v += c.metal * price(i); });
-      return v + btcValue();
+      return S.cash + stockValue() + btcValue();
     }
 
 
@@ -2666,7 +3498,7 @@
         fx: l => 2 * l + ' TAPS/S',
         msg: () => 'DRILL RIG ONLINE. ' + 2 * RS('rig') + ' AUTO-TAPS PER SECOND ON EVERY DESK.' }),
       mk({ id: 'liq', name: 'MARKET CONTRACTS', max: 4, base: 20000, growth: 20,
-        desc: 'Large sales move the price less. Each level adds 50% market depth.',
+        desc: 'Large sales move the price less, for raw metals and products alike. Each level adds 50% market depth.',
         fx: l => 'DEPTH x' + (1 + 0.5 * l).toFixed(1),
         msg: () => 'CONTRACTS SIGNED. MARKET DEPTH x' + impactDiv().toFixed(1) + '.' }),
       mk({ id: 'generator', name: 'BACKUP GENERATOR', max: 3, base: 8000, growth: 19,
@@ -2676,7 +3508,15 @@
       mk({ id: 'intel', name: 'MARKET INTEL', max: 1, base: 100000, growth: 1,
         desc: 'Adds a price outlook to every desk: rising, falling or steady.',
         fx: l => (l ? 'ON' : 'OFF'),
-        msg: () => 'MARKET INTEL ONLINE. EACH DESK NOW SHOWS AN OUTLOOK.' })
+        msg: () => 'MARKET INTEL ONLINE. EACH DESK NOW SHOWS AN OUTLOOK.' }),
+      mk({ id: 'auto', name: 'FACTORY AUTOMATION', max: 4, base: 150000, growth: 12,
+        desc: 'Robots and conveyors. Every factory line makes 25% more per level.',
+        fx: l => '+' + 25 * l + '% OUTPUT',
+        msg: () => 'FACTORY AUTOMATION ONLINE. LINES MAKE ' + 25 * RS('auto') + '% MORE.' }),
+      mk({ id: 'lean', name: 'LEAN MANUFACTURING', max: 3, base: 400000, growth: 14,
+        desc: 'Less waste on the factory floor. Every factory line uses 8% fewer inputs per level.',
+        fx: l => '-' + 8 * l + '% INPUTS',
+        msg: () => 'LEAN MANUFACTURING ONLINE. LINES USE ' + 8 * RS('lean') + '% FEWER INPUTS.' })
     ];
 
     const Snd = {
@@ -2960,6 +3800,1064 @@
       }
     };
 
+    const ARM_DELAY = 3;
+    const svLv = k => { const s = S.sv[k]; return s && s.u ? s.l : 0; };
+    const aiL = () => svLv(SVC.ai);
+    const computeSupply = () => 5 * svLv(SVC.cloud);
+    const computeNeed = () => 3 * aiL();
+    const aiEff = () => { const n = computeNeed(); return n <= 0 ? 0 : Math.min(1, computeSupply() / n); };
+    const hasAi = id => !!S.ai[id];
+    const aiPerk = (id, v) => (hasAi(id) ? v * aiEff() : 0);
+    const AKI = PROD.findIndex(d => d.id === 'AK');
+    const secL = () => svLv(SVC.sec);
+    const secBlock = () => clamp(1 - Math.pow(0.94, secL()), 0, 0.95);
+    const secOps = () => 0.12 * (1 - Math.exp(-secL() / 30));
+    const opsMult = () => 1 + aiPerk('copilot', 0.1) + secOps();
+    const priceMult = () => 1 + aiPerk('price', 0.05);
+    const brandBonus = () => 0.25 * (1 - Math.exp(-svLv(SVC.mkt) / 25));
+    const campPower = () => Math.min(0.35, 0.15 + 0.005 * svLv(SVC.mkt));
+    const defense = () => clamp(1 - Math.pow(0.93, svLv(SVC.cyber)) + aiPerk('sentinel', 0.2), 0, 0.97);
+    const logiMult = () => 1 + 1.2 * (1 - Math.exp(-svLv(SVC.logi) / 30));
+    const discount = () => 1 - 0.25 * (1 - Math.exp(-svLv(SVC.fin) / 25));
+    const svRevAt = (k, l) => (l ? SERV[k].rev * l * shareMult() * (k === SVC.ai ? aiEff() : 1) : 0);
+    const svRev = k => svRevAt(k, svLv(k));
+    const svIncome = () => SERV.reduce((a, d, k) => a + svRev(k), 0);
+    const svCost = (k, l) => (SERV[k].ak ? Math.ceil(SERV[k].cost * Math.pow(1.12, l)) : Math.ceil(SERV[k].cost * Math.pow(1.15, l) * discount()));
+    const svReq = k => {
+      if (k === SVC.ai && svLv(SVC.cloud) < 3) return 'NEEDS CLOUD HOSTING L3';
+      if (k === SVC.sec && !S.p[AKI].u) return 'NEEDS AK-47 PLANT';
+      return '';
+    };
+
+    const leanMult = () => 1 - 0.08 * RS('lean');
+    const pCap = i => Math.max(3, Math.floor(cap() * PROD[i].sz));
+    const pFloor = i => Math.max(1, Math.ceil(pCap(i) * 0.1));
+    const pNormal = i => PROD[i].base * PTIER[S.p[i].tk];
+    const pPrice = i => pNormal(i) * Math.exp(S.p[i].x) * (1 + brandBonus()) * (1 + (S.camp.t > 0 ? campPower() : 0)) * priceMult();
+    const pRateBase = i => { const p = S.p[i]; return p.ln * PROD[i].line.rate * lvlMult(p.ln) * (1 + 0.25 * RS('auto')) * opsMult(); };
+    const pRate = i => pRateBase(i) * (S.outage > 0 ? 0 : 1);
+    const pLineCost = (i, l) => Math.ceil(PROD[i].line.cost * Math.pow(1.15, l) * discount());
+    const pTierCost = i => PROD[i].unlock * PTC[S.p[i].tk + 1];
+    const pReqs = i => PROD[i].cin.filter(([c]) => !S.c[c].u).map(([c]) => COMM[c].sym + ' DESK')
+      .concat(PROD[i].pin.filter(([j]) => !S.p[j].u).map(([j]) => PROD[j].name + ' PLANT'));
+
+    function pInputCost(i) {
+      const lm = leanMult();
+      let v = 0;
+      PROD[i].cin.forEach(([c, q]) => { v += q * lm * price(c); });
+      PROD[i].pin.forEach(([j, q]) => { v += q * lm * pPrice(j); });
+      return v;
+    }
+
+    const nq = q => String(+q.toPrecision(2));
+
+    function recipeText(i) {
+      const lm = leanMult();
+      const parts = PROD[i].cin.map(([c, q]) => nq(q * lm) + ' ' + COMM[c].sym)
+        .concat(PROD[i].pin.map(([j, q]) => nq(q * lm) + ' ' + PROD[j].name));
+      return parts.join(' + ') + ' > 1 ' + PROD[i].name;
+    }
+
+    const fmtPrice = v => (v < 100 ? v.toFixed(2) : v < 1000 ? v.toFixed(1) : Math.round(v).toLocaleString('en-US'));
+    const fmtStock = v => (v < 0.095 ? v.toFixed(3) : v < 1 ? v.toFixed(2) : v < 10 ? v.toFixed(1) : String(Math.floor(v)));
+    const fmtRate = v => {
+      if (v >= 0.1) return fmt(v) + '/s';
+      if (v * 60 >= 0.1) return (v * 60).toFixed(1) + '/min';
+      return (v * 3600).toFixed(1) + '/hr';
+    };
+
+    function stockValue() {
+      let v = 0;
+      S.c.forEach((c, i) => { if (c.u) v += c.metal * price(i); });
+      S.p.forEach((p, i) => { if (p.u) v += p.stock * pPrice(i); });
+      return v;
+    }
+
+    function feedNeed(kind, idx) {
+      let n = 0;
+      const lm = leanMult();
+      PROD.forEach((d, j) => {
+        const p = S.p[j];
+        if (!p.u || !p.on || p.ln < 1) return;
+        (kind === 'c' ? d.cin : d.pin).forEach(([k, q]) => { if (k === idx) n += pRateBase(j) * q * lm * 8; });
+      });
+      if (kind === 'p' && idx === AKI && S.sv[SVC.sec].u) n += svCost(SVC.sec, S.sv[SVC.sec].l);
+      return n;
+    }
+
+    function tickFactories(dt) {
+      const lm = leanMult();
+      for (let i = 0; i < PROD.length; i++) {
+        const mc = pCap(i);
+        const d = PROD[i];
+        const p = S.p[i];
+        if (!p.u) continue;
+        if (!p.on || p.ln < 1) { p.st = p.on ? 'IDLE' : 'PAUSED'; p.fl = 0; continue; }
+        const want = pRate(i) * dt;
+        if (want <= 0) { p.st = 'OFFLINE'; p.fl = 0; continue; }
+        let out = want;
+        let st = 'RUNNING';
+        let why = '';
+        const room = mc - p.stock;
+        if (room < out) { out = Math.max(0, room); st = 'FULL'; }
+        for (let n = 0; n < d.cin.length; n++) {
+          const a = S.c[d.cin[n][0]].metal / (d.cin[n][1] * lm);
+          if (a < out) { out = a; st = 'STARVED'; why = COMM[d.cin[n][0]].sym; }
+        }
+        for (let n = 0; n < d.pin.length; n++) {
+          const a = S.p[d.pin[n][0]].stock / (d.pin[n][1] * lm);
+          if (a < out) { out = a; st = 'STARVED'; why = PROD[d.pin[n][0]].name; }
+        }
+        if (out > 0) {
+          d.cin.forEach(([c, q]) => { S.c[c].metal = Math.max(0, S.c[c].metal - out * q * lm); });
+          d.pin.forEach(([j, q]) => { S.p[j].stock = Math.max(0, S.p[j].stock - out * q * lm); });
+          p.stock += out;
+        }
+        if (st === 'STARVED' && out >= want * 0.5) st = 'LIMITED';
+        p.st = st;
+        p.why = why;
+        p.fl += (out / dt - p.fl) * Math.min(1, dt * 2);
+        if (TRK) {
+          TRK.made[i] += out;
+          if (st === 'STARVED') TRK.starve[i] += dt;
+          else if (st === 'FULL') TRK.fullp[i] += dt;
+        }
+      }
+    }
+
+    function sellProd(i, frac, keep) {
+      const p = S.p[i];
+      const have = Math.max(0, p.stock - (keep || 0));
+      const n = frac >= 1 ? have : Math.floor(have * frac * 100) / 100;
+      if (n <= 0) return null;
+      const p0 = pPrice(i);
+      const k = 0.08 / (PROD[i].liq * impactDiv());
+      const f = k * n < 1e-6 ? 1 : (1 - Math.exp(-k * n)) / (k * n);
+      const pr = p0 * f;
+      const gain = n * pr * shareMult();
+      p.stock -= n;
+      S.cash += gain;
+      S.earned += gain;
+      S.run += gain;
+      p.x = Math.max(-0.8, p.x - k * n);
+      return { n, p: pr, gain };
+    }
+
+    const fullMark = (keep, cp) => cp - Math.max(cp * 0.005, keep / 8 * 1.5);
+
+    function autoSellProd() {
+      const b = brokerLv();
+      if (!b || S.sec.ddos > 0) return;
+      PROD.forEach((d, i) => {
+        const p = S.p[i];
+        if (!p.u || S.clock < p.arm) return;
+        const keep = feedNeed('p', i);
+        if (p.ovf && p.stock >= fullMark(keep, pCap(i))) {
+          const r = sellProd(i, OVF[p.ovf], 0);
+          if (r) {
+            log('STORAGE FULL. BROKER SOLD ' + fmtStock(r.n) + ' ' + d.name + ' @ $' + fmtPrice(r.p) + ' = ' + money(r.gain));
+            Snd.sfx('sell');
+          }
+          return;
+        }
+        const m = AUTO[p.auto];
+        if (!m || p.stock - keep < pFloor(i)) return;
+        const pr = pPrice(i);
+        const th = m * pNormal(i);
+        if (pr < th) return;
+        if (b >= 3 && p.dx > 0 && pr < th * 1.1) return;
+        const r = sellProd(i, AUTO_STAGE[b], keep);
+        if (r) {
+          log('BROKER SOLD ' + fmtStock(r.n) + ' ' + d.name + ' @ $' + fmtPrice(r.p) + ' = ' + money(r.gain));
+          Snd.sfx('sell');
+        }
+      });
+    }
+
+    function autoView(o, normal, cur, stock, keep, floor) {
+      const b = brokerLv();
+      if (!b) return ['AUTO-SELL: LOCKED', 'NEEDS A BROKER (RESEARCH)'];
+      if (!AUTO[o.auto]) return ['AUTO-SELL: OFF', 'YOU SELL BY HAND'];
+      const l1 = 'AUTO-SELL: +' + Math.round((AUTO[o.auto] - 1) * 100) + '%';
+      const left = Math.ceil(o.arm - S.clock);
+      if (left > 0) return [l1, 'STARTS IN ' + left + 's'];
+      if (S.sec.ddos > 0) return [l1, 'BROKER OFFLINE: DDOS'];
+      const th = AUTO[o.auto] * normal;
+      if (cur < th) return [l1, 'WAITS FOR $' + fmtPrice(th)];
+      if (b >= 3 && o.dx > 0 && cur < th * 1.1) return [l1, 'WAITING FOR THE PEAK'];
+      if (stock - keep < floor) return [l1, 'NEEDS ' + floor + ' STOCK' + (keep >= 1 ? ' (' + Math.ceil(keep) + ' HELD)' : '')];
+      return [l1, 'SELLING ' + (AUTO_STAGE[b] === 1 ? 'ALL' : '40%') + ' NOW'];
+    }
+
+    function ovfView(o) {
+      const b = brokerLv();
+      if (!b) return ['FULL: STOPS', 'NEEDS A BROKER (RESEARCH)'];
+      const l1 = o.ovf ? 'FULL: SELL ' + (OVF[o.ovf] === 1 ? 'ALL' : OVF[o.ovf] * 100 + '%') : 'FULL: HOLD';
+      const left = Math.ceil(o.arm - S.clock);
+      if (left > 0 && o.ovf) return [l1, 'STARTS IN ' + left + 's'];
+      return [l1, o.ovf ? 'WHEN STORAGE IS FULL' : 'STOPS WHEN FULL'];
+    }
+
+    function planGen(costAt, l) {
+      const q = BUYQ[buyQ];
+      let cost = 0;
+      let n = 0;
+      if (q === 'max') {
+        while (n < 1000) {
+          const k = costAt(l + n);
+          if (cost + k > S.cash) break;
+          cost += k;
+          n++;
+        }
+        if (n === 0) { cost = costAt(l); n = 1; }
+      } else {
+        for (; n < q; n++) cost += costAt(l + n);
+      }
+      return { n, cost };
+    }
+
+    function pUnlock(i) {
+      const p = S.p[i];
+      if (p.u || pReqs(i).length || S.cash < PROD[i].unlock) return false;
+      S.cash -= PROD[i].unlock;
+      p.u = true;
+      p.on = true;
+      log(PROD[i].name + ' PLANT OPENED. BUILD LINES TO START PRODUCTION.');
+      Snd.sfx('unlock');
+      return true;
+    }
+
+    function pBuyLine(i) {
+      const p = S.p[i];
+      if (!p.u) return false;
+      const pl = planGen(l => pLineCost(i, l), p.ln);
+      if (S.cash < pl.cost) return false;
+      S.cash -= pl.cost;
+      p.ln += pl.n;
+      Snd.sfx('buy');
+      return true;
+    }
+
+    function pBuyTier(i) {
+      const p = S.p[i];
+      if (!p.u || p.tk >= 3) return false;
+      const c = pTierCost(i);
+      if (S.cash < c) return false;
+      S.cash -= c;
+      p.tk++;
+      log(PROD[i].name + ': ' + PROD[i].tiers[p.tk][0] + ' ONLINE. NOW MAKING ' + PROD[i].tiers[p.tk][1] + '.');
+      Snd.sfx('unlock');
+      return true;
+    }
+
+    function svUnlock(k) {
+      const s = S.sv[k];
+      if (s.u || svReq(k) || S.cash < SERV[k].unlock) return false;
+      S.cash -= SERV[k].unlock;
+      s.u = true;
+      s.l = 0;
+      log(SERV[k].name + ' DIVISION OPENED.');
+      Snd.sfx('unlock');
+      return true;
+    }
+
+    function planSv(k) {
+      const s = S.sv[k];
+      if (!SERV[k].ak) return planGen(l => svCost(k, l), s.l);
+      const q = BUYQ[buyQ];
+      const have = S.p[AKI].stock;
+      let cost = 0;
+      let n = 0;
+      if (q === 'max') {
+        while (n < 1000 && cost + svCost(k, s.l + n) <= have) { cost += svCost(k, s.l + n); n++; }
+        if (n === 0) cost = svCost(k, s.l);
+        return { n: Math.max(1, n), cost };
+      }
+      for (; n < q; n++) cost += svCost(k, s.l + n);
+      return { n, cost };
+    }
+
+    function svBuy(k) {
+      const s = S.sv[k];
+      if (!s.u) return false;
+      const pl = planSv(k);
+      if (SERV[k].ak) {
+        if (S.p[AKI].stock < pl.cost) return false;
+        S.p[AKI].stock -= pl.cost;
+      } else {
+        if (S.cash < pl.cost) return false;
+        S.cash -= pl.cost;
+      }
+      s.l += pl.n;
+      Snd.sfx('buy');
+      return true;
+    }
+
+    const aiCost = m => SERV[SVC.ai].unlock * m.f;
+    const aiReq = m => {
+      if (aiL() < m.lv) return 'NEEDS AI L' + m.lv;
+      if (m.id === 'sentinel' && svLv(SVC.cyber) < 5) return 'NEEDS CYBER L5';
+      return '';
+    };
+
+    function aiTrain(id) {
+      const m = AIM.find(x => x.id === id);
+      if (!m || hasAi(id) || aiReq(m) || S.cash < aiCost(m)) return false;
+      S.cash -= aiCost(m);
+      S.ai[id] = 1;
+      log(m.name + ' TRAINED. ' + m.desc.toUpperCase());
+      Snd.sfx('unlock');
+      return true;
+    }
+
+    const campCost = () => Math.max(SERV[SVC.mkt].cost * 4, incomeRate() * 8);
+
+    function launchCampaign() {
+      if (!svLv(SVC.mkt) || S.camp.t > 0 || S.camp.cd > 0 || S.cash < campCost()) return false;
+      S.cash -= campCost();
+      S.camp.t = 90;
+      S.camp.cd = 150;
+      log('CAMPAIGN LAUNCHED. PRODUCT PRICES +' + Math.round(campPower() * 100) + '% FOR 90s.');
+      Snd.sfx('news');
+      return true;
+    }
+
+    const exposed = () => [SVC.cloud, SVC.mkt, SVC.fin, SVC.ai].some(k => svLv(k) > 0);
+    const ATTACKS = [
+      { id: 'ransom', name: 'RANSOMWARE', cut: 0.1 },
+      { id: 'breach', name: 'DATA BREACH', cut: 0.05 },
+      { id: 'ddos', name: 'DDOS ATTACK', cut: 0 }
+    ];
+
+    function rollAttack(quiet) {
+      const a = ATTACKS[Math.floor(Math.random() * ATTACKS.length)];
+      const blocked = Math.random() < defense();
+      const r = { name: a.name, blocked, loss: 0, harmless: false };
+      S.sec.hit++;
+      if (blocked) {
+        S.sec.block++;
+      } else if (a.id === 'ddos') {
+        if (brokerLv()) S.sec.ddos = Math.max(S.sec.ddos, 45); else r.harmless = true;
+      } else {
+        r.loss = S.cash * a.cut * (1 - 0.5 * aiPerk('sentinel', 1));
+        S.cash -= r.loss;
+        S.sec.lost += r.loss;
+      }
+      if (!quiet) {
+        if (blocked) { log('CYBERATTACK: ' + a.name + ' BLOCKED BY YOUR SECURITY TEAMS.'); Snd.sfx('news'); }
+        else if (r.harmless) log('CYBERATTACK: ' + a.name + ' HIT YOUR SITE. NOTHING BROKE.');
+        else if (a.id === 'ddos') { log('CYBERATTACK: ' + a.name + ' ON THE TRADING DESK. AUTO-SELL OFFLINE FOR 45s.', 'w'); Snd.sfx('alert'); }
+        else { log('CYBERATTACK: ' + a.name + '. YOU LOST ' + money(r.loss) + '. SECURITY TEAMS STOP MORE OF THESE.', 'w'); Snd.sfx('alert'); }
+      }
+      return r;
+    }
+
+    const raidsOn = () => stockValue() > 5000000;
+
+    function rollRaid(quiet) {
+      const pool = [];
+      S.c.forEach((c, i) => { if (c.u && c.metal * price(i) > 1000) pool.push({ name: COMM[i].sym, v: c.metal * price(i), take: f => { c.metal *= 1 - f; } }); });
+      S.p.forEach((p, i) => { if (p.u && p.stock * pPrice(i) > 1000) pool.push({ name: PROD[i].name, v: p.stock * pPrice(i), take: f => { p.stock *= 1 - f; } }); });
+      if (!pool.length) return null;
+      const t = pool[Math.floor(Math.random() * pool.length)];
+      const blocked = Math.random() < secBlock();
+      const r = { name: 'WAREHOUSE RAID', blocked, loss: 0, target: t.name };
+      S.sec.hit++;
+      if (blocked) {
+        S.sec.block++;
+      } else {
+        r.loss = t.v * 0.08;
+        t.take(0.08);
+        S.sec.lost += r.loss;
+      }
+      if (!quiet) {
+        if (blocked) { log('RAID ON YOUR ' + t.name + ' WAREHOUSE. YOUR GUARDS DROVE THEM OFF.'); Snd.sfx('news'); }
+        else { log('RAID ON YOUR ' + t.name + ' WAREHOUSE. THIEVES TOOK 8% (' + money(r.loss) + '). GUARD TEAMS STOP THESE.', 'w'); Snd.sfx('alert'); }
+      }
+      return r;
+    }
+
+    let TRK = null;
+
+    const fmtDur = s => {
+      s = Math.floor(s);
+      if (s < 60) return s + 's';
+      const m = Math.floor(s / 60);
+      if (m < 60) return m + 'm';
+      const h = Math.floor(m / 60);
+      return h + 'h' + (m % 60 ? ' ' + (m % 60) + 'm' : '');
+    };
+
+
+
+    function away(secs) {
+      const sec = Math.min(Math.floor(secs), awayMax());
+      const rep = {
+        secs: Math.floor(secs), worked: sec, capped: secs > sec + 1, k: 0,
+        mined: S.c.map(() => 0), smelt: S.c.map(() => 0), made: PROD.map(() => 0), fullAt: {}, starve: PROD.map(() => 0), fullp: PROD.map(() => 0),
+        svc: 0, attacks: [], news: []
+      };
+      S.outage = 0;
+      S.boost = null;
+      S.sec.ddos = 0;
+      S.camp.t = 0;
+      S.camp.cd = Math.max(0, S.camp.cd - sec);
+      TRK = rep;
+      offlineMul = 0.5;
+      for (let k = 0; k < sec; k++) { rep.k = k; tickProd(1); }
+      offlineMul = 1;
+      TRK = null;
+      const sv = svIncome() * sec * 0.5;
+      if (sv > 0) { S.cash += sv; S.earned += sv; S.run += sv; rep.svc = sv; }
+      S.clock += sec;
+      if (exposed()) {
+        const n = Math.min(3, Math.floor(sec / 1200));
+        for (let k = 0; k < n; k++) if (Math.random() < 0.55) rep.attacks.push(rollAttack(true));
+      }
+      if (raidsOn()) {
+        const n = Math.min(5, Math.floor(sec / 1500));
+        for (let k = 0; k < n; k++) if (Math.random() < 0.5) { const r = rollRaid(true); if (r) rep.attacks.push(r); }
+      }
+      if (secs >= 30) {
+        const pool = EVENTS.filter(e => S.c[e.i].u).map(e => ({ m: e.m, hit: () => { S.c[e.i].x = clamp(S.c[e.i].x + e.dx * 0.6, -0.8, 0.9); } }))
+          .concat(PEVENTS.filter(e => S.p[e.p].u).map(e => ({ m: e.m, hit: () => { S.p[e.p].x = clamp(S.p[e.p].x + e.dx * 0.6, -0.8, 0.9); } })));
+        const nn = Math.min(3, Math.floor(sec / 900));
+        for (let k = 0; k < nn && pool.length; k++) {
+          const e = pool.splice(Math.floor(Math.random() * pool.length), 1)[0];
+          e.hit();
+          rep.news.push(e.m);
+        }
+        const settle = Math.min(60, 12 + Math.floor(sec / 30));
+        for (let k = 0; k < settle; k++) tickMarket();
+        S.c.forEach(c => { c.h = new Array(HIST_LEN).fill(c.x); });
+        S.p.forEach(p => { p.h = new Array(HIST_LEN).fill(p.x); });
+      }
+      const gained = rep.mined.reduce((a, b) => a + b, 0) + rep.made.reduce((a, b) => a + b, 0);
+      log('AWAY ' + fmtDur(sec) + '. PRODUCED ' + Math.floor(gained) + ' UNITS WHILE YOU WERE GONE.');
+      if (secs >= 60) showAway(rep);
+    }
+
+    const adlg = { on: false, root: null, body: null, go: null };
+
+    function buildAway() {
+      const d = document.createElement('div');
+      d.className = 'dlg';
+      d.id = 'adlg';
+      d.setAttribute('role', 'dialog');
+      d.setAttribute('aria-modal', 'true');
+      d.setAttribute('aria-labelledby', 'adt');
+      d.innerHTML = '<div class="dbox calm"><div class="dhaz"></div><div class="dbody"><h2 id="adt">WELCOME BACK</h2><div data-a="body"></div><div class="dbtns one"><button type="button" class="go" data-a="go">BACK TO WORK</button></div></div></div>';
+      document.body.appendChild(d);
+      adlg.root = d;
+      adlg.body = d.querySelector('[data-a="body"]');
+      adlg.go = d.querySelector('[data-a="go"]');
+      adlg.go.addEventListener('click', closeAway);
+      d.addEventListener('pointerdown', e => { if (e.target === d) closeAway(); });
+    }
+
+    function closeAway() {
+      if (!adlg.on) return;
+      adlg.on = false;
+      adlg.root.classList.remove('show');
+    }
+
+    function awayView(rep) {
+      const sections = [];
+      let worth = 0;
+      const made = [];
+      S.c.forEach((c, i) => {
+        if (!c.u || rep.smelt[i] < 0.5) return;
+        const v = rep.smelt[i] * price(i);
+        worth += v;
+        made.push([COMM[i].sym, '+' + fmtStock(rep.smelt[i]), money(v), v]);
+      });
+      PROD.forEach((d, i) => {
+        if (!S.p[i].u || rep.made[i] <= 0.0001) return;
+        const v = rep.made[i] * pPrice(i);
+        worth += v;
+        made.push([d.name, '+' + fmtStock(rep.made[i]), money(v), v]);
+      });
+      made.sort((a, b) => b[3] - a[3]);
+      if (made.length) sections.push({ head: 'MADE WHILE YOU WERE AWAY', rows: made.slice(0, 6), more: made.length > 6 ? '+ ' + (made.length - 6) + ' MORE' : '' });
+      if (rep.svc >= 1) sections.push({ head: 'SERVICES PAID', rows: [['INCOME', '', '+' + money(rep.svc), 0]] });
+      const sell = [];
+      const hold = [];
+      const look = (name, x, have, px) => {
+        const pct = Math.exp(x) - 1;
+        const v = have * px;
+        if (v < 1) return;
+        if (pct >= 0.15) sell.push([name, '+' + Math.round(pct * 100) + '%', money(v), v]);
+        else if (pct <= -0.15) hold.push([name, Math.round(pct * 100) + '%', money(v), v]);
+      };
+      S.c.forEach((c, i) => { if (c.u) look(COMM[i].sym, c.x, c.metal, price(i)); });
+      S.p.forEach((p, i) => { if (p.u) look(PROD[i].name, p.x, p.stock, pPrice(i)); });
+      sell.sort((a, b) => b[3] - a[3]);
+      hold.sort((a, b) => b[3] - a[3]);
+      if (sell.length) sections.push({ head: 'PRICES ARE HIGH. SELL NOW', rows: sell.slice(0, 3), cls: 'up' });
+      if (hold.length) sections.push({ head: 'PRICES ARE LOW. HOLD', rows: hold.slice(0, 3), cls: 'dn' });
+      const issues = [];
+      S.c.forEach((c, i) => { if (rep.fullAt[i] !== undefined) issues.push([COMM[i].sym + ' STORAGE FULL', 'AFTER ' + fmtDur(rep.fullAt[i]), '', 0]); });
+      PROD.forEach((d, i) => {
+        if (rep.starve[i] > 30) issues.push([d.name + ' LACKED INPUTS', fmtDur(rep.starve[i]), '', 0]);
+        if (rep.fullp[i] > 30) issues.push([d.name + ' STORAGE FULL', fmtDur(rep.fullp[i]), '', 0]);
+      });
+      if (issues.length) sections.push({ head: 'PRODUCTION STOPPED', rows: issues.slice(0, 5), cls: 'dn', more: issues.length > 5 ? '+ ' + (issues.length - 5) + ' MORE' : '', note: 'Sell stock more often, or buy WAREHOUSE in RESEARCH.' });
+      if (rep.attacks.length) {
+        const bl = rep.attacks.filter(a => a.blocked).length;
+        const lost = rep.attacks.reduce((a, b) => a + b.loss, 0);
+        const rows = [['ATTACKS AND RAIDS', rep.attacks.length + ' (' + bl + ' STOPPED)', '', 0]];
+        if (lost > 0) rows.push(['STOLEN', '', '-' + money(lost), 0]);
+        sections.push({ head: 'SECURITY', rows, cls: lost > 0 ? 'dn' : '' });
+      }
+      if (rep.news.length) sections.push({ head: 'HEADLINES', rows: rep.news.map(m => [m, '', '', 0]), plain: true });
+      return { worth, sections };
+    }
+
+    function showAway(rep) {
+      if (seq) return;
+      const v = awayView(rep);
+      const b = adlg.body;
+      b.textContent = '';
+      const el2 = (tag, cls, txt) => {
+        const n = document.createElement(tag);
+        if (cls) n.className = cls;
+        if (txt !== undefined) n.textContent = txt;
+        return n;
+      };
+      const top = el2('div', 'ahead');
+      top.appendChild(el2('span', 'alabel', 'AWAY ' + fmtDur(rep.secs).toUpperCase()));
+      const big = el2('b', 'abig', v.worth >= 1 ? '+' + money(v.worth) : 'NOTHING NEW');
+      top.appendChild(big);
+      top.appendChild(el2('span', 'asub', v.worth >= 1 ? 'OF GOODS WAITING IN YOUR WAREHOUSE' : 'YOUR MINES AND FACTORIES WERE IDLE'));
+      b.appendChild(top);
+      if (rep.capped) b.appendChild(el2('p', 'anote', 'Your crews worked ' + fmtDur(rep.worked) + ' of that. NIGHT WATCH on the BOARD tab extends it.'));
+      v.sections.forEach(s => {
+        const sec = el2('div', 'asec' + (s.cls ? ' ' + s.cls : ''));
+        sec.appendChild(el2('h3', '', s.head));
+        s.rows.forEach(r => {
+          const row = el2('div', 'arow' + (s.plain ? ' one' : ''));
+          row.appendChild(el2('span', '', r[0]));
+          if (!s.plain) {
+            row.appendChild(el2('span', 'm', r[1]));
+            row.appendChild(el2('span', 'r', r[2]));
+          }
+          sec.appendChild(row);
+        });
+        if (s.more) sec.appendChild(el2('div', 'amore', s.more));
+        if (s.note) sec.appendChild(el2('p', 'anote', s.note));
+        b.appendChild(sec);
+      });
+      if (adlg.on) return;
+      adlg.on = true;
+      adlg.root.classList.add('show');
+      Snd.sfx('news');
+      adlg.go.focus();
+    }
+
+    const prefs = [];
+    const srefs = [];
+    const pinfo = {};
+    const sinfo = {};
+    let pSel = -1;
+
+    function refsOf(a) {
+      const r = { card: a };
+      a.querySelectorAll('[data-r]').forEach(n => { r[n.dataset.r] = n; });
+      a.querySelectorAll('button[data-act]').forEach(b => { r['b_' + b.dataset.act] = b; });
+      return r;
+    }
+
+    function statBox(label, key) {
+      return '<div class="sbox"><span>' + label + '</span><b data-r="' + key + '"></b></div>';
+    }
+
+    function buildProd() {
+      const host = $('prod');
+      const strip = document.createElement('div');
+      strip.className = 'sstrip';
+      strip.innerHTML = statBox('FACTORY OUTPUT', 'out') + statBox('LINES RUNNING', 'run') + statBox('GOODS ON HAND', 'held');
+      host.appendChild(strip);
+      strip.querySelectorAll('[data-r]').forEach(n => { pinfo[n.dataset.r] = n; });
+      PGRP.forEach((gname, g) => {
+        const list = PROD.map((d, i) => i).filter(i => PROD[i].grp === g).sort((a, b) => PROD[a].unlock - PROD[b].unlock);
+        const h = document.createElement('h3');
+        h.className = 'ghead';
+        h.textContent = gname;
+        host.appendChild(h);
+        list.forEach(i => {
+          const d = PROD[i];
+          const a = document.createElement('div');
+          a.className = 'prow';
+          a.dataset.i = i;
+          const inputs = d.cin.concat(d.pin).map((x, n) => '<div class="irow"><span data-r="inl' + n + '"></span><span data-r="inv' + n + '"></span></div>').join('');
+          a.innerHTML =
+            '<div class="phd" role="button" tabindex="0" aria-expanded="false" data-r="head">' +
+              '<div class="pn"><b>' + d.name + '</b><span class="pg" data-r="grade"></span></div>' +
+              '<div class="ppx"><b data-r="price"></b><span data-r="chg"></span><span class="tag" data-r="tag"></span></div>' +
+              '<div class="pst"><span class="pbar" data-r="stbar"></span><span data-r="stval"></span></div>' +
+              '<div class="pinc" data-r="inc"></div>' +
+              '<div class="pchip" data-r="chip"></div>' +
+              '<div class="plock"><span class="pneed" data-r="need"></span><button type="button" class="btn" data-act="unlock"><span>OPEN PLANT</span><small data-r="unlockc"></small></button></div>' +
+            '</div>' +
+            '<div class="pbd">' +
+              '<div class="pcol">' +
+                '<div class="pmarket">' +
+                  '<div class="pt">MARKET</div>' +
+                  '<div class="spark" data-r="spark" aria-hidden="true"></div>' +
+                  '<div class="kv"><span>NORMAL PRICE</span><span data-r="norm"></span></div>' +
+                  '<div class="kv"><span>INPUT COST</span><span data-r="icost"></span></div>' +
+                  '<div class="kv"><span>PROFIT / UNIT</span><span data-r="margin"></span></div>' +
+                  '<div class="out" data-r="outl"></div>' +
+                '</div>' +
+                '<div class="out need" data-r="needfull"></div>' +
+                '<div class="pt">MADE FROM, PER UNIT</div>' +
+                '<div class="inputs">' + inputs + '</div>' +
+                '<p class="sd">' + d.desc + '</p>' +
+              '</div>' +
+              '<div class="pcol pctl">' +
+                '<div class="pt">PRODUCTION</div>' +
+                '<div class="kv"><span>STATUS</span><span data-r="stat"></span></div>' +
+                '<div class="grid2">' +
+                  '<button type="button" class="btn b3" data-act="line"><span data-r="linel"></span><span class="l2" data-r="liner"></span><small data-r="linec"></small></button>' +
+                  '<button type="button" class="btn b3" data-act="tier"><span data-r="tierl"></span><span class="l2" data-r="tierr"></span><small data-r="tierc"></small></button>' +
+                '</div>' +
+                '<div class="grid3">' +
+                  '<button type="button" class="btn" data-act="half">SELL 50%</button>' +
+                  '<button type="button" class="btn" data-act="all">SELL ALL</button>' +
+                  '<button type="button" class="btn" data-act="run"><span data-r="runl"></span></button>' +
+                '</div>' +
+                '<div class="grid2">' +
+                  '<button type="button" class="btn b3" data-act="auto"><span data-r="autol"></span><span class="l2" data-r="autos"></span></button>' +
+                  '<button type="button" class="btn b3" data-act="ovf"><span data-r="ovfl"></span><span class="l2" data-r="ovfs"></span></button>' +
+                '</div>' +
+              '</div>' +
+            '</div>';
+          host.appendChild(a);
+          prefs[i] = refsOf(a);
+        });
+      });
+    }
+
+    function buildServ() {
+      const host = $('serv');
+      const strip = document.createElement('div');
+      strip.className = 'sstrip';
+      strip.innerHTML = statBox('SERVICE INCOME', 'inc') + statBox('COMPUTE USED', 'cmp') + statBox('ATTACKS STOPPED', 'blk');
+      host.appendChild(strip);
+      strip.querySelectorAll('[data-r]').forEach(n => { sinfo[n.dataset.r] = n; });
+      const grid = document.createElement('div');
+      grid.className = 'sgrid';
+      host.appendChild(grid);
+      SERV.forEach((d, k) => {
+        const a = document.createElement('article');
+        a.className = 'scard';
+        a.dataset.k = k;
+        const camp = k === SVC.mkt ? '<button type="button" class="btn b3" data-act="camp"><span data-r="campl"></span><span class="l2" data-r="campr"></span><small data-r="campc"></small></button>' : '';
+        a.innerHTML =
+          '<div class="card-head"><h2>' + d.name + '</h2><b class="lv" data-r="lvl"></b></div>' +
+          '<p class="tagl">' + d.tag + '</p>' +
+          '<div class="kvs">' +
+            '<div class="kv"><span>EARNS</span><span data-r="rev"></span></div>' +
+            '<div class="kv"><span data-r="k1l"></span><span data-r="k1v"></span></div>' +
+            '<div class="kv"><span data-r="k2l"></span><span data-r="k2v"></span></div>' +
+          '</div>' +
+          '<div class="sact">' + camp +
+            '<button type="button" class="btn b3" data-act="buy"><span data-r="buyl"></span><span class="l2" data-r="buyr"></span><small data-r="buyc"></small></button>' +
+            '<button type="button" class="btn b3" data-act="unlock"><span data-r="ul"></span><span class="l2" data-r="ur"></span><small data-r="unlockc"></small></button>' +
+          '</div>';
+        grid.appendChild(a);
+        srefs[k] = refsOf(a);
+      });
+      const am = document.createElement('div');
+      am.className = 'amodels';
+      am.innerHTML = '<div class="pt">AI MODELS <span data-r="amsub"></span></div><div class="grid4">' + AIM.map(m =>
+        '<button type="button" class="btn b3" data-act="model" data-m="' + m.id + '"><span>' + m.name + '</span><span class="l2" data-r="m_' + m.id + 'l"></span><small data-r="m_' + m.id + 'c"></small></button>').join('') + '</div>';
+      host.appendChild(am);
+      am.querySelectorAll('[data-r]').forEach(n => { sinfo[n.dataset.r] = n; });
+      am.querySelectorAll('button[data-act]').forEach(b => { sinfo['b_' + b.dataset.m] = b; });
+    }
+
+    function pStatus(i) {
+      const p = S.p[i];
+      if (p.ln < 1) return ['NO LINES', 'warn'];
+      if (!p.on) return ['PAUSED', 'warn'];
+      if (S.outage > 0) return ['POWER OUT', 'warn'];
+      if (p.st === 'FULL') return ['STORAGE FULL', 'warn'];
+      if (p.st === 'STARVED') return ['NEEDS ' + p.why, 'warn'];
+      if (p.st === 'LIMITED') return ['LIMITED: ' + p.why, ''];
+      return ['RUNNING', 'ok'];
+    }
+
+    function renderProd() {
+      let val = 0;
+      let run = 0;
+      let open = 0;
+      let held = 0;
+      PROD.forEach((d, i) => {
+        const p = S.p[i];
+        const r = prefs[i];
+        const sel = pSel === i;
+        r.card.classList.toggle('locked', !p.u);
+        r.card.classList.toggle('sel', sel);
+        r.head.setAttribute('aria-expanded', sel ? 'true' : 'false');
+        const lm = leanMult();
+        const inputs = d.cin.map(([c, q]) => [q, COMM[c].sym, S.c[c].metal, S.c[c].u]).concat(d.pin.map(([j, q]) => [q, PROD[j].name, S.p[j].stock, S.p[j].u]));
+        inputs.forEach((x, n) => {
+          setT(r['inl' + n], nq(x[0] * lm) + ' ' + x[1]);
+          setT(r['inv' + n], x[3] ? 'HAVE ' + fmtStock(x[2]) : 'NOT OPEN');
+          r['inv' + n].parentNode.classList.toggle('short', !x[3] || x[2] < x[0] * lm);
+        });
+        if (!p.u) {
+          const need = pReqs(i);
+          setT(r.grade, recipeText(i));
+          setT(r.need, need.length ? 'NEEDS ' + need[0] + (need.length > 1 ? ' +' + (need.length - 1) + ' MORE' : '') : '');
+          setT(r.needfull, need.length ? 'NEEDS FIRST: ' + need.join(', ') : '');
+          setT(r.unlockc, money(d.unlock));
+          r.b_unlock.disabled = need.length > 0 || S.cash < d.unlock;
+          return;
+        }
+        open++;
+        const price0 = pPrice(i);
+        const pct = (Math.exp(p.x) - 1) * 100;
+        setT(r.price, '$' + fmtPrice(price0));
+        setT(r.chg, (p.dx >= 0 ? '▲ ' : '▼ ') + (pct >= 0 ? '+' : '') + pct.toFixed(0) + '%');
+        r.chg.classList.toggle('dn', p.dx < 0);
+        setT(r.tag, pct >= 15 ? 'HIGH' : pct <= -15 ? 'LOW' : '');
+        r.tag.classList.toggle('low', pct <= -15);
+        setT(r.grade, d.tiers[p.tk][1]);
+        const cp = pCap(i);
+        setT(r.stbar, bar(p.stock / cp, 8));
+        setT(r.stval, p.stock >= cp - 0.01 ? 'FULL' : fmtStock(p.stock) + '/' + cp);
+        held += p.stock * price0;
+        const stt = pStatus(i);
+        setT(r.chip, stt[0]);
+        r.chip.className = 'pchip ' + stt[1];
+        const flow = p.ln > 0 && p.on ? p.fl * price0 : 0;
+        if (p.ln > 0 && p.on) { val += flow; run++; }
+        setT(r.inc, flow > 0 ? money(flow) + '/s' : '');
+        setT(r.spark, sparkText(p));
+        setT(r.norm, '$' + fmtPrice(pNormal(i)));
+        const ic = pInputCost(i);
+        const prof = price0 - ic;
+        setT(r.icost, '$' + fmtPrice(ic));
+        setT(r.margin, (prof >= 0 ? '+' : '-') + '$' + fmtPrice(Math.abs(prof)) + ' (' + (prof >= 0 ? '+' : '') + Math.round(ic > 0 ? prof / ic * 100 : 0) + '%)');
+        r.margin.classList.toggle('dn', prof < 0);
+        setT(r.stat, stt[0] === 'RUNNING' || stt[0].startsWith('LIMITED') ? 'MAKING ' + fmtRate(p.fl) : stt[0]);
+        const pl = planGen(l => pLineCost(i, l), p.ln);
+        const lmu = lvlMult(p.ln);
+        setT(r.linel, 'LINES L' + p.ln + (lmu > 1 ? ' x' + lmu : ''));
+        setT(r.liner, fmtRate(pRateBase(i)));
+        setT(r.linec, (pl.n > 1 ? '+' + pl.n + ' ' : '') + money(pl.cost));
+        r.b_line.disabled = S.cash < pl.cost;
+        if (p.tk >= 3) {
+          setT(r.tierl, 'EQUIPMENT T3/3');
+          setT(r.tierr, d.tiers[3][0]);
+          setT(r.tierc, 'MAXED');
+          r.b_tier.disabled = true;
+        } else {
+          const tc = pTierCost(i);
+          setT(r.tierl, 'EQUIPMENT T' + p.tk + '/3');
+          setT(r.tierr, d.tiers[p.tk + 1][0]);
+          setT(r.tierc, '+' + Math.round((PTIER[p.tk + 1] / PTIER[p.tk] - 1) * 100) + '% PRICE  ' + money(tc));
+          r.b_tier.disabled = S.cash < tc;
+        }
+        r.b_half.disabled = p.stock < 0.02;
+        r.b_all.disabled = p.stock < 0.01;
+        setT(r.runl, p.on ? 'PAUSE' : 'RESUME');
+        r.b_run.classList.toggle('dn', !p.on);
+        r.b_auto.disabled = !brokerLv();
+        r.b_ovf.disabled = !brokerLv();
+        const av = autoView(p, pNormal(i), price0, p.stock, feedNeed('p', i), pFloor(i));
+        setT(r.autol, av[0]);
+        setT(r.autos, av[1]);
+        const ov = ovfView(p);
+        setT(r.ovfl, ov[0]);
+        setT(r.ovfs, ov[1]);
+        let outlook = '';
+        if (hasAi('fore') && aiEff() > 0) {
+          const tg = d.amp * Math.sin(2 * Math.PI * S.clock / d.period + d.phase) - p.x;
+          outlook = 'OUTLOOK: ' + (tg > 0.03 ? 'RISING' : tg < -0.03 ? 'FALLING' : 'STEADY');
+        }
+        setT(r.outl, outlook);
+      });
+      setT(pinfo.out, money(val) + '/s');
+      setT(pinfo.run, run + ' OF ' + open);
+      setT(pinfo.held, money(held));
+    }
+
+    function svRows(k) {
+      if (k === SVC.cloud) return [['COMPUTE MADE', fmt(computeSupply())], ['USED BY AI LAB', computeNeed() > 0 ? fmt(computeNeed()) : 'NONE']];
+      if (k === SVC.cyber) return [['HACKS BLOCKED', Math.round(defense() * 100) + '%'], ['LOST SO FAR', money(S.sec.lost)]];
+      if (k === SVC.mkt) return [['BRAND BONUS', '+' + Math.round(brandBonus() * 100) + '% PRICES'], ['CAMPAIGN', S.camp.t > 0 ? 'LIVE ' + Math.ceil(S.camp.t) + 's' : S.camp.cd > 0 ? 'COOLS ' + Math.ceil(S.camp.cd) + 's' : 'READY']];
+      if (k === SVC.logi) return [['MARKET DEPTH', 'x' + logiMult().toFixed(2)], ['PRICE DROP / SALE', '-' + Math.round((1 - 1 / logiMult()) * 100) + '%']];
+      if (k === SVC.fin) return [['CREDIT', '-' + Math.round((1 - discount()) * 100) + '% COSTS'], ['BEST POSSIBLE', '-25%']];
+      if (k === SVC.ai) return [['COMPUTE', fmt(computeSupply()) + ' / ' + fmt(computeNeed())], ['AI SPEED', computeNeed() > 0 ? Math.round(aiEff() * 100) + '%' : '--']];
+      return [['RAIDS STOPPED', Math.round(secBlock() * 100) + '%'], ['SITE OUTPUT', '+' + (secOps() * 100).toFixed(1) + '%']];
+    }
+
+    function renderServ() {
+      setT(sinfo.inc, money(svIncome()) + '/s');
+      setT(sinfo.cmp, computeNeed() > 0 ? fmt(computeNeed()) + ' / ' + fmt(computeSupply()) : '--');
+      setT(sinfo.blk, S.sec.hit > 0 ? S.sec.block + ' OF ' + S.sec.hit : '--');
+      SERV.forEach((d, k) => {
+        const s = S.sv[k];
+        const r = srefs[k];
+        const ak = !!d.ak;
+        r.card.classList.toggle('locked', !s.u);
+        const rows = svRows(k);
+        setT(r.k1l, rows[0][0]);
+        setT(r.k2l, rows[1][0]);
+        if (!s.u) {
+          const need = svReq(k);
+          setT(r.lvl, 'LOCKED');
+          setT(r.rev, '+' + money(d.rev * shareMult()) + '/s PER LEVEL');
+          setT(r.k1l, 'PERK');
+          setT(r.k1v, d.perk);
+          setT(r.k2l, 'UPGRADES COST');
+          setT(r.k2v, ak ? 'AK-47 RIFLES' : 'CASH');
+          setT(r.ul, 'OPEN DIVISION');
+          setT(r.ur, need);
+          setT(r.unlockc, money(d.unlock));
+          r.b_unlock.disabled = !!need || S.cash < d.unlock;
+          return;
+        }
+        const l = s.l;
+        setT(r.lvl, 'L' + l);
+        setT(r.rev, money(svRev(k)) + '/s');
+        setT(r.k1v, rows[0][1]);
+        setT(r.k2v, rows[1][1]);
+        const pl = planSv(k);
+        setT(r.buyl, d.unit + ' L' + l);
+        setT(r.buyr, '+' + money(svRevAt(k, l + pl.n) - svRevAt(k, l)) + '/s');
+        if (ak) {
+          const have = S.p[AKI].stock;
+          setT(r.buyc, (pl.n > 1 ? '+' + pl.n + '  ' : '') + fmtStock(pl.cost) + ' AK-47  (HAVE ' + fmtStock(have) + ')');
+          r.b_buy.disabled = have < pl.cost;
+        } else {
+          setT(r.buyc, (pl.n > 1 ? '+' + pl.n + ' ' : '') + money(pl.cost));
+          r.b_buy.disabled = S.cash < pl.cost;
+        }
+        if (k === SVC.mkt) {
+          const cc = campCost();
+          setT(r.campl, S.camp.t > 0 ? 'CAMPAIGN LIVE' : 'LAUNCH CAMPAIGN');
+          setT(r.campr, '+' + Math.round(campPower() * 100) + '% PRICES FOR 90s');
+          setT(r.campc, S.camp.t > 0 ? Math.ceil(S.camp.t) + 's LEFT' : S.camp.cd > 0 ? 'READY IN ' + Math.ceil(S.camp.cd) + 's' : money(cc));
+          r.b_camp.disabled = l < 1 || S.camp.t > 0 || S.camp.cd > 0 || S.cash < cc;
+        }
+      });
+      const aiOpen = S.sv[SVC.ai].u;
+      setT(sinfo.amsub, aiOpen ? '' : '(OPEN THE AI LAB FIRST)');
+      AIM.forEach(m => {
+        const own = hasAi(m.id);
+        const req = aiReq(m);
+        setT(sinfo['m_' + m.id + 'l'], own ? 'TRAINED' : m.fx);
+        setT(sinfo['m_' + m.id + 'c'], own ? '' : !aiOpen ? 'NEEDS AI LAB' : req ? req : money(aiCost(m)));
+        sinfo['b_' + m.id].disabled = own || !aiOpen || !!req || S.cash < aiCost(m);
+      });
+    }
+
+    const TUT = [
+      { t: 'Hold DIG on the IRON desk. You dig ore, and it smelts into metal.',
+        hi: () => refs[0].b_dig, prog: () => [S.c[0].ore + S.c[0].metal, 5, 'ORE'], done: () => S.c[0].ore + S.c[0].metal >= 5 || S.earned > 0 },
+      { t: 'Press SELL ALL on the IRON desk to turn your metal into cash.',
+        hi: () => refs[0].b_all, done: () => S.earned > 0 },
+      { t: 'Cash buys upgrades. Buy MINE L1 on the IRON desk: it digs for you, always.',
+        hi: () => refs[0].b_mine, prog: () => [S.cash, lvlCost(COMM[0], 'mine', 0), '$'], done: () => S.c[0].ml >= 1 },
+      { t: 'Prices rise and fall. Sell when the desk says HIGH, wait when it says LOW. Earn $150.',
+        hi: () => null, prog: () => [S.earned, 150, '$'], done: () => S.earned >= 150 },
+      { t: 'Buy SMELT L1. If the ORE bar keeps filling up, smelting is too slow.',
+        hi: () => refs[0].b_smelt, prog: () => [S.cash, lvlCost(COMM[0], 'smelt', 0), '$'], done: () => S.c[0].sl >= 1 },
+      { t: 'Open RESEARCH and hire a BROKER. It sells for you, even while you are away.',
+        hi: () => (tab === 'res' ? $('research').querySelector('[data-id="broker"] button') : $('tab-res')), prog: () => [S.cash, 1500, '$'], done: () => brokerLv() >= 1 },
+      { t: 'On the IRON desk press AUTO-SELL until it says +10%. The broker sells when the price is 10% above normal.',
+        hi: () => (tab === 'ops' ? refs[0].b_auto : $('tab-ops')), done: () => S.c[0].auto >= 3 }
+    ];
+
+    const GOALS = [
+      { t: 'Unlock the COPPER desk. Every metal is its own market.',
+        hi: () => (tab === 'ops' ? refs[1].b_unlock : $('tab-ops')), prog: () => [S.cash, 10000, '$'], done: () => S.c[1].u },
+      { t: 'Open the PRODUCTION tab and open a STEEL plant. Goods sell for more than raw metal.',
+        hi: () => (tab === 'pr' ? prefs[0].b_unlock : $('tab-pr')), prog: () => [S.cash, PROD[0].unlock, '$'], done: () => S.p[0].u },
+      { t: 'Click the STEEL row and build 3 lines. Each line turns iron into steel nonstop.',
+        hi: () => (tab !== 'pr' ? $('tab-pr') : pSel === 0 ? prefs[0].b_line : prefs[0].head), prog: () => [S.p[0].ln, 3, 'LINES'], done: () => S.p[0].ln >= 3 },
+      { t: 'Unlock the SILVER desk, then open WIRE AND CABLE and SILVERWARE.',
+        hi: () => (tab === 'ops' ? refs[2].b_unlock : $('tab-ops')), prog: () => [S.cash, 150000, '$'], done: () => S.c[2].u && S.p[1].u },
+      { t: 'Upgrade STEEL equipment. A better grade sells at a higher price.',
+        hi: () => (tab !== 'pr' ? $('tab-pr') : pSel === 0 ? prefs[0].b_tier : prefs[0].head), prog: () => [S.cash, pTierCost(0), '$'], done: () => S.p[0].tk >= 1 },
+      { t: 'Open the SERVICES tab and start CLOUD HOSTING. It earns income while you are away.',
+        hi: () => (tab === 'sv' ? srefs[0].b_unlock : $('tab-sv')), prog: () => [S.cash, SERV[0].unlock, '$'], done: () => S.sv[0].u },
+      { t: 'Earn $5M in one run, then RESTRUCTURE on the BOARD tab for permanent shares.',
+        hi: () => $('tab-bd'), prog: () => [S.run, 5000000, '$'], done: () => false }
+    ];
+
+    const STEPS = TUT.map(s => Object.assign({ goal: false }, s)).concat(GOALS.map(s => Object.assign({ goal: true }, s)));
+    let tutHi = null;
+
+    function tutTick() {
+      const box = el.tut;
+      if (S.tutOff || seq) { if (!box.hidden) { box.hidden = true; if (tutHi) tutHi.classList.remove('tut-hi'); tutHi = null; } return; }
+      let guard = 0;
+      while (S.tut < STEPS.length && STEPS[S.tut].done() && guard++ < 20) {
+        S.tut++;
+        Snd.sfx('unlock');
+      }
+      if (S.tut >= STEPS.length) S.tut = STEPS.length - 1;
+      const st = STEPS[S.tut];
+      box.hidden = false;
+      setT(el.tutn, st.goal ? 'NEXT GOAL' : 'TUTORIAL ' + (S.tut + 1) + ' OF ' + TUT.length);
+      setT(el.tutt, st.t);
+      const pg = st.prog ? st.prog() : null;
+      el.tutp.style.visibility = pg ? 'visible' : 'hidden';
+      if (pg) {
+        const cur = Math.min(pg[0], pg[1]);
+        setT(el.tutbar, bar(cur / pg[1], 16));
+        setT(el.tutv, pg[2] === '$' ? '$' + Math.floor(cur).toLocaleString('en-US') + ' / $' + Math.floor(pg[1]).toLocaleString('en-US') : Math.floor(cur) + ' / ' + pg[1] + ' ' + pg[2]);
+      }
+      const h = st.hi();
+      if (h !== tutHi) {
+        if (tutHi) tutHi.classList.remove('tut-hi');
+        tutHi = h;
+        if (h) h.classList.add('tut-hi');
+      }
+    }
+
+    function tutStop() {
+      S.tutOff = true;
+      if (tutHi) tutHi.classList.remove('tut-hi');
+      tutHi = null;
+      el.tut.hidden = true;
+    }
+
+    const GUIDE = {
+      basics: [
+        'the basics',
+        '  hold DIG to pull ore. ore is smelted into metal, and metal is sold for cash.',
+        '  MINE levels dig ore for you. SMELT levels refine it faster. every 25 levels doubles output.',
+        '  prices move all the time. sell when a desk is tagged HIGH, hold when it is LOW.',
+        '  a full warehouse stops production: buy WAREHOUSE EXPANSION in the RESEARCH tab.',
+        '  power outages stop mines and factories for a short while.'
+      ],
+      selling: [
+        'selling',
+        '  SELL 50% and SELL ALL sell by hand. big sales push the price down, then it recovers.',
+        '  selling in smaller batches gets a better average price.',
+        '  MARKET CONTRACTS (research) and LOGISTICS (services) make prices drop less per sale.'
+      ],
+      broker: [
+        'broker and auto-sell',
+        '  a broker (RESEARCH tab) sells for you. on each desk, AUTO-SELL sets how far above the normal price to sell.',
+        '  the second line of the button says what it is doing, for example WAITS FOR $9.60 or SELLING NOW.',
+        '  after you change a setting, selling is paused for 3 seconds, so you can click through the options safely.',
+        '  IF FULL sets what the broker does when storage is full.',
+        '  JUNIOR sells everything. SENIOR sells 40% at a time. TRADER also waits for the price peak.',
+        '  the broker never sells the stock your factory lines need next. it keeps that back.'
+      ],
+      research: [
+        'research',
+        '  research is permanent for the current run. the cost grows with each level.',
+        '  WAREHOUSE raises storage. BROKER automates selling. DRILL RIG digs for you.',
+        '  FACTORY AUTOMATION and LEAN MANUFACTURING make factory lines faster and cheaper to feed.'
+      ],
+      production: [
+        'production',
+        '  open the PRODUCTION tab. a plant needs its input desks open, then build LINES to start.',
+        '  lines take metal (and other goods) from your warehouse and make a product that sells for more.',
+        '  STEEL comes first: iron becomes steel, and steel feeds machinery, tires, computers, cars, rifles, trains, ships and planes.',
+        '  click a row to open it and see its controls. a row shows its price, stock and income at a glance.',
+        '  EQUIPMENT upgrades make a better grade of the product, which sells at a higher price.',
+        '  each product has its own market, with its own price swings and news.',
+        '  PROFIT / UNIT shows how much more the product sells for than its inputs cost right now.',
+        '  PAUSE a line to keep its inputs for another line. a product marked WAITING FOR needs that input.'
+      ],
+      services: [
+        'services',
+        '  the SERVICES tab sells expertise instead of goods. each service earns passive income, even offline.',
+        '  CLOUD HOSTING supplies compute for the AI LAB. CYBERSECURITY blocks hackers (they target you once you run online services).',
+        '  DIGITAL MARKETING raises product prices, with timed campaigns. LOGISTICS makes sales move prices less.',
+        '  FINANCE makes levels and lines cheaper. AI LAB trains models that boost the whole company.',
+        '  PRIVATE SECURITY is paid for with AK-47 rifles from your factory, not cash. it blocks warehouse raids and boosts output.'
+      ],
+      board: [
+        'board and restructure',
+        '  restructure sells the company and restarts the run. you keep shares.',
+        '  every share adds 10% to everything you sell, forever. spare shares buy perks on the BOARD tab.',
+        '  restructure when your run slows down: the more you earned this run, the more shares you get.'
+      ],
+      bitcoin: [
+        'bitcoin',
+        '  the MARKETS tab trades real bitcoin prices with game cash. every trade has a 0.25% fee.',
+        '  limit orders only fill while the page is open. restructuring sells your bitcoin.'
+      ]
+    };
+    const TOPICS = Object.keys(GUIDE);
+
+    function helpCmd(a) {
+      S.helped = true;
+      const t = (a[0] || '').toLowerCase();
+      if (t) {
+        const k = TOPICS.find(x => x.startsWith(t));
+        if (k) { print(GUIDE[k].join('\n'), 'd'); return; }
+        print('no guide called ' + t + '. topics: ' + TOPICS.join(', ') + '.', 'd');
+        Snd.sfx('err');
+        return;
+      }
+      print([
+        'commands:',
+        '  help [topic]       this list, or a guide on one topic',
+        '  tutorial [off]     show the tutorial again (or hide it)',
+        '  status             a snapshot of your company',
+        '  prices             current market prices',
+        '  save               save now',
+        '  clear              clear the screen',
+        '  color [name]       green, amber, ice',
+        '  reset              permanently delete all game data',
+        'guides (type help <topic>):',
+        '  ' + TOPICS.join(', ')
+      ].join('\n'), 'd');
+    }
+
+    const CMDS2 = {
+      help(a) { helpCmd(a); },
+      guide(a) { helpCmd(a); },
+      tutorial(a) {
+        if ((a[0] || '').toLowerCase() === 'off') {
+          tutStop();
+          print('tutorial hidden. type tutorial to bring it back.');
+          return;
+        }
+        S.tut = 0;
+        S.tutOff = false;
+        print('tutorial restarted.');
+        tutTick();
+      },
+      save() {
+        const ok = save();
+        print(ok ? 'saved.' : 'could not save: this browser is blocking storage.', ok ? '' : 'w');
+      },
+      status() {
+        const sv = S.sv.filter(s => s.u).length;
+        const pl = S.p.filter(p => p.u);
+        print([
+          'company status:',
+          '  cash         ' + money(S.cash),
+          '  stock        ' + money(stockValue()),
+          '  net worth    ' + money(netWorth()),
+          '  income       ' + money(incomeRate()) + '/s (last minute)',
+          '  desks        ' + S.c.filter(c => c.u).length + ' of ' + COMM.length + ' open',
+          '  factories    ' + pl.length + ' plants, ' + pl.reduce((a, p) => a + p.ln, 0) + ' lines',
+          '  services     ' + sv + ' of ' + SERV.length + ' open, ' + money(svIncome()) + '/s',
+          '  shares       ' + S.sharesTotal + ' (+' + 10 * S.sharesTotal + '%)',
+          '  this run     #' + (S.runs + 1) + ', earned ' + money(S.run)
+        ].join('\n'), 'd');
+      },
+      prices() {
+        const rows = [];
+        S.c.forEach((c, i) => { if (c.u) rows.push('  ' + COMM[i].sym.padEnd(14) + ('$' + fmtPrice(price(i))).padEnd(12) + ((Math.exp(c.x) - 1) * 100 >= 0 ? '+' : '') + ((Math.exp(c.x) - 1) * 100).toFixed(0) + '%'); });
+        S.p.forEach((p, i) => { if (p.u) rows.push('  ' + PROD[i].name.slice(0, 13).padEnd(14) + ('$' + fmtPrice(pPrice(i))).padEnd(12) + ((Math.exp(p.x) - 1) * 100 >= 0 ? '+' : '') + ((Math.exp(p.x) - 1) * 100).toFixed(0) + '%'); });
+        print(['market prices (change vs normal):'].concat(rows.length ? rows : ['  nothing open yet.']).join('\n'), 'd');
+      }
+    };
+
     const el = {};
     const refs = [];
     const rrefs = [];
@@ -3008,11 +4906,16 @@
       const mc = cap();
       S.c.forEach((c, i) => {
         if (!c.u) return;
+        const before = c.ore;
         c.ore = Math.min(oc, c.ore + mineRate(i) * dt);
+        if (TRK) TRK.mined[i] += c.ore - before;
         const s = Math.min(c.ore, smeltRate(i) * dt, Math.max(0, mc - c.metal));
         c.ore -= s;
         c.metal += s;
+        if (TRK) TRK.smelt[i] += s;
+        if (TRK && c.metal >= mc - 0.01 && c.ore >= oc - 0.01 && TRK.fullAt[i] === undefined) TRK.fullAt[i] = TRK.k;
       });
+      tickFactories(dt);
     }
 
     function tickMarket() {
@@ -3023,11 +4926,19 @@
         c.x = clamp(c.x + 0.045 * (tg - c.x) + d.vol * gauss(), -0.8, 0.9);
         c.dx = c.x - before;
       });
+      PROD.forEach((d, i) => {
+        const p = S.p[i];
+        const before = p.x;
+        const tg = d.amp * Math.sin(2 * Math.PI * S.clock / d.period + d.phase);
+        p.x = clamp(p.x + 0.045 * (tg - p.x) + d.vol * gauss(), -0.8, 0.9);
+        p.dx = p.x - before;
+      });
     }
 
-    function sell(i, frac) {
+    function sell(i, frac, keep) {
       const c = S.c[i];
-      const n = frac >= 1 ? c.metal : Math.floor(c.metal * frac * 100) / 100;
+      const have = Math.max(0, c.metal - (keep || 0));
+      const n = frac >= 1 ? have : Math.floor(have * frac * 100) / 100;
       if (n <= 0) return null;
       const p0 = price(i);
       const k = 0.08 / (COMM[i].liq * impactDiv());
@@ -3046,11 +4957,12 @@
 
     function autoSell() {
       const b = brokerLv();
-      if (!b) return;
+      if (!b || S.sec.ddos > 0) return;
       const floor = autoFloor();
       S.c.forEach((c, i) => {
-        if (!c.u) return;
-        if (c.ovf && c.metal >= cap() * 0.995) {
+        if (!c.u || S.clock < c.arm) return;
+        const keep = feedNeed('c', i);
+        if (c.ovf && c.metal >= fullMark(keep, cap())) {
           const r = sell(i, OVF[c.ovf]);
           if (r) {
             log('STORAGE FULL. BROKER SOLD ' + Math.floor(r.n) + ' ' + COMM[i].sym + ' @ $' + r.p.toFixed(2) + ' = ' + money(r.gain));
@@ -3059,26 +4971,29 @@
           return;
         }
         const m = AUTO[c.auto];
-        if (!m || c.metal < floor) return;
+        if (!m || c.metal - keep < floor) return;
         const p = price(i);
         const th = m * COMM[i].base;
         if (p < th) return;
         if (b >= 3 && c.dx > 0 && p < th * 1.1) return;
-        const r = sell(i, AUTO_STAGE[b]);
+        const r = sell(i, AUTO_STAGE[b], keep);
         if (r) {
           log('BROKER SOLD ' + Math.floor(r.n) + ' ' + COMM[i].sym + ' @ $' + r.p.toFixed(2) + ' = ' + money(r.gain));
           Snd.sfx('sell');
         }
       });
+      autoSellProd();
     }
 
     function fireEvent() {
       S.nextEvent = S.clock + 40 + Math.random() * 40;
+      if (exposed() && Math.random() < 0.15) { rollAttack(false); return; }
+      if (raidsOn() && Math.random() < 0.12) { if (rollRaid(false)) return; }
       const r = Math.random();
       const active = S.c.map((c, i) => (c.u ? i : -1)).filter(i => i >= 0);
       if (r < 0.18) {
         S.outage = outageLen();
-        log('POWER OUTAGE. ALL MINES OFFLINE FOR ' + Math.ceil(S.outage) + 's.', 'w');
+        log('POWER OUTAGE. MINES AND FACTORIES OFFLINE FOR ' + Math.ceil(S.outage) + 's.', 'w');
         Snd.sfx('alert');
         return;
       }
@@ -3092,9 +5007,10 @@
           return;
         }
       }
-      const pool = EVENTS.filter(e => S.c[e.i].u);
+      const pool = EVENTS.filter(e => S.c[e.i].u).map(e => ({ dx: e.dx, m: e.m, hit: () => { S.c[e.i].x = clamp(S.c[e.i].x + e.dx, -0.8, 0.9); } }))
+        .concat(PEVENTS.filter(e => S.p[e.p].u).map(e => ({ dx: e.dx, m: e.m, hit: () => { S.p[e.p].x = clamp(S.p[e.p].x + e.dx, -0.8, 0.9); } })));
       const e = pool[Math.floor(Math.random() * pool.length)];
-      S.c[e.i].x = clamp(S.c[e.i].x + e.dx, -0.8, 0.9);
+      e.hit();
       log('NEWS: ' + e.m, e.dx < 0 ? 'w' : '');
       Snd.sfx(e.dx < 0 ? 'alert' : 'news');
     }
@@ -3109,6 +5025,11 @@
     function step(dt) {
       tickProd(dt);
       S.clock += dt;
+      const inc = svIncome() * dt;
+      if (inc > 0) { S.cash += inc; S.earned += inc; S.run += inc; }
+      if (S.camp.t > 0) { S.camp.t = Math.max(0, S.camp.t - dt); if (S.camp.t === 0) log('CAMPAIGN ENDED.'); }
+      if (S.camp.cd > 0) S.camp.cd = Math.max(0, S.camp.cd - dt);
+      if (S.sec.ddos > 0) { S.sec.ddos = Math.max(0, S.sec.ddos - dt); if (S.sec.ddos === 0) log('TRADING DESK BACK ONLINE.'); }
       if (S.outage > 0) {
         S.outage = Math.max(0, S.outage - dt);
         if (S.outage === 0) log('POWER RESTORED.');
@@ -3134,21 +5055,6 @@
       }
     }
 
-    function away(secs) {
-      const sec = Math.min(Math.floor(secs), awayMax());
-      const sum = () => S.c.reduce((a, c) => a + c.ore + c.metal, 0);
-      const before = sum();
-      S.outage = 0;
-      S.boost = null;
-      offlineMul = 0.5;
-      for (let k = 0; k < sec; k++) tickProd(1);
-      offlineMul = 1;
-      S.clock += sec;
-      const gained = sum() - before;
-      const m = Math.floor(sec / 60);
-      log('AWAY ' + (sec < 60 ? sec + 's' : m >= 60 ? Math.floor(m / 60) + 'h ' + (m % 60) + 'm' : m + 'm') + '. PRODUCED ' + Math.floor(gained) + ' UNITS WHILE YOU WERE GONE.');
-    }
-
     let wiped = false;
     const SV = { at: 0, ok: true };
 
@@ -3158,6 +5064,7 @@
       const ok = store.set(KEY, JSON.stringify({
         ver: 4, ax: 2, run: S.run, runs: S.runs, shares: S.shares, sharesTotal: S.sharesTotal, bd: S.bd, btc: S.btc, cash: S.cash, wl: S.wl, rs: S.rs, t: S.t, clock: S.clock, phos: S.phos,
         nextEvent: S.nextEvent, milestone: S.milestone, earned: S.earned, helped: S.helped,
+        p: S.p.map(p => ({ u: p.u, ln: p.ln, tk: p.tk, stock: p.stock, x: p.x, auto: p.auto, ovf: p.ovf, on: p.on })), sv: S.sv, ai: S.ai, camp: S.camp, sec: S.sec, tut: S.tut, tutOff: S.tutOff,
         c: S.c.map(c => ({ u: c.u, ml: c.ml, sl: c.sl, ore: c.ore, metal: c.metal, x: c.x, auto: c.auto, ovf: c.ovf }))
       }));
       SV.ok = ok;
@@ -3166,7 +5073,7 @@
     }
 
     function build() {
-      ['cash', 'stock', 'net', 'status', 'savebtn', 'savet', 'tout', 'tin', 'tform', 'tmus', 'tmore', 'tvol', 'mbar'].forEach(k => { el[k] = $(k); });
+      ['cash', 'stock', 'net', 'status', 'savebtn', 'savet', 'tout', 'tin', 'tform', 'tmus', 'tmore', 'tvol', 'mbar', 'tut', 'tutn', 'tutt', 'tutp', 'tutbar', 'tutv', 'tutskip'].forEach(k => { el[k] = $(k); });
       const host = $('cards');
       COMM.forEach((d, i) => {
         const a = document.createElement('article');
@@ -3188,8 +5095,8 @@
             '<button type="button" class="btn" data-act="all">SELL ALL</button>' +
           '</div>' +
           '<div class="grid2">' +
-            '<button type="button" class="btn" data-act="auto"><span data-r="autol"></span></button>' +
-            '<button type="button" class="btn" data-act="ovf"><span data-r="ovfl"></span></button>' +
+            '<button type="button" class="btn b3" data-act="auto"><span data-r="autol"></span><span class="l2" data-r="autos"></span></button>' +
+            '<button type="button" class="btn b3" data-act="ovf"><span data-r="ovfl"></span><span class="l2" data-r="ovfs"></span></button>' +
           '</div>' +
           '<div class="lockbox"><button type="button" class="btn" style="width:100%" data-act="unlock"><span>UNLOCK</span><small data-r="unlockc"></small></button></div>';
         host.appendChild(a);
@@ -3200,6 +5107,9 @@
       });
       buildMarkets();
       buildDlg();
+      buildProd();
+      buildServ();
+      buildAway();
       const bh = $('board');
       const ra = document.createElement('article');
       ra.className = 'card res';
@@ -3306,22 +5216,22 @@
     function updateTips(stock) {
       const lines = [];
       S.c.forEach((c, i) => { if (c.u && c.metal >= 1) lines.push(COMM[i].sym + '  ' + Math.floor(c.metal) + ' x $' + fmt(price(i)) + ' = ' + money(c.metal * price(i))); });
+      S.p.forEach((p, i) => { if (p.u && p.stock >= 0.1) lines.push(PROD[i].name + '  ' + fmtStock(p.stock) + ' x $' + fmt(pPrice(i)) + ' = ' + money(p.stock * pPrice(i))); });
       setTip(el.cash, 'CASH\nMoney you can spend on levels, research and unlocks. You earn it by selling what you produce.\nINCOME (LAST MINUTE): ' + money(incomeRate()) + '/s\nEARNED THIS RUN: ' + money(S.run));
-      setTip(el.stock, 'STOCK\nUnsold goods in your warehouse, valued at current market prices.\n' + (lines.length ? lines.join('\n') : 'NOTHING IN STORAGE.'));
+      setTip(el.stock, 'STOCK\nUnsold metal and goods in your warehouse, valued at current market prices.\n' + (lines.length ? lines.join('\n') : 'NOTHING IN STORAGE.'));
       setTip(el.net, 'NET WORTH\nCash + stock + bitcoin.\nCASH  ' + money(S.cash) + '\nSTOCK  ' + money(stock) + '\nBITCOIN  ' + money(btcValue()) + '\nSHARE BONUS  +' + 10 * S.sharesTotal + '%');
     }
 
     const sparkText = c => c.h.map(x => SPARK[clamp(Math.round((x + 0.3) / 0.6 * 7), 0, 7)]).join('');
 
     function render() {
-      let stock = 0;
-      S.c.forEach((c, i) => { if (c.u) stock += c.metal * price(i); });
+      const stock = stockValue();
       setT(el.cash, money(S.cash));
       setT(el.stock, money(stock));
       setT(el.net, money(S.cash + stock + btcValue()));
       updateTips(stock);
 
-      if (S.outage > 0) setT(el.status, 'POWER OUTAGE: MINES OFFLINE ' + Math.ceil(S.outage) + 's');
+      if (S.outage > 0) setT(el.status, 'POWER OUTAGE: MINES AND FACTORIES OFFLINE ' + Math.ceil(S.outage) + 's');
       else if (S.boost) setT(el.status, 'RICH VEIN: ' + COMM[S.boost.i].sym + ' ORE x2 FOR ' + Math.ceil(S.boost.t) + 's');
       else if (lastNews && S.clock - lastNews.at < 45) setT(el.status, lastNews.m);
       else setT(el.status, 'ALL SYSTEMS NOMINAL');
@@ -3339,6 +5249,9 @@
       });
 
       renderMarkets();
+      renderProd();
+      renderServ();
+      tutTick();
       const ago = Math.floor((Date.now() - SV.at) / 1000);
       setT(el.savet, !SV.ok ? 'SAVE FAILED' : !SV.at ? 'NOT SAVED YET' : ago < 3 ? 'SAVED JUST NOW' : ago < 60 ? 'SAVED ' + ago + 's AGO' : ago < 3600 ? 'SAVED ' + Math.floor(ago / 60) + 'm AGO' : 'SAVED ' + Math.floor(ago / 3600) + 'h AGO');
       el.savebtn.classList.toggle('bad', !SV.ok);
@@ -3404,21 +5317,12 @@
         r.b_all.disabled = c.metal < 1;
         r.b_auto.disabled = !brokerLv();
         r.b_ovf.disabled = !brokerLv();
-        setT(r.ovfl, brokerLv() ? (c.ovf ? 'AT FULL: SELL ' + (OVF[c.ovf] === 1 ? 'ALL' : OVF[c.ovf] * 100 + '%') : 'AT FULL: HOLD') : 'AT FULL: STOPS');
-        let al = 'AUTO-SELL: NEEDS BROKER';
-        if (brokerLv()) {
-          if (!AUTO[c.auto]) {
-            al = 'AUTO-SELL: OFF';
-          } else {
-            const pc = Math.round((AUTO[c.auto] - 1) * 100);
-            const th = AUTO[c.auto] * d.base;
-            const hit = price(i) >= th;
-            if (hit && brokerLv() >= 3 && c.dx > 0 && price(i) < th * 1.1) al = 'WAITING FOR THE PEAK';
-            else if (hit && c.metal < autoFloor()) al = 'SELLS AT ' + autoFloor() + ' STOCK';
-            else al = (hit ? 'SELLING ABOVE +' : 'SELL ABOVE +') + pc + '%';
-          }
-        }
-        setT(r.autol, al);
+        const av = autoView(c, d.base, price(i), c.metal, feedNeed('c', i), autoFloor());
+        setT(r.autol, av[0]);
+        setT(r.autos, av[1]);
+        const ov = ovfView(c);
+        setT(r.ovfl, ov[0]);
+        setT(r.ovfs, ov[1]);
         let outlook = '';
         if (RS('intel')) {
           const tg = d.amp * Math.sin(2 * Math.PI * S.clock / d.period + d.phase) - c.x;
@@ -3522,6 +5426,11 @@
       S.nextEvent = S.clock + 25;
       S.milestone = 0;
       S.c = COMM.map(freshComm);
+      S.p = PROD.map(freshProd);
+      S.sv = SERV.map(freshSv);
+      S.ai = {};
+      S.camp = { t: 0, cd: 0 };
+      S.sec.ddos = 0;
       S.c[0].u = true;
       for (let i = 1; i <= BD('fast') && i < COMM.length; i++) S.c[i].u = true;
       log('RESTRUCTURED. +' + g + (g === 1 ? ' SHARE' : ' SHARES') + '. ALL INCOME IS NOW +' + 10 * S.sharesTotal + '%.');
@@ -3541,7 +5450,7 @@
         '<div class="dbox"><div class="dhaz"></div><div class="dbody">' +
         '<h2 id="rdt">! DANGER: RESTRUCTURE</h2>' +
         '<p>This sells your whole company and cannot be undone. The terminal will power down and restart.</p>' +
-        '<div class="dcols"><div class="lose"><h3>YOU LOSE</h3><ul><li data-d="cash"></li><li data-d="btc"></li><li>ALL DESKS, LEVELS, STOCK</li><li>ALL RESEARCH</li></ul></div>' +
+        '<div class="dcols"><div class="lose"><h3>YOU LOSE</h3><ul><li data-d="cash"></li><li data-d="btc"></li><li>ALL DESKS, FACTORIES, SERVICES, STOCK</li><li>ALL RESEARCH</li></ul></div>' +
         '<div class="keep"><h3>YOU KEEP</h3><ul><li data-d="sh"></li><li>SHARE PERKS</li><li>THE INCOME BONUS</li></ul></div></div>' +
         '<div class="dgain" data-d="gain"></div>' +
         '<div class="dbtns"><button type="button" class="cancel">CANCEL</button><button type="button" class="go" disabled></button></div>' +
@@ -3715,6 +5624,7 @@
     };
     const RESET_PHRASE = 'DELETE ALL MY GAME DATA';
     let resetStage = false;
+    Object.assign(CMDS, CMDS2);
 
     function wipeData() {
       wiped = true;
@@ -3804,13 +5714,15 @@
       $('research').hidden = t !== 'res';
       $('markets').hidden = t !== 'mk';
       $('board').hidden = t !== 'bd';
-      $('opsbar').hidden = t !== 'ops';
+      $('prod').hidden = t !== 'pr';
+      $('serv').hidden = t !== 'sv';
+      $('opsbar').hidden = !(t === 'ops' || t === 'pr' || t === 'sv');
       if (t === 'mk') {
         renderMarkets();
         drawChart();
         if (!BTC.busy && Date.now() - BTC.at > 20000) btcRefresh();
       }
-      ['ops', 'res', 'mk', 'bd'].forEach(k => $('tab-' + k).setAttribute('aria-selected', k === t ? 'true' : 'false'));
+      ['ops', 'pr', 'sv', 'res', 'mk', 'bd'].forEach(k => $('tab-' + k).setAttribute('aria-selected', k === t ? 'true' : 'false'));
     }
 
     function bindUI() {
@@ -3842,8 +5754,10 @@
           const c = S.c[i];
           const al = brokerLv() >= 2 ? AUTO.map((v, k) => k) : AUTO_JUNIOR;
           c.auto = al[(al.indexOf(c.auto) + 1) % al.length];
+          c.arm = S.clock + ARM_DELAY;
         } else if (act === 'ovf') {
           S.c[i].ovf = (S.c[i].ovf + 1) % OVF.length;
+          S.c[i].arm = S.clock + ARM_DELAY;
         } else if (act === 'unlock') {
           unlockComm(i);
         }
@@ -3856,6 +5770,73 @@
         buyResearch(b.closest('.card').dataset.id);
         render();
       });
+
+      const toggleProw = row => {
+        const i = Number(row.dataset.i);
+        pSel = pSel === i ? -1 : i;
+        render();
+      };
+
+      $('prod').addEventListener('click', e => {
+        const row = e.target.closest('.prow');
+        if (!row) return;
+        const i = Number(row.dataset.i);
+        const b = e.target.closest('button[data-act]');
+        if (!b) {
+          if (e.target.closest('.phd')) toggleProw(row);
+          return;
+        }
+        if (b.disabled) return;
+        const p = S.p[i];
+        const act = b.dataset.act;
+        if (act === 'unlock') { if (pUnlock(i)) pSel = i; }
+        else if (act === 'line') pBuyLine(i);
+        else if (act === 'tier') pBuyTier(i);
+        else if (act === 'half' || act === 'all') {
+          const r = sellProd(i, act === 'all' ? 1 : 0.5);
+          if (r) {
+            log('SOLD ' + fmtStock(r.n) + ' ' + PROD[i].name + ' @ $' + fmtPrice(r.p) + ' = ' + money(r.gain));
+            Snd.sfx('sell');
+          }
+        } else if (act === 'run') {
+          p.on = !p.on;
+        } else if (act === 'auto') {
+          const al = brokerLv() >= 2 ? AUTO.map((v, k) => k) : AUTO_JUNIOR;
+          p.auto = al[(al.indexOf(p.auto) + 1) % al.length];
+          p.arm = S.clock + ARM_DELAY;
+        } else if (act === 'ovf') {
+          p.ovf = (p.ovf + 1) % OVF.length;
+          p.arm = S.clock + ARM_DELAY;
+        }
+        render();
+      });
+
+      $('prod').addEventListener('keydown', e => {
+        if (e.key !== 'Enter' && e.key !== ' ') return;
+        const hd = e.target.closest('.phd');
+        if (!hd || e.target !== hd) return;
+        e.preventDefault();
+        toggleProw(hd.closest('.prow'));
+      });
+
+      $('serv').addEventListener('click', e => {
+        const b = e.target.closest('button[data-act]');
+        if (!b || b.disabled) return;
+        const act = b.dataset.act;
+        if (act === 'model') { aiTrain(b.dataset.m); render(); return; }
+        const card = b.closest('.scard');
+        if (!card) return;
+        const k = Number(card.dataset.k);
+        if (act === 'unlock') svUnlock(k);
+        else if (act === 'buy') svBuy(k);
+        else if (act === 'camp') launchCampaign();
+        render();
+      });
+
+      el.tutskip.addEventListener('click', () => { tutStop(); print('tutorial hidden. type tutorial to bring it back.', 'd'); });
+      document.addEventListener('keydown', e => {
+        if (adlg.on && (e.key === 'Escape' || e.key === 'Enter')) { e.preventDefault(); closeAway(); }
+      }, true);
 
       $('board').addEventListener('click', e => {
         const b = e.target.closest('button[data-act]');
@@ -4014,6 +5995,7 @@
       print('IRONLINE TERMINAL ONLINE.', 'c');
       print('tap DIG on a desk to mine ore, then sell the metal when the price is HIGH.', 'd');
       print(HINT, 'd');
+      if (!S.fromSave) print('new here? follow the tutorial at the top of the screen.', 'd');
     }
 
     let last = Date.now();
@@ -4105,6 +6087,10 @@
       }
     });
     window.addEventListener('pagehide', save);
+
+    if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol)) {
+      window.addEventListener('load', () => { navigator.serviceWorker.register('ironline-sw.js').catch(() => {}); });
+    }
   </script>
 </body>
 </html>

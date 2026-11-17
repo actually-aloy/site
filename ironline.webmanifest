@@ -1,0 +1,19 @@
+{
+  "id": "ironline.html",
+  "name": "Ironline",
+  "short_name": "Ironline",
+  "description": "A mining and trading tycoon on an old CRT terminal.",
+  "start_url": "ironline.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#03100a",
+  "theme_color": "#03100a",
+  "categories": ["games"],
+  "icons": [
+    { "src": "ironline-icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" },
+    { "src": "ironline-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "ironline-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "ironline-maskable.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
