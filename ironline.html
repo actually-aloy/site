@@ -1821,6 +1821,18 @@
       display: none;
     }
 
+    html[data-p="pink"] {
+      --bg: #0b0309;
+      --fg: #ff7ad9;
+      --warn: #ffd24d;
+    }
+
+    html[data-p="red"] {
+      --bg: #0a0203;
+      --fg: #ff4d4d;
+      --warn: #ffd04d;
+    }
+
     .pc .row {
       grid-template-columns: 11ch auto minmax(0, 1fr);
     }
@@ -2000,6 +2012,92 @@
 
     .btn.b3 .l2:empty {
       display: none;
+    }
+
+    #cards .btn.b3,
+    #prod .btn.b3,
+    #serv .btn.b3 {
+      height: 80px;
+      min-height: 80px;
+      padding: 4px 8px;
+    }
+
+    #cards .btn.b3 > :first-child,
+    #prod .btn.b3 > :first-child,
+    #serv .btn.b3 > :first-child {
+      font-size: 11px;
+      letter-spacing: 0.01em;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      width: 100%;
+    }
+
+    #cards .btn.b3 .l2,
+    #prod .btn.b3 .l2,
+    #serv .btn.b3 .l2,
+    #cards .btn.b3 .l2:empty,
+    #prod .btn.b3 .l2:empty,
+    #serv .btn.b3 .l2:empty {
+      display: flex;
+      height: 2.4em;
+      min-height: 2.4em;
+      overflow: hidden;
+      width: 100%;
+    }
+
+    .pc .out {
+      display: block;
+      height: 18px;
+      line-height: 18px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .pc h2,
+    .scard h2 {
+      font-size: 14px;
+      letter-spacing: 0.1em;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      min-width: 0;
+    }
+
+    .pc .card-head,
+    .scard .card-head {
+      min-height: 26px;
+    }
+
+    .pc .px {
+      flex: none;
+    }
+
+    .pc .lockbox .sd {
+      font-size: 11px;
+      line-height: 1.4;
+      height: 5.6em;
+      overflow: hidden;
+    }
+
+    .scard .tagl {
+      min-height: 2.6em;
+      line-height: 1.3;
+    }
+
+    .scard .kvs .kv {
+      white-space: nowrap;
+    }
+
+    .scard .kvs .kv span:last-child {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      overflow-wrap: normal;
+    }
+
+    .sgrid {
+      grid-auto-rows: 1fr;
     }
 
     .dbox.calm {
@@ -2228,7 +2326,7 @@
     const AUTO_STAGE = [1, 1, 0.4, 0.4];
     const OVF = [0, 0.25, 0.5, 0.75, 1];
     const MILESTONES = [1e3, 1e4, 1e5, 1e6, 1e7, 1e8, 1e9, 1e10, 1e11, 1e12];
-    const PHOS = ['green', 'amber', 'ice'];
+    const PHOS = ['green', 'amber', 'ice', 'pink', 'red'];
     const HINT = 'type help for a list of commands.';
 
     const COMM = [
@@ -2268,25 +2366,25 @@
       { id: 'WIRE', name: 'WIRE & CABLE', cin: [[1,2]], pin: [], base: 87, unlock: 100000, line: { cost: 11000, rate: 0.32 }, liq: 46, sz: 1, grp: 0, vol: 0.035, amp: 0.11, period: 200, phase: 2.5,
         desc: 'Copper drawn into wire and cable. Cheap, steady and in demand everywhere.',
         tiers: [['DRAWING BENCH','BARE WIRE'],['ENAMEL WIRE LINE','BUILDING WIRE'],['XLPE CABLE EXTRUDER','POWER CABLE'],['SUBSEA CABLE PLANT','HV SUBSEA CABLE']] },
-      { id: 'SILVERWARE', name: 'SILVERWARE & JEWELRY', cin: [[2,2]], pin: [], base: 485, unlock: 500000, line: { cost: 49000, rate: 0.17 }, liq: 24, sz: 1, grp: 0, vol: 0.04, amp: 0.12, period: 240, phase: 4,
+      { id: 'SILVERWARE', name: 'JEWELRY', cin: [[2,2]], pin: [], base: 485, unlock: 500000, line: { cost: 49000, rate: 0.17 }, liq: 24, sz: 1, grp: 0, vol: 0.04, amp: 0.12, period: 240, phase: 4,
         desc: 'Silver crafted into cutlery and jewelry. Brand and craft make the margin.',
         tiers: [['HAND BENCH','PLAIN SILVERWARE'],['CASTING STUDIO','STERLING SETS'],['CNC ENGRAVING SHOP','DESIGNER JEWELRY'],['ATELIER','HAUTE JOAILLERIE']] },
       { id: 'ASPHALT', name: 'ASPHALT', cin: [[3,1]], pin: [], base: 475, unlock: 6000000, line: { cost: 190000, rate: 0.56 }, liq: 79, sz: 1, grp: 1, vol: 0.025, amp: 0.09, period: 310, phase: 0.5,
         desc: 'Road asphalt. Thin margin, but a huge market that barely reacts to big sales.',
         tiers: [['BITUMEN BLENDER','ROAD ASPHALT'],['POLYMER MIXER','POLYMER ASPHALT'],['WARM-MIX PLANT','WARM-MIX ASPHALT'],['AIRFIELD LAB','AIRPORT GRADE']] },
-      { id: 'PLASTICS', name: 'PLASTICS & POLYMERS', cin: [[3,1]], pin: [], base: 685, unlock: 8000000, line: { cost: 140000, rate: 0.35 }, liq: 50, sz: 1, grp: 1, vol: 0.035, amp: 0.12, period: 230, phase: 3,
+      { id: 'PLASTICS', name: 'PLASTICS', cin: [[3,1]], pin: [], base: 685, unlock: 8000000, line: { cost: 140000, rate: 0.35 }, liq: 50, sz: 1, grp: 1, vol: 0.035, amp: 0.12, period: 230, phase: 3,
         desc: 'Oil cracked into polymers. Packaging, casings and insulation all need them.',
         tiers: [['STEAM CRACKER','COMMODITY PLASTICS'],['POLYETHYLENE REACTOR','HDPE AND PP'],['ENGINEERING COMPOUNDER','ENGINEERING PLASTICS'],['SPECIALTY POLYMER LAB','HIGH-PERFORMANCE POLYMERS']] },
-      { id: 'LUBES', name: 'LUBRICANTS & WAXES', cin: [[3,2]], pin: [], base: 1520, unlock: 10000000, line: { cost: 120000, rate: 0.13 }, liq: 18, sz: 1, grp: 1, vol: 0.03, amp: 0.1, period: 260, phase: 5,
+      { id: 'LUBES', name: 'LUBRICANTS', cin: [[3,2]], pin: [], base: 1520, unlock: 10000000, line: { cost: 120000, rate: 0.13 }, liq: 18, sz: 1, grp: 1, vol: 0.03, amp: 0.1, period: 260, phase: 5,
         desc: 'Refined oil blended into lubricants. Fat margin, small market.',
         tiers: [['BLENDING TANKS','MINERAL OIL'],['HYDROCRACKER','SEMI-SYNTHETIC'],['PAO SYNTHESIS PLANT','FULL SYNTHETIC'],['ESTER LAB','SPECIALTY ESTERS AND WAXES']] },
-      { id: 'MACHINERY', name: 'HEAVY MACHINERY', cin: [], pin: [[0,800],[1,160],[5,40]], base: 147150, unlock: 40000000, line: { cost: 100000, rate: 0.00077 }, liq: 0.11, sz: 0.1, grp: 3, vol: 0.03, amp: 0.12, period: 330, phase: 4.4,
+      { id: 'MACHINERY', name: 'MACHINERY', cin: [], pin: [[0,800],[1,160],[5,40]], base: 147150, unlock: 40000000, line: { cost: 100000, rate: 0.00077 }, liq: 0.11, sz: 0.1, grp: 3, vol: 0.03, amp: 0.12, period: 330, phase: 4.4,
         desc: 'Steel, cable and lubricants assembled into excavators and rigs. Slow, but pays big.',
         tiers: [['ASSEMBLY BAY','TRACTORS AND LOADERS'],['CNC MACHINING CELL','EXCAVATORS'],['ROBOTIC WELDING LINE','MINING TRUCKS'],['SMART FACTORY','AUTONOMOUS RIGS']] },
       { id: 'TIRES', name: 'TIRES', cin: [[4,0.5]], pin: [[0,0.5]], base: 1140, unlock: 150000000, line: { cost: 650000, rate: 0.63 }, liq: 89, sz: 1, grp: 1, vol: 0.04, amp: 0.12, period: 280, phase: 1.7,
         desc: 'Rubber and steel cord, cured into tires.',
         tiers: [['CURING PRESS','BIAS TIRES'],['RADIAL LINE','RADIAL TIRES'],['SILICA COMPOUNDER','PREMIUM ALL-SEASON'],['MOTORSPORT LAB','PERFORMANCE TIRES']] },
-      { id: 'CHIPS', name: 'SEMICONDUCTORS', cin: [[5,0.05],[1,0.5]], pin: [[4,0.2]], base: 1090, unlock: 2000000000, line: { cost: 1700000, rate: 1.3 }, liq: 185, sz: 1, grp: 2, vol: 0.06, amp: 0.2, period: 300, phase: 0.4,
+      { id: 'CHIPS', name: 'CHIPS', cin: [[5,0.05],[1,0.5]], pin: [[4,0.2]], base: 1090, unlock: 2000000000, line: { cost: 1700000, rate: 1.3 }, liq: 185, sz: 1, grp: 2, vol: 0.06, amp: 0.2, period: 300, phase: 0.4,
         desc: 'Gold, copper and plastic packaging turned into chips. The biggest markup in the game.',
         tiers: [['180 NM FAB','LEGACY CHIPS'],['28 NM FAB','MID-RANGE CHIPS'],['7 NM FAB','FLAGSHIP CHIPS'],['EUV FAB','AI ACCELERATORS']] },
       { id: 'COMPUTERS', name: 'COMPUTERS', cin: [], pin: [[8,2],[0,2],[1,1],[4,1]], base: 3940, unlock: 3000000000, line: { cost: 1400000, rate: 0.3 }, liq: 43, sz: 1, grp: 2, vol: 0.045, amp: 0.14, period: 290, phase: 5.5,
@@ -2301,7 +2399,7 @@
       { id: 'AUTO', name: 'AUTOMOTIVE', cin: [], pin: [[0,8],[7,1],[10,1],[1,2],[8,2],[4,2]], base: 12250, unlock: 120000000000, line: { cost: 5900000, rate: 0.32 }, liq: 45, sz: 1, grp: 4, vol: 0.035, amp: 0.13, period: 350, phase: 2.9,
         desc: 'Cars from steel, tires, a battery pack, cable, chips and plastic. The top of the chain.',
         tiers: [['ASSEMBLY LINE','ECONOMY CARS'],['ROBOTIC BODY SHOP','FAMILY CARS'],['FLEXIBLE PLATFORM PLANT','PREMIUM CARS'],['GIGA CASTING PLANT','ELECTRIC FLAGSHIPS']] },
-      { id: 'AK', name: 'AK-47 RIFLES', cin: [], pin: [[0,4],[4,0.5],[5,0.2]], base: 1040, unlock: 250000000, line: { cost: 160000, rate: 0.17 }, liq: 24, sz: 1, grp: 4, vol: 0.04, amp: 0.12, period: 270, phase: 1.2,
+      { id: 'AK', name: 'AK-47', cin: [], pin: [[0,4],[4,0.5],[5,0.2]], base: 1040, unlock: 250000000, line: { cost: 160000, rate: 0.17 }, liq: 24, sz: 1, grp: 4, vol: 0.04, amp: 0.12, period: 270, phase: 1.2,
         desc: 'Stamped receivers, polymer furniture and a film of oil. Cheap, rugged and always in demand.',
         tiers: [['MILLED RECEIVER SHOP','TYPE 2 RIFLES'],['STAMPING PRESS LINE','AKM RIFLES'],['CHROME BARREL LINE','AK-74M RIFLES'],['CNC ARMORY','AK-12 RIFLES']] },
       { id: 'DRONES', name: 'DRONES', cin: [], pin: [[8,1],[10,0.15],[4,0.6],[1,0.3]], base: 2920, unlock: 80000000000, line: { cost: 4300000, rate: 0.98 }, liq: 139, sz: 1, grp: 4, vol: 0.05, amp: 0.16, period: 260, phase: 0.9,
@@ -2363,19 +2461,19 @@
 
     const SERV = [
       { id: 'cloud', name: 'CLOUD HOSTING', unit: 'DATA CENTERS', unlock: 1500000, cost: 2000, rev: 7,
-        tag: 'Rent out server space.', perk: 'Supplies COMPUTE to the AI lab.' },
+        tag: 'Rent out server space.', perk: 'Feeds the AI lab.' },
       { id: 'cyber', name: 'CYBERSECURITY', unit: 'SECURITY TEAMS', unlock: 3000000, cost: 2500, rev: 8,
         tag: 'Guard networks, sell protection.', perk: 'Blocks hackers.' },
       { id: 'mkt', name: 'DIGITAL MARKETING', unit: 'AD TEAMS', unlock: 8000000, cost: 2700, rev: 9,
-        tag: 'Build a brand, run campaigns.', perk: 'Raises product prices.' },
+        tag: 'Build a brand, run campaigns.', perk: 'Raises prices.' },
       { id: 'logi', name: 'LOGISTICS AND FREIGHT', unit: 'FLEET', unlock: 20000000, cost: 4400, rev: 15,
         tag: 'Trucks, ships and warehouses.', perk: 'Sales move prices less.' },
       { id: 'fin', name: 'FINANCE AND CAPITAL', unit: 'FINANCE DESKS', unlock: 50000000, cost: 10000, rev: 33,
-        tag: 'Lend, invest and trade.', perk: 'Cheaper levels and lines.' },
+        tag: 'Lend, invest and trade.', perk: 'Cheaper upgrades.' },
       { id: 'ai', name: 'AI LAB', unit: 'GPU CLUSTERS', unlock: 150000000, cost: 27000, rev: 90,
-        tag: 'Train models, sell access.', perk: 'Models upgrade the company.' },
+        tag: 'Train models, sell access.', perk: 'Upgrades the company.' },
       { id: 'sec', name: 'PRIVATE SECURITY', unit: 'GUARD TEAMS', unlock: 400000000, cost: 12, rev: 100, ak: true,
-        tag: 'Guards for sites and convoys. Upgraded with AK-47s.', perk: 'Blocks raids. Boosts output.' }
+        tag: 'Guards for sites and convoys. Upgraded with AK-47s.', perk: 'Blocks raids. More output.' }
     ];
 
     const AIM = [
@@ -3555,8 +3653,8 @@
           this.tone('square', 110, t, 0.1, 0.06, { dest: d, lp: 500 });
         } else if (kind === 'alarm') {
           [0, 0.3].forEach(o => {
-            this.tone('square', 185, t + o, 0.2, 0.1, { dest: d, lp: 900 });
-            this.tone('sawtooth', 131, t + o, 0.2, 0.09, { dest: d, lp: 700 });
+            this.tone('square', 185, t + o, 0.2, 0.16, { dest: d, lp: 900 });
+            this.tone('sawtooth', 131, t + o, 0.2, 0.14, { dest: d, lp: 700 });
           });
         }
       }
@@ -3582,8 +3680,11 @@
     const logiMult = () => 1 + 1.2 * (1 - Math.exp(-svLv(SVC.logi) / 30));
     const discount = () => 1 - 0.25 * (1 - Math.exp(-svLv(SVC.fin) / 25));
     const svRevAt = (k, l) => (l ? SERV[k].rev * l * shareMult() * (k === SVC.ai ? aiEff() : 1) : 0);
-    const svRev = k => svRevAt(k, svLv(k));
+    const svMean = k => svRevAt(k, svLv(k));
+    const svWave = k => 1 + 0.04 * Math.sin(S.clock * 2 * Math.PI / (31 + 7 * k) + k * 1.7) + 0.02 * Math.sin(S.clock * 2 * Math.PI / (83 + 11 * k) + k * 0.9);
+    const svRev = k => svMean(k) * svWave(k);
     const svIncome = () => SERV.reduce((a, d, k) => a + svRev(k), 0);
+    const svMeanIncome = () => SERV.reduce((a, d, k) => a + svMean(k), 0);
     const svCost = (k, l) => (SERV[k].ak ? Math.ceil(SERV[k].cost * Math.pow(1.12, l)) : Math.ceil(SERV[k].cost * Math.pow(1.15, l) * discount()));
     const svReq = k => {
       if (k === SVC.ai && svLv(SVC.cloud) < 3) return 'NEEDS CLOUD HOSTING L3';
@@ -3918,11 +4019,15 @@
     let alarmAt = -999;
 
     function tickAlarms(dt) {
-      if (seq || dt <= 0 || dt > 1) return;
+      if (seq || dt <= 0 || dt > 5) return;
       const mc = cap();
       const bad = [];
       S.c.forEach((c, i) => {
-        if (c.u && (c.ml > 0 || c.sl > 0) && c.metal >= mc - 0.01 && c.ore >= mc * 2 - 0.01) bad.push(['c' + i, COMM[i].sym + ' STORAGE IS FULL. MINING HAS STOPPED.']);
+        if (!c.u) return;
+        if (c.ore >= mc * 2 * 0.97) {
+          if (c.metal >= mc - 0.01) bad.push(['c' + i, COMM[i].sym + ' STORAGE IS FULL. MINING HAS STOPPED. SELL OR EXPAND THE WAREHOUSE.']);
+          else bad.push(['c' + i, COMM[i].sym + ' ORE IS FULL. MINING HAS STOPPED. UPGRADE SMELT.']);
+        } else if (c.metal >= mc - 0.01 && c.ml > 0) bad.push(['m' + i, COMM[i].sym + ' STORAGE IS FULL. SMELTING HAS STOPPED. SELL OR EXPAND THE WAREHOUSE.']);
       });
       S.p.forEach((p, i) => {
         if (!p.u || p.ln < 1 || !p.on) return;
@@ -3998,7 +4103,7 @@
       for (let k = 0; k < sec; k++) { rep.k = k; tickProd(1); }
       offlineMul = 1;
       TRK = null;
-      const sv = svIncome() * sec * 0.5;
+      const sv = svMeanIncome() * sec * 0.5;
       if (sv > 0) { S.cash += sv; S.earned += sv; S.run += sv; rep.svc = sv; }
       S.clock += sec;
       if (exposed()) {
@@ -4074,9 +4179,9 @@
       if (ops.length) sections.push({ head: 'OPERATIONS. METAL SMELTED', rows: ops.slice(0, 4), more: ops.length > 4 ? '+ ' + (ops.length - 4) + ' MORE' : '' });
       if (prod.length) sections.push({ head: 'PRODUCTION. GOODS MADE', rows: prod.slice(0, 5), more: prod.length > 5 ? '+ ' + (prod.length - 5) + ' MORE' : '' });
       if (rep.svc >= 1) {
-        const tot = SERV.reduce((a, d, k) => a + (S.sv[k].u ? svRev(k) : 0), 0) || 1;
+        const tot = SERV.reduce((a, d, k) => a + (S.sv[k].u ? svMean(k) : 0), 0) || 1;
         const rows = [];
-        SERV.forEach((d, k) => { if (S.sv[k].u && S.sv[k].l > 0) rows.push([d.name, 'L' + S.sv[k].l, '+' + money(rep.svc * svRev(k) / tot), 0]); });
+        SERV.forEach((d, k) => { if (S.sv[k].u && S.sv[k].l > 0) rows.push([d.name, 'L' + S.sv[k].l, '+' + money(rep.svc * svMean(k) / tot), 0]); });
         sections.push({ head: 'SERVICES PAID ' + money(rep.svc), rows: rows.slice(0, 5), more: rows.length > 5 ? '+ ' + (rows.length - 5) + ' MORE' : '' });
       }
       const issues = [];
@@ -4087,20 +4192,16 @@
       });
       if (issues.length) sections.push({ head: 'STOPPED WHILE YOU WERE AWAY', rows: issues.slice(0, 6), cls: 'dn', more: issues.length > 6 ? '+ ' + (issues.length - 6) + ' MORE' : '', note: 'Sell more often, or buy WAREHOUSE EXPANSION in RESEARCH.' });
       const sell = [];
-      const hold = [];
       const look = (name, x, have, px) => {
         const pct = Math.exp(x) - 1;
         const v = have * px;
         if (v < 1) return;
         if (pct >= 0.15) sell.push([name, '+' + Math.round(pct * 100) + '%', money(v), v]);
-        else if (pct <= -0.15) hold.push([name, Math.round(pct * 100) + '%', money(v), v]);
       };
       S.c.forEach((c, i) => { if (c.u) look(COMM[i].sym, c.x, c.metal, price(i)); });
       S.p.forEach((p, i) => { if (p.u) look(PROD[i].name, p.x, p.stock, pPrice(i)); });
       sell.sort((a, b) => b[3] - a[3]);
-      hold.sort((a, b) => b[3] - a[3]);
       if (sell.length) sections.push({ head: 'PRICES ARE HIGH. SELL NOW', rows: sell.slice(0, 3), cls: 'up' });
-      if (hold.length) sections.push({ head: 'PRICES ARE LOW. HOLD', rows: hold.slice(0, 3), cls: 'dn' });
       if (rep.attacks.length) {
         const bl = rep.attacks.filter(a => a.blocked).length;
         const lost = rep.attacks.reduce((a, b) => a + b.loss, 0);
@@ -4179,8 +4280,8 @@
           '<div class="card-head"><h2>' + d.name + '</h2><div class="px"><span class="tag" data-r="tag"></span><b data-r="price"></b><span data-r="chg"></span></div></div>' +
           '<div class="spark" data-r="spark" aria-hidden="true"></div>' +
           '<div class="out" data-r="out"></div>' +
+          '<div class="row"><span data-r="inl"></span><span data-r="inbar"></span><span class="vv"><i class="tr" data-r="intr"></i><span data-r="inval"></span></span></div>' +
           '<div class="row"><span>STOCK</span><span data-r="stbar"></span><span class="vv"><i class="tr" data-r="sttr"></i><span data-r="stval"></span></span></div>' +
-          '<div class="row"><span data-r="inl"></span><span data-r="inbar"></span><span class="vv"><span data-r="inval"></span></span></div>' +
           '<div class="grid2">' +
             '<button type="button" class="btn b3" data-act="line"><span data-r="linel"></span><span class="l2" data-r="liner"></span><small data-r="linec"></small></button>' +
             '<button type="button" class="btn b3" data-act="tier"><span data-r="tierl"></span><span class="l2" data-r="tierr"></span><small data-r="tierc"></small></button>' +
@@ -4216,7 +4317,7 @@
         a.dataset.k = k;
         const camp = k === SVC.mkt ? '<button type="button" class="btn b3" data-act="camp"><span data-r="campl"></span><span class="l2" data-r="campr"></span><small data-r="campc"></small></button>' : '';
         a.innerHTML =
-          '<div class="card-head"><h2>' + d.name + '</h2><b class="lv" data-r="lvl"></b></div>' +
+          '<div class="card-head"><h2>' + d.name + '</h2></div>' +
           '<p class="tagl">' + d.tag + '</p>' +
           '<div class="kvs">' +
             '<div class="kv"><span>EARNS</span><span data-r="rev"></span></div>' +
@@ -4275,16 +4376,17 @@
         setT(r.stbar, bar(p.stock / cp, 14));
         setT(r.stval, p.stock >= cp - 0.01 ? 'FULL' : fmtStock(p.stock) + '/' + cp);
         setTrend(r.sttr, p.em || 0);
-        const ins = d.cin.map(([c, q]) => ({ n: COMM[c].sym, s: S.c[c].metal, q: q * lm, cap: cap() }))
-          .concat(d.pin.map(([j, q]) => ({ n: PROD[j].id, s: S.p[j].stock, q: q * lm, cap: pCap(j) })));
+        const ins = d.cin.map(([c, q]) => ({ n: COMM[c].sym, s: S.c[c].metal, q: q * lm, cap: cap(), em: S.c[c].em || 0, c: true }))
+          .concat(d.pin.map(([j, q]) => ({ n: PROD[j].id, s: S.p[j].stock, q: q * lm, cap: pCap(j), em: S.p[j].em || 0, c: false })));
         let lim = ins[0];
         ins.forEach(x => { if (x.s / x.q < lim.s / lim.q) lim = x; });
         setT(r.inl, lim.n);
         setT(r.inbar, bar(lim.s / lim.cap, 14));
-        setT(r.inval, fmtStock(lim.s) + '/' + lim.cap);
+        setT(r.inval, lim.s >= lim.cap - 0.01 ? 'FULL' : lim.c ? Math.floor(lim.s) + '/' + lim.cap : fmtStock(lim.s) + '/' + lim.cap);
+        setTrend(r.intr, lim.em);
         const stt = pStatus(i);
-        let outlook = stt[0];
-        if (!outlook && hasAi('fore') && aiEff() > 0) {
+        let outlook = stt[0] || d.tiers[p.tk][1];
+        if (!stt[0] && hasAi('fore') && aiEff() > 0) {
           const tg = d.amp * Math.sin(2 * Math.PI * S.clock / d.period + d.phase) - p.x;
           outlook = 'OUTLOOK: ' + (tg > 0.03 ? 'RISING' : tg < -0.03 ? 'FALLING' : 'STEADY');
         }
@@ -4296,15 +4398,16 @@
         setT(r.liner, fmtRate(pRateBase(i)));
         setT(r.linec, (pl.n > 1 ? '+' + pl.n + ' ' : '') + money(pl.cost));
         r.b_line.disabled = S.cash < pl.cost;
-        setT(r.tierl, d.tiers[p.tk][1]);
+        setT(r.tierl, 'EQUIPMENT T' + (p.tk + 1) + '/4');
+        r.b_tier.title = d.tiers[p.tk][0];
         if (p.tk >= 3) {
-          setT(r.tierr, 'BEST GRADE');
+          setT(r.tierr, d.tiers[p.tk][0]);
           setT(r.tierc, '');
           r.b_tier.disabled = true;
         } else {
           const tc = pTierCost(i);
-          setT(r.tierr, '> ' + d.tiers[p.tk + 1][1] + ' +' + Math.round((PTIER[p.tk + 1] / PTIER[p.tk] - 1) * 100) + '%');
-          setT(r.tierc, money(tc));
+          setT(r.tierr, '> ' + d.tiers[p.tk + 1][0]);
+          setT(r.tierc, money(tc) + '  +' + Math.round((PTIER[p.tk + 1] / PTIER[p.tk] - 1) * 100) + '%');
           r.b_tier.disabled = S.cash < tc;
         }
         r.b_half.disabled = p.stock < 0.02;
@@ -4346,20 +4449,18 @@
         setT(r.k2l, rows[1][0]);
         if (!s.u) {
           const need = svReq(k);
-          setT(r.lvl, 'LOCKED');
           setT(r.rev, '+' + money(d.rev * shareMult()) + '/s PER LEVEL');
           setT(r.k1l, 'PERK');
           setT(r.k1v, d.perk);
-          setT(r.k2l, 'UPGRADES COST');
+          setT(r.k2l, 'UPGRADE WITH');
           setT(r.k2v, ak ? 'AK-47 RIFLES' : 'CASH');
-          setT(r.ul, 'OPEN DIVISION');
+          setT(r.ul, 'UNLOCK');
           setT(r.ur, need);
           setT(r.unlockc, money(d.unlock));
           r.b_unlock.disabled = !!need || S.cash < d.unlock;
           return;
         }
         const l = s.l;
-        setT(r.lvl, 'L' + l);
         setT(r.rev, money(svRev(k)) + '/s');
         setT(r.k1v, rows[0][1]);
         setT(r.k2v, rows[1][1]);
@@ -4400,6 +4501,10 @@
         hi: () => refs[0].b_all, done: () => S.earned > 0 },
       { t: 'Cash buys upgrades. Buy MINE L1: it digs for you, all the time.',
         hi: () => refs[0].b_mine, prog: () => [S.cash, lvlCost(COMM[0], 'mine', 0), '$'], done: () => S.c[0].ml >= 1 },
+      { t: 'Ore must be smelted into metal before it can be sold. Buy SMELT L1 on the IRON desk.',
+        hi: () => refs[0].b_smelt, prog: () => [S.cash, lvlCost(COMM[0], 'smelt', 0), '$'], done: () => S.c[0].sl >= 1 },
+      { t: 'Keep MINE and SMELT close together. ORE bar full: buy SMELT. ORE bar empty: buy MINE. Get both to L3.',
+        hi: () => (S.c[0].ml <= S.c[0].sl ? refs[0].b_mine : refs[0].b_smelt), prog: () => [Math.min(S.c[0].ml, S.c[0].sl), 3, 'LEVELS'], done: () => S.c[0].ml >= 3 && S.c[0].sl >= 3 },
       { t: 'When storage is full, production stops. Buy WAREHOUSE EXPANSION in RESEARCH.',
         hi: () => (tab === 'res' ? $('research').querySelector('[data-id="warehouse"] button') : $('tab-res')), prog: () => [S.cash, capCost(), '$'], done: () => S.wl >= 1 }
     ];
@@ -4479,6 +4584,7 @@
         'the basics',
         '  hold DIG to pull ore. ore is smelted into metal, and metal is sold for cash.',
         '  MINE levels dig ore for you. SMELT levels refine it faster. every 25 levels doubles output.',
+        '  keep them balanced: ORE bar full means buy SMELT, ORE bar empty means buy MINE.',
         '  prices move all the time. sell when a desk is tagged HIGH, hold when it is LOW.',
         '  a full warehouse stops production: buy WAREHOUSE EXPANSION in the RESEARCH tab.',
         '  power outages stop mines and factories for a short while.'
@@ -4555,7 +4661,7 @@
         '  prices             current market prices',
         '  save               save now',
         '  clear              clear the screen',
-        '  color [name]       green, amber, ice',
+        '  color [name]       green, amber, ice, pink, red',
         '  reset              permanently delete all game data',
         'guides (type help <topic>):',
         '  ' + TOPICS.join(', ')
@@ -4831,7 +4937,7 @@
           '<div class="spark" data-r="spark" aria-hidden="true"></div>' +
           '<div class="out" data-r="out"></div>' +
           '<div class="row"><span>' + d.raw + '</span><span data-r="orebar"></span><span class="vv"><i class="tr" data-r="oretr"></i><span data-r="oreval"></span></span></div>' +
-          '<div class="row"><span>' + d.out + '</span><span data-r="metbar"></span><span class="vv"><i class="tr" data-r="mettr"></i><span data-r="metval"></span></span></div>' +
+          '<div class="row"><span>STOCK</span><span data-r="metbar"></span><span class="vv"><i class="tr" data-r="mettr"></i><span data-r="metval"></span></span></div>' +
           '<div class="grid2">' +
             '<button type="button" class="btn b3" data-act="mine"><span data-r="minel"></span><span class="l2" data-r="miner"></span><small data-r="minec"></small></button>' +
             '<button type="button" class="btn b3" data-act="smelt"><span data-r="smeltl"></span><span class="l2" data-r="smeltr"></span><small data-r="smeltc"></small></button>' +
