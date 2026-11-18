@@ -1758,6 +1758,15 @@
       color: var(--dim);
     }
 
+    .tut-b {
+      display: flex;
+      gap: 6px;
+    }
+
+    .tut-b button[hidden] {
+      display: none;
+    }
+
     .tut p {
       margin: 0;
       font-size: 14px;
@@ -1812,6 +1821,21 @@
       display: none;
     }
 
+    .pc .row {
+      grid-template-columns: 11ch auto minmax(0, 1fr);
+    }
+
+    .out.warn,
+    .sd.warn {
+      color: var(--warn);
+    }
+
+    .lockbox .sd {
+      margin: 0 0 8px;
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
     .sstrip {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -1838,235 +1862,6 @@
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-    }
-
-    .ghead {
-      margin: 20px 0 8px;
-      font-size: 12px;
-      letter-spacing: 0.16em;
-      color: var(--dim);
-      font-weight: 600;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .ghead::after {
-      content: "";
-      flex: 1;
-      border-top: 1px solid var(--line);
-    }
-
-    .prow {
-      border: 1px solid var(--line);
-      margin-bottom: 6px;
-      min-width: 0;
-    }
-
-    .prow.sel {
-      border-color: var(--fg);
-    }
-
-    .prow.locked {
-      border-style: dashed;
-      color: var(--dim);
-    }
-
-    .phd {
-      display: grid;
-      grid-template-columns: minmax(0, 1.5fr) minmax(0, 1.2fr) minmax(0, 1.3fr) minmax(0, 0.9fr) 124px;
-      gap: 12px;
-      align-items: center;
-      padding: 8px 12px;
-      min-height: 58px;
-      cursor: pointer;
-    }
-
-    .phd:hover {
-      background: color-mix(in srgb, var(--fg) 6%, transparent);
-    }
-
-    .phd:focus-visible {
-      outline: 2px solid var(--fg);
-      outline-offset: -2px;
-    }
-
-    .pn {
-      display: grid;
-      gap: 2px;
-      min-width: 0;
-    }
-
-    .pn b {
-      font-size: 14px;
-      letter-spacing: 0.1em;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-
-    .pg {
-      font-size: 11px;
-      color: var(--dim);
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-
-    .ppx {
-      display: flex;
-      align-items: baseline;
-      gap: 8px;
-      font-size: 12px;
-      white-space: nowrap;
-      min-width: 0;
-    }
-
-    .ppx b {
-      font-size: 16px;
-      font-weight: 600;
-    }
-
-    .pst {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 12px;
-      white-space: nowrap;
-    }
-
-    .pbar {
-      white-space: pre;
-    }
-
-    .pinc {
-      font-size: 13px;
-      text-align: right;
-      white-space: nowrap;
-    }
-
-    .pchip {
-      font-size: 11px;
-      letter-spacing: 0.06em;
-      text-align: center;
-      border: 1px solid var(--line);
-      padding: 3px 4px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .pchip.ok {
-      border-color: var(--fg);
-    }
-
-    .pchip.warn {
-      color: var(--warn);
-      border-color: var(--warn);
-    }
-
-    .plock {
-      display: none;
-    }
-
-    .prow.locked .ppx,
-    .prow.locked .pst,
-    .prow.locked .pinc,
-    .prow.locked .pchip {
-      display: none;
-    }
-
-    .prow.locked .plock {
-      display: flex;
-      grid-column: 2 / -1;
-      align-items: center;
-      justify-content: flex-end;
-      gap: 12px;
-    }
-
-    .prow.locked .pg {
-      white-space: normal;
-      display: -webkit-box;
-      -webkit-box-orient: vertical;
-      -webkit-line-clamp: 2;
-    }
-
-    .out.need {
-      color: var(--warn);
-    }
-
-    .pneed {
-      color: var(--warn);
-      font-size: 11px;
-      letter-spacing: 0.06em;
-      text-align: right;
-    }
-
-    .plock .btn {
-      min-height: 40px;
-      padding: 4px 14px;
-      flex: none;
-    }
-
-    .pbd {
-      display: none;
-      border-top: 1px solid var(--line);
-      padding: 12px;
-      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-      gap: 20px;
-    }
-
-    .prow.sel .pbd {
-      display: grid;
-    }
-
-    .pcol,
-    .pmarket {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      min-width: 0;
-    }
-
-    .prow.locked .pctl,
-    .prow.locked .pmarket {
-      display: none;
-    }
-
-    .pt {
-      font-size: 11px;
-      letter-spacing: 0.14em;
-      color: var(--dim);
-    }
-
-    .irow {
-      display: flex;
-      justify-content: space-between;
-      gap: 12px;
-      font-size: 12px;
-    }
-
-    .irow span:last-child {
-      color: var(--dim);
-    }
-
-    .irow.short span:last-child {
-      color: var(--warn);
-    }
-
-    .pbd .sd,
-    .pbd .kv {
-      margin: 0;
-      font-size: 12px;
-    }
-
-    .pbd .sd {
-      line-height: 1.55;
-      color: var(--dim);
-    }
-
-    .pbd .out:empty {
-      display: none;
     }
 
     .sgrid {
@@ -2186,6 +1981,9 @@
       font-size: 12px;
       overflow: visible;
       text-overflow: clip;
+      white-space: normal;
+      line-height: 1.2;
+      text-align: center;
     }
 
     .btn.b3 .l2 {
@@ -2330,47 +2128,6 @@
       .sbox b {
         font-size: 14px;
       }
-
-      .phd {
-        grid-template-columns: minmax(0, 1fr) auto;
-        grid-template-areas: "n c" "p i" "s s";
-        gap: 6px 10px;
-      }
-
-      .pn { grid-area: n; }
-      .pchip { grid-area: c; }
-      .ppx { grid-area: p; }
-      .pinc { grid-area: i; }
-      .pst { grid-area: s; }
-
-      .prow.locked .phd {
-        grid-template-areas: "n n" "l l";
-      }
-
-      .prow.locked .plock {
-        grid-area: l;
-        grid-column: auto;
-        justify-content: space-between;
-      }
-
-      .prow.locked .pg {
-      white-space: normal;
-      display: -webkit-box;
-      -webkit-box-orient: vertical;
-      -webkit-line-clamp: 2;
-    }
-
-    .out.need {
-      color: var(--warn);
-    }
-
-    .pneed {
-        text-align: left;
-      }
-
-      .pbd {
-        grid-template-columns: minmax(0, 1fr);
-      }
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -2410,7 +2167,7 @@
     <p class="status" id="status">ALL SYSTEMS NOMINAL</p>
 
     <div class="tut" id="tut" role="region" aria-label="Tutorial" hidden>
-      <div class="tut-h"><span id="tutn"></span><button type="button" id="tutskip">HIDE</button></div>
+      <div class="tut-h"><span id="tutn"></span><span class="tut-b"><button type="button" id="tutnext">SKIP STEP</button><button type="button" id="tutskip">HIDE</button></span></div>
       <p id="tutt"></p>
       <div class="tut-p" id="tutp"><span id="tutbar"></span><span id="tutv"></span></div>
     </div>
@@ -2426,7 +2183,7 @@
 
     <div class="opsbar" id="opsbar"><span>LEVELS PER BUY</span><div class="seg" id="tbuy" role="group" aria-label="Levels per purchase"><button type="button" data-q="0" aria-pressed="true">x1</button><button type="button" data-q="1" aria-pressed="false">x10</button><button type="button" data-q="2" aria-pressed="false">x25</button><button type="button" data-q="3" aria-pressed="false">MAX</button></div></div>
     <section class="cards" id="cards" role="tabpanel" aria-labelledby="tab-ops"></section>
-    <section class="pane" id="prod" role="tabpanel" aria-labelledby="tab-pr" hidden></section>
+    <section class="cards" id="prod" role="tabpanel" aria-labelledby="tab-pr" hidden></section>
     <section class="pane" id="serv" role="tabpanel" aria-labelledby="tab-sv" hidden></section>
     <section class="cards eq" id="research" role="tabpanel" aria-labelledby="tab-res" hidden></section>
     <section class="cards mk" id="markets" role="tabpanel" aria-labelledby="tab-mk" hidden></section>
@@ -3796,6 +3553,11 @@
           this.tone('square', 1568, t + 0.5, 0.14, 0.08, { dest: d, lp: 3500 });
         } else if (kind === 'err') {
           this.tone('square', 110, t, 0.1, 0.06, { dest: d, lp: 500 });
+        } else if (kind === 'alarm') {
+          [0, 0.3].forEach(o => {
+            this.tone('square', 185, t + o, 0.2, 0.1, { dest: d, lp: 900 });
+            this.tone('sawtooth', 131, t + o, 0.2, 0.09, { dest: d, lp: 700 });
+          });
         }
       }
     };
@@ -4152,6 +3914,35 @@
       return r;
     }
 
+    const alarmT = {};
+    let alarmAt = -999;
+
+    function tickAlarms(dt) {
+      if (seq || dt <= 0 || dt > 1) return;
+      const mc = cap();
+      const bad = [];
+      S.c.forEach((c, i) => {
+        if (c.u && (c.ml > 0 || c.sl > 0) && c.metal >= mc - 0.01 && c.ore >= mc * 2 - 0.01) bad.push(['c' + i, COMM[i].sym + ' STORAGE IS FULL. MINING HAS STOPPED.']);
+      });
+      S.p.forEach((p, i) => {
+        if (!p.u || p.ln < 1 || !p.on) return;
+        if (p.st === 'STARVED') bad.push(['s' + i, PROD[i].name + ' IS OUT OF ' + p.why + '. LINES STOPPED.']);
+        else if (p.st === 'FULL') bad.push(['f' + i, PROD[i].name + ' STORAGE IS FULL. LINES STOPPED.']);
+      });
+      const live = {};
+      bad.forEach(([k, m]) => {
+        live[k] = true;
+        const a = alarmT[k] || (alarmT[k] = { t: 0, last: -1 });
+        a.t += dt;
+        if (a.t >= 6 && (a.last < 0 || a.t - a.last >= 90)) {
+          a.last = a.t;
+          log('ALARM: ' + m, 'w');
+          if (S.clock - alarmAt > 20) { alarmAt = S.clock; Snd.sfx('alarm'); }
+        }
+      });
+      Object.keys(alarmT).forEach(k => { if (!live[k]) delete alarmT[k]; });
+    }
+
     const raidsOn = () => stockValue() > 5000000;
 
     function rollRaid(quiet) {
@@ -4263,23 +4054,38 @@
 
     function awayView(rep) {
       const sections = [];
+      const ops = [];
+      const prod = [];
       let worth = 0;
-      const made = [];
       S.c.forEach((c, i) => {
         if (!c.u || rep.smelt[i] < 0.5) return;
         const v = rep.smelt[i] * price(i);
         worth += v;
-        made.push([COMM[i].sym, '+' + fmtStock(rep.smelt[i]), money(v), v]);
+        ops.push([COMM[i].sym, '+' + fmtStock(rep.smelt[i]), money(v), v]);
       });
       PROD.forEach((d, i) => {
         if (!S.p[i].u || rep.made[i] <= 0.0001) return;
         const v = rep.made[i] * pPrice(i);
         worth += v;
-        made.push([d.name, '+' + fmtStock(rep.made[i]), money(v), v]);
+        prod.push([d.name, '+' + fmtStock(rep.made[i]), money(v), v]);
       });
-      made.sort((a, b) => b[3] - a[3]);
-      if (made.length) sections.push({ head: 'MADE WHILE YOU WERE AWAY', rows: made.slice(0, 6), more: made.length > 6 ? '+ ' + (made.length - 6) + ' MORE' : '' });
-      if (rep.svc >= 1) sections.push({ head: 'SERVICES PAID', rows: [['INCOME', '', '+' + money(rep.svc), 0]] });
+      ops.sort((a, b) => b[3] - a[3]);
+      prod.sort((a, b) => b[3] - a[3]);
+      if (ops.length) sections.push({ head: 'OPERATIONS. METAL SMELTED', rows: ops.slice(0, 4), more: ops.length > 4 ? '+ ' + (ops.length - 4) + ' MORE' : '' });
+      if (prod.length) sections.push({ head: 'PRODUCTION. GOODS MADE', rows: prod.slice(0, 5), more: prod.length > 5 ? '+ ' + (prod.length - 5) + ' MORE' : '' });
+      if (rep.svc >= 1) {
+        const tot = SERV.reduce((a, d, k) => a + (S.sv[k].u ? svRev(k) : 0), 0) || 1;
+        const rows = [];
+        SERV.forEach((d, k) => { if (S.sv[k].u && S.sv[k].l > 0) rows.push([d.name, 'L' + S.sv[k].l, '+' + money(rep.svc * svRev(k) / tot), 0]); });
+        sections.push({ head: 'SERVICES PAID ' + money(rep.svc), rows: rows.slice(0, 5), more: rows.length > 5 ? '+ ' + (rows.length - 5) + ' MORE' : '' });
+      }
+      const issues = [];
+      S.c.forEach((c, i) => { if (rep.fullAt[i] !== undefined) issues.push([COMM[i].sym + ' STORAGE FULL', 'AFTER ' + fmtDur(rep.fullAt[i]), '', 0]); });
+      PROD.forEach((d, i) => {
+        if (rep.starve[i] > 30) issues.push([d.name + ' OUT OF INPUTS', fmtDur(rep.starve[i]), '', 0]);
+        if (rep.fullp[i] > 30) issues.push([d.name + ' STORAGE FULL', fmtDur(rep.fullp[i]), '', 0]);
+      });
+      if (issues.length) sections.push({ head: 'STOPPED WHILE YOU WERE AWAY', rows: issues.slice(0, 6), cls: 'dn', more: issues.length > 6 ? '+ ' + (issues.length - 6) + ' MORE' : '', note: 'Sell more often, or buy WAREHOUSE EXPANSION in RESEARCH.' });
       const sell = [];
       const hold = [];
       const look = (name, x, have, px) => {
@@ -4295,13 +4101,6 @@
       hold.sort((a, b) => b[3] - a[3]);
       if (sell.length) sections.push({ head: 'PRICES ARE HIGH. SELL NOW', rows: sell.slice(0, 3), cls: 'up' });
       if (hold.length) sections.push({ head: 'PRICES ARE LOW. HOLD', rows: hold.slice(0, 3), cls: 'dn' });
-      const issues = [];
-      S.c.forEach((c, i) => { if (rep.fullAt[i] !== undefined) issues.push([COMM[i].sym + ' STORAGE FULL', 'AFTER ' + fmtDur(rep.fullAt[i]), '', 0]); });
-      PROD.forEach((d, i) => {
-        if (rep.starve[i] > 30) issues.push([d.name + ' LACKED INPUTS', fmtDur(rep.starve[i]), '', 0]);
-        if (rep.fullp[i] > 30) issues.push([d.name + ' STORAGE FULL', fmtDur(rep.fullp[i]), '', 0]);
-      });
-      if (issues.length) sections.push({ head: 'PRODUCTION STOPPED', rows: issues.slice(0, 5), cls: 'dn', more: issues.length > 5 ? '+ ' + (issues.length - 5) + ' MORE' : '', note: 'Sell stock more often, or buy WAREHOUSE in RESEARCH.' });
       if (rep.attacks.length) {
         const bl = rep.attacks.filter(a => a.blocked).length;
         const lost = rep.attacks.reduce((a, b) => a + b.loss, 0);
@@ -4356,9 +4155,7 @@
 
     const prefs = [];
     const srefs = [];
-    const pinfo = {};
     const sinfo = {};
-    let pSel = -1;
 
     function refsOf(a) {
       const r = { card: a };
@@ -4373,68 +4170,33 @@
 
     function buildProd() {
       const host = $('prod');
-      const strip = document.createElement('div');
-      strip.className = 'sstrip';
-      strip.innerHTML = statBox('FACTORY OUTPUT', 'out') + statBox('LINES RUNNING', 'run') + statBox('GOODS ON HAND', 'held');
-      host.appendChild(strip);
-      strip.querySelectorAll('[data-r]').forEach(n => { pinfo[n.dataset.r] = n; });
-      PGRP.forEach((gname, g) => {
-        const list = PROD.map((d, i) => i).filter(i => PROD[i].grp === g).sort((a, b) => PROD[a].unlock - PROD[b].unlock);
-        const h = document.createElement('h3');
-        h.className = 'ghead';
-        h.textContent = gname;
-        host.appendChild(h);
-        list.forEach(i => {
-          const d = PROD[i];
-          const a = document.createElement('div');
-          a.className = 'prow';
-          a.dataset.i = i;
-          const inputs = d.cin.concat(d.pin).map((x, n) => '<div class="irow"><span data-r="inl' + n + '"></span><span data-r="inv' + n + '"></span></div>').join('');
-          a.innerHTML =
-            '<div class="phd" role="button" tabindex="0" aria-expanded="false" data-r="head">' +
-              '<div class="pn"><b>' + d.name + '</b><span class="pg" data-r="grade"></span></div>' +
-              '<div class="ppx"><b data-r="price"></b><span data-r="chg"></span><span class="tag" data-r="tag"></span></div>' +
-              '<div class="pst"><span class="pbar" data-r="stbar"></span><span data-r="stval"></span></div>' +
-              '<div class="pinc" data-r="inc"></div>' +
-              '<div class="pchip" data-r="chip"></div>' +
-              '<div class="plock"><span class="pneed" data-r="need"></span><button type="button" class="btn" data-act="unlock"><span>OPEN PLANT</span><small data-r="unlockc"></small></button></div>' +
-            '</div>' +
-            '<div class="pbd">' +
-              '<div class="pcol">' +
-                '<div class="pmarket">' +
-                  '<div class="pt">MARKET</div>' +
-                  '<div class="spark" data-r="spark" aria-hidden="true"></div>' +
-                  '<div class="kv"><span>NORMAL PRICE</span><span data-r="norm"></span></div>' +
-                  '<div class="kv"><span>INPUT COST</span><span data-r="icost"></span></div>' +
-                  '<div class="kv"><span>PROFIT / UNIT</span><span data-r="margin"></span></div>' +
-                  '<div class="out" data-r="outl"></div>' +
-                '</div>' +
-                '<div class="out need" data-r="needfull"></div>' +
-                '<div class="pt">MADE FROM, PER UNIT</div>' +
-                '<div class="inputs">' + inputs + '</div>' +
-                '<p class="sd">' + d.desc + '</p>' +
-              '</div>' +
-              '<div class="pcol pctl">' +
-                '<div class="pt">PRODUCTION</div>' +
-                '<div class="kv"><span>STATUS</span><span data-r="stat"></span></div>' +
-                '<div class="grid2">' +
-                  '<button type="button" class="btn b3" data-act="line"><span data-r="linel"></span><span class="l2" data-r="liner"></span><small data-r="linec"></small></button>' +
-                  '<button type="button" class="btn b3" data-act="tier"><span data-r="tierl"></span><span class="l2" data-r="tierr"></span><small data-r="tierc"></small></button>' +
-                '</div>' +
-                '<div class="grid3">' +
-                  '<button type="button" class="btn" data-act="half">SELL 50%</button>' +
-                  '<button type="button" class="btn" data-act="all">SELL ALL</button>' +
-                  '<button type="button" class="btn" data-act="run"><span data-r="runl"></span></button>' +
-                '</div>' +
-                '<div class="grid2">' +
-                  '<button type="button" class="btn b3" data-act="auto"><span data-r="autol"></span><span class="l2" data-r="autos"></span></button>' +
-                  '<button type="button" class="btn b3" data-act="ovf"><span data-r="ovfl"></span><span class="l2" data-r="ovfs"></span></button>' +
-                '</div>' +
-              '</div>' +
-            '</div>';
-          host.appendChild(a);
-          prefs[i] = refsOf(a);
-        });
+      PROD.map((d, i) => i).sort((x, y) => PROD[x].unlock - PROD[y].unlock).forEach(i => {
+        const d = PROD[i];
+        const a = document.createElement('article');
+        a.className = 'card pc';
+        a.dataset.i = i;
+        a.innerHTML =
+          '<div class="card-head"><h2>' + d.name + '</h2><div class="px"><span class="tag" data-r="tag"></span><b data-r="price"></b><span data-r="chg"></span></div></div>' +
+          '<div class="spark" data-r="spark" aria-hidden="true"></div>' +
+          '<div class="out" data-r="out"></div>' +
+          '<div class="row"><span>STOCK</span><span data-r="stbar"></span><span class="vv"><i class="tr" data-r="sttr"></i><span data-r="stval"></span></span></div>' +
+          '<div class="row"><span data-r="inl"></span><span data-r="inbar"></span><span class="vv"><span data-r="inval"></span></span></div>' +
+          '<div class="grid2">' +
+            '<button type="button" class="btn b3" data-act="line"><span data-r="linel"></span><span class="l2" data-r="liner"></span><small data-r="linec"></small></button>' +
+            '<button type="button" class="btn b3" data-act="tier"><span data-r="tierl"></span><span class="l2" data-r="tierr"></span><small data-r="tierc"></small></button>' +
+          '</div>' +
+          '<div class="grid3">' +
+            '<button type="button" class="btn" data-act="run"><span data-r="runl"></span></button>' +
+            '<button type="button" class="btn" data-act="half">SELL 50%</button>' +
+            '<button type="button" class="btn" data-act="all">SELL ALL</button>' +
+          '</div>' +
+          '<div class="grid2">' +
+            '<button type="button" class="btn b3" data-act="auto"><span data-r="autol"></span><span class="l2" data-r="autos"></span></button>' +
+            '<button type="button" class="btn b3" data-act="ovf"><span data-r="ovfl"></span><span class="l2" data-r="ovfs"></span></button>' +
+          '</div>' +
+          '<div class="lockbox"><p class="sd" data-r="rcp"></p><p class="sd warn" data-r="need"></p><button type="button" class="btn" style="width:100%" data-act="unlock"><span>UNLOCK</span><small data-r="unlockc"></small></button></div>';
+        host.appendChild(a);
+        prefs[i] = refsOf(a);
       });
     }
 
@@ -4479,44 +4241,28 @@
 
     function pStatus(i) {
       const p = S.p[i];
-      if (p.ln < 1) return ['NO LINES', 'warn'];
+      if (p.ln < 1) return ['NO LINES YET', 'warn'];
       if (!p.on) return ['PAUSED', 'warn'];
       if (S.outage > 0) return ['POWER OUT', 'warn'];
-      if (p.st === 'FULL') return ['STORAGE FULL', 'warn'];
-      if (p.st === 'STARVED') return ['NEEDS ' + p.why, 'warn'];
-      if (p.st === 'LIMITED') return ['LIMITED: ' + p.why, ''];
-      return ['RUNNING', 'ok'];
+      if (p.st === 'FULL') return ['STORAGE FULL. LINES STOPPED', 'warn'];
+      if (p.st === 'STARVED') return ['OUT OF ' + p.why + '. LINES STOPPED', 'warn'];
+      return ['', ''];
     }
 
     function renderProd() {
-      let val = 0;
-      let run = 0;
-      let open = 0;
-      let held = 0;
+      const lm = leanMult();
       PROD.forEach((d, i) => {
         const p = S.p[i];
         const r = prefs[i];
-        const sel = pSel === i;
         r.card.classList.toggle('locked', !p.u);
-        r.card.classList.toggle('sel', sel);
-        r.head.setAttribute('aria-expanded', sel ? 'true' : 'false');
-        const lm = leanMult();
-        const inputs = d.cin.map(([c, q]) => [q, COMM[c].sym, S.c[c].metal, S.c[c].u]).concat(d.pin.map(([j, q]) => [q, PROD[j].name, S.p[j].stock, S.p[j].u]));
-        inputs.forEach((x, n) => {
-          setT(r['inl' + n], nq(x[0] * lm) + ' ' + x[1]);
-          setT(r['inv' + n], x[3] ? 'HAVE ' + fmtStock(x[2]) : 'NOT OPEN');
-          r['inv' + n].parentNode.classList.toggle('short', !x[3] || x[2] < x[0] * lm);
-        });
         if (!p.u) {
           const need = pReqs(i);
-          setT(r.grade, recipeText(i));
-          setT(r.need, need.length ? 'NEEDS ' + need[0] + (need.length > 1 ? ' +' + (need.length - 1) + ' MORE' : '') : '');
-          setT(r.needfull, need.length ? 'NEEDS FIRST: ' + need.join(', ') : '');
+          setT(r.rcp, recipeText(i));
+          setT(r.need, need.length ? 'OPEN FIRST: ' + need.join(', ') : '');
           setT(r.unlockc, money(d.unlock));
           r.b_unlock.disabled = need.length > 0 || S.cash < d.unlock;
           return;
         }
-        open++;
         const price0 = pPrice(i);
         const pct = (Math.exp(p.x) - 1) * 100;
         setT(r.price, '$' + fmtPrice(price0));
@@ -4524,41 +4270,41 @@
         r.chg.classList.toggle('dn', p.dx < 0);
         setT(r.tag, pct >= 15 ? 'HIGH' : pct <= -15 ? 'LOW' : '');
         r.tag.classList.toggle('low', pct <= -15);
-        setT(r.grade, d.tiers[p.tk][1]);
-        const cp = pCap(i);
-        setT(r.stbar, bar(p.stock / cp, 8));
-        setT(r.stval, p.stock >= cp - 0.01 ? 'FULL' : fmtStock(p.stock) + '/' + cp);
-        held += p.stock * price0;
-        const stt = pStatus(i);
-        setT(r.chip, stt[0]);
-        r.chip.className = 'pchip ' + stt[1];
-        const flow = p.ln > 0 && p.on ? p.fl * price0 : 0;
-        if (p.ln > 0 && p.on) { val += flow; run++; }
-        setT(r.inc, flow > 0 ? money(flow) + '/s' : '');
         setT(r.spark, sparkText(p));
-        setT(r.norm, '$' + fmtPrice(pNormal(i)));
-        const ic = pInputCost(i);
-        const prof = price0 - ic;
-        setT(r.icost, '$' + fmtPrice(ic));
-        setT(r.margin, (prof >= 0 ? '+' : '-') + '$' + fmtPrice(Math.abs(prof)) + ' (' + (prof >= 0 ? '+' : '') + Math.round(ic > 0 ? prof / ic * 100 : 0) + '%)');
-        r.margin.classList.toggle('dn', prof < 0);
-        setT(r.stat, stt[0] === 'RUNNING' || stt[0].startsWith('LIMITED') ? 'MAKING ' + fmtRate(p.fl) : stt[0]);
+        const cp = pCap(i);
+        setT(r.stbar, bar(p.stock / cp, 14));
+        setT(r.stval, p.stock >= cp - 0.01 ? 'FULL' : fmtStock(p.stock) + '/' + cp);
+        setTrend(r.sttr, p.em || 0);
+        const ins = d.cin.map(([c, q]) => ({ n: COMM[c].sym, s: S.c[c].metal, q: q * lm, cap: cap() }))
+          .concat(d.pin.map(([j, q]) => ({ n: PROD[j].id, s: S.p[j].stock, q: q * lm, cap: pCap(j) })));
+        let lim = ins[0];
+        ins.forEach(x => { if (x.s / x.q < lim.s / lim.q) lim = x; });
+        setT(r.inl, lim.n);
+        setT(r.inbar, bar(lim.s / lim.cap, 14));
+        setT(r.inval, fmtStock(lim.s) + '/' + lim.cap);
+        const stt = pStatus(i);
+        let outlook = stt[0];
+        if (!outlook && hasAi('fore') && aiEff() > 0) {
+          const tg = d.amp * Math.sin(2 * Math.PI * S.clock / d.period + d.phase) - p.x;
+          outlook = 'OUTLOOK: ' + (tg > 0.03 ? 'RISING' : tg < -0.03 ? 'FALLING' : 'STEADY');
+        }
+        setT(r.out, outlook);
+        r.out.classList.toggle('warn', !!stt[0]);
         const pl = planGen(l => pLineCost(i, l), p.ln);
         const lmu = lvlMult(p.ln);
         setT(r.linel, 'LINES L' + p.ln + (lmu > 1 ? ' x' + lmu : ''));
         setT(r.liner, fmtRate(pRateBase(i)));
         setT(r.linec, (pl.n > 1 ? '+' + pl.n + ' ' : '') + money(pl.cost));
         r.b_line.disabled = S.cash < pl.cost;
+        setT(r.tierl, d.tiers[p.tk][1]);
         if (p.tk >= 3) {
-          setT(r.tierl, 'EQUIPMENT T3/3');
-          setT(r.tierr, d.tiers[3][0]);
-          setT(r.tierc, 'MAXED');
+          setT(r.tierr, 'BEST GRADE');
+          setT(r.tierc, '');
           r.b_tier.disabled = true;
         } else {
           const tc = pTierCost(i);
-          setT(r.tierl, 'EQUIPMENT T' + p.tk + '/3');
-          setT(r.tierr, d.tiers[p.tk + 1][0]);
-          setT(r.tierc, '+' + Math.round((PTIER[p.tk + 1] / PTIER[p.tk] - 1) * 100) + '% PRICE  ' + money(tc));
+          setT(r.tierr, '> ' + d.tiers[p.tk + 1][1] + ' +' + Math.round((PTIER[p.tk + 1] / PTIER[p.tk] - 1) * 100) + '%');
+          setT(r.tierc, money(tc));
           r.b_tier.disabled = S.cash < tc;
         }
         r.b_half.disabled = p.stock < 0.02;
@@ -4573,16 +4319,7 @@
         const ov = ovfView(p);
         setT(r.ovfl, ov[0]);
         setT(r.ovfs, ov[1]);
-        let outlook = '';
-        if (hasAi('fore') && aiEff() > 0) {
-          const tg = d.amp * Math.sin(2 * Math.PI * S.clock / d.period + d.phase) - p.x;
-          outlook = 'OUTLOOK: ' + (tg > 0.03 ? 'RISING' : tg < -0.03 ? 'FALLING' : 'STEADY');
-        }
-        setT(r.outl, outlook);
       });
-      setT(pinfo.out, money(val) + '/s');
-      setT(pinfo.run, run + ' OF ' + open);
-      setT(pinfo.held, money(held));
     }
 
     function svRows(k) {
@@ -4657,34 +4394,28 @@
     }
 
     const TUT = [
-      { t: 'Hold DIG on the IRON desk. You dig ore, and it smelts into metal.',
+      { t: 'Hold DIG on the IRON desk. You dig ore, and it smelts into metal by itself.', peak: true,
         hi: () => refs[0].b_dig, prog: () => [S.c[0].ore + S.c[0].metal, 5, 'ORE'], done: () => S.c[0].ore + S.c[0].metal >= 5 || S.earned > 0 },
-      { t: 'Press SELL ALL on the IRON desk to turn your metal into cash.',
+      { t: 'Press SELL ALL to turn your metal into cash.',
         hi: () => refs[0].b_all, done: () => S.earned > 0 },
-      { t: 'Cash buys upgrades. Buy MINE L1 on the IRON desk: it digs for you, always.',
+      { t: 'Cash buys upgrades. Buy MINE L1: it digs for you, all the time.',
         hi: () => refs[0].b_mine, prog: () => [S.cash, lvlCost(COMM[0], 'mine', 0), '$'], done: () => S.c[0].ml >= 1 },
-      { t: 'Prices rise and fall. Sell when the desk says HIGH, wait when it says LOW. Earn $150.',
-        hi: () => null, prog: () => [S.earned, 150, '$'], done: () => S.earned >= 150 },
-      { t: 'Buy SMELT L1. If the ORE bar keeps filling up, smelting is too slow.',
-        hi: () => refs[0].b_smelt, prog: () => [S.cash, lvlCost(COMM[0], 'smelt', 0), '$'], done: () => S.c[0].sl >= 1 },
-      { t: 'Open RESEARCH and hire a BROKER. It sells for you, even while you are away.',
-        hi: () => (tab === 'res' ? $('research').querySelector('[data-id="broker"] button') : $('tab-res')), prog: () => [S.cash, 1500, '$'], done: () => brokerLv() >= 1 },
-      { t: 'On the IRON desk press AUTO-SELL until it says +10%. The broker sells when the price is 10% above normal.',
-        hi: () => (tab === 'ops' ? refs[0].b_auto : $('tab-ops')), done: () => S.c[0].auto >= 3 }
+      { t: 'When storage is full, production stops. Buy WAREHOUSE EXPANSION in RESEARCH.',
+        hi: () => (tab === 'res' ? $('research').querySelector('[data-id="warehouse"] button') : $('tab-res')), prog: () => [S.cash, capCost(), '$'], done: () => S.wl >= 1 }
     ];
 
     const GOALS = [
+      { t: 'Hire a BROKER in RESEARCH. It sells for you, even when you are away.',
+        hi: () => (tab === 'res' ? $('research').querySelector('[data-id="broker"] button') : $('tab-res')), prog: () => [S.cash, 1500, '$'], done: () => brokerLv() >= 1 },
+      { t: 'On the IRON desk press AUTO-SELL until it says +10%. The broker then sells at that price.',
+        hi: () => (tab === 'ops' ? refs[0].b_auto : $('tab-ops')), done: () => S.c[0].auto >= 3 },
       { t: 'Unlock the COPPER desk. Every metal is its own market.',
-        hi: () => (tab === 'ops' ? refs[1].b_unlock : $('tab-ops')), prog: () => [S.cash, 10000, '$'], done: () => S.c[1].u },
-      { t: 'Open the PRODUCTION tab and open a STEEL plant. Goods sell for more than raw metal.',
+        hi: () => (tab === 'ops' ? refs[1].b_unlock : $('tab-ops')), prog: () => [S.cash, COMM[1].unlock, '$'], done: () => S.c[1].u },
+      { t: 'Open the PRODUCTION tab and unlock STEEL. Goods sell for more than raw metal.',
         hi: () => (tab === 'pr' ? prefs[0].b_unlock : $('tab-pr')), prog: () => [S.cash, PROD[0].unlock, '$'], done: () => S.p[0].u },
-      { t: 'Click the STEEL row and build 3 lines. Each line turns iron into steel nonstop.',
-        hi: () => (tab !== 'pr' ? $('tab-pr') : pSel === 0 ? prefs[0].b_line : prefs[0].head), prog: () => [S.p[0].ln, 3, 'LINES'], done: () => S.p[0].ln >= 3 },
-      { t: 'Unlock the SILVER desk, then open WIRE AND CABLE and SILVERWARE.',
-        hi: () => (tab === 'ops' ? refs[2].b_unlock : $('tab-ops')), prog: () => [S.cash, 150000, '$'], done: () => S.c[2].u && S.p[1].u },
-      { t: 'Upgrade STEEL equipment. A better grade sells at a higher price.',
-        hi: () => (tab !== 'pr' ? $('tab-pr') : pSel === 0 ? prefs[0].b_tier : prefs[0].head), prog: () => [S.cash, pTierCost(0), '$'], done: () => S.p[0].tk >= 1 },
-      { t: 'Open the SERVICES tab and start CLOUD HOSTING. It earns income while you are away.',
+      { t: 'Buy a STEEL line. It turns iron into steel nonstop.',
+        hi: () => (tab === 'pr' ? prefs[0].b_line : $('tab-pr')), prog: () => [S.cash, pLineCost(0, S.p[0].ln), '$'], done: () => S.p[0].ln >= 1 },
+      { t: 'Open the SERVICES tab and unlock CLOUD HOSTING. It earns while you are away.',
         hi: () => (tab === 'sv' ? srefs[0].b_unlock : $('tab-sv')), prog: () => [S.cash, SERV[0].unlock, '$'], done: () => S.sv[0].u },
       { t: 'Earn $5M in one run, then RESTRUCTURE on the BOARD tab for permanent shares.',
         hi: () => $('tab-bd'), prog: () => [S.run, 5000000, '$'], done: () => false }
@@ -4692,32 +4423,47 @@
 
     const STEPS = TUT.map(s => Object.assign({ goal: false }, s)).concat(GOALS.map(s => Object.assign({ goal: true }, s)));
     let tutHi = null;
+    let tutIdx = -1;
+    let tutPeak = 0;
+
+    function tutShow(h) {
+      if (!h || !h.offsetParent) return;
+      const r = h.getBoundingClientRect();
+      if (r.top < 60 || r.bottom > window.innerHeight - 20) h.scrollIntoView({ block: 'center', behavior: 'smooth' });
+    }
+
+    function tutSkip() {
+      if (S.tut < STEPS.length - 1) S.tut++;
+      render();
+    }
 
     function tutTick() {
       const box = el.tut;
       if (S.tutOff || seq) { if (!box.hidden) { box.hidden = true; if (tutHi) tutHi.classList.remove('tut-hi'); tutHi = null; } return; }
       let guard = 0;
-      while (S.tut < STEPS.length && STEPS[S.tut].done() && guard++ < 20) {
+      while (S.tut < STEPS.length - 1 && STEPS[S.tut].done() && guard++ < 20) {
         S.tut++;
         Snd.sfx('unlock');
       }
-      if (S.tut >= STEPS.length) S.tut = STEPS.length - 1;
       const st = STEPS[S.tut];
+      if (tutIdx !== S.tut) { tutIdx = S.tut; tutPeak = 0; if (tutHi) tutHi.classList.remove('tut-hi'); tutHi = null; }
       box.hidden = false;
       setT(el.tutn, st.goal ? 'NEXT GOAL' : 'TUTORIAL ' + (S.tut + 1) + ' OF ' + TUT.length);
       setT(el.tutt, st.t);
+      el.tutnext.hidden = S.tut >= STEPS.length - 1;
       const pg = st.prog ? st.prog() : null;
       el.tutp.style.visibility = pg ? 'visible' : 'hidden';
       if (pg) {
+        if (st.peak) { tutPeak = Math.max(tutPeak, pg[0]); pg[0] = tutPeak; }
         const cur = Math.min(pg[0], pg[1]);
         setT(el.tutbar, bar(cur / pg[1], 16));
-        setT(el.tutv, pg[2] === '$' ? '$' + Math.floor(cur).toLocaleString('en-US') + ' / $' + Math.floor(pg[1]).toLocaleString('en-US') : Math.floor(cur) + ' / ' + pg[1] + ' ' + pg[2]);
+        setT(el.tutv, pg[2] === '$' ? (pg[0] >= pg[1] ? 'READY' : 'YOU HAVE $' + Math.floor(pg[0]).toLocaleString('en-US') + ', NEED $' + Math.floor(pg[1]).toLocaleString('en-US')) : Math.floor(cur) + ' / ' + pg[1] + ' ' + pg[2]);
       }
       const h = st.hi();
       if (h !== tutHi) {
         if (tutHi) tutHi.classList.remove('tut-hi');
         tutHi = h;
-        if (h) h.classList.add('tut-hi');
+        if (h) { h.classList.add('tut-hi'); tutShow(h); }
       }
     }
 
@@ -5030,6 +4776,7 @@
       if (S.camp.t > 0) { S.camp.t = Math.max(0, S.camp.t - dt); if (S.camp.t === 0) log('CAMPAIGN ENDED.'); }
       if (S.camp.cd > 0) S.camp.cd = Math.max(0, S.camp.cd - dt);
       if (S.sec.ddos > 0) { S.sec.ddos = Math.max(0, S.sec.ddos - dt); if (S.sec.ddos === 0) log('TRADING DESK BACK ONLINE.'); }
+      tickAlarms(dt);
       if (S.outage > 0) {
         S.outage = Math.max(0, S.outage - dt);
         if (S.outage === 0) log('POWER RESTORED.');
@@ -5073,7 +4820,7 @@
     }
 
     function build() {
-      ['cash', 'stock', 'net', 'status', 'savebtn', 'savet', 'tout', 'tin', 'tform', 'tmus', 'tmore', 'tvol', 'mbar', 'tut', 'tutn', 'tutt', 'tutp', 'tutbar', 'tutv', 'tutskip'].forEach(k => { el[k] = $(k); });
+      ['cash', 'stock', 'net', 'status', 'savebtn', 'savet', 'tout', 'tin', 'tform', 'tmus', 'tmore', 'tvol', 'mbar', 'tut', 'tutn', 'tutt', 'tutp', 'tutbar', 'tutv', 'tutnext', 'tutskip'].forEach(k => { el[k] = $(k); });
       const host = $('cards');
       COMM.forEach((d, i) => {
         const a = document.createElement('article');
@@ -5182,6 +4929,7 @@
     function trackTrend(dt) {
       if (dt <= 0 || dt > 1) {
         S.c.forEach(c => { c.po = c.ore; c.pm = c.metal; });
+        S.p.forEach(p => { p.pq = p.stock; });
         return;
       }
       const ao = 1 - Math.exp(-dt / 3);
@@ -5192,6 +4940,11 @@
         c.em += ((c.metal - c.pm) / dt - c.em) * am;
         c.po = c.ore;
         c.pm = c.metal;
+      });
+      S.p.forEach(p => {
+        if (p.pq === undefined) { p.pq = p.stock; p.em = 0; }
+        p.em += ((p.stock - p.pq) / dt - p.em) * am;
+        p.pq = p.stock;
       });
     }
 
@@ -5771,25 +5524,15 @@
         render();
       });
 
-      const toggleProw = row => {
-        const i = Number(row.dataset.i);
-        pSel = pSel === i ? -1 : i;
-        render();
-      };
-
       $('prod').addEventListener('click', e => {
-        const row = e.target.closest('.prow');
-        if (!row) return;
-        const i = Number(row.dataset.i);
         const b = e.target.closest('button[data-act]');
-        if (!b) {
-          if (e.target.closest('.phd')) toggleProw(row);
-          return;
-        }
-        if (b.disabled) return;
+        if (!b || b.disabled) return;
+        const card = b.closest('.card');
+        if (!card) return;
+        const i = Number(card.dataset.i);
         const p = S.p[i];
         const act = b.dataset.act;
-        if (act === 'unlock') { if (pUnlock(i)) pSel = i; }
+        if (act === 'unlock') pUnlock(i);
         else if (act === 'line') pBuyLine(i);
         else if (act === 'tier') pBuyTier(i);
         else if (act === 'half' || act === 'all') {
@@ -5811,14 +5554,6 @@
         render();
       });
 
-      $('prod').addEventListener('keydown', e => {
-        if (e.key !== 'Enter' && e.key !== ' ') return;
-        const hd = e.target.closest('.phd');
-        if (!hd || e.target !== hd) return;
-        e.preventDefault();
-        toggleProw(hd.closest('.prow'));
-      });
-
       $('serv').addEventListener('click', e => {
         const b = e.target.closest('button[data-act]');
         if (!b || b.disabled) return;
@@ -5833,6 +5568,7 @@
         render();
       });
 
+      el.tutnext.addEventListener('click', tutSkip);
       el.tutskip.addEventListener('click', () => { tutStop(); print('tutorial hidden. type tutorial to bring it back.', 'd'); });
       document.addEventListener('keydown', e => {
         if (adlg.on && (e.key === 'Escape' || e.key === 'Enter')) { e.preventDefault(); closeAway(); }
