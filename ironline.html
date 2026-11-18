@@ -2046,15 +2046,6 @@
       width: 100%;
     }
 
-    .pc .out {
-      display: block;
-      height: 18px;
-      line-height: 18px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
     .pc h2,
     .scard h2 {
       font-size: 14px;
@@ -3651,11 +3642,6 @@
           this.tone('square', 1568, t + 0.5, 0.14, 0.08, { dest: d, lp: 3500 });
         } else if (kind === 'err') {
           this.tone('square', 110, t, 0.1, 0.06, { dest: d, lp: 500 });
-        } else if (kind === 'alarm') {
-          [0, 0.3].forEach(o => {
-            this.tone('square', 185, t + o, 0.2, 0.16, { dest: d, lp: 900 });
-            this.tone('sawtooth', 131, t + o, 0.2, 0.14, { dest: d, lp: 700 });
-          });
         }
       }
     };
@@ -3679,7 +3665,7 @@
     const defense = () => clamp(1 - Math.pow(0.93, svLv(SVC.cyber)) + aiPerk('sentinel', 0.2), 0, 0.97);
     const logiMult = () => 1 + 1.2 * (1 - Math.exp(-svLv(SVC.logi) / 30));
     const discount = () => 1 - 0.25 * (1 - Math.exp(-svLv(SVC.fin) / 25));
-    const svRevAt = (k, l) => (l ? SERV[k].rev * l * shareMult() * (k === SVC.ai ? aiEff() : 1) : 0);
+    const svRevAt = (k, l) => (l ? SERV[k].rev * l * lvlMult(l) * shareMult() * (k === SVC.ai ? aiEff() : 1) : 0);
     const svMean = k => svRevAt(k, svLv(k));
     const svWave = k => 1 + 0.04 * Math.sin(S.clock * 2 * Math.PI / (31 + 7 * k) + k * 1.7) + 0.02 * Math.sin(S.clock * 2 * Math.PI / (83 + 11 * k) + k * 0.9);
     const svRev = k => svMean(k) * svWave(k);
@@ -4016,7 +4002,6 @@
     }
 
     const alarmT = {};
-    let alarmAt = -999;
 
     function tickAlarms(dt) {
       if (seq || dt <= 0 || dt > 5) return;
@@ -4042,7 +4027,6 @@
         if (a.t >= 6 && (a.last < 0 || a.t - a.last >= 90)) {
           a.last = a.t;
           log('ALARM: ' + m, 'w');
-          if (S.clock - alarmAt > 20) { alarmAt = S.clock; Snd.sfx('alarm'); }
         }
       });
       Object.keys(alarmT).forEach(k => { if (!live[k]) delete alarmT[k]; });
@@ -4279,7 +4263,6 @@
         a.innerHTML =
           '<div class="card-head"><h2>' + d.name + '</h2><div class="px"><span class="tag" data-r="tag"></span><b data-r="price"></b><span data-r="chg"></span></div></div>' +
           '<div class="spark" data-r="spark" aria-hidden="true"></div>' +
-          '<div class="out" data-r="out"></div>' +
           '<div class="row"><span data-r="inl"></span><span data-r="inbar"></span><span class="vv"><i class="tr" data-r="intr"></i><span data-r="inval"></span></span></div>' +
           '<div class="row"><span>STOCK</span><span data-r="stbar"></span><span class="vv"><i class="tr" data-r="sttr"></i><span data-r="stval"></span></span></div>' +
           '<div class="grid2">' +
@@ -4340,16 +4323,6 @@
       am.querySelectorAll('button[data-act]').forEach(b => { sinfo['b_' + b.dataset.m] = b; });
     }
 
-    function pStatus(i) {
-      const p = S.p[i];
-      if (p.ln < 1) return ['NO LINES YET', 'warn'];
-      if (!p.on) return ['PAUSED', 'warn'];
-      if (S.outage > 0) return ['POWER OUT', 'warn'];
-      if (p.st === 'FULL') return ['STORAGE FULL. LINES STOPPED', 'warn'];
-      if (p.st === 'STARVED') return ['OUT OF ' + p.why + '. LINES STOPPED', 'warn'];
-      return ['', ''];
-    }
-
     function renderProd() {
       const lm = leanMult();
       PROD.forEach((d, i) => {
@@ -4384,18 +4357,18 @@
         setT(r.inbar, bar(lim.s / lim.cap, 14));
         setT(r.inval, lim.s >= lim.cap - 0.01 ? 'FULL' : lim.c ? Math.floor(lim.s) + '/' + lim.cap : fmtStock(lim.s) + '/' + lim.cap);
         setTrend(r.intr, lim.em);
-        const stt = pStatus(i);
-        let outlook = stt[0] || d.tiers[p.tk][1];
-        if (!stt[0] && hasAi('fore') && aiEff() > 0) {
-          const tg = d.amp * Math.sin(2 * Math.PI * S.clock / d.period + d.phase) - p.x;
-          outlook = 'OUTLOOK: ' + (tg > 0.03 ? 'RISING' : tg < -0.03 ? 'FALLING' : 'STEADY');
+        {
+          let tg = 0;
+          if (hasAi('fore') && aiEff() > 0 && pct > -15 && pct < 15) {
+            tg = d.amp * Math.sin(2 * Math.PI * S.clock / d.period + d.phase) - p.x;
+            setT(r.tag, tg > 0.03 ? 'RISING' : tg < -0.03 ? 'FALLING' : '');
+            r.tag.classList.toggle('low', tg < -0.03);
+          }
         }
-        setT(r.out, outlook);
-        r.out.classList.toggle('warn', !!stt[0]);
         const pl = planGen(l => pLineCost(i, l), p.ln);
         const lmu = lvlMult(p.ln);
         setT(r.linel, 'LINES L' + p.ln + (lmu > 1 ? ' x' + lmu : ''));
-        setT(r.liner, fmtRate(pRateBase(i)));
+        setT(r.liner, p.ln > 0 && p.on && S.outage <= 0 && (p.st === 'FULL' || p.st === 'STARVED') ? (p.st === 'FULL' ? 'STOPPED: STORAGE FULL' : 'STOPPED: NO ' + p.why) : fmtRate(pRateBase(i)));
         setT(r.linec, (pl.n > 1 ? '+' + pl.n + ' ' : '') + money(pl.cost));
         r.b_line.disabled = S.cash < pl.cost;
         setT(r.tierl, 'EQUIPMENT T' + (p.tk + 1) + '/4');
