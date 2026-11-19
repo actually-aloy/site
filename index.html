@@ -1459,6 +1459,32 @@
       </div>
     </section>
 
+    <section class="arcade-panel tools-panel">
+      <div class="arcade-intro">
+        <div class="arcade-top">
+          <div class="arcade-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.2L3.5 17.3a1.8 1.8 0 0 0 2.5 2.5l5.8-5.8a4 4 0 0 0 5.2-5.4l-2.5 2.5-2.2-.6-.6-2.2z"/></svg>
+          </div>
+          <div>
+            <h2 id="tools-title">Aloy's Tools</h2>
+            <span id="tools-subtitle"></span>
+          </div>
+        </div>
+        <p class="arcade-cta" id="tools-cta-text"></p>
+        <a class="arcade-go" href="tools.html">
+          <span id="tools-go-label"></span>
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8h10"/><path d="M9 4l4 4-4 4"/></svg>
+        </a>
+      </div>
+      <div class="arcade-card">
+        <div class="arcade-status">
+          <span class="arcade-dot"></span>
+          <span id="tools-status-text"></span>
+        </div>
+        <div class="arcade-grid" id="tools-grid"></div>
+      </div>
+    </section>
+
     <section class="discord-panel">
       <div class="discord-intro">
         <div class="discord-top">
@@ -1662,6 +1688,12 @@
         arcadeSubtitle: 'tiny games',
         arcadeCta: 'A CRT mining tycoon, Snake, 2048, a reaction test and memory games. No installs, no accounts.',
         arcadeGo: 'Play now',
+        toolsTitle: "Aloy's Tools",
+        toolsSubtitle: 'browser tools',
+        toolsStatus: '7 tools · nothing is uploaded',
+        toolsCta: 'Image compressor, format converter, QR codes, JSON and Base64, live price charts, passwords and a unit converter. They run in your browser, so your files never leave your device.',
+        toolsGo: 'Open tools',
+        toolsList: ['Image compressor', 'Format converter', 'JSON & Base64', 'QR code', 'Price charts', 'Password generator', 'Unit converter'],
         arcadeGames: ['Ironline', 'Snake', 'Memory', 'Sequence', 'Number Span', 'N-Back', '2048', 'Reaction'],
         discordTitle: 'Discord',
         discordSubtitle: 'come say hi',
@@ -1702,6 +1734,12 @@
         arcadeSubtitle: 'بازی‌های کوچیک',
         arcadeCta: 'تایکون معدن CRT، مار، ۲۰۴۸، تست واکنش و بازی‌های حافظه. بدون نصب، بدون اکانت.',
         arcadeGo: 'بازی کن',
+        toolsTitle: 'ابزارهای آلوی',
+        toolsSubtitle: 'ابزارهای مرورگری',
+        toolsStatus: '۷ ابزار · هیچی آپلود نمیشه',
+        toolsCta: 'فشرده‌ساز تصویر، مبدل فرمت، کد QR، JSON و Base64، نمودار قیمت دلار و طلا، رمز عبور ساز و مبدل واحد. همه توی مرورگر خودت اجرا میشن و فایل‌هات از دستگاهت بیرون نمیره.',
+        toolsGo: 'باز کردن ابزارها',
+        toolsList: ['فشرده‌ساز تصویر', 'مبدل فرمت', 'JSON و Base64', 'کد QR', 'نمودار قیمت', 'رمز عبور ساز', 'مبدل واحد'],
         arcadeGames: ['آیرونلاین', 'مار', 'حافظه', 'دنباله', 'حافظه‌ی عددی', 'ان‌بک', '۲۰۴۸', 'واکنش'],
         discordTitle: 'دیسکورد',
         discordSubtitle: 'بیا یه سر بزن',
@@ -1769,6 +1807,28 @@
       ).join('');
     }
 
+    const TOOL_HREFS = ['compress', 'convert', 'json', 'qr', 'prices', 'password', 'units'];
+    const TOOL_ICONS = [
+      'M4 9V5h4M20 9V5h-4M4 15v4h4M20 15v4h-4M9 15l6-6',
+      'M3 5h18v14H3zM3 16l5-5 4 4 3-3 6 6',
+      'M8 4c-2 0-3 1-3 3v2c0 1-1 3-2 3 1 0 2 2 2 3v2c0 2 1 3 3 3M16 4c2 0 3 1 3 3v2c0 1 1 3 2 3-1 0-2 2-2 3v2c0 2-1 3-3 3',
+      'M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h3v3h-3zM19 19h1',
+      'M3 20V4M3 20h18M6 15l4-5 3 3 6-8',
+      'M5 11h14v10H5zM8 11V7a4 4 0 0 1 8 0v4',
+      'M3 17 17 3l4 4L7 21zM8 12l2 2M12 8l2 2'
+    ].map(d => '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="' + d + '"/></svg>');
+
+    function renderTools(t) {
+      document.getElementById('tools-title').textContent = t.toolsTitle;
+      document.getElementById('tools-subtitle').textContent = t.toolsSubtitle;
+      document.getElementById('tools-cta-text').textContent = t.toolsCta;
+      document.getElementById('tools-status-text').textContent = t.toolsStatus;
+      document.getElementById('tools-go-label').textContent = t.toolsGo;
+      document.getElementById('tools-grid').innerHTML = t.toolsList.map((name, i) =>
+        `<a class="arcade-tile" href="tools.html#${TOOL_HREFS[i]}"><span class="arcade-tile-icon">${TOOL_ICONS[i]}</span><span class="arcade-tile-name">${name}</span></a>`
+      ).join('');
+    }
+
     function applyLanguage(lang) {
       currentLang = lang;
       localStorage.setItem('lang', lang);
@@ -1783,6 +1843,7 @@
       document.getElementById('apps-subtitle').textContent = t.appsSubtitle;
       renderFreelance(t);
       renderArcade(t);
+      renderTools(t);
       document.getElementById('discord-title').textContent = t.discordTitle;
       document.getElementById('discord-subtitle').textContent = t.discordSubtitle;
       document.getElementById('discord-cta-text').textContent = t.discordCta;

@@ -3441,6 +3441,11 @@
       },
       tone(type, f, t, dur, peak, opt) {
         const ctx = this.ctx;
+        if (f < 330 && !(opt && opt.slide) && !(opt && opt.h)) {
+          const o2 = Object.assign({}, opt, { h: 1 });
+          this.tone('sine', f * 2, t, dur, peak * 0.7, o2);
+          this.tone('sine', f * 3, t, dur, peak * 0.4, o2);
+        }
         const o = ctx.createOscillator();
         const g = ctx.createGain();
         o.type = type;
@@ -4476,7 +4481,7 @@
       { t: 'Open the SERVICES tab and unlock CLOUD HOSTING. It earns while you are away.',
         hi: () => (tab === 'sv' ? srefs[0].b_unlock : $('tab-sv')), prog: () => [S.cash, SERV[0].unlock, '$'], done: () => S.sv[0].u },
       { t: 'Earn $5M in one run, then RESTRUCTURE on the BOARD tab for permanent shares.',
-        hi: () => $('tab-bd'), prog: () => [S.run, 5000000, '$'], done: () => false }
+        hi: () => $('tab-bd'), prog: () => [S.run, 5000000, '$'], done: () => S.runs >= 1 }
     ];
 
     const STEPS = TUT.map(s => Object.assign({ goal: false }, s)).concat(GOALS.map(s => Object.assign({ goal: true }, s)));
@@ -4497,7 +4502,7 @@
 
     function tutTick() {
       const box = el.tut;
-      if (S.tutOff || seq) { if (!box.hidden) { box.hidden = true; if (tutHi) tutHi.classList.remove('tut-hi'); tutHi = null; } return; }
+      if (S.tutOff || seq || (S.tut >= STEPS.length - 1 && STEPS[S.tut].done())) { if (!box.hidden) { box.hidden = true; if (tutHi) tutHi.classList.remove('tut-hi'); tutHi = null; } return; }
       let guard = 0;
       while (S.tut < STEPS.length - 1 && STEPS[S.tut].done() && guard++ < 20) {
         S.tut++;

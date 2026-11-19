@@ -9,6 +9,8 @@ Static site on GitHub Pages: https://actually-aloy.github.io/site/
 | index.html | Home |
 | freelance.html | Freelance page |
 | arcade.html | Aloy's Arcade (hub and games in one page) |
+| tools.html, tools.css, tools.js | Web tools hub: image compressor, format converter, JSON/Base64, QR, live price charts (iran-market data), passwords, units (all client-side) |
+| qr-gen.js, qr-scan.js | Vendored libs for the tools: QR generator (MIT), jsQR (Apache-2.0) |
 | ironline.html | Ironline, the mining and trading game (has its own CRT-style music player) |
 | papion.html, papion-app.html | Papion page and its embedded app view |
 | varaq.html, multitool.html, mcportal.html, rastnevis.html, questlog.html, ytdownloader.html | Project pages |

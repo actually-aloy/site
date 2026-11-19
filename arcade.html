@@ -352,7 +352,8 @@
 
     .stage {
       position: relative;
-      width: min(420px, 100%);
+      width: min(420px, 100%, max(240px, calc(100vh - 250px)));
+      width: min(420px, 100%, max(240px, calc(100dvh - 250px)));
       border: 1px solid var(--line);
       border-radius: 24px;
       overflow: hidden;
@@ -718,6 +719,66 @@
       }
     }
 
+    @media (max-width: 640px) {
+      .hub-grid {
+        grid-template-columns: 1fr;
+        gap: 10px;
+      }
+
+      .game-card {
+        display: grid;
+        grid-template-columns: auto minmax(0, 1fr) auto;
+        grid-template-areas: "i h p" "i d p" "i b p";
+        align-items: center;
+        column-gap: 14px;
+        row-gap: 2px;
+        padding: 14px 16px;
+      }
+
+      .game-card:hover {
+        transform: none;
+      }
+
+      .game-card .icon {
+        grid-area: i;
+        width: 46px;
+        height: 46px;
+        border-radius: 15px;
+      }
+
+      .game-card h3 {
+        grid-area: h;
+      }
+
+      .game-card p {
+        grid-area: d;
+        font-size: 13px;
+        line-height: 1.5;
+      }
+
+      .game-card .best-line {
+        grid-area: b;
+        min-height: 0;
+      }
+
+      .game-card .best-line:empty {
+        display: none;
+      }
+
+      .game-card .play {
+        grid-area: p;
+        align-self: center;
+        margin: 0;
+        padding: 8px 14px;
+      }
+
+      .new-badge {
+        top: -8px;
+        font-size: 10px;
+        padding: 2px 9px;
+      }
+    }
+
     @media (prefers-reduced-motion: reduce) {
       body,
       .gradient-text,
@@ -767,7 +828,7 @@
         <button type="button" class="ghost" id="snake-restart"></button>
       </div>
       <div class="stage-wrap">
-        <div class="stage swipe" id="snake-stage">
+        <div class="stage" id="snake-stage">
           <canvas id="snake-canvas" role="img"></canvas>
           <div class="overlay" id="snake-overlay">
             <div>
@@ -1267,6 +1328,7 @@
         restartBtn.textContent = g.restart;
         pauseBtn.textContent = state === 'pause' ? g.resume : g.pause;
         pauseBtn.disabled = state === 'idle' || state === 'over';
+        stage.classList.toggle('swipe', state === 'run');
         cv.setAttribute('aria-label', g.label);
 
         if (state === 'run') {

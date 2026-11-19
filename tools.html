@@ -1,0 +1,285 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#141018">
+  <title>Aloy's Tools</title>
+  <meta name="description" content="Free browser tools: image compressor and converter, JSON formatter, Base64, QR code generator and scanner, password generator and unit converter. Everything runs on your device.">
+  <link rel="canonical" href="https://actually-aloy.github.io/site/tools">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Aloy's Tools">
+  <meta property="og:description" content="Free browser tools that run on your device. Images, JSON, QR codes, passwords and units.">
+  <meta property="og:url" content="https://actually-aloy.github.io/site/tools">
+  <meta property="og:image" content="https://actually-aloy.github.io/site/tools-og.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Aloy's Tools">
+  <meta name="twitter:description" content="Free browser tools that run on your device. Images, JSON, QR codes, passwords and units.">
+  <meta name="twitter:image" content="https://actually-aloy.github.io/site/tools-og.jpg">
+  <link rel="icon" href="favicon.svg?v=2" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="tools.css">
+  <link rel="stylesheet" href="langfx.css">
+  <script src="langfx.js" defer></script>
+</head>
+<body>
+  <main class="page">
+    <div class="topbar">
+      <a class="pill-btn" href="index.html">
+        <svg class="flip" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 3 5 8l5 5"/></svg>
+        <span data-i="back"></span>
+      </a>
+      <button type="button" class="pill-btn lang-toggle" id="lang-toggle" aria-label="Switch language"><span class="lt-pill"></span><span class="lt-o" data-l="en">EN</span><span class="lt-o" data-l="fa">فا</span></button>
+    </div>
+
+    <div class="head">
+      <h1><span class="gradient-text" data-i="title"></span></h1>
+      <p data-i="sub"></p>
+    </div>
+
+    <div class="shell">
+      <aside class="menu" aria-label="Tools">
+        <div class="search">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="7" cy="7" r="4.5"/><path d="m10.5 10.5 3 3"/></svg>
+          <input type="search" id="q" data-ph="search" autocomplete="off" spellcheck="false">
+          <kbd>/</kbd>
+        </div>
+        <nav class="menu-list" id="menu-list"></nav>
+        <div class="menu-foot">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 1.5 2.5 3.7v4c0 3.2 2.3 5.6 5.5 6.8 3.2-1.2 5.5-3.6 5.5-6.8v-4z"/><path d="m5.6 8 1.7 1.7L10.6 6.4"/></svg>
+          <span data-i="private"></span>
+        </div>
+      </aside>
+
+      <section class="stage" id="stage">
+        <div class="view" id="v-hub">
+          <p class="hub-top" data-i="hubIntro"></p>
+          <div class="hub-grid" id="hub-grid"></div>
+        </div>
+        <div class="view" id="v-compress" hidden>
+          <div class="tool-head"><span class="mi-ic" data-ic="compress"></span><div><h2 data-i="n_compress"></h2><p data-i="d_compress"></p></div></div>
+          <div class="split">
+            <div class="panel">
+              <div class="field"><span class="lbl" data-i="format"></span>
+                <div class="seg" id="c-fmt"><button type="button" data-v="orig" class="on" data-i="fmtOrig"></button><button type="button" data-v="webp">WebP</button><button type="button" data-v="jpeg">JPG</button></div>
+              </div>
+              <div class="field" id="c-qf"><label for="c-q"><span data-i="quality"></span><output id="c-qo">80</output></label>
+                <input class="range" type="range" id="c-q" min="10" max="100" value="80">
+              </div>
+              <div class="field"><span class="lbl" data-i="resize"></span>
+                <div class="seg" id="c-rs"><button type="button" data-v="orig" class="on" data-i="rsOrig"></button><button type="button" data-v="fit" data-i="rsFit"></button><button type="button" data-v="pct" data-i="rsPct"></button></div>
+              </div>
+              <div class="field" id="c-fitf" hidden>
+                <div class="row"><div class="grow"><label class="hint" for="c-w" data-i="maxW"></label><input class="inp mono" type="number" id="c-w" min="1" max="20000" placeholder="1920"></div><div class="grow"><label class="hint" for="c-h" data-i="maxH"></label><input class="inp mono" type="number" id="c-h" min="1" max="20000" placeholder="1080"></div></div>
+                <p class="hint" data-i="fitNote"></p>
+              </div>
+              <div class="field" id="c-pctf" hidden><label for="c-pct"><span data-i="scale"></span><output id="c-pcto">50%</output></label>
+                <input class="range" type="range" id="c-pct" min="5" max="100" value="50">
+              </div>
+              <p class="hint" id="c-pngn" data-i="pngNote" hidden></p>
+              <p class="hint" data-i="exifNote"></p>
+            </div>
+            <div class="stack">
+              <label class="drop" id="c-drop" tabindex="0">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 16V4m0 0L7.5 8.5M12 4l4.5 4.5"/><path d="M4 15v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3"/></svg>
+                <span><b data-i="dropB"></b> <span data-i="dropT"></span></span>
+                <small data-i="dropImg"></small>
+                <input type="file" id="c-file" accept="image/*" multiple hidden>
+              </label>
+              <div class="files" id="c-list"></div>
+              <div class="sum" id="c-sum" hidden><span id="c-sumt"></span><span class="row"><button type="button" class="btn sm" id="c-clear" data-i="clear"></button><button type="button" class="btn primary sm" id="c-zip" data-i="dlZip"></button></span></div>
+            </div>
+          </div>
+        </div>
+        <div class="view" id="v-convert" hidden>
+          <div class="tool-head"><span class="mi-ic" data-ic="convert"></span><div><h2 data-i="n_convert"></h2><p data-i="d_convert"></p></div></div>
+          <div class="split">
+            <div class="panel">
+              <div class="field"><span class="lbl" data-i="convTo"></span>
+                <div class="seg" id="v-fmt"><button type="button" data-v="png" class="on">PNG</button><button type="button" data-v="jpeg">JPG</button><button type="button" data-v="webp">WebP</button></div>
+              </div>
+              <div class="field" id="v-qf" hidden><label for="v-q"><span data-i="quality"></span><output id="v-qo">92</output></label>
+                <input class="range" type="range" id="v-q" min="10" max="100" value="92">
+              </div>
+              <div class="field" id="v-scf"><span class="lbl" data-i="svgScale"></span>
+                <div class="seg" id="v-sc"><button type="button" data-v="1" class="on">1x</button><button type="button" data-v="2">2x</button><button type="button" data-v="4">4x</button></div>
+                <p class="hint" data-i="svgNote"></p>
+              </div>
+              <div class="field" id="v-bgf"><span class="lbl" data-i="bg"></span>
+                <div class="seg" id="v-bg"><button type="button" id="v-bgnone" data-v="none" class="on" data-i="bgNone"></button><button type="button" data-v="#ffffff" data-i="bgWhite"></button><button type="button" data-v="#000000" data-i="bgBlack"></button></div>
+                <p class="hint" data-i="bgNote"></p>
+              </div>
+              <p class="hint" id="v-jpgn" data-i="jpgNote" hidden></p>
+            </div>
+            <div class="stack">
+              <label class="drop" id="v-drop" tabindex="0">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 16V4m0 0L7.5 8.5M12 4l4.5 4.5"/><path d="M4 15v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3"/></svg>
+                <span><b data-i="dropB"></b> <span data-i="dropT"></span></span>
+                <small data-i="dropConv"></small>
+                <input type="file" id="v-file" accept="image/*,.svg" multiple hidden>
+              </label>
+              <div class="files" id="v-list"></div>
+              <div class="sum" id="v-sum" hidden><span id="v-sumt"></span><span class="row"><button type="button" class="btn sm" id="v-clear" data-i="clear"></button><button type="button" class="btn primary sm" id="v-zip" data-i="dlZip"></button></span></div>
+            </div>
+          </div>
+        </div>
+        <div class="view" id="v-json" hidden>
+          <div class="tool-head"><span class="mi-ic" data-ic="json"></span><div><h2 data-i="n_json"></h2><p data-i="d_json"></p></div></div>
+          <div class="tabs" data-tabs="json"><button type="button" class="on" data-tab="json">JSON</button><button type="button" data-tab="b64">Base64</button></div>
+          <div class="tab-pane" data-pane="json">
+            <div class="panel">
+              <div class="row">
+                <div class="seg" id="j-ind"><button type="button" data-v="2" class="on">2</button><button type="button" data-v="4">4</button><button type="button" data-v="tab">Tab</button></div>
+                <label class="check"><input type="checkbox" id="j-sort"><span data-i="sortKeys"></span></label>
+                <span class="grow"></span>
+                <button type="button" class="btn sm" id="j-sample" data-i="sample"></button>
+                <button type="button" class="btn sm" id="j-paste" data-i="paste"></button>
+                <button type="button" class="btn sm" id="j-clear" data-i="clear"></button>
+              </div>
+              <div class="status idle t" id="j-stat"></div>
+              <div class="split even">
+                <div class="field"><label for="j-in"><span data-i="input"></span></label><textarea class="inp mono" id="j-in" spellcheck="false" data-ph="jsonPh"></textarea></div>
+                <div class="field"><label for="j-out"><span data-i="output"></span><span class="row"><button type="button" class="btn sm" id="j-min" data-i="minify"></button><button type="button" class="btn sm" id="j-use" data-i="useAsInput"></button><button type="button" class="btn primary sm" id="j-copy" data-i="copy"></button></span></label><textarea class="inp mono" id="j-out" readonly spellcheck="false"></textarea></div>
+              </div>
+              <p class="hint" id="j-info"></p>
+            </div>
+          </div>
+          <div class="tab-pane" data-pane="b64" hidden>
+            <div class="panel">
+              <div class="row">
+                <div class="seg" id="b-mode"><button type="button" data-v="enc" class="on" data-i="encode"></button><button type="button" data-v="dec" data-i="decode"></button></div>
+                <label class="check"><input type="checkbox" id="b-url"><span data-i="urlSafe"></span></label>
+                <span class="grow"></span>
+                <button type="button" class="btn sm" id="b-file" data-i="fileToB64"></button>
+                <input type="file" id="b-fileinp" hidden>
+                <button type="button" class="btn sm" id="b-swap" data-i="swap"></button>
+                <button type="button" class="btn sm" id="b-clear" data-i="clear"></button>
+              </div>
+              <div class="status idle t" id="b-stat"></div>
+              <div class="split even">
+                <div class="field"><label for="b-in"><span data-i="input"></span></label><textarea class="inp mono" id="b-in" spellcheck="false"></textarea></div>
+                <div class="field"><label for="b-out"><span data-i="output"></span><span class="row"><button type="button" class="btn sm" id="b-dl" data-i="dlFile" hidden></button><button type="button" class="btn primary sm" id="b-copy" data-i="copy"></button></span></label><textarea class="inp mono" id="b-out" readonly spellcheck="false"></textarea></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="view" id="v-qr" hidden>
+          <div class="tool-head"><span class="mi-ic" data-ic="qr"></span><div><h2 data-i="n_qr"></h2><p data-i="d_qr"></p></div></div>
+          <div class="tabs" data-tabs="qr"><button type="button" class="on" data-tab="gen" data-i="tGen"></button><button type="button" data-tab="scan" data-i="tScan"></button></div>
+          <div class="tab-pane" data-pane="gen">
+            <div class="split">
+              <div class="panel">
+                <div class="seg" id="q-type"><button type="button" data-v="text" class="on" data-i="qText"></button><button type="button" data-v="wifi">Wi-Fi</button><button type="button" data-v="contact" data-i="qContact"></button></div>
+                <div class="field" data-qf="text"><label for="q-text" data-i="qContent"></label><textarea class="inp" id="q-text" style="min-height:110px" data-ph="qPh">https://actually-aloy.github.io/site</textarea></div>
+                <div data-qf="wifi" hidden class="stack">
+                  <div class="field"><label for="q-ssid" data-i="wSsid"></label><input class="inp" id="q-ssid" autocomplete="off"></div>
+                  <div class="field"><label for="q-wpass" data-i="wPass"></label><input class="inp" id="q-wpass" autocomplete="off"></div>
+                  <div class="row"><div class="seg grow" id="q-sec"><button type="button" data-v="WPA" class="on">WPA/WPA2</button><button type="button" data-v="WEP">WEP</button><button type="button" data-v="nopass" data-i="wOpen"></button></div><label class="check"><input type="checkbox" id="q-hid"><span data-i="wHidden"></span></label></div>
+                </div>
+                <div data-qf="contact" hidden class="stack">
+                  <div class="field"><label for="q-cn" data-i="cName"></label><input class="inp" id="q-cn"></div>
+                  <div class="field"><label for="q-cp" data-i="cPhone"></label><input class="inp mono" id="q-cp" inputmode="tel"></div>
+                  <div class="field"><label for="q-ce" data-i="cEmail"></label><input class="inp mono" id="q-ce" inputmode="email"></div>
+                </div>
+                <div class="field"><span class="lbl" data-i="ecc"></span><div class="seg" id="q-ecc"><button type="button" data-v="L">L</button><button type="button" data-v="M" class="on">M</button><button type="button" data-v="Q">Q</button><button type="button" data-v="H">H</button></div></div>
+                <div class="field"><label for="q-size"><span data-i="size"></span><output id="q-sizeo">512 px</output></label><input class="range" type="range" id="q-size" min="128" max="1024" step="32" value="512"></div>
+                <div class="row">
+                  <div class="field grow"><span class="lbl" data-i="fgc"></span><div class="color-in"><input type="color" id="q-fg" value="#141018"></div></div>
+                  <div class="field grow"><span class="lbl" data-i="bgc"></span><div class="color-in"><input type="color" id="q-bg" value="#ffffff"></div></div>
+                </div>
+              </div>
+              <div class="panel">
+                <div class="qr-stage"><canvas id="q-canvas" width="512" height="512"></canvas></div>
+                <div class="status idle t" id="q-stat"></div>
+                <div class="row"><button type="button" class="btn primary" id="q-png" data-i="dlPng"></button><button type="button" class="btn" id="q-svg" data-i="dlSvg"></button><button type="button" class="btn" id="q-copyimg" data-i="copyImg"></button></div>
+              </div>
+            </div>
+          </div>
+          <div class="tab-pane" data-pane="scan" hidden>
+            <div class="split even">
+              <div class="panel">
+                <div class="video-box" id="s-box"><video id="s-video" playsinline muted></video><div class="frame" id="s-frame" hidden></div><span class="hint" id="s-ph" data-i="camOff"></span></div>
+                <div class="row"><button type="button" class="btn primary" id="s-start" data-i="camStart"></button><button type="button" class="btn" id="s-stop" data-i="camStop" hidden></button><label class="btn" id="s-imgbtn"><span data-i="scanImg"></span><input type="file" id="s-img" accept="image/*" hidden></label></div>
+                <p class="hint" data-i="scanNote"></p>
+              </div>
+              <div class="panel">
+                <div class="field"><label for="s-out" data-i="result"></label><textarea class="inp mono" id="s-out" readonly style="min-height:150px"></textarea></div>
+                <div class="status idle t" id="s-stat"></div>
+                <div class="row"><button type="button" class="btn primary" id="s-copy" data-i="copy"></button><a class="btn" id="s-open" target="_blank" rel="noopener noreferrer" hidden data-i="openLink"></a></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="view" id="v-password" hidden>
+          <div class="tool-head"><span class="mi-ic" data-ic="password"></span><div><h2 data-i="n_password"></h2><p data-i="d_password"></p></div></div>
+          <div class="tabs" data-tabs="pw"><button type="button" class="on" data-tab="pass" data-i="tPass"></button><button type="button" data-tab="check" data-i="tCheck"></button></div>
+          <div class="tab-pane" data-pane="pass">
+            <div class="split">
+              <div class="panel">
+                <div class="field"><label for="p-len"><span data-i="length"></span><output id="p-leno">20</output></label><input class="range" type="range" id="p-len" min="8" max="64" value="20"></div>
+                <label class="check"><input type="checkbox" id="p-lo" checked><span data-i="pLower"></span></label>
+                <label class="check"><input type="checkbox" id="p-up" checked><span data-i="pUpper"></span></label>
+                <label class="check"><input type="checkbox" id="p-di" checked><span data-i="pDigits"></span></label>
+                <label class="check"><input type="checkbox" id="p-sy" checked><span data-i="pSymbols"></span></label>
+                <label class="check"><input type="checkbox" id="p-am"><span data-i="pAmbig"></span></label>
+              </div>
+              <div class="panel">
+                <div class="pw" id="p-out"></div>
+                <div class="meter"><i id="p-meter"></i></div>
+                <p class="hint" id="p-info"></p>
+                <div class="row"><button type="button" class="btn primary" id="p-new" data-i="generate"></button><button type="button" class="btn" id="p-copy" data-i="copy"></button></div>
+              </div>
+            </div>
+          </div>
+          <div class="tab-pane" data-pane="check" hidden>
+            <div class="panel">
+              <div class="field"><label for="k-in"><span data-i="typePw"></span><button type="button" class="btn sm" id="k-eye" data-i="show"></button></label><input class="inp mono" type="password" id="k-in" autocomplete="off" spellcheck="false"></div>
+              <div class="meter"><i id="k-meter"></i></div>
+              <div class="status idle t" id="k-stat"></div>
+              <p class="hint" data-i="checkNote"></p>
+            </div>
+          </div>
+        </div>
+        <div class="view" id="v-prices" hidden>
+          <div class="tool-head"><span class="mi-ic" data-ic="prices"></span><div><h2 data-i="n_prices"></h2><p data-i="d_prices"></p></div></div>
+          <div class="panel">
+            <div class="pr-pick">
+              <div class="pr-grp"><span class="lbl" data-i="gCur"></span><div class="seg" id="pr-sym"><button type="button" data-v="USD_IRR_FREE" class="on" data-i="prUsd"></button><button type="button" data-v="EUR_IRR_FREE" data-i="prEur"></button><button type="button" data-v="USDT_IRR" data-i="prUsdt"></button></div></div>
+              <div class="pr-grp"><span class="lbl" data-i="gGold"></span><div class="seg" id="pr-gold"><button type="button" data-v="GOLD_18K_IRR" data-i="prGold"></button><button type="button" data-v="GOLD_MESGHAL_IRR" data-i="prMes"></button><button type="button" data-v="COIN_EMAMI_IRR" data-i="prCoin"></button><button type="button" data-v="COIN_HALF_IRR" data-i="prHalf"></button><button type="button" data-v="COIN_QUARTER_IRR" data-i="prQuarter"></button></div></div>
+            </div>
+            <div class="pr-hero">
+              <div><div class="pr-price mono" id="pr-price">…</div><div class="pr-chg" id="pr-chg"></div></div>
+              <div class="seg" id="pr-unit"><button type="button" data-v="irt" class="on" data-i="prToman"></button><button type="button" data-v="irr" data-i="prRial"></button></div>
+            </div>
+            <div class="pr-stats"><span class="stat" id="pr-hi"></span><span class="stat" id="pr-lo"></span><span class="stat" id="pr-upd"></span></div>
+            <div class="pr-bar"><div class="seg" id="pr-range"><button type="button" data-v="30">1M</button><button type="button" data-v="90">3M</button><button type="button" data-v="180">6M</button><button type="button" data-v="365" class="on">1Y</button><button type="button" data-v="0" data-i="prAll"></button></div></div>
+            <div class="pr-chart"><canvas id="pr-canvas"></canvas><div class="pr-tip" id="pr-tip" hidden></div></div>
+            <div class="status idle t" id="pr-stat"></div>
+            <p class="hint" data-i="prNote"></p>
+          </div>
+        </div>
+        <div class="view" id="v-units" hidden>
+          <div class="tool-head"><span class="mi-ic" data-ic="units"></span><div><h2 data-i="n_units"></h2><p data-i="d_units"></p></div></div>
+          <div class="panel">
+            <div class="seg" id="u-cat"></div>
+            <div class="units">
+              <div class="field"><label for="u-val" data-i="from"></label><input class="inp mono" id="u-val" inputmode="decimal" value="1" autocomplete="off"><select class="inp" id="u-from"></select></div>
+              <button type="button" class="swap" id="u-swap" data-t="swap" aria-label="swap"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 5.5h10M10.5 3l2.5 2.5-2.5 2.5M13 10.5H3M5.5 8 3 10.5 5.5 13"/></svg></button>
+              <div class="field"><label for="u-res" data-i="to"></label><div class="inp mono big-out" id="u-res" style="font-size:20px;min-height:42px"></div><select class="inp" id="u-to"></select></div>
+            </div>
+            <div class="field"><span class="lbl" data-i="allUnits"></span><div class="table" id="u-table"></div></div>
+          </div>
+        </div>
+      </section>
+    </div>
+    <p class="copyright" dir="ltr">© 2026 Aloy</p>
+  </main>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="qr-gen.js"></script>
+  <script src="tools.js"></script>
+</body>
+</html>

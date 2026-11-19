@@ -83,6 +83,11 @@
     },
 
     tone(type, f, t, dur, peak, opt) {
+      if (f < 330 && !(opt && opt.slide) && !(opt && opt.h)) {
+        const o2 = Object.assign({}, opt, { h: 1 });
+        this.tone('sine', f * 2, t, dur, peak * 0.7, o2);
+        this.tone('sine', f * 3, t, dur, peak * 0.4, o2);
+      }
       const ctx = this.ctx;
       const o = ctx.createOscillator();
       const g = ctx.createGain();
