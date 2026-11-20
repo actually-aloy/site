@@ -2125,6 +2125,10 @@
       text-shadow: var(--glow);
     }
 
+    .abig.dn {
+      color: var(--warn);
+    }
+
     .asub {
       font-size: 11px;
       letter-spacing: 0.1em;
@@ -4072,7 +4076,7 @@
       const rep = {
         secs: Math.floor(secs), worked: sec, capped: secs > sec + 1, k: 0,
         mined: S.c.map(() => 0), smelt: S.c.map(() => 0), made: PROD.map(() => 0), fullAt: {}, starve: PROD.map(() => 0), fullp: PROD.map(() => 0),
-        svc: 0, attacks: [], news: []
+        svc: 0, attacks: [], news: [], cash0: S.cash, cashD: 0
       };
       S.outage = 0;
       S.boost = null;
@@ -4109,6 +4113,7 @@
         S.c.forEach(c => { c.h = new Array(HIST_LEN).fill(c.x); });
         S.p.forEach(p => { p.h = new Array(HIST_LEN).fill(p.x); });
       }
+      rep.cashD = S.cash - rep.cash0;
       const gained = rep.mined.reduce((a, b) => a + b, 0) + rep.made.reduce((a, b) => a + b, 0);
       log('AWAY ' + fmtDur(sec) + '. PRODUCED ' + Math.floor(gained) + ' UNITS WHILE YOU WERE GONE.');
       if (secs >= 60) showAway(rep);
@@ -4196,9 +4201,11 @@
       };
       const top = el2('div', 'ahead');
       top.appendChild(el2('span', 'alabel', 'AWAY ' + fmtDur(rep.secs).toUpperCase()));
-      const big = el2('b', 'abig', v.worth >= 1 ? '+' + money(v.worth) : 'NOTHING NEW');
+      const cashUp = rep.cashD >= 1;
+      const cashDn = rep.cashD <= -1;
+      const big = el2('b', 'abig' + (cashDn ? ' dn' : ''), cashUp ? '+' + money(rep.cashD) : cashDn ? '-' + money(-rep.cashD) : v.worth >= 1 ? '+' + money(v.worth) : 'NOTHING NEW');
       top.appendChild(big);
-      top.appendChild(el2('span', 'asub', v.worth >= 1 ? 'OF GOODS WAITING IN YOUR WAREHOUSE' : 'YOUR MINES AND FACTORIES WERE IDLE'));
+      top.appendChild(el2('span', 'asub', cashUp || cashDn ? 'CASH ' + (cashUp ? 'ADDED' : 'LOST') + (v.worth >= 1 ? '. ' + money(v.worth) + ' OF GOODS MADE' : '') : v.worth >= 1 ? 'OF GOODS MADE, READY TO SELL' : 'YOUR MINES AND FACTORIES WERE IDLE'));
       b.appendChild(top);
       if (rep.capped) b.appendChild(el2('p', 'anote', 'Your crews worked ' + fmtDur(rep.worked) + ' of that. NIGHT WATCH on the BOARD tab extends it.'));
       v.sections.forEach(s => {

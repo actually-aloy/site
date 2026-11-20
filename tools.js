@@ -62,10 +62,15 @@ const S = {
   input: ['Input', 'ورودی'],
   output: ['Output', 'خروجی'],
   generate: ['Generate', 'بساز'],
-  fmtOrig: ['Same as original', 'مثل اصل'],
+  compression: ['Compression', 'فشرده‌سازی'],
+  lvBest: ['Best', 'بهترین'],
+  lvBal: ['Balanced', 'متعادل'],
+  lvSmall: ['Smallest', 'کوچک‌ترین'],
+  lvNote: ['Balanced is right for most photos. Files keep their format.', 'حالت متعادل برای بیشتر عکس‌ها مناسبه. فرمت فایل‌ها عوض نمیشه.'],
   jpgNote: ['JPG has no transparency, so converting it to PNG or WebP keeps the background. It does not remove it.', 'JPG شفافیت نداره، برای همین تبدیلش به PNG یا WebP پس‌زمینه رو نگه می‌داره و حذفش نمی‌کنه.'],
+  noGain: ['Already optimal', 'از قبل بهینه‌ست'],
   sameFmt: ['Already in this format. Pick a different one.', 'همین الان توی این فرمته. یه فرمت دیگه انتخاب کن.'],
-  pngNote: ['PNG is lossless, so quality has no effect. Resize to make files smaller, or pick WebP or JPG.', 'PNG بی‌افته، برای همین کیفیت اثری نداره. برای کوچیک‌تر شدن اندازه رو کم کن یا WebP یا JPG بزن.'],
+  pngNote: ['PNG is lossless, so there is no compression level. Lower the size to make it smaller, or switch it to WebP or JPG in the Format converter.', 'PNG بی‌افته، برای همین سطح فشرده‌سازی نداره. اندازه رو کم کن تا کوچیک‌تر بشه، یا توی مبدل فرمت به WebP یا JPG عوضش کن.'],
   format: ['Format', 'فرمت'],
   quality: ['Quality', 'کیفیت'],
   resize: ['Resize', 'تغییر اندازه'],
@@ -356,8 +361,42 @@ function fmtBytes(n) {
   return (n / 1048576).toFixed(2) + ' MB';
 }
 
+function bindRange(id, outId, f, cb) {
+  const el = $(id);
+  const o = $(outId);
+  const upd = () => { o.textContent = f ? f(el.value) : el.value; };
+  el.addEventListener('input', () => { upd(); cb && cb(el.value); });
+  upd();
+}
+
+const pillPlacers = [];
+function pillify(box) {
+  if (!window.ResizeObserver) return () => {};
+  const pill = document.createElement('span');
+  pill.className = 'pill';
+  pill.setAttribute('aria-hidden', 'true');
+  box.insertBefore(pill, box.firstChild);
+  box.classList.add('has-pill');
+  const place = () => {
+    const on = box.querySelector('button.on');
+    if (!on || !box.offsetWidth) { pill.style.opacity = '0'; return; }
+    pill.style.width = on.offsetWidth + 'px';
+    pill.style.height = on.offsetHeight + 'px';
+    pill.style.transform = 'translate(' + on.offsetLeft + 'px,' + on.offsetTop + 'px)';
+    pill.style.opacity = '1';
+    if (!box.classList.contains('ready')) requestAnimationFrame(() => requestAnimationFrame(() => box.classList.add('ready')));
+  };
+  new ResizeObserver(place).observe(box);
+  pillPlacers.push(place);
+  place();
+  return place;
+}
+function placePills() { pillPlacers.forEach(f => f()); }
+if (document.fonts && document.fonts.ready) document.fonts.ready.then(placePills);
+
 function bindSeg(id, onChange) {
   const box = $(id);
+  const place = pillify(box);
   const get = () => {
     const on = box.querySelector('button.on');
     return on ? on.dataset.v : null;
@@ -366,26 +405,19 @@ function bindSeg(id, onChange) {
     const b = e.target.closest('button[data-v]');
     if (!b) return;
     qa('button', box).forEach(x => x.classList.toggle('on', x === b));
+    place();
     onChange && onChange(b.dataset.v);
   });
-  return { get, set(v) { qa('button', box).forEach(x => x.classList.toggle('on', x.dataset.v === String(v))); } };
+  return { get, set(v) { qa('button', box).forEach(x => x.classList.toggle('on', x.dataset.v === String(v))); place(); } };
 }
-
-function bindRange(id, outId, fmt, onChange) {
-  const r = $(id);
-  const o = $(outId);
-  const upd = () => { if (o) o.textContent = fmt ? fmt(r.value) : r.value; };
-  r.addEventListener('input', () => { upd(); onChange && onChange(Number(r.value)); });
-  upd();
-  return { upd };
-}
-
 function bindTabs(root, onTab) {
   const bar = root.querySelector('[data-tabs]');
+  const place = pillify(bar);
   bar.addEventListener('click', e => {
     const b = e.target.closest('button[data-tab]');
     if (!b) return;
     qa('button', bar).forEach(x => x.classList.toggle('on', x === b));
+    place();
     qa('[data-pane]', root).forEach(p => { p.hidden = p.dataset.pane !== b.dataset.tab; });
     onTab && onTab(b.dataset.tab);
   });
@@ -470,6 +502,7 @@ function applyLanguage(next) {
   renderHub();
   document.title = current === 'hub' ? t('title') : t('n_' + current) + ' · ' + t('title');
   hooks.lang.forEach(f => f());
+  placePills();
 }
 
 T.init = function () {
@@ -582,16 +615,17 @@ function makeList(cfg) {
     else if (it.state === 'err') sz = esc(t('failed'));
     else {
       const d = it.file.size ? Math.round((1 - it.blob.size / it.file.size) * 100) : 0;
-      const tag = cfg.showSavings ? (d >= 0 ? '<b>-' + d + '% ' + esc(t('saved')) + '</b>' : '<b class="worse">+' + (-d) + '% ' + esc(t('larger')) + '</b>') : '';
+      const tag = !cfg.showSavings ? '' : it.blob === it.file ? '<b>' + esc(t('noGain')) + '</b>' : d >= 0 ? '<b><bdi dir="ltr">-' + d + '%</bdi> ' + esc(t('saved')) + '</b>' : '<b class="worse"><bdi dir="ltr">+' + (-d) + '%</bdi> ' + esc(t('larger')) + '</b>';
       sz = '<bdi>' + fmtBytes(it.file.size) + ' → ' + fmtBytes(it.blob.size) + (it.w ? ' · ' + it.w + '×' + it.h : '') + '</bdi> ' + tag;
     }
-    return '<div class="file' + (it.state === 'err' ? ' err' : it.state === 'skip' ? ' skip' : '') + '" data-id="' + it.id + '"><img class="th" alt="" src="' + it.thumb + '"><div style="min-width:0"><div class="nm" dir="auto">' + esc(it.file.name) + '</div><div class="sz">' + sz + '</div></div><div class="act">' +
+    return '<div class="file' + (it.state === 'err' ? ' err' : it.state === 'skip' ? ' skip' : it.state === 'busy' ? ' busy' : '') + (it.seen ? '' : ' in') + '" data-id="' + it.id + '"><img class="th" alt="" src="' + it.thumb + '"><div style="min-width:0"><div class="nm" dir="auto">' + esc(it.file.name) + '</div><div class="sz">' + sz + '</div></div><div class="act">' +
       (it.state === 'done' ? '<button type="button" class="btn sm primary" data-act="dl">' + esc(t('dl')) + '</button>' : '') +
       '<button type="button" class="btn sm" data-act="rm" aria-label="' + esc(t('remove')) + '">✕</button></div></div>';
   }
 
   function render() {
     list.innerHTML = items.map(row).join('');
+    items.forEach(i => { i.seen = true; });
     const done = items.filter(i => i.state === 'done');
     if (cfg.onChange) cfg.onChange(items);
     const counted = items.filter(i => i.state !== 'skip');
@@ -651,9 +685,16 @@ function makeList(cfg) {
     const idx = items.findIndex(i => i.id === id);
     if (idx < 0) return;
     if (b.dataset.act === 'rm') {
-      URL.revokeObjectURL(items[idx].thumb);
-      items.splice(idx, 1);
-      render();
+      const gone = items[idx];
+      const el = b.closest('.file');
+      const drop = () => {
+        const k = items.indexOf(gone);
+        if (k < 0) return;
+        URL.revokeObjectURL(gone.thumb);
+        items.splice(k, 1);
+        render();
+      };
+      if (el && !matchMedia('(prefers-reduced-motion: reduce)').matches) { el.classList.add('out'); setTimeout(drop, 220); } else drop();
     } else if (items[idx].blob) saveBlob(items[idx].blob, items[idx].name);
   });
 
@@ -702,10 +743,10 @@ const kindOf = f => {
 
 const compressUi = (() => {
   let kinds = [];
-  const fmt = bindSeg('c-fmt', () => { syncOpts(); tool.reprocess(); });
-  const outFmt = (file, v) => (v !== 'orig' ? v : ({ jpeg: 'jpeg', png: 'png', webp: 'webp' })[kindOf(file)] || 'webp');
+  const lvl = bindSeg('c-lvl', () => tool.reprocess());
+  const outFmt = file => ({ jpeg: 'jpeg', png: 'png', webp: 'webp' })[kindOf(file)] || 'webp';
   function syncOpts() {
-    const onlyPng = fmt.get() === 'orig' && kinds.length > 0 && kinds.every(k => k === 'png');
+    const onlyPng = kinds.length > 0 && kinds.every(k => k === 'png');
     $('c-qf').hidden = onlyPng;
     $('c-pngn').hidden = !onlyPng;
   }
@@ -716,7 +757,6 @@ const compressUi = (() => {
   });
   let timer = 0;
   const later = () => { clearTimeout(timer); timer = setTimeout(() => tool.reprocess(), 250); };
-  bindRange('c-q', 'c-qo', null, later);
   bindRange('c-pct', 'c-pcto', v => v + '%', later);
   $('c-w').addEventListener('input', later);
   $('c-h').addEventListener('input', later);
@@ -725,9 +765,9 @@ const compressUi = (() => {
     list: 'c-list', sum: 'c-sum', sumt: 'c-sumt', zip: 'c-zip', clear: 'c-clear', showSavings: true,
     accept: f => /^image\//.test(f.type) || /\.(jpe?g|png|webp|gif|bmp|avif)$/i.test(f.name),
     onChange: items => { kinds = items.map(it => kindOf(it.file)); syncOpts(); },
-    opts: () => ({ fmt: fmt.get(), q: Number($('c-q').value) / 100, mode: rs.get(), w: Number($('c-w').value) || 0, h: Number($('c-h').value) || 0, pct: Number($('c-pct').value) / 100 }),
+    opts: () => ({ q: Number(lvl.get()), mode: rs.get(), w: Number($('c-w').value) || 0, h: Number($('c-h').value) || 0, pct: Number($('c-pct').value) / 100 }),
     async process(file, o) {
-      const of = outFmt(file, o.fmt);
+      const of = outFmt(file);
       const bmp = await loadBitmap(file);
       const sw = bmp.width || bmp.naturalWidth;
       const sh = bmp.height || bmp.naturalHeight;
@@ -757,10 +797,9 @@ const compressUi = (() => {
 
 const convertUi = (() => {
   const fmt = bindSeg('v-fmt', v => { $('v-qf').hidden = v === 'png'; syncBg(); tool.reprocess(); });
+  const lvl = bindSeg('v-lvl', () => tool.reprocess());
   const sc = bindSeg('v-sc', () => tool.reprocess());
   const bg = bindSeg('v-bg', () => tool.reprocess());
-  let timer = 0;
-  bindRange('v-q', 'v-qo', null, () => { clearTimeout(timer); timer = setTimeout(() => tool.reprocess(), 250); });
 
   async function svgSize(file) {
     const text = await file.text();
@@ -795,7 +834,7 @@ const convertUi = (() => {
       hasJpg = kinds.includes('jpeg');
       syncBg();
     },
-    opts: () => ({ fmt: fmt.get(), q: Number($('v-q').value) / 100, scale: Number(sc.get()), bg: bg.get() }),
+    opts: () => ({ fmt: fmt.get(), q: Number(lvl.get()), scale: Number(sc.get()), bg: bg.get() }),
     async process(file, o) {
       let src;
       let w;
@@ -1057,6 +1096,10 @@ function genPassword() {
   pwText = chars.join('');
   pwBits = len * Math.log2(all.length);
   $('p-out').innerHTML = chars.map(c => /[0-9]/.test(c) ? '<span class="d">' + c + '</span>' : /[^A-Za-z0-9]/.test(c) ? '<span class="s">' + esc(c) + '</span>' : esc(c)).join('');
+  const po = $('p-out');
+  po.classList.remove('flash');
+  void po.offsetWidth;
+  po.classList.add('flash');
   paintPwInfo();
 }
 
@@ -1464,7 +1507,22 @@ const symA = bindSeg('pr-sym', v => { cur = v; symB.set(null); load(); });
 const symB = bindSeg('pr-gold', v => { cur = v; symA.set(null); load(); });
 const sym = { get: () => cur };
 const unit = bindSeg('pr-unit', () => { paintHead(); draw(); });
-const range = bindSeg('pr-range', () => { hover = -1; $('pr-tip').hidden = true; draw(); });
+let reveal = 1;
+let raf = 0;
+function animate() {
+  cancelAnimationFrame(raf);
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) { reveal = 1; draw(); return; }
+  const t0 = performance.now();
+  const step = now => {
+    const p = Math.min(1, (now - t0) / 750);
+    reveal = 1 - Math.pow(1 - p, 3);
+    draw();
+    if (p < 1) raf = requestAnimationFrame(step);
+  };
+  reveal = 0;
+  raf = requestAnimationFrame(step);
+}
+const range = bindSeg('pr-range', () => { hover = -1; paintHead(); animate(); });
 
 async function getJson(path, bust) {
   let err;
@@ -1513,6 +1571,7 @@ function liveOf(symbol) {
 }
 
 function paintHead() {
+  if (hover >= 0) { paintHover(); return; }
   const live = liveOf(sym.get());
   const last = series[series.length - 1];
   const prev = series[series.length - 2];
@@ -1523,12 +1582,24 @@ function paintHead() {
   const c = $('pr-chg');
   if (isFinite(cur.pct)) {
     c.className = 'pr-chg ' + (cur.pct >= 0 ? 'up' : 'down');
-    c.textContent = (cur.pct >= 0 ? '▲ +' : '▼ ') + cur.pct.toFixed(2) + '%';
+    c.innerHTML = '<bdi dir="ltr">' + (cur.pct >= 0 ? '▲ +' : '▼ ') + cur.pct.toFixed(2) + '%</bdi>';
   } else { c.className = 'pr-chg'; c.textContent = ''; }
   const chip = (id, label, val) => { const e = $(id); e.hidden = !val; e.innerHTML = val ? esc(label) + ' <b><bdi>' + esc(val) + '</bdi></b>' : ''; };
   chip('pr-hi', t('prHigh'), isFinite(cur.hi) ? fmt(cur.hi) : '');
   chip('pr-lo', t('prLow'), isFinite(cur.lo) ? fmt(cur.lo) : '');
   chip('pr-upd', t('prUpdated'), isFinite(cur.ts) ? fmtDate(cur.ts, true) + (cur.stale ? ' · ' + t('prStale') : '') : '');
+}
+
+function paintHover() {
+  const pts = visible();
+  const p = pts[hover];
+  if (!p) return;
+  const unitName = t(unit.get() === 'irr' ? 'prRial' : 'prToman');
+  $('pr-price').innerHTML = '<span>' + fmt(p.v) + '</span> <small>' + unitName + '</small>';
+  const pct = (p.v / pts[0].v - 1) * 100;
+  const c = $('pr-chg');
+  c.className = 'pr-chg ' + (pct >= 0 ? 'up' : 'down');
+  c.innerHTML = '<span class="pr-date">' + esc(fmtDate(p.ts, true)) + '</span><bdi dir="ltr">' + (pct >= 0 ? '▲ +' : '▼ ') + pct.toFixed(2) + '%</bdi>';
 }
 
 function visible() {
@@ -1590,6 +1661,10 @@ function draw() {
     c.textAlign = i === 0 ? 'left' : i === 3 ? 'right' : 'center';
     c.fillText(fmtDate(ts, pts[pts.length - 1].ts - pts[0].ts > 300 * 86400000), x0 + (x1 - x0) * f, H - 8);
   }
+  c.save();
+  c.beginPath();
+  c.rect(0, 0, x0 + (x1 - x0) * reveal + 2, H);
+  c.clip();
   const g = c.createLinearGradient(0, y0, 0, y1);
   g.addColorStop(0, 'rgba(255,122,182,0.34)');
   g.addColorStop(1, 'rgba(91,206,250,0)');
@@ -1602,8 +1677,9 @@ function draw() {
   c.beginPath();
   pts.forEach((p, i) => { const x = tx(i), y = ty(p.v * k); i ? c.lineTo(x, y) : c.moveTo(x, y); });
   c.strokeStyle = lg; c.lineWidth = 2.2; c.lineJoin = 'round'; c.stroke();
+  c.restore();
   geo = { pts, tx, ty, k, x0, x1, y0, y1 };
-  if (hover >= 0 && hover < pts.length) {
+  if (hover >= 0 && hover < pts.length && reveal >= 1) {
     const x = tx(hover), y = ty(pts[hover].v * k);
     c.strokeStyle = 'rgba(255,239,247,0.35)'; c.lineWidth = 1;
     c.beginPath(); c.moveTo(Math.round(x) + 0.5, y0); c.lineTo(Math.round(x) + 0.5, y1); c.stroke();
@@ -1619,16 +1695,13 @@ function onMove(e) {
   const { pts, tx } = geo;
   let best = 0, bd = Infinity;
   for (let i = 0; i < pts.length; i++) { const d = Math.abs(tx(i) - x); if (d < bd) { bd = d; best = i; } }
+  if (best === hover) return;
   hover = best;
-  const tip = $('pr-tip');
-  tip.hidden = false;
-  tip.textContent = fmtDate(pts[best].ts, true) + '  ' + fmt(pts[best].v);
-  const w = tip.offsetWidth;
-  tip.style.left = Math.max(6, Math.min(r.width - w - 6, tx(best) - w / 2)) + 'px';
+  paintHead();
   draw();
 }
 
-function onLeave() { hover = -1; $('pr-tip').hidden = true; draw(); }
+function onLeave() { hover = -1; paintHead(); draw(); }
 
 const cv = $('pr-canvas');
 cv.addEventListener('pointermove', onMove);
@@ -1640,7 +1713,7 @@ async function load(bust) {
   const id = ++loadId;
   const s = sym.get();
   const view = $('v-prices');
-  if (!bust) { hover = -1; $('pr-tip').hidden = true; setStat('idle', 'prLoading'); view.classList.add('loading'); series = []; paintHead(); draw(); }
+  if (!bust) { hover = -1; setStat('idle', 'prLoading'); view.classList.add('loading'); series = []; paintHead(); draw(); }
   try {
     const needPop = bust || !popular;
     const [pop, h] = await Promise.all([
@@ -1657,7 +1730,7 @@ async function load(bust) {
     $('pr-stat').className = 'status t';
     $('pr-stat').textContent = '';
     paintHead();
-    draw();
+    if (bust) draw(); else animate();
   } catch (e) {
     if (id !== loadId) return;
     view.classList.remove('loading');

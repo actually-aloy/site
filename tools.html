@@ -64,12 +64,11 @@
           <div class="tool-head"><span class="mi-ic" data-ic="compress"></span><div><h2 data-i="n_compress"></h2><p data-i="d_compress"></p></div></div>
           <div class="split">
             <div class="panel">
-              <div class="field"><span class="lbl" data-i="format"></span>
-                <div class="seg" id="c-fmt"><button type="button" data-v="orig" class="on" data-i="fmtOrig"></button><button type="button" data-v="webp">WebP</button><button type="button" data-v="jpeg">JPG</button></div>
+              <div class="field" id="c-qf"><span class="lbl" data-i="compression"></span>
+                <div class="seg" id="c-lvl"><button type="button" data-v="0.9" data-i="lvBest"></button><button type="button" data-v="0.78" class="on" data-i="lvBal"></button><button type="button" data-v="0.55" data-i="lvSmall"></button></div>
+                <p class="hint" data-i="lvNote"></p>
               </div>
-              <div class="field" id="c-qf"><label for="c-q"><span data-i="quality"></span><output id="c-qo">80</output></label>
-                <input class="range" type="range" id="c-q" min="10" max="100" value="80">
-              </div>
+              <p class="hint" id="c-pngn" data-i="pngNote" hidden></p>
               <div class="field"><span class="lbl" data-i="resize"></span>
                 <div class="seg" id="c-rs"><button type="button" data-v="orig" class="on" data-i="rsOrig"></button><button type="button" data-v="fit" data-i="rsFit"></button><button type="button" data-v="pct" data-i="rsPct"></button></div>
               </div>
@@ -80,7 +79,6 @@
               <div class="field" id="c-pctf" hidden><label for="c-pct"><span data-i="scale"></span><output id="c-pcto">50%</output></label>
                 <input class="range" type="range" id="c-pct" min="5" max="100" value="50">
               </div>
-              <p class="hint" id="c-pngn" data-i="pngNote" hidden></p>
               <p class="hint" data-i="exifNote"></p>
             </div>
             <div class="stack">
@@ -102,8 +100,8 @@
               <div class="field"><span class="lbl" data-i="convTo"></span>
                 <div class="seg" id="v-fmt"><button type="button" data-v="png" class="on">PNG</button><button type="button" data-v="jpeg">JPG</button><button type="button" data-v="webp">WebP</button></div>
               </div>
-              <div class="field" id="v-qf" hidden><label for="v-q"><span data-i="quality"></span><output id="v-qo">92</output></label>
-                <input class="range" type="range" id="v-q" min="10" max="100" value="92">
+              <div class="field" id="v-qf" hidden><span class="lbl" data-i="compression"></span>
+                <div class="seg" id="v-lvl"><button type="button" data-v="0.95" data-i="lvBest"></button><button type="button" data-v="0.85" class="on" data-i="lvBal"></button><button type="button" data-v="0.6" data-i="lvSmall"></button></div>
               </div>
               <div class="field" id="v-scf"><span class="lbl" data-i="svgScale"></span>
                 <div class="seg" id="v-sc"><button type="button" data-v="1" class="on">1x</button><button type="button" data-v="2">2x</button><button type="button" data-v="4">4x</button></div>
@@ -257,7 +255,7 @@
             </div>
             <div class="pr-stats"><span class="stat" id="pr-hi"></span><span class="stat" id="pr-lo"></span><span class="stat" id="pr-upd"></span></div>
             <div class="pr-bar"><div class="seg" id="pr-range"><button type="button" data-v="30">1M</button><button type="button" data-v="90">3M</button><button type="button" data-v="180">6M</button><button type="button" data-v="365" class="on">1Y</button><button type="button" data-v="0" data-i="prAll"></button></div></div>
-            <div class="pr-chart"><canvas id="pr-canvas"></canvas><div class="pr-tip" id="pr-tip" hidden></div></div>
+            <div class="pr-chart"><canvas id="pr-canvas"></canvas></div>
             <div class="status idle t" id="pr-stat"></div>
             <p class="hint" data-i="prNote"></p>
           </div>

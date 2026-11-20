@@ -1501,8 +1501,6 @@ select,
 .pr-chg {
   margin-top: 4px;
   font-weight: 700;
-  direction: ltr;
-  text-align: start;
 }
 
 .pr-chg.up {
@@ -1686,4 +1684,246 @@ select,
 
 #v-prices.loading .pr-stats {
   visibility: hidden;
+}
+
+@keyframes rise {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes pop {
+  from { opacity: 0; transform: scale(0.94); }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes flash {
+  from { opacity: 0.2; transform: translateY(4px); filter: blur(3px); }
+  to { opacity: 1; transform: none; filter: none; }
+}
+
+@keyframes slide-out {
+  to { opacity: 0; transform: translateX(14px) scale(0.97); }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.seg,
+.tabs {
+  position: relative;
+}
+
+.seg button,
+.tabs button {
+  position: relative;
+  z-index: 1;
+}
+
+.has-pill > .pill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 0;
+  border-radius: 10px;
+  background: linear-gradient(135deg, rgba(255, 122, 182, 0.34), rgba(91, 206, 250, 0.2));
+  box-shadow: inset 0 0 0 1px rgba(255, 209, 231, 0.3);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.tabs.has-pill > .pill {
+  border-radius: 12px;
+}
+
+.has-pill.ready > .pill {
+  transition: transform 340ms cubic-bezier(0.3, 0.8, 0.3, 1), width 340ms cubic-bezier(0.3, 0.8, 0.3, 1), height 340ms cubic-bezier(0.3, 0.8, 0.3, 1), opacity 200ms ease;
+}
+
+.has-pill button.on {
+  background: transparent;
+  box-shadow: none;
+}
+
+.seg button:active,
+.tabs button:active {
+  transform: scale(0.95);
+}
+
+.seg button,
+.tabs button {
+  transition: color 200ms ease, transform 140ms ease;
+}
+
+.view:not([hidden]) .tool-head {
+  animation: rise 0.5s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
+.view:not([hidden]) .split > *,
+.view:not([hidden]) > .panel {
+  animation: rise 0.55s cubic-bezier(0.2, 0.7, 0.2, 1) 0.06s both;
+}
+
+.view:not([hidden]) .split > *:nth-child(2) {
+  animation-delay: 0.14s;
+}
+
+.view:not([hidden]) .panel > *,
+.view:not([hidden]) .stack > .drop {
+  animation: rise 0.5s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
+.panel > *:nth-child(1) { animation-delay: 0.1s; }
+.panel > *:nth-child(2) { animation-delay: 0.16s; }
+.panel > *:nth-child(3) { animation-delay: 0.22s; }
+.panel > *:nth-child(4) { animation-delay: 0.28s; }
+.panel > *:nth-child(5) { animation-delay: 0.34s; }
+.panel > *:nth-child(n + 6) { animation-delay: 0.4s; }
+
+.tab-pane:not([hidden]) {
+  animation: rise 0.4s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
+.menu-item {
+  animation: rise 0.45s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
+.menu-item:nth-child(2) { animation-delay: 0.04s; }
+.menu-item:nth-child(3) { animation-delay: 0.08s; }
+.menu-item:nth-child(4) { animation-delay: 0.12s; }
+.menu-item:nth-child(5) { animation-delay: 0.16s; }
+.menu-item:nth-child(6) { animation-delay: 0.2s; }
+.menu-item:nth-child(7) { animation-delay: 0.24s; }
+.menu-item:nth-child(8) { animation-delay: 0.28s; }
+.menu-item:nth-child(9) { animation-delay: 0.32s; }
+.menu-item:nth-child(n + 10) { animation-delay: 0.36s; }
+
+.menu-item .mi-ic,
+.hub-card .mi-ic {
+  transition: transform 260ms cubic-bezier(0.3, 1.4, 0.4, 1);
+}
+
+.menu-item:hover .mi-ic,
+.hub-card:hover .mi-ic {
+  transform: scale(1.1) rotate(-5deg);
+}
+
+.hub-card {
+  animation: rise 0.55s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
+.hub-card:nth-child(2) { animation-delay: 0.05s; }
+.hub-card:nth-child(3) { animation-delay: 0.1s; }
+.hub-card:nth-child(4) { animation-delay: 0.15s; }
+.hub-card:nth-child(5) { animation-delay: 0.2s; }
+.hub-card:nth-child(6) { animation-delay: 0.25s; }
+.hub-card:nth-child(7) { animation-delay: 0.3s; }
+.hub-card:nth-child(n + 8) { animation-delay: 0.35s; }
+
+.hub-card:hover {
+  transform: translateY(-4px);
+}
+
+.hub-card:active,
+.menu-item:active {
+  transform: scale(0.98);
+}
+
+.btn {
+  transition: background 160ms ease, transform 160ms ease, filter 160ms ease, border-color 160ms ease, box-shadow 200ms ease;
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+}
+
+.btn:active {
+  transform: scale(0.96);
+}
+
+.file.in {
+  animation: rise 0.4s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
+.file.out {
+  animation: slide-out 0.22s ease-in both;
+  pointer-events: none;
+}
+
+.file.busy .sz::before {
+  content: "";
+  display: inline-block;
+  width: 11px;
+  height: 11px;
+  margin-inline-end: 6px;
+  border: 2px solid rgba(255, 244, 249, 0.22);
+  border-top-color: var(--pink);
+  border-radius: 50%;
+  vertical-align: -1px;
+  animation: spin 0.7s linear infinite;
+}
+
+.sum:not([hidden]) {
+  animation: pop 0.35s cubic-bezier(0.2, 0.8, 0.3, 1) both;
+}
+
+.drop svg {
+  transition: transform 300ms cubic-bezier(0.3, 1.4, 0.4, 1);
+}
+
+.drop:hover svg,
+.drop.over svg {
+  transform: translateY(-4px) scale(1.08);
+}
+
+.pw.flash,
+#p-out.flash {
+  animation: flash 0.35s ease-out both;
+}
+
+.status:not(.idle) {
+  animation: pop 0.3s ease-out both;
+}
+
+.pr-chg,
+.pr-price {
+  transition: color 200ms ease;
+}
+
+.pr-date {
+  color: var(--muted);
+  font-weight: 600;
+  margin-inline-end: 6px;
+}
+
+.pr-chg {
+  min-height: 1.5em;
+}
+
+.toast {
+  transition: opacity 260ms ease, transform 320ms cubic-bezier(0.3, 1.4, 0.4, 1);
+}
+
+.range::-webkit-slider-thumb {
+  transition: transform 160ms ease;
+}
+
+.range:active::-webkit-slider-thumb {
+  transform: scale(1.2);
+}
+
+.meter i,
+.meter b {
+  transition: width 400ms cubic-bezier(0.3, 0.8, 0.3, 1), background 300ms ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    animation-delay: 0s !important;
+    transition-duration: 0.01ms !important;
+  }
 }
