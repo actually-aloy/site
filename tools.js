@@ -794,7 +794,7 @@ function makeList(cfg) {
         items.splice(k, 1);
         render();
       };
-      if (el && !matchMedia('(prefers-reduced-motion: reduce)').matches) { el.style.height = el.offsetHeight + 'px'; void el.offsetHeight; el.classList.add('out'); setTimeout(() => { el.classList.add('gone'); setTimeout(drop, 260); }, 190); } else drop();
+      if (el && !matchMedia('(prefers-reduced-motion: reduce)').matches) { el.style.height = el.offsetHeight + 'px'; void el.offsetHeight; el.classList.add('leaving'); setTimeout(() => { el.classList.add('gone'); setTimeout(drop, 260); }, 190); } else drop();
     } else if (items[idx].blob) saveBlob(items[idx].blob, items[idx].name);
   });
 

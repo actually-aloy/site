@@ -4076,8 +4076,10 @@
       const rep = {
         secs: Math.floor(secs), worked: sec, capped: secs > sec + 1, k: 0,
         mined: S.c.map(() => 0), smelt: S.c.map(() => 0), made: PROD.map(() => 0), fullAt: {}, starve: PROD.map(() => 0), fullp: PROD.map(() => 0),
-        svc: 0, attacks: [], news: [], cash0: S.cash, cashD: 0
+        svc: 0, attacks: [], news: [], cash0: S.cash, cashD: 0, stockD: 0,
+        pr0: S.c.map((c, i) => price(i)), pp0: PROD.map((d, i) => pPrice(i))
       };
+      const stock0 = stockValue();
       S.outage = 0;
       S.boost = null;
       S.sec.ddos = 0;
@@ -4114,6 +4116,7 @@
         S.p.forEach(p => { p.h = new Array(HIST_LEN).fill(p.x); });
       }
       rep.cashD = S.cash - rep.cash0;
+      rep.stockD = stockValue() - stock0;
       const gained = rep.mined.reduce((a, b) => a + b, 0) + rep.made.reduce((a, b) => a + b, 0);
       log('AWAY ' + fmtDur(sec) + '. PRODUCED ' + Math.floor(gained) + ' UNITS WHILE YOU WERE GONE.');
       if (secs >= 60) showAway(rep);
@@ -4150,13 +4153,13 @@
       let worth = 0;
       S.c.forEach((c, i) => {
         if (!c.u || rep.smelt[i] < 0.5) return;
-        const v = rep.smelt[i] * price(i);
+        const v = rep.smelt[i] * rep.pr0[i];
         worth += v;
         ops.push([COMM[i].sym, '+' + fmtStock(rep.smelt[i]), money(v), v]);
       });
       PROD.forEach((d, i) => {
         if (!S.p[i].u || rep.made[i] <= 0.0001) return;
-        const v = rep.made[i] * pPrice(i);
+        const v = rep.made[i] * rep.pp0[i];
         worth += v;
         prod.push([d.name, '+' + fmtStock(rep.made[i]), money(v), v]);
       });
@@ -4203,9 +4206,12 @@
       top.appendChild(el2('span', 'alabel', 'AWAY ' + fmtDur(rep.secs).toUpperCase()));
       const cashUp = rep.cashD >= 1;
       const cashDn = rep.cashD <= -1;
-      const big = el2('b', 'abig' + (cashDn ? ' dn' : ''), cashUp ? '+' + money(rep.cashD) : cashDn ? '-' + money(-rep.cashD) : v.worth >= 1 ? '+' + money(v.worth) : 'NOTHING NEW');
+      const sUp = rep.stockD >= 1;
+      const sDn = rep.stockD <= -1;
+      const big = el2('b', 'abig' + (cashDn ? ' dn' : ''), cashUp ? '+' + money(rep.cashD) : cashDn ? '-' + money(-rep.cashD) : sUp ? '+' + money(rep.stockD) : 'NOTHING NEW');
       top.appendChild(big);
-      top.appendChild(el2('span', 'asub', cashUp || cashDn ? 'CASH ' + (cashUp ? 'ADDED' : 'LOST') + (v.worth >= 1 ? '. ' + money(v.worth) + ' OF GOODS MADE' : '') : v.worth >= 1 ? 'OF GOODS MADE, READY TO SELL' : 'YOUR MINES AND FACTORIES WERE IDLE'));
+      const stockTxt = sUp ? money(rep.stockD) + ' MORE STOCK IN STORAGE' : sDn ? money(-rep.stockD) + ' LESS STOCK IN STORAGE' : '';
+      top.appendChild(el2('span', 'asub', cashUp || cashDn ? 'CASH ' + (cashUp ? 'ADDED' : 'LOST') + (stockTxt ? '. ' + stockTxt : '') : sUp ? 'OF STOCK MADE, READY TO SELL. NO CASH CHANGE' : sDn ? stockTxt : 'YOUR MINES AND FACTORIES WERE IDLE'));
       b.appendChild(top);
       if (rep.capped) b.appendChild(el2('p', 'anote', 'Your crews worked ' + fmtDur(rep.worked) + ' of that. NIGHT WATCH on the BOARD tab extends it.'));
       v.sections.forEach(s => {

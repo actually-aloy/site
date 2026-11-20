@@ -2255,7 +2255,7 @@ textarea {
   overflow: hidden;
 }
 
-.file.out {
+.file.leaving {
   animation: none;
   opacity: 0;
   transform: translateX(28px) scale(0.97);
@@ -2263,11 +2263,11 @@ textarea {
   transition: opacity 180ms ease, transform 190ms cubic-bezier(0.4, 0, 1, 1);
 }
 
-[dir="rtl"] .file.out {
+[dir="rtl"] .file.leaving {
   transform: translateX(-28px) scale(0.97);
 }
 
-.file.out.gone {
+.file.leaving.gone {
   height: 0 !important;
   padding-block: 0;
   margin-block: -4px;
