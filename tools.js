@@ -69,6 +69,7 @@ const S = {
   lvNote: ['Balanced is right for most photos. Files keep their format.', 'حالت متعادل برای بیشتر عکس‌ها مناسبه. فرمت فایل‌ها عوض نمیشه.'],
   jpgNote: ['JPG has no transparency, so converting it to PNG or WebP keeps the background. It does not remove it.', 'JPG شفافیت نداره، برای همین تبدیلش به PNG یا WebP پس‌زمینه رو نگه می‌داره و حذفش نمی‌کنه.'],
   noGain: ['Already optimal', 'از قبل بهینه‌ست'],
+  camera: ['Camera', 'دوربین'],
   sameFmt: ['Already in this format. Pick a different one.', 'همین الان توی این فرمته. یه فرمت دیگه انتخاب کن.'],
   pngNote: ['PNG is lossless, so there is no compression level. Lower the size to make it smaller, or switch it to WebP or JPG in the Format converter.', 'PNG بی‌افته، برای همین سطح فشرده‌سازی نداره. اندازه رو کم کن تا کوچیک‌تر بشه، یا توی مبدل فرمت به WebP یا JPG عوضش کن.'],
   format: ['Format', 'فرمت'],
@@ -369,6 +370,85 @@ function bindRange(id, outId, f, cb) {
   upd();
 }
 
+let ddCount = 0;
+function dropdown(sel) {
+  const id = 'dd' + (++ddCount);
+  const root = document.createElement('div');
+  root.className = 'dd';
+  root.innerHTML = '<button type="button" class="dd-btn" aria-haspopup="listbox" aria-expanded="false"><span class="dd-val"></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button><ul class="dd-menu" role="listbox" tabindex="-1"></ul>';
+  sel.classList.add('dd-native');
+  sel.tabIndex = -1;
+  sel.setAttribute('aria-hidden', 'true');
+  sel.parentNode.insertBefore(root, sel.nextSibling);
+  const btn = root.querySelector('.dd-btn');
+  const val = root.querySelector('.dd-val');
+  const menu = root.querySelector('.dd-menu');
+  const lab = sel.id && document.querySelector('label[for="' + sel.id + '"]');
+  if (lab) { lab.addEventListener('click', e => { e.preventDefault(); btn.focus(); }); }
+  let active = 0;
+  const check = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>';
+  const isOpen = () => root.classList.contains('open');
+  function paint() {
+    const opts = Array.from(sel.options);
+    menu.innerHTML = opts.map((o, i) => '<li role="option" id="' + id + '-o' + i + '" data-i="' + i + '" class="dd-opt" aria-selected="' + (i === sel.selectedIndex) + '"><span>' + esc(o.textContent) + '</span>' + check + '</li>').join('');
+    val.textContent = opts[sel.selectedIndex] ? opts[sel.selectedIndex].textContent : '';
+  }
+  function setActive(i) {
+    const n = sel.options.length;
+    active = Math.max(0, Math.min(n - 1, i));
+    qa('.dd-opt', menu).forEach((el, k) => el.classList.toggle('active', k === active));
+    const el = menu.children[active];
+    if (el && el.scrollIntoView) el.scrollIntoView({ block: 'nearest' });
+  }
+  function open() {
+    if (isOpen()) return;
+    const r = btn.getBoundingClientRect();
+    const below = window.innerHeight - r.bottom;
+    root.classList.toggle('up', below < Math.min(menu.scrollHeight, 268) + 16 && r.top > below);
+    root.classList.add('open');
+    btn.setAttribute('aria-expanded', 'true');
+    setActive(sel.selectedIndex);
+    menu.focus({ preventScroll: true });
+  }
+  function close(refocus) {
+    if (!isOpen()) return;
+    root.classList.remove('open');
+    btn.setAttribute('aria-expanded', 'false');
+    if (refocus) btn.focus({ preventScroll: true });
+  }
+  function choose(i) {
+    const changed = sel.selectedIndex !== i;
+    sel.selectedIndex = i;
+    paint();
+    close(true);
+    if (changed) sel.dispatchEvent(new Event('change', { bubbles: true }));
+  }
+  btn.addEventListener('mousedown', e => { if (isOpen()) e.preventDefault(); });
+  btn.addEventListener('click', () => { isOpen() ? close(true) : open(); });
+  btn.addEventListener('keydown', e => { if (e.key === 'ArrowDown' || e.key === 'ArrowUp') { e.preventDefault(); open(); } });
+  menu.addEventListener('mousedown', e => e.preventDefault());
+  menu.addEventListener('mouseover', e => { const li = e.target.closest('.dd-opt'); if (li) setActive(+li.dataset.i); });
+  menu.addEventListener('click', e => { const li = e.target.closest('.dd-opt'); if (li) choose(+li.dataset.i); });
+  menu.addEventListener('keydown', e => {
+    switch (e.key) {
+      case 'ArrowDown': e.preventDefault(); setActive(active + 1); break;
+      case 'ArrowUp': e.preventDefault(); setActive(active - 1); break;
+      case 'Home': e.preventDefault(); setActive(0); break;
+      case 'End': e.preventDefault(); setActive(sel.options.length - 1); break;
+      case 'Enter':
+      case ' ': e.preventDefault(); choose(active); break;
+      case 'Escape': e.preventDefault(); close(true); break;
+      case 'Tab': close(false); break;
+    }
+  });
+  menu.addEventListener('blur', e => { if (!root.contains(e.relatedTarget)) close(false); });
+  document.addEventListener('pointerdown', e => { if (!root.contains(e.target)) close(false); });
+  hooks.leave.push(() => close(false));
+  sel._dd = { refresh: paint };
+  paint();
+  return sel._dd;
+}
+
 const pillPlacers = [];
 function pillify(box) {
   if (!window.ResizeObserver) return () => {};
@@ -443,7 +523,7 @@ function wireDrop(dropId, inputId, onFiles) {
 }
 
 const hooks = { lang: [], enter: [], leave: [] };
-const T = { S, t, $, qa, esc, ICON, svgOf, toast, copyText, saveBlob, fmtBytes, bindSeg, bindRange, bindTabs, wireDrop, hooks, getLang: () => lang };
+const T = { S, t, $, qa, esc, ICON, svgOf, toast, copyText, saveBlob, fmtBytes, bindSeg, bindRange, bindTabs, wireDrop, dropdown, hooks, getLang: () => lang };
 window.TT = T;
 
 function applyStatic() {
@@ -462,6 +542,24 @@ function toolMatches(tool, q) {
 let current = 'hub';
 let query = '';
 
+let menuHl = null;
+let menuFirst = true;
+function placeMenuHl() {
+  const list = $('menu-list');
+  if (!menuHl) {
+    menuHl = document.createElement('span');
+    menuHl.className = 'menu-hl';
+    menuHl.setAttribute('aria-hidden', 'true');
+  }
+  if (menuHl.parentNode !== list) list.appendChild(menuHl);
+  const on = list.querySelector('.menu-item.on');
+  if (!on) { menuHl.style.opacity = '0'; return; }
+  menuHl.style.height = on.offsetHeight + 'px';
+  menuHl.style.transform = 'translateY(' + on.offsetTop + 'px)';
+  menuHl.style.opacity = '1';
+  if (!list.classList.contains('ready')) requestAnimationFrame(() => requestAnimationFrame(() => list.classList.add('ready')));
+}
+
 function renderMenu() {
   const list = $('menu-list');
   const items = TOOLS.filter(x => toolMatches(x, query));
@@ -475,10 +573,12 @@ function renderMenu() {
     });
   });
   list.innerHTML = html || '<div class="menu-empty">' + esc(t('noResults')) + '</div>';
+  list.classList.toggle('intro', menuFirst);
+  if (menuFirst) { menuFirst = false; setTimeout(() => list.classList.remove('intro'), 900); }
+  placeMenuHl();
 }
-
 function renderHub() {
-  $('hub-grid').innerHTML = TOOLS.map(x => '<a class="hub-card" href="#' + x.id + '"><span class="mi-ic">' + svgOf(x.id) + '</span><h3>' + esc(t('n_' + x.id)) + '</h3><p>' + esc(t('d_' + x.id)) + '</p></a>').join('');
+  $('hub-grid').innerHTML = GROUPS.flatMap(g => TOOLS.filter(x => x.g === g)).map(x => '<a class="hub-card" href="#' + x.id + '"><span class="mi-ic">' + svgOf(x.id) + '</span><h3>' + esc(t('n_' + x.id)) + '</h3><p>' + esc(t('d_' + x.id)) + '</p></a>').join('');
 }
 
 function show(id) {
@@ -694,7 +794,7 @@ function makeList(cfg) {
         items.splice(k, 1);
         render();
       };
-      if (el && !matchMedia('(prefers-reduced-motion: reduce)').matches) { el.classList.add('out'); setTimeout(drop, 220); } else drop();
+      if (el && !matchMedia('(prefers-reduced-motion: reduce)').matches) { el.style.height = el.offsetHeight + 'px'; void el.offsetHeight; el.classList.add('out'); setTimeout(drop, 280); } else drop();
     } else if (items[idx].blob) saveBlob(items[idx].blob, items[idx].name);
   });
 
@@ -890,7 +990,7 @@ document.addEventListener('paste', e => {
 })();
 (function () {
 'use strict';
-const { t, $, qa, esc, copyText, saveBlob, fmtBytes, bindSeg, bindRange, bindTabs, hooks, toast } = window.TT;
+const { t, $, qa, esc, copyText, saveBlob, fmtBytes, bindSeg, bindRange, bindTabs, dropdown, hooks, toast } = window.TT;
 
 const jroot = $('v-json');
 bindTabs(jroot);
@@ -1195,6 +1295,10 @@ function fmtNum(n) {
   return i.replace(/\B(?=(\d{3})+(?!\d))/g, ',') + (d ? '.' + d : '');
 }
 
+const ddFrom = dropdown($('u-from'));
+const ddTo = dropdown($('u-to'));
+let lastRes = '';
+
 function fillUnits() {
   const opts = U[cat].u.map(u => '<option value="' + u[0] + '">' + esc(unitLabel(u)) + '</option>').join('');
   const f = $('u-from').value;
@@ -1203,49 +1307,71 @@ function fillUnits() {
   $('u-to').innerHTML = opts;
   $('u-from').value = U[cat].u.some(u => u[0] === f) && f ? f : U[cat].from;
   $('u-to').value = U[cat].u.some(u => u[0] === tt) && tt ? tt : U[cat].to;
+  ddFrom.refresh();
+  ddTo.refresh();
 }
 
-function paintUnits() {
+function paintUnits(animate) {
   const raw = $('u-val').value.replace(/,/g, '').replace(/[۰-۹]/g, d => '۰۱۲۳۴۵۶۷۸۹'.indexOf(d)).trim();
   const v = raw === '' || raw === '-' ? NaN : Number(raw);
   const from = $('u-from').value;
   const to = $('u-to').value;
-  $('u-res').textContent = isNaN(v) ? '—' : fmtNum(convertVal(v, from, to));
-  $('u-table').innerHTML = isNaN(v) ? '' : U[cat].u.map(u => {
+  const res = isNaN(v) ? '—' : fmtNum(convertVal(v, from, to));
+  const out = $('u-res');
+  out.textContent = res;
+  if (res !== lastRes) {
+    lastRes = res;
+    out.classList.remove('flash');
+    void out.offsetWidth;
+    out.classList.add('flash');
+  }
+  $('u-table').innerHTML = isNaN(v) ? '' : U[cat].u.map((u, i) => {
     const r = fmtNum(convertVal(v, from, u[0]));
-    return '<button type="button" class="cell" data-v="' + esc(r.replace(/,/g, '')) + '"><small>' + esc(unitLabel(u)) + '</small><b>' + esc(r) + '</b></button>';
+    return '<button type="button" class="cell' + (animate === true ? ' in' : '') + '" style="--i:' + i + '" data-v="' + esc(r.replace(/,/g, '')) + '"><small>' + esc(unitLabel(u)) + '</small><b>' + esc(r) + '</b></button>';
   }).join('');
 }
 
+const catSeg = (() => {
+  $('u-cat').innerHTML = CATS.map(c => '<button type="button" data-v="' + c + '"' + (c === cat ? ' class="on"' : '') + '></button>').join('');
+  return bindSeg('u-cat', v => {
+    cat = v;
+    $('u-from').value = '';
+    $('u-to').value = '';
+    fillUnits();
+    paintUnits(true);
+  });
+})();
+
 function paintCats() {
-  $('u-cat').innerHTML = CATS.map(c => '<button type="button" data-v="' + c + '"' + (c === cat ? ' class="on"' : '') + '>' + esc(t('c_' + c)) + '</button>').join('');
+  qa('button', $('u-cat')).forEach(b => { b.textContent = t('c_' + b.dataset.v); });
 }
 
-$('u-cat').addEventListener('click', e => {
-  const b = e.target.closest('button[data-v]');
-  if (!b) return;
-  cat = b.dataset.v;
-  paintCats();
-  $('u-from').value = '';
-  $('u-to').value = '';
-  fillUnits();
-  paintUnits();
-});
-$('u-val').addEventListener('input', paintUnits);
-$('u-from').addEventListener('change', paintUnits);
-$('u-to').addEventListener('change', paintUnits);
+$('u-val').addEventListener('input', () => paintUnits());
+$('u-from').addEventListener('change', () => paintUnits());
+$('u-to').addEventListener('change', () => paintUnits());
 $('u-swap').addEventListener('click', () => {
   const a = $('u-from').value;
   $('u-from').value = $('u-to').value;
   $('u-to').value = a;
+  ddFrom.refresh();
+  ddTo.refresh();
+  const sw = $('u-swap');
+  sw.classList.remove('spin');
+  void sw.offsetWidth;
+  sw.classList.add('spin');
   paintUnits();
 });
 $('u-table').addEventListener('click', e => {
   const c = e.target.closest('.cell');
-  if (c) copyText(c.dataset.v);
+  if (!c) return;
+  copyText(c.dataset.v);
+  c.classList.remove('copied');
+  void c.offsetWidth;
+  c.classList.add('copied');
 });
 $('u-res').addEventListener('click', () => { const v = $('u-res').textContent.replace(/,/g, ''); if (v && v !== '—') copyText(v); });
 hooks.lang.push(() => { paintCats(); fillUnits(); paintUnits(); });
+hooks.enter.push(id => { if (id === 'units') paintUnits(true); });
 })();
 (function () {
 'use strict';
@@ -1522,7 +1648,7 @@ function animate() {
   reveal = 0;
   raf = requestAnimationFrame(step);
 }
-const range = bindSeg('pr-range', () => { hover = -1; paintHead(); animate(); });
+const range = bindSeg('pr-range', () => { hover = -1; $('pr-tip').hidden = true; animate(); });
 
 async function getJson(path, bust) {
   let err;
@@ -1571,7 +1697,6 @@ function liveOf(symbol) {
 }
 
 function paintHead() {
-  if (hover >= 0) { paintHover(); return; }
   const live = liveOf(sym.get());
   const last = series[series.length - 1];
   const prev = series[series.length - 2];
@@ -1588,18 +1713,6 @@ function paintHead() {
   chip('pr-hi', t('prHigh'), isFinite(cur.hi) ? fmt(cur.hi) : '');
   chip('pr-lo', t('prLow'), isFinite(cur.lo) ? fmt(cur.lo) : '');
   chip('pr-upd', t('prUpdated'), isFinite(cur.ts) ? fmtDate(cur.ts, true) + (cur.stale ? ' · ' + t('prStale') : '') : '');
-}
-
-function paintHover() {
-  const pts = visible();
-  const p = pts[hover];
-  if (!p) return;
-  const unitName = t(unit.get() === 'irr' ? 'prRial' : 'prToman');
-  $('pr-price').innerHTML = '<span>' + fmt(p.v) + '</span> <small>' + unitName + '</small>';
-  const pct = (p.v / pts[0].v - 1) * 100;
-  const c = $('pr-chg');
-  c.className = 'pr-chg ' + (pct >= 0 ? 'up' : 'down');
-  c.innerHTML = '<span class="pr-date">' + esc(fmtDate(p.ts, true)) + '</span><bdi dir="ltr">' + (pct >= 0 ? '▲ +' : '▼ ') + pct.toFixed(2) + '%</bdi>';
 }
 
 function visible() {
@@ -1695,13 +1808,16 @@ function onMove(e) {
   const { pts, tx } = geo;
   let best = 0, bd = Infinity;
   for (let i = 0; i < pts.length; i++) { const d = Math.abs(tx(i) - x); if (d < bd) { bd = d; best = i; } }
-  if (best === hover) return;
   hover = best;
-  paintHead();
+  const tip = $('pr-tip');
+  tip.hidden = false;
+  tip.textContent = fmtDate(pts[best].ts, true) + '  ' + fmt(pts[best].v);
+  const w = tip.offsetWidth;
+  tip.style.left = Math.max(6, Math.min(r.width - w - 6, tx(best) - w / 2)) + 'px';
   draw();
 }
 
-function onLeave() { hover = -1; paintHead(); draw(); }
+function onLeave() { hover = -1; $('pr-tip').hidden = true; draw(); }
 
 const cv = $('pr-canvas');
 cv.addEventListener('pointermove', onMove);
@@ -1713,7 +1829,7 @@ async function load(bust) {
   const id = ++loadId;
   const s = sym.get();
   const view = $('v-prices');
-  if (!bust) { hover = -1; setStat('idle', 'prLoading'); view.classList.add('loading'); series = []; paintHead(); draw(); }
+  if (!bust) { hover = -1; $('pr-tip').hidden = true; setStat('idle', ''); view.classList.add('loading'); series = []; paintHead(); draw(); }
   try {
     const needPop = bust || !popular;
     const [pop, h] = await Promise.all([

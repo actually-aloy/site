@@ -1845,11 +1845,6 @@ select,
   animation: rise 0.4s cubic-bezier(0.2, 0.7, 0.2, 1) both;
 }
 
-.file.out {
-  animation: slide-out 0.22s ease-in both;
-  pointer-events: none;
-}
-
 .file.busy .sz::before {
   content: "";
   display: inline-block;
@@ -1926,4 +1921,406 @@ select,
     animation-delay: 0s !important;
     transition-duration: 0.01ms !important;
   }
+}
+
+.head-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  min-height: 34px;
+}
+
+.head-row .lbl {
+  color: var(--muted);
+  font-size: 12.5px;
+  font-weight: 600;
+}
+
+.split.even {
+  align-items: stretch;
+}
+
+.split.even > .panel,
+.split.even > .field {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.split.even > .panel {
+  gap: 12px;
+}
+
+.split.even > .field {
+  gap: 8px;
+}
+
+.grow {
+  flex: 1 1 auto;
+}
+
+.split.even textarea.grow,
+.split.even > .field > textarea {
+  flex: 1 1 auto;
+  min-height: 260px;
+}
+
+.panel > .video-box.grow {
+  min-height: 240px;
+}
+
+textarea {
+  resize: none;
+}
+
+#s-stat {
+  margin-top: 0;
+}
+
+.status:empty {
+  display: none;
+}
+
+@supports selector(::-webkit-scrollbar) {
+  * {
+    scrollbar-width: auto;
+    scrollbar-color: auto;
+  }
+
+  ::-webkit-scrollbar {
+    width: 12px;
+    height: 12px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    border: 3px solid transparent;
+    border-radius: 999px;
+    background: rgba(255, 209, 231, 0.22);
+    background-clip: content-box;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 209, 231, 0.42);
+    background-clip: content-box;
+  }
+
+  ::-webkit-scrollbar-corner {
+    background: transparent;
+  }
+}
+
+.check {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.check input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  display: grid;
+  flex: none;
+  place-content: center;
+  width: 22px;
+  height: 22px;
+  margin: 0;
+  border: 1.5px solid rgba(255, 209, 231, 0.38);
+  border-radius: 8px;
+  background: rgba(255, 244, 249, 0.06);
+  cursor: pointer;
+  transition: background 200ms ease, border-color 200ms ease, box-shadow 200ms ease, transform 140ms ease;
+}
+
+.check input[type="checkbox"]::after {
+  content: "";
+  width: 10px;
+  height: 5px;
+  margin-top: -2px;
+  border-left: 2.5px solid #1a1320;
+  border-bottom: 2.5px solid #1a1320;
+  border-radius: 1px;
+  transform: rotate(-45deg) scale(0);
+  transition: transform 220ms cubic-bezier(0.3, 1.5, 0.4, 1);
+}
+
+.check:hover input[type="checkbox"] {
+  border-color: rgba(255, 209, 231, 0.7);
+  background: rgba(255, 244, 249, 0.1);
+}
+
+.check input[type="checkbox"]:checked {
+  border-color: transparent;
+  background: linear-gradient(135deg, var(--pink), var(--blue));
+  box-shadow: 0 4px 14px rgba(255, 122, 182, 0.35);
+}
+
+.check input[type="checkbox"]:checked::after {
+  transform: rotate(-45deg) scale(1);
+}
+
+.check input[type="checkbox"]:active {
+  transform: scale(0.9);
+}
+
+.check input[type="checkbox"]:focus-visible {
+  outline: 2px solid rgba(255, 209, 231, 0.7);
+  outline-offset: 2px;
+}
+
+.dd {
+  position: relative;
+}
+
+.dd.open {
+  z-index: 30;
+}
+
+.dd-native {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  overflow: hidden;
+}
+
+.dd-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 11px 13px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: rgba(255, 244, 249, 0.06);
+  color: var(--text);
+  font-family: inherit;
+  font-size: 14px;
+  line-height: 1.6;
+  text-align: start;
+  cursor: pointer;
+  transition: border-color 180ms ease, background 180ms ease, transform 140ms ease;
+}
+
+.dd-btn:hover {
+  background: rgba(255, 244, 249, 0.1);
+  border-color: rgba(255, 209, 231, 0.34);
+}
+
+.dd-btn:active {
+  transform: scale(0.985);
+}
+
+.dd-btn:focus-visible,
+.dd.open .dd-btn {
+  outline: none;
+  border-color: rgba(255, 209, 231, 0.55);
+  background: rgba(255, 244, 249, 0.1);
+}
+
+.dd-btn svg {
+  width: 16px;
+  height: 16px;
+  flex: 0 0 auto;
+  color: var(--pink-soft);
+  transition: transform 240ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.dd.open .dd-btn svg {
+  transform: rotate(180deg);
+}
+
+.dd-menu {
+  position: absolute;
+  inset-inline: 0;
+  top: calc(100% + 8px);
+  z-index: 31;
+  margin: 0;
+  padding: 6px;
+  list-style: none;
+  max-height: 268px;
+  overflow-y: auto;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: linear-gradient(150deg, #2a2131, #18121d);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.5);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translateY(-6px) scale(0.98);
+  transform-origin: top center;
+  outline: none;
+  transition: opacity 160ms ease, transform 220ms cubic-bezier(0.2, 0.8, 0.2, 1), visibility 0s linear 220ms;
+}
+
+.dd.up .dd-menu {
+  top: auto;
+  bottom: calc(100% + 8px);
+  transform: translateY(6px) scale(0.98);
+  transform-origin: bottom center;
+}
+
+.dd.open .dd-menu {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: none;
+  transition-delay: 0s;
+}
+
+.dd-opt {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  color: var(--muted);
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 120ms ease, color 120ms ease;
+}
+
+.dd-opt svg {
+  width: 16px;
+  height: 16px;
+  flex: 0 0 auto;
+  color: var(--pink);
+  opacity: 0;
+  transform: scale(0.6);
+  transition: opacity 160ms ease, transform 220ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.dd-opt.active {
+  background: rgba(255, 244, 249, 0.1);
+  color: var(--text);
+}
+
+.dd-opt[aria-selected="true"] {
+  color: var(--text);
+  font-weight: 700;
+}
+
+.dd-opt[aria-selected="true"] svg {
+  opacity: 1;
+  transform: none;
+}
+
+.menu-list {
+  position: relative;
+}
+
+.menu-hl {
+  position: absolute;
+  top: 0;
+  inset-inline: 6px;
+  z-index: 0;
+  border: 1px solid rgba(255, 209, 231, 0.34);
+  border-radius: 16px;
+  background: linear-gradient(135deg, rgba(255, 122, 182, 0.2), rgba(91, 206, 250, 0.1));
+  opacity: 0;
+  pointer-events: none;
+}
+
+.menu-list.ready > .menu-hl {
+  transition: transform 380ms cubic-bezier(0.3, 0.8, 0.3, 1), height 300ms ease, opacity 200ms ease;
+}
+
+.menu-item {
+  position: relative;
+  z-index: 1;
+  animation: none;
+}
+
+.menu-list.intro .menu-item {
+  animation: rise 0.45s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
+.menu-item.on {
+  border-color: transparent;
+  background: transparent;
+}
+
+.menu-item:hover:not(.on) {
+  background: rgba(255, 244, 249, 0.07);
+}
+
+.file {
+  overflow: hidden;
+}
+
+.file.out {
+  animation: none;
+  height: 0 !important;
+  padding-block: 0;
+  margin-block: -4px;
+  border-width: 0;
+  opacity: 0;
+  pointer-events: none;
+  transition: height 260ms cubic-bezier(0.4, 0, 0.2, 1), padding 260ms ease, margin 260ms ease, border-width 260ms ease, opacity 180ms ease;
+}
+
+.file > * {
+  min-width: 0;
+}
+
+.file .act {
+  flex-wrap: nowrap;
+  white-space: nowrap;
+}
+
+.swap.spin svg {
+  animation: swap-spin 0.45s cubic-bezier(0.3, 1.2, 0.4, 1);
+}
+
+@keyframes swap-spin {
+  from { transform: rotate(0); }
+  to { transform: rotate(180deg); }
+}
+
+.big-out.flash {
+  animation: flash 0.35s ease-out both;
+}
+
+.cell.in {
+  animation: rise 0.4s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  animation-delay: calc(var(--i, 0) * 25ms);
+}
+
+.cell {
+  transition: transform 160ms ease, border-color 180ms ease, background 180ms ease;
+}
+
+.cell:hover {
+  transform: translateY(-2px);
+}
+
+.cell:active {
+  transform: scale(0.97);
+}
+
+.cell.copied {
+  animation: cell-copied 0.5s ease-out;
+}
+
+@keyframes cell-copied {
+  0% { background: rgba(255, 122, 182, 0.35); transform: scale(0.96); }
+  100% { background: transparent; transform: none; }
+}
+
+.units .field {
+  position: relative;
+}
+
+.field:has(.dd.open), .units:has(.dd.open) {
+  position: relative;
+  z-index: 40;
 }
