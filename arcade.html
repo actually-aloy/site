@@ -545,7 +545,7 @@
 
     .pad.idle { background: rgba(255, 244, 249, 0.06); }
     .pad.armed { background: rgba(91, 206, 250, 0.14); border-color: rgba(91, 206, 250, 0.4); }
-    .pad.ready { background: linear-gradient(135deg, var(--pink), var(--pink-soft)); border-color: transparent; color: #141018; }
+    .pad.ready { background: linear-gradient(135deg, var(--pink), var(--pink-soft)); border-color: transparent; color: #141018; background-origin: border-box;}
     .pad.fail { background: rgba(237, 66, 69, 0.2); border-color: rgba(237, 66, 69, 0.4); }
     .pad.result { background: rgba(59, 165, 93, 0.18); border-color: rgba(59, 165, 93, 0.4); }
 
@@ -603,8 +603,7 @@
     .seq-pad.lit {
       background: linear-gradient(135deg, var(--pink), var(--pink-soft));
       border-color: transparent;
-      box-shadow: 0 0 28px rgba(255, 122, 182, 0.55);
-    }
+      box-shadow: 0 0 28px rgba(255, 122, 182, 0.55); background-origin: border-box;}
 
     .seq-pad.tap {
       background: rgba(91, 206, 250, 0.28);

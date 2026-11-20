@@ -596,8 +596,7 @@ select.inp option {
 .btn.primary {
   border-color: transparent;
   background: linear-gradient(135deg, var(--pink), var(--pink-soft));
-  color: #141018;
-}
+  color: #141018; background-origin: border-box;}
 
 .btn.primary:hover {
   filter: brightness(1.06);
@@ -2058,8 +2057,7 @@ textarea {
 .check input[type="checkbox"]:checked {
   border-color: transparent;
   background: linear-gradient(135deg, var(--pink), var(--blue));
-  box-shadow: 0 4px 14px rgba(255, 122, 182, 0.35);
-}
+  box-shadow: 0 4px 14px rgba(255, 122, 182, 0.35); background-origin: border-box;}
 
 .check input[type="checkbox"]:checked::after {
   transform: rotate(-45deg) scale(1);
@@ -2259,13 +2257,22 @@ textarea {
 
 .file.out {
   animation: none;
+  opacity: 0;
+  transform: translateX(28px) scale(0.97);
+  pointer-events: none;
+  transition: opacity 180ms ease, transform 190ms cubic-bezier(0.4, 0, 1, 1);
+}
+
+[dir="rtl"] .file.out {
+  transform: translateX(-28px) scale(0.97);
+}
+
+.file.out.gone {
   height: 0 !important;
   padding-block: 0;
   margin-block: -4px;
   border-width: 0;
-  opacity: 0;
-  pointer-events: none;
-  transition: height 260ms cubic-bezier(0.4, 0, 0.2, 1), padding 260ms ease, margin 260ms ease, border-width 260ms ease, opacity 180ms ease;
+  transition: height 250ms cubic-bezier(0.4, 0, 0.2, 1), padding 250ms ease, margin 250ms ease, border-width 250ms ease;
 }
 
 .file > * {
@@ -2323,4 +2330,47 @@ textarea {
 .field:has(.dd.open), .units:has(.dd.open) {
   position: relative;
   z-index: 40;
+}
+
+.out-wrap {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.out-wrap > textarea {
+  flex: 1 1 auto;
+}
+
+.binbox {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 16px;
+  border: 1px dashed rgba(255, 209, 231, 0.3);
+  border-radius: 14px;
+  background: #1a141f;
+  text-align: center;
+  animation: pop 0.3s cubic-bezier(0.2, 0.8, 0.3, 1) both;
+}
+
+.binbox b {
+  font-family: var(--mono);
+  font-size: 15px;
+}
+
+.binbox small {
+  max-width: 260px;
+  color: var(--muted);
+  font-size: 12.5px;
+  line-height: 1.6;
+}
+
+.binbox .btn {
+  margin-top: 6px;
 }

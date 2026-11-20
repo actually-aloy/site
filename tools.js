@@ -794,7 +794,7 @@ function makeList(cfg) {
         items.splice(k, 1);
         render();
       };
-      if (el && !matchMedia('(prefers-reduced-motion: reduce)').matches) { el.style.height = el.offsetHeight + 'px'; void el.offsetHeight; el.classList.add('out'); setTimeout(drop, 280); } else drop();
+      if (el && !matchMedia('(prefers-reduced-motion: reduce)').matches) { el.style.height = el.offsetHeight + 'px'; void el.offsetHeight; el.classList.add('out'); setTimeout(() => { el.classList.add('gone'); setTimeout(drop, 260); }, 190); } else drop();
     } else if (items[idx].blob) saveBlob(items[idx].blob, items[idx].name);
   });
 
@@ -1090,10 +1090,27 @@ function fromB64(str) {
   return bytes;
 }
 
+let b64Ext = '';
+function sniffExt(b) {
+  const h = (n) => Array.from(b.slice(0, n)).map(x => x.toString(16).padStart(2, '0')).join('');
+  const a = h(12);
+  if (a.startsWith('89504e47')) return 'png';
+  if (a.startsWith('ffd8ff')) return 'jpg';
+  if (a.startsWith('47494638')) return 'gif';
+  if (a.startsWith('25504446')) return 'pdf';
+  if (a.startsWith('504b0304')) return 'zip';
+  if (a.startsWith('1f8b')) return 'gz';
+  if (a.startsWith('52494646') && a.slice(16, 24) === '57454250') return 'webp';
+  if (a.startsWith('52494646') && a.slice(16, 24) === '57415645') return 'wav';
+  if (a.startsWith('494433') || a.startsWith('fffb')) return 'mp3';
+  if (a.slice(8, 16) === '66747970') return 'mp4';
+  return '';
+}
+
 function b64Run() {
   const text = $('b-in').value;
   b64Bin = null;
-  $('b-dl').hidden = true;
+  $('b-bin').hidden = true;
   if (!text) { $('b-out').value = ''; setStat('b-stat', 'idle', t('bEmpty')); return; }
   if (bMode.get() === 'enc') {
     $('b-out').value = toB64(new TextEncoder().encode(text), $('b-url').checked);
@@ -1107,8 +1124,11 @@ function b64Run() {
     if (str === null || /[\u0000-\u0008\u000e-\u001f]/.test(str)) {
       b64Bin = bytes;
       $('b-out').value = '';
-      $('b-dl').hidden = false;
-      setStat('b-stat', 'idle', t('bBinary') + ' (' + fmtBytes(bytes.length) + ')');
+      b64Ext = sniffExt(bytes);
+      $('b-bint').textContent = t('bBinary');
+      $('b-binn').innerHTML = '<bdi dir="ltr">' + fmtBytes(bytes.length) + (b64Ext ? ' · .' + b64Ext : '') + '</bdi>';
+      $('b-bin').hidden = false;
+      setStat('b-stat', 'ok', '✓ ' + t('bOkDec'));
     } else {
       $('b-out').value = str;
       setStat('b-stat', 'ok', '✓ ' + t('bOkDec'));
@@ -1130,7 +1150,7 @@ $('b-swap').addEventListener('click', () => {
   bMode.set(bMode.get() === 'enc' ? 'dec' : 'enc');
   b64Run();
 });
-$('b-dl').addEventListener('click', () => { if (b64Bin) saveBlob(new Blob([b64Bin]), 'decoded.bin'); });
+$('b-dl').addEventListener('click', () => { if (b64Bin) saveBlob(new Blob([b64Bin]), 'decoded.' + (b64Ext || 'bin')); });
 $('b-file').addEventListener('click', () => $('b-fileinp').click());
 $('b-fileinp').addEventListener('change', async () => {
   const f = $('b-fileinp').files[0];
