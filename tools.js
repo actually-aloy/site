@@ -102,12 +102,6 @@ const S = {
   larger: ['larger', 'بزرگ‌تر'],
   sumFiles: ['files', 'فایل'],
   sumTotal: ['Total', 'مجموع'],
-  fh_avif: ['AVIF: much smaller files than JPG at the same look. Uses an encoder built into this site, so the first one takes a moment. Still offline.', 'AVIF: فایل خیلی کوچک‌تر از JPG با همون کیفیت. از یه انکودر داخل همین سایت استفاده می‌کنه، پس اولین بار یکم طول می‌کشه. هنوز آفلاینه.'],
-  fh_jxl: ['JPEG XL: very small and sharp, but only Safari and a few apps open it so far. Uses an encoder built into this site. Still offline.', 'JPEG XL: خیلی کوچک و واضح، ولی فعلاً فقط سافاری و چندتا برنامه بازش می‌کنن. از یه انکودر داخل همین سایت استفاده می‌کنه. هنوز آفلاینه.'],
-  fh_gif: ['GIF has 256 colors at most, so photos lose detail. Single frame, simple transparency.', 'GIF حداکثر ۲۵۶ رنگ داره، پس عکس‌ها جزئیات از دست میدن. تک‌فریم، با شفافیت ساده.'],
-  fh_bmp: ['BMP is uncompressed, so files get very big. It has no transparency.', 'BMP فشرده نیست و حجمش خیلی بالا میره. شفافیت هم نداره.'],
-  fh_ico: ['Makes one icon file with every size from 16 to 256 px that fits your image. Good for favicons. Square images work best.', 'یه فایل آیکون با همه اندازه‌ها از ۱۶ تا ۲۵۶ پیکسل میسازه که به عکست بخوره. برای فاوآیکون خوبه. عکس مربعی بهترین نتیجه رو میده.'],
-  fh_tiff: ['TIFF is uncompressed, so files get very big. Keeps transparency.', 'TIFF فشرده نیست و حجمش خیلی بالا میره. شفافیت رو نگه می‌داره.'],
   convTo: ['Convert to', 'تبدیل به'],
   svgScale: ['SVG output size', 'اندازه خروجی SVG'],
   svgNote: ['SVG is vector, so you pick how large the image should be.', 'SVG برداریه، پس خودت انتخاب میکنی تصویر چقدر بزرگ باشه.'],
@@ -1180,10 +1174,6 @@ const convertUi = (() => {
   const syncFmt = () => {
     const v = fsel.value;
     $('v-qf').hidden = !(v === 'webp' || v === 'jpeg' || v === 'avif' || v === 'jxl');
-    const hint = $('v-fmth');
-    const key = 'fh_' + v;
-    hint.hidden = !(window.TT.has(key));
-    if (!hint.hidden) hint.textContent = t(key);
   };
   fsel.addEventListener('change', () => { syncFmt(); syncBg(); tool.reprocess(); });
   hooks.lang.push(syncFmt);

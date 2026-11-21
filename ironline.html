@@ -2233,36 +2233,24 @@
       position: relative;
     }
 
-    .mpill.mute .vol::after {
-      content: "0%";
-      position: absolute;
-      left: 24px;
-      top: 50%;
-      transform: translateY(-50%);
-      font-size: 11px;
-      letter-spacing: 0.06em;
-      color: var(--dim);
-      pointer-events: none;
+    .slide::-webkit-slider-thumb {
+      transition: transform 0.15s, background 0.35s, box-shadow 0.35s;
+    }
+
+    .slide::-moz-range-thumb {
+      transition: transform 0.15s, background 0.35s, box-shadow 0.35s;
     }
 
     .mpill.mute #tvol::-webkit-slider-thumb {
-      background: var(--bg);
-      box-shadow: inset 0 0 0 2px var(--fg);
+      background: var(--dim);
+      box-shadow: none;
     }
 
     .mpill.mute #tvol::-moz-range-thumb {
-      background: var(--bg);
-      box-shadow: inset 0 0 0 2px var(--fg);
+      background: var(--dim);
+      box-shadow: none;
     }
 
-    .mpill.mute #tvol {
-      animation: none;
-    }
-
-    .mpill.mute .meq i {
-      animation: none;
-      transform: scaleY(0.3);
-    }
   </style>
 </head>
 <body>
