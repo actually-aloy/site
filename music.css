@@ -218,6 +218,26 @@
   }
 }
 
+@media (max-width: 400px) {
+  .mu-slider {
+    width: 58px;
+  }
+
+  .mu-pill.on .mu-vol {
+    max-width: 82px;
+  }
+}
+
+@media (max-width: 345px) {
+  .mu-slider {
+    width: 34px;
+  }
+
+  .mu-pill.on .mu-vol {
+    max-width: 56px;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .mu-pill.on.run .mu-eq i,
   .mu-pill.wait .mu-btn {

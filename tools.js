@@ -558,6 +558,13 @@ function placeMenuHl() {
   menuHl.style.transform = 'translateY(' + on.offsetTop + 'px)';
   menuHl.style.opacity = '1';
   if (!list.classList.contains('ready')) requestAnimationFrame(() => requestAnimationFrame(() => list.classList.add('ready')));
+  let sc = list;
+  while (sc && sc !== document.body && !(sc.scrollWidth > sc.clientWidth + 2 && /(auto|scroll)/.test(getComputedStyle(sc).overflowX))) sc = sc.parentElement;
+  if (sc && sc !== document.body) {
+    const a = on.getBoundingClientRect();
+    const b = sc.getBoundingClientRect();
+    sc.scrollTo({ left: sc.scrollLeft + (a.left - b.left) - (b.width - a.width) / 2, behavior: menuFirst ? 'auto' : 'smooth' });
+  }
 }
 
 function renderMenu() {
