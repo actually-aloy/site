@@ -22,7 +22,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="tools.css?v=202611211021">
+  <link rel="stylesheet" href="tools.css?v=202611211536">
   <link rel="stylesheet" href="langfx.css">
   <script src="langfx.js" defer></script>
 </head>
@@ -109,9 +109,10 @@
               </div>
               <div class="field" id="v-bgf"><span class="lbl" data-i="bg"></span>
                 <div class="seg" id="v-bg"><button type="button" id="v-bgnone" data-v="none" class="on" data-i="bgNone"></button><button type="button" data-v="#ffffff" data-i="bgWhite"></button><button type="button" data-v="#000000" data-i="bgBlack"></button></div>
-                <p class="hint" data-i="bgNote"></p>
+                <p class="hint" id="v-bgn" data-i="bgNote"></p>
               </div>
               <p class="hint" id="v-jpgn" data-i="jpgNote" hidden></p>
+              <p class="hint" id="v-gifn" data-i="gifNote" hidden></p>
             </div>
             <div class="stack">
               <label class="drop" id="v-drop" tabindex="0">
@@ -301,7 +302,7 @@
       if (clean !== location.pathname) history.replaceState(null, '', clean + location.search + location.hash);
     })();
   </script>
-  <script src="qr-gen.js?v=202611211021"></script>
-  <script src="tools.js?v=202611211021"></script>
+  <script src="qr-gen.js?v=202611211536"></script>
+  <script src="tools.js?v=202611211536"></script>
 </body>
 </html>

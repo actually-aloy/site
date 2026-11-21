@@ -28,7 +28,7 @@ const S = {
   d_password: ['Strong random passwords with a strength meter.', 'رمز عبور قوی و تصادفی، همراه با نمایشگر قدرت.'],
   k_password: ['password generator strength random secure رمز عبور تصادفی قدرت', ''],
   n_prices: ['Price charts', 'نمودار قیمت'],
-  d_prices: ['Free-market prices for the dollar, euro, tether, gold and coins. Always up to date, with history.', 'قیمت بازار آزاد دلار، یورو، تتر، طلا و سکه. همیشه به‌روز، با نمودار تاریخچه.'],
+  d_prices: ['Free-market prices for the dollar, euro, tether, gold and coins. Refreshes by itself, with history.', 'قیمت بازار آزاد دلار، یورو، تتر، طلا و سکه. خودش به‌روز میشه، با نمودار تاریخچه.'],
   k_prices: ['price chart dollar usd euro rial toman gold coin tether usdt exchange rate قیمت نمودار دلار یورو تتر طلا سکه ریال تومان', ''],
   gCur: ['Currency', 'ارز'],
   gGold: ['Gold and coins', 'طلا و سکه'],
@@ -66,8 +66,8 @@ const S = {
   lvBest: ['Best', 'بهترین'],
   lvBal: ['Balanced', 'متعادل'],
   lvSmall: ['Smallest', 'کوچک‌ترین'],
-  lvNote: ['Balanced is right for most photos. Files keep their format.', 'حالت متعادل برای بیشتر عکس‌ها مناسبه. فرمت فایل‌ها عوض نمیشه.'],
-  jpgNote: ['JPG has no transparency, so converting it to PNG or WebP keeps the background. It does not remove it.', 'JPG شفافیت نداره، برای همین تبدیلش به PNG یا WebP پس‌زمینه رو نگه می‌داره و حذفش نمی‌کنه.'],
+  lvNote: ['Balanced is right for most photos. JPG, PNG and WebP keep their format. Other formats come out as WebP.', 'حالت متعادل برای بیشتر عکس‌ها مناسبه. JPG و PNG و WebP فرمتشون عوض نمیشه. بقیه فرمت‌ها WebP میشن.'],
+  jpgNote: ['JPG has no transparency, so the converted image keeps its background. It does not remove it.', 'JPG شفافیت نداره، برای همین عکس تبدیل‌شده پس‌زمینه‌اش رو نگه می‌داره و حذفش نمی‌کنه.'],
   noGain: ['Already optimal', 'از قبل بهینه‌ست'],
   modeCam: ['Camera', 'دوربین'],
   modeImg: ['Image', 'تصویر'],
@@ -88,7 +88,7 @@ const S = {
   maxH: ['Max height (px)', 'حداکثر ارتفاع (px)'],
   fitNote: ['The image keeps its proportions and is never enlarged. Leave one box empty to limit only the other.', 'نسبت تصویر حفظ میشه و بزرگ‌تر نمیشه. یکی از خونه‌ها رو خالی بذار تا فقط اون یکی محدود بشه.'],
   scale: ['Scale', 'مقیاس'],
-  exifNote: ['Photo metadata such as location and camera info is removed.', 'متادیتای عکس مثل موقعیت و مشخصات دوربین حذف میشه.'],
+  exifNote: ['Compressed photos lose metadata such as location and camera info. A file that could not get smaller is kept as it was.', 'عکس‌های فشرده‌شده متادیتا مثل موقعیت و مشخصات دوربین رو از دست میدن. فایلی که کوچیک‌تر نشه همون‌طور که بود می‌مونه.'],
   dropB: ['Choose images', 'تصویرها رو انتخاب کن'],
   dropT: ['or drag them here. You can also paste.', 'یا بکشون اینجا. میتونی پیست هم کنی.'],
   dropImg: ['JPG, PNG, WebP, GIF, BMP, AVIF. Many at once.', 'JPG و PNG و WebP و GIF و BMP و AVIF. چندتا با هم.'],
@@ -109,7 +109,8 @@ const S = {
   bgNone: ['Transparent', 'شفاف'],
   bgWhite: ['White', 'سفید'],
   bgBlack: ['Black', 'مشکی'],
-  bgNote: ['JPG cannot be transparent, so it always gets a white background unless you choose black.', 'JPG شفافیت نداره، پس همیشه پس‌زمینه سفید میگیره مگر اینکه مشکی انتخاب کنی.'],
+  gifNote: ['Animated GIFs keep only their first frame.', 'GIF متحرک فقط فریم اولش رو نگه می‌داره.'],
+  bgNote: ['This format cannot be transparent, so transparent areas get a white background unless you choose black.', 'این فرمت شفافیت نداره، پس قسمت‌های شفاف پس‌زمینه سفید میگیرن مگر اینکه مشکی انتخاب کنی.'],
   sortKeys: ['Sort keys', 'مرتب‌سازی کلیدها'],
   sample: ['Sample', 'نمونه'],
   minify: ['Minify', 'فشرده'],
@@ -1197,10 +1198,13 @@ const convertUi = (() => {
   let forcedBg = false;
   let hasAlpha = false;
   let hasJpg = false;
+  let hasGif = false;
   function syncBg() {
     const jpg = NO_ALPHA.includes(fmt.get());
     $('v-bgf').hidden = !hasAlpha;
     $('v-jpgn').hidden = !(hasJpg && fmt.get() !== 'jpeg');
+    $('v-bgn').hidden = !jpg;
+    $('v-gifn').hidden = !hasGif;
     $('v-bgnone').hidden = jpg;
     if (jpg && bg.get() === 'none') { bg.set('#ffffff'); forcedBg = true; }
     else if (!jpg && forcedBg) { forcedBg = false; if (bg.get() === '#ffffff') bg.set('none'); }
@@ -1214,6 +1218,7 @@ const convertUi = (() => {
       $('v-scf').hidden = !kinds.includes('svg');
       hasAlpha = kinds.some(k => k !== 'jpeg');
       hasJpg = kinds.includes('jpeg');
+      hasGif = kinds.includes('gif');
       syncBg();
     },
     opts: () => ({ fmt: fmt.get(), q: Number(lvl.get()), scale: Number(sc.get()), bg: bg.get() }),
@@ -1277,6 +1282,7 @@ const convertUi = (() => {
   $('v-scf').hidden = true;
   $('v-bgf').hidden = true;
   $('v-jpgn').hidden = true;
+  $('v-gifn').hidden = true;
   return tool;
 })();
 
