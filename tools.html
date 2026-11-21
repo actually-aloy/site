@@ -98,7 +98,8 @@
           <div class="split">
             <div class="panel">
               <div class="field"><span class="lbl" data-i="convTo"></span>
-                <div class="seg" id="v-fmt"><button type="button" data-v="png" class="on">PNG</button><button type="button" data-v="jpeg">JPG</button><button type="button" data-v="webp">WebP</button></div>
+                <select class="inp" id="v-fmt"><option value="png" selected>PNG</option><option value="jpeg">JPG</option><option value="webp">WebP</option><option value="avif">AVIF</option><option value="jxl">JPEG XL</option><option value="gif">GIF</option><option value="bmp">BMP</option><option value="ico">ICO</option><option value="tiff">TIFF</option></select>
+                <p class="hint" id="v-fmth" hidden></p>
               </div>
               <div class="field" id="v-qf" hidden><span class="lbl" data-i="compression"></span>
                 <div class="seg" id="v-lvl"><button type="button" data-v="0.95" data-i="lvBest"></button><button type="button" data-v="0.85" class="on" data-i="lvBal"></button><button type="button" data-v="0.6" data-i="lvSmall"></button></div>
@@ -118,7 +119,7 @@
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 16V4m0 0L7.5 8.5M12 4l4.5 4.5"/><path d="M4 15v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3"/></svg>
                 <span><b data-i="dropB"></b> <span data-i="dropT"></span></span>
                 <small data-i="dropConv"></small>
-                <input type="file" id="v-file" accept="image/*,.svg" multiple hidden>
+                <input type="file" id="v-file" accept="image/*,.svg,.jxl,.ico,.tif,.tiff" multiple hidden>
               </label>
               <div class="files" id="v-list"></div>
               <div class="sum" id="v-sum" hidden><span id="v-sumt"></span><span class="row"><button type="button" class="btn sm" id="v-clear" data-i="clear"></button><button type="button" class="btn primary sm" id="v-zip" data-i="dlZip"></button></span></div>

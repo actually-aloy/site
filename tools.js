@@ -16,7 +16,7 @@ const S = {
   d_compress: ['Shrink photos and resize them. Pick the quality, drop the files, download.', 'حجم عکس‌ها رو کم کن و اندازه‌شون رو تغییر بده. کیفیت رو انتخاب کن، فایل‌ها رو بنداز، دانلود کن.'],
   k_compress: ['compress resize shrink optimize photo image jpg jpeg webp png size reduce فشرده کاهش حجم عکس تصویر تغییر اندازه', ''],
   n_convert: ['Format converter', 'مبدل فرمت'],
-  d_convert: ['Convert between PNG, JPG and WebP, or turn an SVG into a PNG.', 'بین PNG و JPG و WebP تبدیل کن یا یه SVG رو به PNG تبدیل کن.'],
+  d_convert: ['Convert images to PNG, JPG, WebP, AVIF, JPEG XL, GIF, BMP, ICO or TIFF. SVG works too.', 'عکس‌ها رو به PNG و JPG و WebP و AVIF و JPEG XL و GIF و BMP و ICO و TIFF تبدیل کن. SVG هم میشه.'],
   k_convert: ['convert format png jpg jpeg webp svg raster image تبدیل فرمت عکس', ''],
   n_json: ['JSON and Base64', 'JSON و Base64'],
   d_json: ['Format, validate and minify JSON. Encode and decode Base64.', 'JSON رو مرتب، اعتبارسنجی و فشرده کن. Base64 رو کدگذاری و کدگشایی کن.'],
@@ -86,7 +86,7 @@ const S = {
   dropB: ['Choose images', 'تصویرها رو انتخاب کن'],
   dropT: ['or drag them here. You can also paste.', 'یا بکشون اینجا. میتونی پیست هم کنی.'],
   dropImg: ['JPG, PNG, WebP, GIF, BMP, AVIF. Many at once.', 'JPG و PNG و WebP و GIF و BMP و AVIF. چندتا با هم.'],
-  dropConv: ['Images and SVG files. Many at once.', 'تصویر و فایل SVG. چندتا با هم.'],
+  dropConv: ['Any image, SVG or JPEG XL file. Many at once.', 'هر عکس، SVG یا فایل JPEG XL. چندتا با هم.'],
   dlZip: ['Download all (.zip)', 'دانلود همه (ZIP)'],
   dl: ['Download', 'دانلود'],
   remove: ['Remove', 'حذف'],
@@ -96,6 +96,12 @@ const S = {
   larger: ['larger', 'بزرگ‌تر'],
   sumFiles: ['files', 'فایل'],
   sumTotal: ['Total', 'مجموع'],
+  fh_avif: ['AVIF: much smaller files than JPG at the same look. Uses an encoder built into this site, so the first one takes a moment. Still offline.', 'AVIF: فایل خیلی کوچک‌تر از JPG با همون کیفیت. از یه انکودر داخل همین سایت استفاده می‌کنه، پس اولین بار یکم طول می‌کشه. هنوز آفلاینه.'],
+  fh_jxl: ['JPEG XL: very small and sharp, but only Safari and a few apps open it so far. Uses an encoder built into this site. Still offline.', 'JPEG XL: خیلی کوچک و واضح، ولی فعلاً فقط سافاری و چندتا برنامه بازش می‌کنن. از یه انکودر داخل همین سایت استفاده می‌کنه. هنوز آفلاینه.'],
+  fh_gif: ['GIF has 256 colors at most, so photos lose detail. Single frame, simple transparency.', 'GIF حداکثر ۲۵۶ رنگ داره، پس عکس‌ها جزئیات از دست میدن. تک‌فریم، با شفافیت ساده.'],
+  fh_bmp: ['BMP is uncompressed, so files get very big. It has no transparency.', 'BMP فشرده نیست و حجمش خیلی بالا میره. شفافیت هم نداره.'],
+  fh_ico: ['Makes one icon file with every size from 16 to 256 px that fits your image. Good for favicons. Square images work best.', 'یه فایل آیکون با همه اندازه‌ها از ۱۶ تا ۲۵۶ پیکسل میسازه که به عکست بخوره. برای فاوآیکون خوبه. عکس مربعی بهترین نتیجه رو میده.'],
+  fh_tiff: ['TIFF is uncompressed, so files get very big. Keeps transparency.', 'TIFF فشرده نیست و حجمش خیلی بالا میره. شفافیت رو نگه می‌داره.'],
   convTo: ['Convert to', 'تبدیل به'],
   svgScale: ['SVG output size', 'اندازه خروجی SVG'],
   svgNote: ['SVG is vector, so you pick how large the image should be.', 'SVG برداریه، پس خودت انتخاب میکنی تصویر چقدر بزرگ باشه.'],
@@ -390,7 +396,7 @@ function dropdown(sel) {
   const isOpen = () => root.classList.contains('open');
   function paint() {
     const opts = Array.from(sel.options);
-    menu.innerHTML = opts.map((o, i) => '<li role="option" id="' + id + '-o' + i + '" data-i="' + i + '" class="dd-opt" aria-selected="' + (i === sel.selectedIndex) + '"><span>' + esc(o.textContent) + '</span>' + check + '</li>').join('');
+    menu.innerHTML = opts.map((o, i) => '<li role="option" id="' + id + '-o' + i + '" data-k="' + i + '" class="dd-opt" aria-selected="' + (i === sel.selectedIndex) + '"><span>' + esc(o.textContent) + '</span>' + check + '</li>').join('');
     val.textContent = opts[sel.selectedIndex] ? opts[sel.selectedIndex].textContent : '';
   }
   function setActive(i) {
@@ -427,8 +433,8 @@ function dropdown(sel) {
   btn.addEventListener('click', () => { isOpen() ? close(true) : open(); });
   btn.addEventListener('keydown', e => { if (e.key === 'ArrowDown' || e.key === 'ArrowUp') { e.preventDefault(); open(); } });
   menu.addEventListener('mousedown', e => e.preventDefault());
-  menu.addEventListener('mouseover', e => { const li = e.target.closest('.dd-opt'); if (li) setActive(+li.dataset.i); });
-  menu.addEventListener('click', e => { const li = e.target.closest('.dd-opt'); if (li) choose(+li.dataset.i); });
+  menu.addEventListener('mouseover', e => { const li = e.target.closest('.dd-opt'); if (li) setActive(+li.dataset.k); });
+  menu.addEventListener('click', e => { const li = e.target.closest('.dd-opt'); if (li) choose(+li.dataset.k); });
   menu.addEventListener('keydown', e => {
     switch (e.key) {
       case 'ArrowDown': e.preventDefault(); setActive(active + 1); break;
@@ -523,7 +529,7 @@ function wireDrop(dropId, inputId, onFiles) {
 }
 
 const hooks = { lang: [], enter: [], leave: [] };
-const T = { S, t, $, qa, esc, ICON, svgOf, toast, copyText, saveBlob, fmtBytes, bindSeg, bindRange, bindTabs, wireDrop, dropdown, hooks, getLang: () => lang };
+const T = { S, t, $, qa, esc, ICON, svgOf, toast, copyText, saveBlob, fmtBytes, bindSeg, bindRange, bindTabs, wireDrop, dropdown, has: k => k in S, hooks, getLang: () => lang };
 window.TT = T;
 
 function applyStatic() {
@@ -645,6 +651,256 @@ T.init = function () {
 })();
 (function () {
 'use strict';
+
+const mods = {};
+function wasm(name) {
+  if (!mods[name]) {
+    mods[name] = import('./tools-lib/' + name + '.js').then(m => m.default({ noInitialRun: true }));
+    mods[name].catch(() => { delete mods[name]; });
+  }
+  return mods[name];
+}
+
+async function encAvif(img, q) {
+  const m = await wasm('avif_enc');
+  const out = m.encode(new Uint8Array(img.data.buffer), img.width, img.height, {
+    quality: q, qualityAlpha: -1, denoiseLevel: 0, tileColsLog2: 0, tileRowsLog2: 0, speed: 7, subsample: 1,
+    chromaDeltaQ: false, sharpness: 0, tune: 0, enableSharpYUV: false, bitDepth: 8, lossless: false
+  });
+  if (!out) throw new Error('encode');
+  return new Blob([out], { type: 'image/avif' });
+}
+
+async function encJxl(img, q) {
+  const m = await wasm('jxl_enc');
+  const out = m.encode(img.data, img.width, img.height, {
+    effort: 5, quality: q, progressive: false, epf: -1, lossyPalette: false, decodingSpeedTier: 0,
+    photonNoiseIso: 0, lossyModular: false, lossless: false
+  });
+  if (!out) throw new Error('encode');
+  return new Blob([out], { type: 'image/jxl' });
+}
+
+async function decJxl(file) {
+  const m = await wasm('jxl_dec');
+  const r = m.decode(await file.arrayBuffer());
+  if (!r) throw new Error('decode');
+  return r;
+}
+
+function encBmp(img) {
+  const w = img.width;
+  const h = img.height;
+  const row = (w * 3 + 3) & ~3;
+  const size = 54 + row * h;
+  const buf = new ArrayBuffer(size);
+  const v = new DataView(buf);
+  const u = new Uint8Array(buf);
+  v.setUint16(0, 0x4d42, true);
+  v.setUint32(2, size, true);
+  v.setUint32(10, 54, true);
+  v.setUint32(14, 40, true);
+  v.setInt32(18, w, true);
+  v.setInt32(22, h, true);
+  v.setUint16(26, 1, true);
+  v.setUint16(28, 24, true);
+  v.setUint32(34, row * h, true);
+  v.setInt32(38, 2835, true);
+  v.setInt32(42, 2835, true);
+  const d = img.data;
+  for (let y = 0; y < h; y++) {
+    let o = 54 + (h - 1 - y) * row;
+    let i = y * w * 4;
+    for (let x = 0; x < w; x++, i += 4) { u[o++] = d[i + 2]; u[o++] = d[i + 1]; u[o++] = d[i]; }
+  }
+  return new Blob([buf], { type: 'image/bmp' });
+}
+
+function encTiff(img) {
+  const w = img.width;
+  const h = img.height;
+  const n = 12;
+  const ifdSize = 2 + n * 12 + 4;
+  const dataStart = 8 + ifdSize;
+  const bpsOff = dataStart;
+  const pixOff = dataStart + 8;
+  const buf = new ArrayBuffer(pixOff + w * h * 4);
+  const v = new DataView(buf);
+  v.setUint8(0, 0x49); v.setUint8(1, 0x49);
+  v.setUint16(2, 42, true);
+  v.setUint32(4, 8, true);
+  v.setUint16(8, n, true);
+  let p = 10;
+  const ent = (tag, type, count, val) => {
+    v.setUint16(p, tag, true); v.setUint16(p + 2, type, true); v.setUint32(p + 4, count, true);
+    if (type === 3 && count === 1) v.setUint16(p + 8, val, true); else v.setUint32(p + 8, val, true);
+    p += 12;
+  };
+  ent(254, 4, 1, 0);
+  ent(256, 4, 1, w);
+  ent(257, 4, 1, h);
+  ent(258, 3, 4, bpsOff);
+  ent(259, 3, 1, 1);
+  ent(262, 3, 1, 2);
+  ent(273, 4, 1, pixOff);
+  ent(277, 3, 1, 4);
+  ent(278, 4, 1, h);
+  ent(279, 4, 1, w * h * 4);
+  ent(284, 3, 1, 1);
+  ent(338, 3, 1, 2);
+  v.setUint32(p, 0, true);
+  for (let i = 0; i < 4; i++) v.setUint16(bpsOff + i * 2, 8, true);
+  new Uint8Array(buf, pixOff).set(img.data);
+  return new Blob([buf], { type: 'image/tiff' });
+}
+
+function quantize(img) {
+  const d = img.data;
+  const n = img.width * img.height;
+  const step = Math.max(1, Math.floor(n / 60000));
+  let boxes = [];
+  const first = [];
+  for (let i = 0; i < n; i += step) if (d[i * 4 + 3] >= 128) first.push(i * 4);
+  if (!first.length) return { pal: new Uint8Array(768), idx: new Uint8Array(n), trans: true };
+  boxes.push(first);
+  const range = (b, c) => { let lo = 255; let hi = 0; for (const o of b) { const x = d[o + c]; if (x < lo) lo = x; if (x > hi) hi = x; } return [lo, hi]; };
+  while (boxes.length < 255) {
+    let bi = -1;
+    let bs = 0;
+    let bc = 0;
+    boxes.forEach((b, k) => {
+      if (b.length < 2) return;
+      for (let c = 0; c < 3; c++) { const [lo, hi] = range(b, c); const s = (hi - lo) * Math.sqrt(b.length); if (s > bs) { bs = s; bi = k; bc = c; } }
+    });
+    if (bi < 0 || bs === 0) break;
+    const b = boxes[bi];
+    b.sort((a, z) => d[a + bc] - d[z + bc]);
+    const mid = b.length >> 1;
+    boxes.splice(bi, 1, b.slice(0, mid), b.slice(mid));
+  }
+  const pal = new Uint8Array(768);
+  boxes.forEach((b, k) => {
+    let r = 0; let g = 0; let bl = 0;
+    for (const o of b) { r += d[o]; g += d[o + 1]; bl += d[o + 2]; }
+    pal[(k + 1) * 3] = Math.round(r / b.length); pal[(k + 1) * 3 + 1] = Math.round(g / b.length); pal[(k + 1) * 3 + 2] = Math.round(bl / b.length);
+  });
+  const cache = new Int16Array(32768).fill(-1);
+  const idx = new Uint8Array(n);
+  const cnt = boxes.length;
+  let trans = false;
+  for (let i = 0; i < n; i++) {
+    const o = i * 4;
+    if (d[o + 3] < 128) { idx[i] = 0; trans = true; continue; }
+    const key = ((d[o] >> 3) << 10) | ((d[o + 1] >> 3) << 5) | (d[o + 2] >> 3);
+    let k = cache[key];
+    if (k < 0) {
+      let best = 1e9;
+      k = 1;
+      for (let j = 1; j <= cnt; j++) {
+        const dr = pal[j * 3] - d[o]; const dg = pal[j * 3 + 1] - d[o + 1]; const db = pal[j * 3 + 2] - d[o + 2];
+        const s = dr * dr * 3 + dg * dg * 4 + db * db * 2;
+        if (s < best) { best = s; k = j; }
+      }
+      cache[key] = k;
+    }
+    idx[i] = k;
+  }
+  return { pal, idx, trans };
+}
+
+function encGif(img) {
+  const { pal, idx, trans } = quantize(img);
+  const out = [];
+  const w2 = n => out.push(n & 255, (n >> 8) & 255);
+  out.push(0x47, 0x49, 0x46, 0x38, 0x39, 0x61);
+  w2(img.width); w2(img.height);
+  out.push(0xf7, 0, 0);
+  for (let i = 0; i < 768; i++) out.push(pal[i]);
+  if (trans) out.push(0x21, 0xf9, 4, 1, 0, 0, 0, 0);
+  out.push(0x2c, 0, 0, 0, 0);
+  w2(img.width); w2(img.height);
+  out.push(0, 8);
+  const bytes = [];
+  let cur = 0;
+  let bits = 0;
+  let size = 9;
+  let next = 258;
+  let dict = new Map();
+  const emit = code => {
+    cur |= code << bits; bits += size;
+    while (bits >= 8) { bytes.push(cur & 255); cur >>>= 8; bits -= 8; }
+  };
+  emit(256);
+  let prefix = idx[0];
+  for (let i = 1; i < idx.length; i++) {
+    const c = idx[i];
+    const key = prefix * 256 + c;
+    const hit = dict.get(key);
+    if (hit !== undefined) { prefix = hit; continue; }
+    emit(prefix);
+    if (next < 4096) {
+      dict.set(key, next++);
+      if (next > (1 << size) && size < 12) size++;
+    } else {
+      emit(256);
+      dict = new Map();
+      next = 258;
+      size = 9;
+    }
+    prefix = c;
+  }
+  emit(prefix);
+  emit(257);
+  if (bits > 0) bytes.push(cur & 255);
+  for (let i = 0; i < bytes.length; i += 255) {
+    const len = Math.min(255, bytes.length - i);
+    out.push(len);
+    for (let j = 0; j < len; j++) out.push(bytes[i + j]);
+  }
+  out.push(0, 0x3b);
+  return new Blob([new Uint8Array(out)], { type: 'image/gif' });
+}
+
+async function encIco(canvas) {
+  const max = Math.max(canvas.width, canvas.height);
+  const sizes = [16, 32, 48, 64, 128, 256].filter(s => s <= max);
+  if (!sizes.length) sizes.push(16);
+  const pngs = [];
+  for (const s of sizes) {
+    const c = document.createElement('canvas');
+    c.width = s; c.height = s;
+    const x = c.getContext('2d');
+    x.imageSmoothingQuality = 'high';
+    const k = Math.min(s / canvas.width, s / canvas.height);
+    const dw = canvas.width * k;
+    const dh = canvas.height * k;
+    x.drawImage(canvas, (s - dw) / 2, (s - dh) / 2, dw, dh);
+    const b = await new Promise(r => c.toBlob(r, 'image/png'));
+    pngs.push(new Uint8Array(await b.arrayBuffer()));
+  }
+  const head = 6 + sizes.length * 16;
+  const total = pngs.reduce((a, b) => a + b.length, head);
+  const buf = new ArrayBuffer(total);
+  const v = new DataView(buf);
+  v.setUint16(2, 1, true);
+  v.setUint16(4, sizes.length, true);
+  let off = head;
+  pngs.forEach((p, i) => {
+    const e = 6 + i * 16;
+    const s = sizes[i] === 256 ? 0 : sizes[i];
+    v.setUint8(e, s); v.setUint8(e + 1, s);
+    v.setUint16(e + 4, 1, true); v.setUint16(e + 6, 32, true);
+    v.setUint32(e + 8, p.length, true); v.setUint32(e + 12, off, true);
+    new Uint8Array(buf, off).set(p);
+    off += p.length;
+  });
+  return new Blob([buf], { type: 'image/x-icon' });
+}
+
+window.TT.codecs = { encAvif, encJxl, decJxl, encBmp, encTiff, encGif, encIco };
+})();
+(function () {
+'use strict';
 const { t, $, qa, esc, saveBlob, fmtBytes, bindSeg, bindRange, wireDrop, hooks } = window.TT;
 
 const crcTable = (() => {
@@ -685,8 +941,11 @@ async function makeZip(files) {
   return new Blob([...parts, cd, end], { type: 'application/zip' });
 }
 
-const EXT = { jpeg: 'jpg', webp: 'webp', png: 'png' };
+const EXT = { jpeg: 'jpg', webp: 'webp', png: 'png', avif: 'avif', jxl: 'jxl', gif: 'gif', bmp: 'bmp', ico: 'ico', tiff: 'tif' };
 const MIME = { jpeg: 'image/jpeg', webp: 'image/webp', png: 'image/png' };
+const LOSSY = ['jpeg', 'webp', 'avif', 'jxl'];
+const NO_ALPHA = ['jpeg', 'bmp'];
+const QMAP = { avif: { 0.95: 80, 0.85: 60, 0.6: 40 }, jxl: { 0.95: 92, 0.85: 80, 0.6: 60 } };
 
 function canvasBlob(canvas, type, q) {
   return new Promise(res => canvas.toBlob(res, type, q));
@@ -725,7 +984,7 @@ function makeList(cfg) {
       const tag = !cfg.showSavings ? '' : it.blob === it.file ? '<b>' + esc(t('noGain')) + '</b>' : d >= 0 ? '<b><bdi dir="ltr">-' + d + '%</bdi> ' + esc(t('saved')) + '</b>' : '<b class="worse"><bdi dir="ltr">+' + (-d) + '%</bdi> ' + esc(t('larger')) + '</b>';
       sz = '<bdi>' + fmtBytes(it.file.size) + ' → ' + fmtBytes(it.blob.size) + (it.w ? ' · ' + it.w + '×' + it.h : '') + '</bdi> ' + tag;
     }
-    return '<div class="file' + (it.state === 'err' ? ' err' : it.state === 'skip' ? ' skip' : it.state === 'busy' ? ' busy' : '') + (it.seen ? '' : ' in') + '" data-id="' + it.id + '"><img class="th" alt="" src="' + it.thumb + '"><div style="min-width:0"><div class="nm" dir="auto">' + esc(it.file.name) + '</div><div class="sz">' + sz + '</div></div><div class="act">' +
+    return '<div class="file' + (it.state === 'err' ? ' err' : it.state === 'skip' ? ' skip' : it.state === 'busy' ? ' busy' : '') + (it.seen ? '' : ' in') + '" data-id="' + it.id + '"><img class="th" alt="" onerror="this.style.visibility=\'hidden\'" src="' + it.thumb + '"><div style="min-width:0"><div class="nm" dir="auto">' + esc(it.file.name) + '</div><div class="sz">' + sz + '</div></div><div class="act">' +
       (it.state === 'done' ? '<button type="button" class="btn sm primary" data-act="dl">' + esc(t('dl')) + '</button>' : '') +
       '<button type="button" class="btn sm" data-act="rm" aria-label="' + esc(t('remove')) + '">✕</button></div></div>';
   }
@@ -845,6 +1104,12 @@ const kindOf = f => {
   if (f.type === 'image/jpeg' || /\.jpe?g$/i.test(f.name)) return 'jpeg';
   if (f.type === 'image/png' || /\.png$/i.test(f.name)) return 'png';
   if (f.type === 'image/webp' || /\.webp$/i.test(f.name)) return 'webp';
+  if (f.type === 'image/avif' || /\.avif$/i.test(f.name)) return 'avif';
+  if (f.type === 'image/jxl' || /\.jxl$/i.test(f.name)) return 'jxl';
+  if (f.type === 'image/gif' || /\.gif$/i.test(f.name)) return 'gif';
+  if (f.type === 'image/bmp' || /\.bmp$/i.test(f.name)) return 'bmp';
+  if (/^image\/(x-icon|vnd\.microsoft\.icon)$/.test(f.type) || /\.ico$/i.test(f.name)) return 'ico';
+  if (f.type === 'image/tiff' || /\.tiff?$/i.test(f.name)) return 'tiff';
   return 'other';
 };
 
@@ -903,7 +1168,19 @@ const compressUi = (() => {
 })();
 
 const convertUi = (() => {
-  const fmt = bindSeg('v-fmt', v => { $('v-qf').hidden = v === 'png'; syncBg(); tool.reprocess(); });
+  const fsel = $('v-fmt');
+  const fmtDd = window.TT.dropdown(fsel);
+  const fmt = { get: () => fsel.value };
+  const syncFmt = () => {
+    const v = fsel.value;
+    $('v-qf').hidden = !(v === 'webp' || v === 'jpeg' || v === 'avif' || v === 'jxl');
+    const hint = $('v-fmth');
+    const key = 'fh_' + v;
+    hint.hidden = !(window.TT.has(key));
+    if (!hint.hidden) hint.textContent = t(key);
+  };
+  fsel.addEventListener('change', () => { syncFmt(); syncBg(); tool.reprocess(); });
+  hooks.lang.push(syncFmt);
   const lvl = bindSeg('v-lvl', () => tool.reprocess());
   const sc = bindSeg('v-sc', () => tool.reprocess());
   const bg = bindSeg('v-bg', () => tool.reprocess());
@@ -921,19 +1198,21 @@ const convertUi = (() => {
     return { w, h, text: new XMLSerializer().serializeToString(el) };
   }
 
+  let forcedBg = false;
   let hasAlpha = false;
   let hasJpg = false;
   function syncBg() {
-    const jpg = fmt.get() === 'jpeg';
+    const jpg = NO_ALPHA.includes(fmt.get());
     $('v-bgf').hidden = !hasAlpha;
-    $('v-jpgn').hidden = !(hasJpg && !jpg);
+    $('v-jpgn').hidden = !(hasJpg && fmt.get() !== 'jpeg');
     $('v-bgnone').hidden = jpg;
-    if (jpg && bg.get() === 'none') bg.set('#ffffff');
+    if (jpg && bg.get() === 'none') { bg.set('#ffffff'); forcedBg = true; }
+    else if (!jpg && forcedBg) { forcedBg = false; if (bg.get() === '#ffffff') bg.set('none'); }
   }
 
   const tool = makeList({
     list: 'v-list', sum: 'v-sum', sumt: 'v-sumt', zip: 'v-zip', clear: 'v-clear', showSavings: false,
-    accept: f => /^image\//.test(f.type) || /\.(jpe?g|png|webp|gif|bmp|avif|svg)$/i.test(f.name),
+    accept: f => /^image\//.test(f.type) || /\.(jpe?g|png|webp|gif|bmp|avif|jxl|ico|tiff?|svg)$/i.test(f.name),
     onChange: items => {
       const kinds = items.map(it => kindOf(it.file));
       $('v-scf').hidden = !kinds.includes('svg');
@@ -958,6 +1237,14 @@ const convertUi = (() => {
         w = Math.round(s.w * o.scale);
         h = Math.round(s.h * o.scale);
         setTimeout(() => URL.revokeObjectURL(url), 2000);
+      } else if (kindOf(file) === 'jxl') {
+        const dec = await window.TT.codecs.decJxl(file);
+        src = document.createElement('canvas');
+        src.width = dec.width;
+        src.height = dec.height;
+        src.getContext('2d').putImageData(new ImageData(new Uint8ClampedArray(dec.data.buffer), dec.width, dec.height), 0, 0);
+        w = dec.width;
+        h = dec.height;
       } else {
         src = await loadBitmap(file);
         w = src.width || src.naturalWidth;
@@ -968,18 +1255,29 @@ const convertUi = (() => {
       c.width = w;
       c.height = h;
       const ctx = c.getContext('2d');
-      const fill = o.bg !== 'none' ? o.bg : o.fmt === 'jpeg' ? '#ffffff' : null;
+      const fill = o.bg !== 'none' ? o.bg : NO_ALPHA.includes(o.fmt) ? '#ffffff' : null;
       if (fill) { ctx.fillStyle = fill; ctx.fillRect(0, 0, w, h); }
       ctx.imageSmoothingQuality = 'high';
       ctx.drawImage(src, 0, 0, w, h);
       if (src.close) src.close();
-      const blob = await canvasBlob(c, MIME[o.fmt], o.q);
+      const K = window.TT.codecs;
+      let blob;
+      if (MIME[o.fmt]) blob = await canvasBlob(c, MIME[o.fmt], o.q);
+      else if (o.fmt === 'ico') blob = await K.encIco(c);
+      else {
+        const img = ctx.getImageData(0, 0, w, h);
+        if (o.fmt === 'avif') blob = await K.encAvif(img, QMAP.avif[o.q] || 60);
+        else if (o.fmt === 'jxl') blob = await K.encJxl(img, QMAP.jxl[o.q] || 80);
+        else if (o.fmt === 'gif') blob = K.encGif(img);
+        else if (o.fmt === 'bmp') blob = K.encBmp(img);
+        else blob = K.encTiff(img);
+      }
       if (!blob) throw new Error('encode');
       return { blob, w, h, name: baseName(file.name) + '.' + EXT[o.fmt] };
     }
   });
   wireDrop('v-drop', 'v-file', tool.add);
-  $('v-qf').hidden = true;
+  syncFmt();
   $('v-scf').hidden = true;
   $('v-bgf').hidden = true;
   $('v-jpgn').hidden = true;
