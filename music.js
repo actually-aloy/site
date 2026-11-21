@@ -362,6 +362,7 @@
       if (document.activeElement !== this.range && Number(this.range.value) !== pv) this.range.value = pv;
       this.range.setAttribute('aria-valuetext', this.range.value + '%');
       this.slider.style.setProperty('--v', this.range.value);
+      this.pill.classList.toggle('mute', Number(this.range.value) === 0);
     },
 
     build(mount, before) {

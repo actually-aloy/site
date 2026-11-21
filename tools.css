@@ -2144,7 +2144,7 @@ textarea {
   margin: 0;
   padding: 6px;
   list-style: none;
-  max-height: 268px;
+  max-height: 368px;
   overflow-y: auto;
   border: 1px solid var(--line);
   border-radius: 18px;
@@ -2373,4 +2373,56 @@ textarea {
 
 .binbox .btn {
   margin-top: 6px;
+}
+
+.s-view {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  gap: 12px;
+  min-height: 0;
+}
+
+.s-view[hidden] {
+  display: none;
+}
+
+.s-view > .row .btn {
+  flex: 1 1 auto;
+  justify-content: center;
+}
+
+.s-view .drop {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 230px;
+  overflow: hidden;
+}
+
+.s-view .drop .dz {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  text-align: center;
+}
+
+.s-view .drop .dz[hidden] {
+  display: none;
+}
+
+.s-view .drop .prev {
+  position: absolute;
+  inset: 10px;
+  width: calc(100% - 20px);
+  height: calc(100% - 20px);
+  object-fit: contain;
+  border-radius: 10px;
+}
+
+.s-view .drop .prev[hidden] {
+  display: none;
 }

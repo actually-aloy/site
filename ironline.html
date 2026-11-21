@@ -2228,6 +2228,41 @@
         animation: none;
       }
     }
+
+    .vol {
+      position: relative;
+    }
+
+    .mpill.mute .vol::after {
+      content: "0%";
+      position: absolute;
+      left: 24px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 11px;
+      letter-spacing: 0.06em;
+      color: var(--dim);
+      pointer-events: none;
+    }
+
+    .mpill.mute #tvol::-webkit-slider-thumb {
+      background: var(--bg);
+      box-shadow: inset 0 0 0 2px var(--fg);
+    }
+
+    .mpill.mute #tvol::-moz-range-thumb {
+      background: var(--bg);
+      box-shadow: inset 0 0 0 2px var(--fg);
+    }
+
+    .mpill.mute #tvol {
+      animation: none;
+    }
+
+    .mpill.mute .meq i {
+      animation: none;
+      transform: scaleY(0.3);
+    }
   </style>
 </head>
 <body>
@@ -5147,6 +5182,7 @@
 
     function paintVol() {
       el.tvol.style.setProperty('--p', el.tvol.value + '%');
+      el.mbar.classList.toggle('mute', Number(el.tvol.value) === 0);
       const t = 'Volume ' + el.tvol.value + '%';
       if (el.tvol.title !== t) el.tvol.title = t;
     }

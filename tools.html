@@ -22,7 +22,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="tools.css">
+  <link rel="stylesheet" href="tools.css?v=202611211011">
   <link rel="stylesheet" href="langfx.css">
   <script src="langfx.js" defer></script>
 </head>
@@ -201,9 +201,23 @@
           <div class="tab-pane" data-pane="scan" hidden>
             <div class="split even">
               <div class="panel">
-                <div class="head-row"><span class="lbl" data-i="camera"></span><span class="row"><button type="button" class="btn primary sm" id="s-start" data-i="camStart"></button><button type="button" class="btn sm" id="s-stop" data-i="camStop" hidden></button></span></div>
-                <div class="video-box grow" id="s-box"><video id="s-video" playsinline muted></video><div class="frame" id="s-frame" hidden></div><span class="hint" id="s-ph" data-i="camOff"></span></div>
-                <div class="row"><label class="btn sm" id="s-imgbtn"><span data-i="scanImg"></span><input type="file" id="s-img" accept="image/*" hidden></label></div>
+                <div class="seg" id="s-mode"><button type="button" data-v="cam" class="on" data-i="modeCam"></button><button type="button" data-v="img" data-i="modeImg"></button></div>
+                <div class="s-view" id="s-vcam">
+                  <div class="video-box grow" id="s-box"><video id="s-video" playsinline muted></video><div class="frame" id="s-frame" hidden></div><span class="hint" id="s-ph" data-i="camOff"></span></div>
+                  <div class="row"><button type="button" class="btn primary" id="s-start" data-i="camStart"></button><button type="button" class="btn" id="s-stop" data-i="camStop" hidden></button></div>
+                </div>
+                <div class="s-view" id="s-vimg" hidden>
+                  <label class="drop grow" id="s-drop" tabindex="0">
+                    <img class="prev" id="s-prev" alt="" hidden>
+                    <span class="dz" id="s-dz">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 16V4m0 0L7.5 8.5M12 4l4.5 4.5"/><path d="M4 15v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3"/></svg>
+                      <span><b data-i="qDropB"></b> <span data-i="qDropT"></span></span>
+                      <small data-i="qDropS"></small>
+                    </span>
+                    <input type="file" id="s-img" accept="image/*" hidden>
+                  </label>
+                  <div class="row"><button type="button" class="btn primary" id="s-pick" data-i="qPick"></button></div>
+                </div>
                 <p class="hint" data-i="scanNote"></p>
               </div>
               <div class="panel">
@@ -288,7 +302,7 @@
       if (clean !== location.pathname) history.replaceState(null, '', clean + location.search + location.hash);
     })();
   </script>
-  <script src="qr-gen.js"></script>
-  <script src="tools.js"></script>
+  <script src="qr-gen.js?v=202611211011"></script>
+  <script src="tools.js?v=202611211011"></script>
 </body>
 </html>

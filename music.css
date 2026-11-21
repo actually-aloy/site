@@ -200,6 +200,38 @@
   border-radius: 8px;
 }
 
+.mu-pill.mute .mu-fill {
+  width: 0;
+}
+
+.mu-pill.mute .mu-slider::after {
+  content: "0%";
+  position: absolute;
+  left: 30px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: rgba(255, 239, 247, 0.55);
+  pointer-events: none;
+}
+
+.mu-pill.mute .mu-range::-webkit-slider-thumb {
+  background: transparent;
+  box-shadow: inset 0 0 0 2px rgba(255, 239, 247, 0.7);
+}
+
+.mu-pill.mute .mu-range::-moz-range-thumb {
+  background: transparent;
+  box-shadow: inset 0 0 0 2px rgba(255, 239, 247, 0.7);
+}
+
+.mu-pill.on.run.mute .mu-eq i {
+  animation: none;
+  transform: scaleY(0.3);
+}
+
 @media (max-width: 520px) {
   .mu-label {
     display: none;

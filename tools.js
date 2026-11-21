@@ -69,6 +69,12 @@ const S = {
   lvNote: ['Balanced is right for most photos. Files keep their format.', 'حالت متعادل برای بیشتر عکس‌ها مناسبه. فرمت فایل‌ها عوض نمیشه.'],
   jpgNote: ['JPG has no transparency, so converting it to PNG or WebP keeps the background. It does not remove it.', 'JPG شفافیت نداره، برای همین تبدیلش به PNG یا WebP پس‌زمینه رو نگه می‌داره و حذفش نمی‌کنه.'],
   noGain: ['Already optimal', 'از قبل بهینه‌ست'],
+  modeCam: ['Camera', 'دوربین'],
+  modeImg: ['Image', 'تصویر'],
+  qDropB: ['Choose an image', 'یه عکس انتخاب کن'],
+  qDropT: ['or drag it here. You can also paste.', 'یا بکشش اینجا. میتونی پیست هم کنی.'],
+  qDropS: ['A photo or screenshot that has a QR code in it.', 'عکس یا اسکرین‌شات که توش کد QR داره.'],
+  qPick: ['Choose an image', 'انتخاب عکس'],
   camera: ['Camera', 'دوربین'],
   sameFmt: ['Already in this format. Pick a different one.', 'همین الان توی این فرمته. یه فرمت دیگه انتخاب کن.'],
   pngNote: ['PNG is lossless, so there is no compression level. Lower the size to make it smaller, or switch it to WebP or JPG in the Format converter.', 'PNG بی‌افته، برای همین سطح فشرده‌سازی نداره. اندازه رو کم کن تا کوچیک‌تر بشه، یا توی مبدل فرمت به WebP یا JPG عوضش کن.'],
@@ -410,7 +416,7 @@ function dropdown(sel) {
     if (isOpen()) return;
     const r = btn.getBoundingClientRect();
     const below = window.innerHeight - r.bottom;
-    root.classList.toggle('up', below < Math.min(menu.scrollHeight, 268) + 16 && r.top > below);
+    root.classList.toggle('up', below < Math.min(menu.scrollHeight, 368) + 16 && r.top > below);
     root.classList.add('open');
     btn.setAttribute('aria-expanded', 'true');
     setActive(sel.selectedIndex);
@@ -1700,7 +1706,7 @@ hooks.enter.push(id => { if (id === 'units') paintUnits(true); });
 })();
 (function () {
 'use strict';
-const { t, $, qa, esc, copyText, saveBlob, bindSeg, bindRange, bindTabs, hooks, toast, svgOf } = window.TT;
+const { t, $, qa, esc, copyText, saveBlob, bindSeg, bindRange, bindTabs, wireDrop, hooks, toast, svgOf } = window.TT;
 
 const qroot = $('v-qr');
 let qScanTab = false;
@@ -1916,13 +1922,17 @@ async function startCam() {
 
 $('s-start').addEventListener('click', startCam);
 $('s-stop').addEventListener('click', stopCam);
-$('s-img').addEventListener('change', async () => {
-  const f = $('s-img').files[0];
-  $('s-img').value = '';
+async function scanFile(f) {
   if (!f) return;
   const st = $('s-stat');
   st.className = 'status idle t';
   st.textContent = t('sLoading');
+  const url = URL.createObjectURL(f);
+  const prev = $('s-prev');
+  prev.src = url;
+  prev.hidden = false;
+  $('s-dz').hidden = true;
+  $('s-drop').classList.add('has');
   try {
     const bmp = await createImageBitmap(f);
     const res = await decodeSource(bmp, bmp.width, bmp.height);
@@ -1932,6 +1942,24 @@ $('s-img').addEventListener('change', async () => {
     st.className = 'status no t';
     st.textContent = t('sNone');
   }
+}
+
+const applyMode = v => {
+  $('s-vcam').hidden = v !== 'cam';
+  $('s-vimg').hidden = v !== 'img';
+  if (v !== 'cam') stopCam();
+};
+const scanMode = bindSeg('s-mode', applyMode);
+wireDrop('s-drop', 's-img', files => scanFile(files[0]));
+$('s-pick').addEventListener('click', () => $('s-img').click());
+document.addEventListener('paste', e => {
+  const pane = document.querySelector('[data-pane="scan"]');
+  if (!pane || pane.hidden || pane.offsetParent === null) return;
+  const f = Array.from((e.clipboardData && e.clipboardData.files) || []).find(x => /^image\//.test(x.type));
+  if (!f) return;
+  scanMode.set('img');
+  applyMode('img');
+  scanFile(f);
 });
 $('s-copy').addEventListener('click', () => { if ($('s-out').value) copyText($('s-out').value); });
 $('s-video').hidden = true;
